@@ -1,0 +1,110 @@
+/* LoginPage.css */
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.login-page {
+  text-align: center;
+}
+
+/* Navigation styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #fff;
+}
+
+.logo {
+  height: 50px; /* Adjust the size as needed */
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-links li a,
+.login-button {
+  text-decoration: none;
+  color: #000;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.login-button {
+  background-color: #002147;
+  color: #fff;
+  border: none;
+}
+
+.login-button:hover {
+  background-color: #003d82;
+}
+
+/* Login form styles */
+.login-form-container {
+  margin-top: 50px; /* Adjust as needed */
+  display: flex;
+  justify-content: center;
+}
+
+.login-form {
+  width: 300px;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h1 {
+  margin-bottom: 2rem;
+}
+
+.login-form label {
+  display: block;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+}
+
+.submit-button {
+  padding: 0.8rem 2.2rem;
+  background-color: #007C1B;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: large;
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .navbar {
+    justify-content: center;
+  }
+}

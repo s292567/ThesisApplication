@@ -1,3 +1,4 @@
+import LoginForm from "../components/LoginForm/LoginForm";
 import Navbar from "../components/Navbar/Navbar";
 
 const LandingPage = () => {
@@ -8,7 +9,7 @@ const LandingPage = () => {
       </header>
       <main>
         <div className="container">
-          <h1>Landing Page</h1>
+          <LoginForm />
         </div>
       </main>
     </>
