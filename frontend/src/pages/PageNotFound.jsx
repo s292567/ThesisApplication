@@ -1,15 +1,21 @@
-import { Link } from "react-router-dom";
+import React from 'react';
+import './PageNotFound.css';
 
-function PageNotFound(){
+const PageNotFound = () => {
+  return (
+    <div className="page-not-found-container">
+      <header className="page-not-found-header">
+        <>{/* HERE THERE WILL BE THE MAIN NAVBAR */ }</>
+      </header>
+      <main className="page-not-found-main">
+        <div className="page-not-found-card">
+          <h1>404</h1>
+          <p>Sorry, the page you are looking for cannot be found.</p>
+          <a href="/" className="page-not-found-home-link">Go back to homepage</a>
+        </div>
+      </main>
+    </div>
+  );
+};
 
-    return <Container className='justify-content-center col-6'>
-        <Alert variant="danger">
-            <Alert.Heading>Page Not Found</Alert.Heading>
-            <p> The page you are looking for does not exist or has been deleted.</p>
-            <p><Link to='/'>Please go back to the home page</Link></p>
-        </Alert>
-    </Container>
-    ;
-}
-
-export { PageNotFound };
+export default PageNotFound;
