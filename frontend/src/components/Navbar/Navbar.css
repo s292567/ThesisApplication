@@ -16,7 +16,7 @@
   .nav-links {
     list-style: none;
     display: flex;
-  }
+  } 
   
   .nav-links li a {
     text-decoration: none;
@@ -63,13 +63,15 @@
     cursor: pointer;
   }
   
-  /* Mobile styles */
-  @media screen and (max-width: 864px) {
-    
+  @media screen and (max-width: 950px) {
     .navbar{
         padding: 1rem 3rem;
     }
+  }
 
+  /* Mobile styles */
+  @media screen and (max-width: 864px) {
+    
     .nav-links {
       display: none;
       width: 100%;

@@ -8,7 +8,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="logo">
+      <div>
         <img src={politoLogo} className='logo'/>
       </div>
       <ul className={`nav-links ${isMobile && "mobile"}`}>
