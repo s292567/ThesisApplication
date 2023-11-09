@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import se2g12.thesisapplication.proposal.NewProposalDTO
-import se2g12.thesisapplication.proposal.ProposalService
+import se2g12.thesisapplication.proposalOld.NewProposalDTO
+import se2g12.thesisapplication.proposalOld.ProposalService
 
 @RestController
 @CrossOrigin

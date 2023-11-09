@@ -1,4 +1,4 @@
-package se2g12.thesisapplication.proposal
+package se2g12.thesisapplication.proposalOld
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
