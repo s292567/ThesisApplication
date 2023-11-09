@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import SearchIcon from "@mui/icons-material/Search";
 
 import "./SettingsProposalsBar.css";
 
@@ -11,12 +13,27 @@ const SettingsProposalsBar = () => {
     setShowFilters(!showFilters);
   };
 
+  const handleSearchIconClick = () => {
+    // Define what you want to do when the search icon is clicked
+    console.log("Search icon clicked");
+  };
+
   return (
     <div className="content">
       <div className="search-bar">
-        <input type="text" placeholder="Search proposal..." />
+        <div className="search-input-container">
+          <SearchIcon className="search-icon" onClick={handleSearchIconClick} />
+          <input
+            type="text"
+            placeholder="Search proposal..."
+            className="search-input"
+          />
+        </div>
         <div className="filter-container">
-          <button className="filters-button" onClick={toggleFilters}>
+          <button
+            className={`filters-button ${showFilters ? "active" : ""}`}
+            onClick={toggleFilters}
+          >
             <FilterAltIcon />
             Filters
             <KeyboardArrowDownIcon />
