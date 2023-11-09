@@ -1,0 +1,73 @@
+/* Page.css */
+.content {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* crea una griglia con 12 colonne */
+    padding: 1rem;
+    gap: 10px;
+  }
+  
+  .content > * { /* si assume che ogni elemento diretto dentro .content debba occupare le 6 colonne centrali */
+    grid-column: 2 / span 5; /* fa iniziare il contenuto dalla 2a colonna e si estende per 4 colonne */
+  }
+  
+  .search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  
+  .search-bar input {
+    flex-grow: 1;
+    padding: 0.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: large;
+    border-radius: 12px;
+    border: 1px solid #303030;
+  }
+  
+  .create-proposal-button {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: large;
+    border-radius: 12px;
+  }
+  
+  .filters-button {
+    display: flex;
+    align-items: center; /* Allinea verticalmente le icone con il testo */
+    justify-content: center; /* Allinea orizzontalmente le icone e il testo */
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: large;
+    border-radius: 12px;
+    border: 1px solid #303030;
+    background-color: transparent;
+    gap: 0.25rem; /* Aggiungi un po' di spazio tra le icone e il testo */
+  }
+  
+
+  .create-proposal-button {
+    border: none;
+    background-color: #002147;
+    color: white;
+  }
+  
+  /* Responsive styling */
+  @media (max-width: 768px) {
+    .header-nav a,
+    .user-controls button {
+      display: none; /* Hide certain elements on smaller screens */
+    }
+  
+    .search-bar {
+      flex-direction: column;
+    }
+  
+    .search-bar button {
+      width: 100%; /* Full width on smaller screens */
+      margin-top: 10px;
+    }
+  }
+  

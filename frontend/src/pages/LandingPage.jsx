@@ -1,5 +1,5 @@
-import LoginForm from "../components/LoginForm/LoginForm";
 import Navbar from "../components/Navbar/Navbar";
+import SettingsProposalsBar from "../components/SettingsProposalsBar/SettingsProposalsBar";
 
 const LandingPage = () => {
   return (
@@ -9,7 +9,7 @@ const LandingPage = () => {
       </header>
       <main>
         <div className="container">
-          <LoginForm />
+          <SettingsProposalsBar />
         </div>
       </main>
     </>
