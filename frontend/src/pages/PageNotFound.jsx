@@ -1,11 +1,12 @@
 import React from 'react';
 import './PageNotFound.css';
+import Navbar from '../components/Navbar/Navbar';
 
 const PageNotFound = () => {
   return (
     <div className="page-not-found-container">
-      <header className="page-not-found-header">
-        <>{/* HERE THERE WILL BE THE MAIN NAVBAR */ }</>
+      <header>
+        <Navbar />
       </header>
       <main className="page-not-found-main">
         <div className="page-not-found-card">
