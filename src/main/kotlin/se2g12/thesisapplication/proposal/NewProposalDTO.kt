@@ -1,9 +1,8 @@
-package se2g12.thesisapplication.proposalOld
+package se2g12.thesisapplication.proposal
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import java.util.*
 
 data class NewProposalDTO (
     var title : String,
@@ -11,7 +10,7 @@ data class NewProposalDTO (
     var coSupervisors : List<String>?,
     var keywords : List<String>,
     var type : String,
-    var groups : String,
+    var groups : List<String>,
     var description : String,
     var requiredKnowledge : String?,
     var notes : String?,
@@ -36,9 +35,5 @@ data class NewProposalDTO (
         if(CdS.isEmpty()){
             throw ProposalBodyError("The proposal should belong to at least 1 CdS")
         }
-    }
-    fun toProposal():Proposal{
-        return Proposal(title,supervisor, coSupervisors?: listOf(), keywords, type,
-            groups, description, requiredKnowledge?:"", notes?:"", Date(expiration), level, CdS)
     }
 }

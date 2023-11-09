@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import se2g12.thesisapplication.proposalOld.NewProposalDTO
-import se2g12.thesisapplication.proposalOld.ProposalService
+import se2g12.thesisapplication.proposal.NewProposalDTO
+import se2g12.thesisapplication.proposal.ProposalService
 
 @RestController
 @CrossOrigin
@@ -15,7 +15,7 @@ class ProfessorController(private val proposalService: ProposalService) {
 
     @PostMapping("/API/thesis/proposals")
     @ResponseStatus(HttpStatus.CREATED)
-    fun addNewProposal(@RequestBody obj:NewProposalDTO){
+    fun addNewProposal(@RequestBody obj: NewProposalDTO){
         proposalService.addNewProposal(obj)
     }
 }
