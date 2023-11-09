@@ -1,13 +1,14 @@
 /* General styles */
-.navbar {
+.navbar,
+.navbarMobile-clicked {
     font-family: Arial, Helvetica, sans-serif;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 5rem;
     background-color: #fff;
-  }
-  
+    transition: padding 0.3s ease;
+}
   .logo {
     width: 173px;
     height: auto;
@@ -69,6 +70,24 @@
     }
   }
 
+  .navbarMobile-clicked {
+    position: relative;
+    height: 100vh;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+.navbarMobile-clicked .logo {
+    position: absolute;
+    top: 1rem;
+    left: 3rem;
+}
+
+.navbarMobile-clicked .mobile-nav-toggle {
+    position: absolute;
+    top: 1.7rem;
+    right: 3rem;
+}
   /* Mobile styles */
   @media screen and (max-width: 864px) {
     
@@ -76,7 +95,9 @@
       display: none;
       width: 100%;
       flex-direction: column;
-      align-items: center;
+      align-items: start;
+      font-family: Arial, Helvetica, sans-serif;
+      
     }
   
     .nav-links.mobile {
@@ -91,13 +112,22 @@
       margin: 1rem 0;
     }
   
-    .login-button {
-      padding: 0.3rem 0.6rem;
-    }
   }
   
   @media screen and (max-width: 375px) {
-    .navbar{
+
+    .navbar,
+    .navbarMobile-clicked {
         padding: 1rem 0.8rem;
+    }
+    
+    .navbarMobile-clicked .logo {
+        left: 0.8rem;
+    }
+
+    .navbarMobile-clicked .mobile-nav-toggle {
+      position: absolute;
+      top: 1.7rem;
+      right: 0.8rem;
     }
   }
