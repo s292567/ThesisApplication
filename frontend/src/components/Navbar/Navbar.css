@@ -1,15 +1,16 @@
 /* General styles */
 .navbar {
+    font-family: Arial, Helvetica, sans-serif;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 1rem 5rem;
     background-color: #fff;
-    border-bottom: 2px solid #000;
   }
   
   .logo {
-    font-weight: bold;
+    width: 173px;
+    height: auto;
   }
   
   .nav-links {
@@ -22,20 +23,30 @@
     padding: 0 1rem;
     color: #000;
     transition: color 0.3s;
+    font-size: x-large; /* Makes text x-large */
+    line-height: 3rem; /* Adjust as needed to align with the button */
+    vertical-align: middle; /* Vertically aligns text */
   }
   
   .nav-links li a:hover {
     color: #0056b3;
   }
-  
+  .nav-links li:nth-last-child(2) a {
+    margin-right: 2rem; /* This targets the second-last <li>, adjusting for the login button */
+  }
+
   .login-button {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 2rem;
     margin-left: 1rem;
     border: none;
-    background-color: #0056b3;
+    background-color: #002147;
     color: #fff;
-    border-radius: 5px;
+    border-radius: 12px;
     cursor: pointer;
+    height: max-content;
+    width: max-content;
+    font-size: x-large;
+    vertical-align: middle; /* Vertically aligns text */
   }
   
   .login-button:hover {
@@ -47,12 +58,18 @@
     display: none;
     border: none;
     background: none;
-    font-size: 1.5rem;
+    font-size: 48px;
+    transform: scaleX(1.5);
     cursor: pointer;
   }
   
   /* Mobile styles */
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 864px) {
+    
+    .navbar{
+        padding: 1rem 3rem;
+    }
+
     .nav-links {
       display: none;
       width: 100%;
@@ -77,3 +94,8 @@
     }
   }
   
+  @media screen and (max-width: 375px) {
+    .navbar{
+        padding: 1rem 0.8rem;
+    }
+  }
