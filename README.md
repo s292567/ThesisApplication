@@ -81,4 +81,4 @@ Stores information about research proposals for academic projects. Includes deta
     cds: Course of study associated with the proposal.
 
 # Relational Diagram
-![diagram](https://github.com/s292567/ThesisApplication/blob/[branch]/diagram.png?raw=true)
+![diagram](https://github.com/s292567/ThesisApplication/blob/master/diagram.png?raw=true)
