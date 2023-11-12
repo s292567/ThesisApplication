@@ -1,0 +1,99 @@
+.navbar {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  padding: 1rem 0.5rem;
+  gap: 5px;
+  background: #ffffff;
+  align-items: center; /* Center items vertically */
+}
+
+.navbar-logo {
+  grid-column: 2 / 3;
+}
+.logo {
+  width: 173px;
+  height: auto;
+}
+.navbar-sidebar {
+  grid-column: 1;
+  border: none;
+  background-color: transparent;
+}
+/* Align the user icon to the end */
+.navbar-user {
+  grid-column: 11 / 12;
+  justify-self: center; /* Align to the end of the grid column */
+  background: #0056b3; /* Blue background */
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Make it circular */
+  padding: 10px; /* Add some padding to increase the size */
+}
+
+.navbar-searchbar {
+  grid-column: 3 / 9;
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+
+.navbar-icons {
+  grid-column: 10 / 11;
+  display: flex; /* This makes it a flex container */
+  align-items: center; /* Centers the buttons vertically */
+  gap: 10px; /* This adds spacing between the buttons */
+}
+
+/* Add spacing between the buttons */
+.navbar-messages {
+  margin-right: 3px; /* Add space to the right of the messages button */
+}
+
+.navbar-notifications {
+  margin-right: 5px; /* Add space to the right of the messages button */
+}
+
+/* Style buttons to have a circular blue background */
+.navbar-messages,
+.navbar-notifications {
+  background: #0056b3; /* Blue background */
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Make it circular */
+  padding: 10px; /* Add some padding to increase the size */
+}
+
+/* Style icons to be white */
+.navbar-messages .MuiSvgIcon-root,
+.navbar-notifications .MuiSvgIcon-root {
+  color: #ffffff; /* White color for the icon */
+}
+
+/* Hide the notifications button on smaller screens */
+
+@media (max-width: 800px) {
+  .navbar-notifications {
+    display: none;
+  }
+  .logo {
+    width: 80px;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 624px) {
+  .navbar {
+    display: flex;
+    padding: 0.5rem; /* Adjust padding if needed */
+    margin-right: 0.5rem; /* Adjust margin if needed */
+  }
+
+  .navbar-searchbar {
+    margin-left: 0rem !important; /* Remove margin on the left */
+  }
+}
