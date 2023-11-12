@@ -1,5 +1,6 @@
 // Sidebar.jsx
-import React from "react";
+import React from 'react';
+import { useMediaQuery, Drawer } from '@mui/material';
 import { Link } from "react-router-dom";
 import politoLogo from "../../assets/politoLogo.png";
 
@@ -8,9 +9,24 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 import "./Sidebar.css";
 
-const Sidebar = ({ isOpen, closeSidebar }) => {
+
+const Sidebar = ({ isOpen, closeSidebar, sidebarWidth }) => {
+
+  const isWideScreen = useMediaQuery('(min-width: 768px)');
+
   return (
-    <aside className={`sidebar ${isOpen ? "open" : ""}`}>
+    <Drawer
+      variant={isWideScreen ? isOpen ? 'permanent' : 'temporary' : 'temporary'}
+      sx={{
+        width: isWideScreen ? `${sidebarWidth}px` : '100%',
+        '& .MuiDrawer-paper': {
+          backgroundColor: isWideScreen ? 'white': '#FC7A08',
+          width: isWideScreen ? `${sidebarWidth}px` : '100%',
+          boxSizing: 'border-box',
+        },
+      }}
+      open={isOpen}
+    >
       <div className="sidebar-content">
         <Link to="/studentDashboard">
           <img src={politoLogo} alt="Politecnico Di Torino" />
@@ -18,18 +34,17 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
         <ul>
           <li>Dashboard</li>
           <li>Proposal List</li>
-          {/* More items */}
+          
         </ul>
       </div>
       <button className="sidebar-close-button" onClick={closeSidebar}>
-        {/* Conditionally render the close icon for small screens */}
-        {window.innerWidth < 768 ? (
-          <CancelOutlinedIcon fontSize="large" style={{ color: "white" }} />
+        { isWideScreen ? (
+          <ArrowBackIosNewRoundedIcon style={{ color: "#FC7A08" }} />
         ) : (
-          <ArrowBackIosNewRoundedIcon style={{ color: "white" }} />
+          <CancelOutlinedIcon fontSize="large" style={{ color: "white" }} />
         )}
       </button>
-    </aside>
+    </Drawer>
   );
 };
 

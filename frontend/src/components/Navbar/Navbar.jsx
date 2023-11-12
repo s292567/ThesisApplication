@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import politoLogo from "../../assets/politoLogo.png"; // Ensure this path is correct
 import "./Navbar.css";
 
@@ -22,6 +23,14 @@ const ResponsiveAppBar = () => {
 
   const drawer = (
     <Box sx={{ textAlign: "center", p: 1 }} className="drawer-links">
+      <IconButton
+        aria-label="open drawer"
+        edge="start"
+        onClick={handleDrawerToggle}
+        sx={{fontSize: "large", position: "absolute", top: "2.5rem", right: "1rem"}}
+      >
+        <CancelOutlinedIcon fontSize="large" style={{ color: "blue" }} />
+      </IconButton>
       <img
         src={politoLogo}
         alt="Politecnico di Torino Logo"
@@ -59,7 +68,7 @@ const ResponsiveAppBar = () => {
               onClick={handleDrawerToggle}
               sx={{ ml: "auto", fontSize: "large" }}
             >
-              <MenuIcon style={{ fontSize: '2rem' }} />
+              <MenuIcon style={{ fontSize: "2rem" }} />
             </IconButton>
           )}
         </Toolbar>

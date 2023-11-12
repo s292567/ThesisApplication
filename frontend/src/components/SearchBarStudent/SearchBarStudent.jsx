@@ -37,26 +37,29 @@ const SearchBarStudent = () => {
 const FiltersDropdown = () => {
   return (
     <div className="filters-dropdown">
-      <div className="filter-section">
-        <h4>Filter 1:</h4>
-        <label>
-          <input type="checkbox" /> Option 1
-        </label>
-        <label>
-          <input type="checkbox" /> Option 2
-        </label>
-        <label>
-          <input type="checkbox" /> Option 3
-        </label>
-      </div>
-      <div className="filter-section">
-        <h4>Filter 2:</h4>
-        <label>
-          <input type="checkbox" /> Option 1
-        </label>
-        <label>
-          <input type="checkbox" /> Option 2
-        </label>
+      {/*You can do a map here */}
+      <div className="filter-sections">
+        <div className="filter-section">
+          <h4>Filter 1:</h4>
+          <label>
+            <input type="checkbox" /> Option 1
+          </label>
+          <label>
+            <input type="checkbox" /> Option 2
+          </label>
+          <label>
+            <input type="checkbox" /> Option 3
+          </label>
+        </div>
+        <div className="filter-section">
+          <h4>Filter 2:</h4>
+          <label>
+            <input type="checkbox" /> Option 1
+          </label>
+          <label>
+            <input type="checkbox" /> Option 2
+          </label>
+        </div>
       </div>
       <button className="apply-filters">Apply</button>
     </div>

@@ -23,6 +23,11 @@ This project uses React and Vite to provide a dynamic and efficient web applicat
 - `ThesisProposalList` - List of thesis proposals tailored for students. **✏️ Can be MODIFIED FOR TEACHER** 🛠️ To be IMPLEMENTED
 - `RequestedProposalList` - Detailed list of requested thesis proposals for students.
 
+- `?` - Details of the thesis proposals for students  **🛠️ To be IMPLEMENTED**
+- `?` - thesis proposals list for the Professor  **🛠️ To be IMPLEMENTED**.
+
+- `?` - Creation Page for a new Thesis proposal **🛠️ To be IMPLEMENTED URGENT TO FRIDAY!!!!!!!**.
+
 ## 🚧 Notes for Developers
 
 - **Components to be Implemented:** Certain components are marked with "🛠️ To be IMPLEMENTED". These are either in the planning stages or currently under development.

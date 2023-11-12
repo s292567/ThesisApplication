@@ -1,94 +1,67 @@
 .navbar {
-  display: flex;
-  flex-grow: 1;
-  justify-content: space-between;
-  padding: 1rem 0.5rem;
   background: #ffffff;
-  align-items: center; /* Center items vertically */
+  display: flex; /* Ensure flex layout for the Toolbar */
+  justify-content: space-between; /* Space out elements */
+  align-items: center; /* Vertically align items */
+  padding: 1rem;
 }
 
-.navbar > div {
-  display: flex;
-  vertical-align: middle; /* Center items vertically */
-}
-
+/* Styling for the logo within the Typography component */
 .logo {
   width: 173px;
   height: auto;
 }
 
+/* IconButton used for the sidebar toggle */
 .navbar-sidebar {
   border: none;
   background-color: transparent;
 }
 
-/* Align the user icon to the end */
-.navbar-user {
-  justify-self: center; /* Align to the end of the grid column */
-  background: #0056b3; /* Blue background */
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%; /* Make it circular */
-  padding: 10px; /* Add some padding to increase the size */
-}
-
+/* Styling for the search bar */
 .navbar-searchbar-container {
-  flex: 1;
-  margin-left: 3rem;
-  
+  flex: 1; /* Take up remaining space */
   display: flex;
+  justify-content: center; /* Center the search bar */
 }
 
-.navbar-searchbar {
-  display: flex;
-  flex-grow: 1;
-  max-width: 70%;
-}
-
+/* Styling for the container holding icons */
 .navbar-icons {
-  display: flex; /* This makes it a flex container */
-  align-items: center; /* Centers the buttons vertically */
-  gap: 10px; /* This adds spacing between the buttons */
-}
-/* Add spacing between the buttons */
-.navbar-messages {
-  margin-right: 3px; /* Add space to the right of the messages button */
-}
-.navbar-notifications {
-  margin-right: 5px; /* Add space to the right of the messages button */
-}
-/* Style buttons to have a circular blue background */
-.navbar-messages,
-.navbar-notifications {
-  background: #0056b3; /* Blue background */
-  border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%; /* Make it circular */
-  padding: 10px; /* Add some padding to increase the size */
-}
-/* Style icons to be white */
-.navbar-messages .MuiSvgIcon-root,
-.navbar-notifications .MuiSvgIcon-root {
-  color: #ffffff; /* White color for the icon */
+  gap: 10px; /* Space between icons */
 }
 
+.navbar-icons button{
+  background: #0056b3; /* Blue background */
+  color: #ffffff;
+}
+
+.navbar-icons button:hover{
+  background-color: dodgerblue !important; /* Blue background */
+  color: #ffffff;
+}
 /* Hide the notifications button on smaller screens */
 @media (max-width: 800px) {
-  .navbar-notifications {
-    display: none;
-  }
   .logo {
-    width: 80px;
+    width: 100px;
     height: auto;
-  }
-  .navbar-searchbar-container {
-    margin-left: 2rem;
   }
 }
 
+/* Additional media query styling if needed */
+@media (max-width: 768px) {
+  /* Add any specific styles for very small screens here */
+  .navbar-mail, .navbar-notifications{
+    display: none !important;
+  } 
+}
+
+@media (max-width: 600px) {
+   .logo{
+    display: none !important;
+   }
+   .navbar-sidebar-button{
+    size: smaller !important;
+   }
+}
