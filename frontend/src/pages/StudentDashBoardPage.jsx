@@ -1,5 +1,6 @@
 import BottomNavbar from "../components/BottomNavbar/BottomNavbar";
 import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
+import RequestedProposals from "../components/RequestedProposalList/RequestedProposalList";
 
 const StudentDashBoardPage = () => {
   return (
@@ -8,8 +9,9 @@ const StudentDashBoardPage = () => {
       <header style={{display: "flex"}}>
         <LoggedInNavbar />
       </header>
-      <main>
+      <main style={{marginLeft: "8rem"}} >
         <h1>Student DashBoard Page</h1>
+        <RequestedProposals />
       </main>
       <BottomNavbar />
     </>
