@@ -3,7 +3,7 @@ import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
 const StudentDashBoardPage = () => {
   return (
     <>
-      <header>
+      <header style={{display: "flex"}}>
         <LoggedInNavbar />
       </header>
       <main>
