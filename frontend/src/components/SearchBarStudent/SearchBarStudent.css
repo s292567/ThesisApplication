@@ -10,7 +10,7 @@
 .search-input {
   flex-grow: 1;
   padding: 0.8rem 0.5rem 0.5rem 2.5rem; /* Adjust padding for icons inside */
-  border-radius: 20px; /* Rounded corners for the input */
+  border-radius: 12px; /* Rounded corners for the input */
   border: 1px solid #303030;
   border-right: none; /* Remove right border to match the button */
   font-size: large;
@@ -26,7 +26,7 @@
 .filter-button {
   border: 2px solid #303030; /* Border color */
   background-color: transparent;
-  border-radius: 20px; /* Match input border-radius */
+  border-radius: 12px; /* Match input border-radius */
   padding: 0.5rem 0.75rem;
   display: flex;
   align-items: center;

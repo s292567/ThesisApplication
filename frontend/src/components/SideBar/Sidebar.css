@@ -1,0 +1,102 @@
+.sidebar {
+  display: none;
+  width: 250px; /* Width of the sidebar */
+  background-color: #ff7f50; /* Orange color for the sidebar */
+  height: 100vh; /* Full height */
+  position: fixed; /* Fixed position */
+  top: 0;
+  left: -250px; /* Start off-screen */
+  transition: left 0.3s; /* Smooth transition for sidebar */
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+/* Set font family for all text within the sidebar */
+.sidebar,
+.sidebar * {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: large;
+}
+
+.sidebar.open {
+  display: flex;
+  left: 0; /* Bring sidebar on-screen */
+}
+
+.sidebar-content {
+  padding: 1rem;
+}
+
+.sidebar-content img {
+  width: 173px;
+  height: auto;
+  display: flex;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.sidebar-content ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 3rem;
+}
+
+.sidebar-content ul li {
+  padding: 0.5rem 0;
+  /* Additional styles */
+}
+
+.sidebar-close-button {
+  position: absolute;
+  background-color: transparent;
+  top: 2.5rem;
+  right: 0;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+  .sidebar {
+    width: 144px;
+    height: 1000vh;
+  }
+  .sidebar-content img {
+    margin-top: 2rem;
+    width: 80px;
+    height: auto;
+  }
+}
+
+/* Style changes for screen width 768px or less */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    left: 0; /* Ensure sidebar takes full width and is positioned properly */
+  }
+
+  .sidebar-content img {
+    margin-top: 2rem;
+    width: 173px;
+    height: auto;
+  }
+
+  .sidebar-content {
+    margin-left: 3rem;
+  }
+
+  .sidebar-content ul {
+    margin-top: 5rem;
+  }
+
+  .sidebar-content ul li {
+    font-size: xx-large; /* Larger text for list items */
+    padding: 1rem 0; /* Increase padding for touch targets */
+  }
+
+  /* Change icon to close icon */
+  .sidebar-close-button {
+    top: 3rem; /* Adjust position */
+    right: 2rem; /* Adjust position */
+  }
+}
