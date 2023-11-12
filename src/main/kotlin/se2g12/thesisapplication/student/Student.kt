@@ -11,11 +11,10 @@ data class Student (
     val nationality:String?=null,
     val email: String?=null,
     @ManyToOne
-    @JoinColumn(name = "codDegree", referencedColumnName = "codDegree", insertable = false, updatable = false)
+    @JoinColumn(name = "codDegree", referencedColumnName = "codDegree")
     val degree: Degree? = null,
     val enrollmentYear:String?=null
 ){
     @Id
-    @GeneratedValue(generator = "uuid2")
-    val id: UUID?=null
+    val id: String?=null
 }
