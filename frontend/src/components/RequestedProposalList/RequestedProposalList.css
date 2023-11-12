@@ -20,6 +20,7 @@
   font-size: medium;
   padding: 6px 15px; /* Smaller padding */
   border: none; /* No border */
+  margin-top: 2rem;
 }
 
 .see-more-button {
@@ -46,27 +47,51 @@
     overflow: hidden;
   }
 }
+/* Adjusting button sizes for smaller screens */
+@media (max-width: 900px) {
+  .read-more-button,
+  .see-more-button {
+    font-size: 0.8em; /* Smaller font size */
+    padding: 4px 12px; /* Adjust padding */
+  }
+}
 
-/* Smaller text inside buttons for screens less than 624px */
+/* Further adjustments for very small screens */
 @media (max-width: 624px) {
-    .read-more-button, .see-more-button {
-      font-size: xx-small !important;
-      padding: 4px 10px;
-    }
+  .read-more-button,
+  .see-more-button {
+    font-size: 0.7em; /* Even smaller font size */
+    padding: 3px 10px; /* Further adjust padding */
   }
-  
+
   .title-round-shape {
-    background-color: #003576;
-    color: white;
-    font-weight: bold;
-    font-size: medium;
-    padding: 5px 10px;
-    border-radius: 20px; /* Makes the shape round-square */
-    display: inline-block; /* To fit the content */
-    margin-bottom: 10px; /* Space between title and description */
+    font-size: 0.8em; /* Adjust title font size */
+    padding: 4px 8px; /* Adjust title padding */
   }
-  
-  /* Ensuring space between description and buttons */
+
   .list-item-text {
-    margin-bottom: 10px;
+    margin-bottom: 0.5em; /* Adjust text margin */
   }
+
+  /* Adjust overall container padding and margin */
+  .requested-proposals-container {
+    padding: 1em;
+    margin: 1em;
+  }
+}
+
+.title-round-shape {
+  background-color: #003576;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  padding: 5px 10px;
+  border-radius: 20px; /* Makes the shape round-square */
+  display: inline-block; /* To fit the content */
+  margin-bottom: 10px; /* Space between title and description */
+}
+
+/* Ensuring space between description and buttons */
+.list-item-text {
+  margin-bottom: 10px;
+}

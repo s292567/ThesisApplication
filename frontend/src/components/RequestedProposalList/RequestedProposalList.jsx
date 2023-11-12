@@ -51,7 +51,7 @@ const RequestedProposals = () => {
         Requested Proposals
       </Typography>
 
-      <List>
+      <List className="list-container">
         {proposals.slice(0, 2).map(
           (
             proposal,

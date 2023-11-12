@@ -1,0 +1,77 @@
+.thesis-proposals-list-container {
+  margin: 20px !important ;
+  padding: 20px !important ;
+  border-radius: 20px !important ;
+  background-color: #fff !important ; /* Match the background color to your theme */
+}
+.title-section {
+    color: #fc7a08; /* Or your preferred header color */
+    font-weight: bolder !important ;
+    margin-left: 1rem !important ;
+    margin-bottom: 1rem !important ;
+    margin-top: 1rem !important ;
+  }
+  
+.thesis-proposals-list {
+  width: 100%;
+  padding: 0;
+  background-color: #fff;
+}
+
+.list-header {
+  background-color: #f5f5f5; /* Light grey header to distinguish from list items */
+}
+
+.list-item:not(:last-child) {
+  border-bottom: 1px solid #e0e0e0; /* Separator between items */
+}
+
+.date-container {
+  text-align: center;
+}
+
+.class-container .class-title {
+  font-weight: bold;
+}
+
+.spacer {
+  display: none; /* Hidden by default, shown only on larger screens */
+}
+
+@media (min-width: 600px) {
+  .spacer {
+    display: block; /* Show spacer on larger screens for visual separation */
+  }
+}
+
+/* Responsive typography adjustments */
+@media (max-width: 599px) {
+  .date-container .MuiTypography-h6 {
+    font-size: 1.25rem !important; /* Smaller size for day */
+  }
+
+  .date-container .MuiTypography-caption {
+    font-size: 0.7rem !important; /* Smaller size for month and year */
+  }
+
+  .class-container .MuiTypography-subtitle1,
+  .supervisor-container .MuiTypography-body1 {
+    font-size: 0.875rem !important; /* Adjust font size for smaller screens */
+  }
+}
+
+/* Important overrides if necessary */
+/* Use these sparingly and only if you need to override inline styles or styles with higher specificity */
+.class-title {
+  font-weight: bold !important;
+}
+
+.list-header .MuiTypography-subtitle1 {
+  font-weight: bold !important;
+  color: #333 !important;
+}
+
+.date-container .MuiTypography-h6,
+.date-container .MuiTypography-caption {
+  color: #333 !important;
+}
