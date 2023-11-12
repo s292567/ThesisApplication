@@ -1,3 +1,4 @@
+import BottomNavbar from "../components/BottomNavbar/BottomNavbar";
 import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
 
 const StudentDashBoardPage = () => {
@@ -10,6 +11,7 @@ const StudentDashBoardPage = () => {
       <main>
         <h1>Student DashBoard Page</h1>
       </main>
+      <BottomNavbar />
     </>
   );
 };
