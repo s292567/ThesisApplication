@@ -1,29 +1,83 @@
-import React, { useState } from 'react';
-import './Navbar.css'; // Make sure to import the CSS file
+import React, { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Box,
+  Drawer,
+  useMediaQuery,
+} from "@mui/material";
+import { Link } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
+import politoLogo from "../../assets/politoLogo.png"; // Ensure this path is correct
+import "./Navbar.css";
 
-import politoLogo from '../../assets/politoLogo.png';
+const ResponsiveAppBar = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const isMobile = useMediaQuery("(max-width:768px)");
 
-const Navbar = () => {
-  const [isMobileViewClicked, setisMobileViewClicked] = useState(false);
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawer = (
+    <Box sx={{ textAlign: "center", p: 1 }} className="drawer-links">
+      <img
+        src={politoLogo}
+        alt="Politecnico di Torino Logo"
+        className="navbar-logo"
+      />
+      <Link className="navbar-link">Academics</Link>
+      <Link className="navbar-link">Thesis</Link>
+      <Link className="navbar-link">Innovation</Link>
+      <button className="login-button">Login</button>
+    </Box>
+  );
 
   return (
-    <nav className={`navbar ${isMobileViewClicked ? 'navbarMobile-clicked' : ''}`}>
-      <div>
-        <img src={politoLogo} className='logo'/>
-      </div>
-      <ul className={`nav-links ${isMobileViewClicked && "mobile"}`}>
-        
-        <li><a href="/academics">Academics</a></li>
-        <li><a href="/thesis">Thesis</a></li>
-        <li><a href="/innovation">Innovation</a></li>
-        
-        <li><button className="login-button">Login</button></li>
-      </ul>
-      <button className="mobile-nav-toggle" onClick={() => setisMobileViewClicked(!isMobileViewClicked)}>
-        {isMobileViewClicked ? 'x' : '≡'}
-      </button>
-    </nav>
+    <Box sx={{ display: "flex" }}>
+      <AppBar position="fixed" color="default">
+        <Toolbar sx={{ justifyContent: "space-between", overflowX: "auto" }}>
+          <img
+            src={politoLogo}
+            alt="Politecnico di Torino Logo"
+            className="navbar-logo"
+          />
+          {!isMobile && (
+            <div>
+              <Link className="navbar-link">Academics</Link>
+              <Link className="navbar-link">Thesis</Link>
+              <Link className="navbar-link">Innovation</Link>
+              <button className="login-button">Login</button>
+            </div>
+          )}
+          {isMobile && (
+            <IconButton
+              color="default"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ ml: "auto", fontSize: "large" }}
+            >
+              <MenuIcon style={{ fontSize: '2rem' }} />
+            </IconButton>
+          )}
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: "100%" },
+        }}
+      >
+        {drawer}
+      </Drawer>
+    </Box>
   );
 };
 
-export default Navbar;
+export default ResponsiveAppBar;
