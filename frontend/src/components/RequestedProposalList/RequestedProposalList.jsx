@@ -1,10 +1,12 @@
 import React from "react";
-import Paper from "@mui/material/Paper";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
+import {
+  List,
+  ListItem,
+  Typography,
+  Grid,
+  Paper,
+  Divider,
+} from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 
@@ -52,45 +54,52 @@ const RequestedProposals = () => {
       </Typography>
 
       <List className="list-container">
-        {proposals.slice(0, 2).map(
-          (
-            proposal,
-            index // Only display first two proposals
-          ) => (
-            <React.Fragment key={index}>
-              {index !== 0 && <Divider component="li" />}
-              <ListItem alignItems="flex-start">
-                <ListItemText
-                  primary={<div className="title-round-shape">{proposal.title}</div>}
-                  secondary={
-                    <>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                        style={{ fontWeight: "bold" }}
-                        margin={2}
-                      >
-                        {proposal.department}
-                      </Typography>
-                      —{" "}
-                      {windowWidth > 1024
-                        ? proposal.description
-                        : proposal.description.substring(0, 50) + "..."}
-                      {/* Limit description to 150 chars */}
-                    </>
-                  }
-                />
-                <button
-                  className="read-more-button" // Use class instead of inline styles
+        {proposals.slice(0, 2).map((proposal, index) => (
+          <React.Fragment key={index}>
+            {index !== 0 && <Divider component="li" />}
+            <ListItem>
+              <Grid container alignItems="center" spacing={2}>
+                {" "}
+                {/* Added spacing for better layout */}
+                <Grid
+                  item
+                  xs={12}
+                  sm={8}
+                  md={9}
+                  lg={9} // Adjusted the grid sizing
+                  className="list-item-text"
                 >
-                  Read More
-                </button>
-              </ListItem>
-            </React.Fragment>
-          )
-        )}
+                  <Typography
+                    variant="subtitle1"
+                    component="div"
+                    className="title-round-shape"
+                  >
+                    {proposal.title}
+                  </Typography>
+
+                  <Typography variant="body2" component="div">
+                    <strong>{proposal.department}</strong> -{" "}
+                    {windowWidth > 1024
+                      ? proposal.description
+                      : `${proposal.description.substring(0, 50)}...`}
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  md={3}
+                  lg={3} // Adjusted the grid sizing
+                  className="supervisor-container"
+                >
+                  <button className="read-more-button">Read More</button>
+                </Grid>
+              </Grid>
+            </ListItem>
+          </React.Fragment>
+        ))}
       </List>
+
       <div className="see-more-container">
         <button
           className="see-more-button" // Use class instead of inline styles

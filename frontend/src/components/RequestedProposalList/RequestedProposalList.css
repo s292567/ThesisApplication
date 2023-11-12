@@ -38,47 +38,6 @@
   padding-top: 1rem;
 }
 
-/* Responsive text length for the description */
-@media (max-width: 1024px) {
-  .requested-proposals-container .MuiListItemText-secondary {
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* Number of lines you want to display */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-}
-/* Adjusting button sizes for smaller screens */
-@media (max-width: 900px) {
-  .read-more-button,
-  .see-more-button {
-    font-size: 0.8em; /* Smaller font size */
-    padding: 4px 12px; /* Adjust padding */
-  }
-}
-
-/* Further adjustments for very small screens */
-@media (max-width: 624px) {
-  .read-more-button,
-  .see-more-button {
-    font-size: 0.7em; /* Even smaller font size */
-    padding: 3px 10px; /* Further adjust padding */
-  }
-
-  .title-round-shape {
-    font-size: 0.8em; /* Adjust title font size */
-    padding: 4px 8px; /* Adjust title padding */
-  }
-
-  .list-item-text {
-    margin-bottom: 0.5em; /* Adjust text margin */
-  }
-
-  /* Adjust overall container padding and margin */
-  .requested-proposals-container {
-    padding: 1em;
-    margin: 1em;
-  }
-}
 
 .title-round-shape {
   background-color: #003576;
@@ -88,10 +47,29 @@
   padding: 5px 10px;
   border-radius: 20px; /* Makes the shape round-square */
   display: inline-block; /* To fit the content */
-  margin-bottom: 10px; /* Space between title and description */
+  margin-bottom: 0.5rem !important; /* Space between title and description */
 }
+
 
 /* Ensuring space between description and buttons */
 .list-item-text {
-  margin-bottom: 10px;
+  margin-bottom: 1rem !important;
+  margin-top: 0.5rem !important;
+}
+
+/* ... existing styles ... */
+
+.list-item-text {
+  margin-bottom: 1rem !important;
+  margin-top: 0.5rem !important;
+  flex-grow: 1; /* Makes the text section grow to occupy available space */
+}
+
+.supervisor-container {
+  flex-grow: 1; /* Allows the button section to occupy the remaining space */
+}
+
+/* Bold style for department */
+.department-bold {
+  font-weight: bold;
 }

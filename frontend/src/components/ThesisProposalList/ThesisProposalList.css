@@ -3,23 +3,35 @@
   padding: 20px !important ;
   border-radius: 20px !important ;
   background-color: #fff !important ; /* Match the background color to your theme */
+  font-family: Arial, Helvetica, sans-serif !important;
 }
 .title-section {
-    color: #fc7a08; /* Or your preferred header color */
-    font-weight: bolder !important ;
-    margin-left: 1rem !important ;
-    margin-bottom: 1rem !important ;
-    margin-top: 1rem !important ;
-  }
-  
+  color: #fc7a08; /* Or your preferred header color */
+  font-weight: bolder !important ;
+  margin-left: 1rem !important ;
+  margin-bottom: 1rem !important ;
+  margin-top: 1rem !important ;
+}
+
+.date-day{
+    font-weight: bold !important;
+}
+
+.read-more-button {
+  background-color: #e7e7ff; /* Button color */
+  color: #003576;
+  border-radius: 20px; /* Rounded corners */
+  font-size: medium;
+  padding: 6px 15px; /* Smaller padding */
+  border: none; /* No border */
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .thesis-proposals-list {
   width: 100%;
   padding: 0;
   background-color: #fff;
-}
-
-.list-header {
-  background-color: #f5f5f5; /* Light grey header to distinguish from list items */
 }
 
 .list-item:not(:last-child) {
@@ -60,6 +72,16 @@
   }
 }
 
+.supervisor-container .MuiTypography-body1 {
+    font-size: 0.875rem !important; /* Adjust font size for smaller screens */
+    background-color: #e7e7ff !important; /* Button color */
+    color: #003576 !important;
+    border-radius: 20px !important; /* Rounded corners */
+    padding: 6px 15px !important; /* Smaller padding */
+    border: none !important; /* No border */
+    max-width: max-content !important;
+}
+
 /* Important overrides if necessary */
 /* Use these sparingly and only if you need to override inline styles or styles with higher specificity */
 .class-title {
@@ -68,10 +90,27 @@
 
 .list-header .MuiTypography-subtitle1 {
   font-weight: bold !important;
-  color: #333 !important;
+  color: lightslategrey !important;
 }
 
 .date-container .MuiTypography-h6,
 .date-container .MuiTypography-caption {
   color: #333 !important;
 }
+
+.see-more-container {
+    text-align: center;
+    padding-top: 1rem;
+  }
+
+  
+.see-more-button {
+    color: #003576; /* 'See more' text color */
+    background-color: transparent; /* No background */
+    font-size: medium;
+    padding: 6px 15px; /* Smaller padding */
+    border: 2px solid #003576; /* Add a border */
+    margin-top: 1rem; /* Add margin to the top */
+    border-radius: 20px;
+  }
+  

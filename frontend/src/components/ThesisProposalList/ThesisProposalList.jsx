@@ -1,9 +1,18 @@
 import React from "react";
 import { List, ListItem, Typography, Grid, Paper } from "@mui/material";
 import "./ThesisProposalList.css";
+import { useNavigate } from "react-router-dom";
 
 const ThesisProposalsList = () => {
-  const fakeProposals = [
+  
+    const navigate = useNavigate();
+  // Function to handle See More button click
+  const handleSeeMoreClick = () => {
+    navigate("studentDashboard-:studentId/requestedProposals");
+  };
+
+  
+    const fakeProposals = [
     {
       id: 1,
       deadline: new Date(2023, 3, 9), // 9th April 2023
@@ -58,11 +67,12 @@ const ThesisProposalsList = () => {
             </Grid>
           </Grid>
         </ListItem>
+
         {fakeProposals.map((proposal) => {
           const { day, month, year } = formatDate(proposal.deadline);
           return (
             <ListItem key={proposal.id} className="list-item">
-              <Grid container alignItems="center">
+              <Grid container alignItems="center" spacing={0}>
                 <Grid
                   item
                   xs={2}
@@ -71,7 +81,7 @@ const ThesisProposalsList = () => {
                   lg={2}
                   className="date-container"
                 >
-                  <Typography variant="h6" component="div">
+                  <Typography variant="h6" component="div" className="date-day">
                     {day}
                   </Typography>
                   <Typography variant="caption" component="div">
@@ -81,13 +91,13 @@ const ThesisProposalsList = () => {
                     {year}
                   </Typography>
                 </Grid>
-                <Grid item xs={0.5} className="spacer" />
+
                 <Grid
                   item
-                  xs={5.5}
-                  sm={6.5}
-                  md={6.5}
-                  lg={6.5}
+                  xs={6}
+                  sm={6}
+                  md={7}
+                  lg={7}
                   className="class-container"
                 >
                   <Typography
@@ -100,14 +110,15 @@ const ThesisProposalsList = () => {
                   <Typography variant="body2" component="div">
                     {proposal.description}
                   </Typography>
+                  <button className="read-more-button">Read More</button>
                 </Grid>
-                <Grid item xs={0.5} className="spacer" />
+
                 <Grid
                   item
-                  xs={3.5}
-                  sm={2.5}
-                  md={2.5}
-                  lg={2.5}
+                  xs={3}
+                  sm={3}
+                  md={3}
+                  lg={3}
                   className="supervisor-container"
                 >
                   <Typography variant="body1" component="div">
@@ -119,6 +130,14 @@ const ThesisProposalsList = () => {
           );
         })}
       </List>
+      <div className="see-more-container">
+        <button
+          className="see-more-button" // Use class instead of inline styles
+          onClick={handleSeeMoreClick}
+        >
+          See more
+        </button>
+      </div>
     </Paper>
   );
 };
