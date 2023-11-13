@@ -2,7 +2,9 @@
 
 This project uses React and Vite to provide a dynamic and efficient web application experience. Below you will find information about the available routes and components used in this project.
 
-## 🚀 Available Routes
+## 🚀 Available Routes **🛠️ To be IMPLEMENTED**
+
+**Note: The routes below are subject to change. The one written here are only sample rightnow**
 
 - `GET /` - Home page
 - `GET /login` - Login page
@@ -17,14 +19,19 @@ This project uses React and Vite to provide a dynamic and efficient web applicat
 - `LoggedInNavbar` - Top navigation bar for logged-in users.
 - `Navbar` - Top navigation bar for users who are not logged in.
 - `SearchBarStudent` - Custom search bar for students (without the new proposal button).
-- `SearchBarTeacher` - Search bar for teachers (includes a new proposal button). **🛠️ To be IMPLEMENTED**
+
+
 - `SideBar` - Versatile side bar for both students and teachers.
 - `LoginForm` - User-friendly login form.
-- `ThesisProposalList` - List of thesis proposals tailored for students. **✏️ Can be MODIFIED FOR TEACHER** 🛠️ To be IMPLEMENTED
 - `RequestedProposalList` - Detailed list of requested thesis proposals for students.
 
-- `?` - Details of the thesis proposals for students  **🛠️ To be IMPLEMENTED**
-- `?` - thesis proposals list for the Professor  **🛠️ To be IMPLEMENTED**.
+- `ThesisProposalList` - List of thesis proposals tailored for students. **✏️ Must be MODIFIED FOR TEACHER**
+- `ThesisProposalDetails` - Details of the thesis proposals for students **✏️ Must be MODIFIED FOR TEACHER**
+
+- `SearchBarTeacher` - Search bar for teachers (includes a new proposal button). **🛠️ To be IMPLEMENTED**
+- `ThesisProposalList FOR PROFESSOR` - List of thesis proposals tailored for students. **🛠️ To be IMPLEMENTED**
+- `ThesisProposalDetails FOR THE PROFESSOR` **🛠️ To be IMPLEMENTED**
+
 
 - `?` - Creation Page for a new Thesis proposal **🛠️ To be IMPLEMENTED URGENT TO FRIDAY!!!!!!!**.
 
