@@ -20,9 +20,10 @@ const Sidebar = ({ isOpen, closeSidebar, sidebarWidth }) => {
       sx={{
         width: isWideScreen ? `${sidebarWidth}px` : '100%',
         '& .MuiDrawer-paper': {
-          backgroundColor: isWideScreen ? 'white': '#FC7A08',
+          backgroundColor: '#FC7A08',
           width: isWideScreen ? `${sidebarWidth}px` : '100%',
           boxSizing: 'border-box',
+          border: 'none',
         },
       }}
       open={isOpen}
@@ -39,7 +40,7 @@ const Sidebar = ({ isOpen, closeSidebar, sidebarWidth }) => {
       </div>
       <button className="sidebar-close-button" onClick={closeSidebar}>
         { isWideScreen ? (
-          <ArrowBackIosNewRoundedIcon style={{ color: "#FC7A08" }} />
+          <ArrowBackIosNewRoundedIcon style={{ color: "white" }} />
         ) : (
           <CancelOutlinedIcon fontSize="large" style={{ color: "white" }} />
         )}
