@@ -7,13 +7,11 @@ import java.util.*
 
 @Entity
 data class Teacher(
+    @Id
+    val id: String,
     val surname: String? = null,
     val name: String? = null,
     val email: String? = null,
     val codGroup: String? = null,
     val codDepartment: String? = null
-){
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    val id: UUID? = null
-}
+)

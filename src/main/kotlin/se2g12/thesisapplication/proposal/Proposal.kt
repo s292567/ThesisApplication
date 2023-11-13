@@ -10,8 +10,8 @@ data class Proposal(
     @ManyToOne
     @JoinColumn(name = "supervisor_id", referencedColumnName = "id")
     val supervisor: Teacher? = null,  // Reference to the associated teacher
-    @OneToMany
-    val coSupervisors: List<Teacher>?=null,
+    @ElementCollection
+    val coSupervisors: List<String>?=null,
     @ElementCollection
     val keywords: List<String>?=null,
     val type: String?=null,

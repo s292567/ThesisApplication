@@ -5,6 +5,8 @@ import java.util.*
 
 @Entity
 data class Student (
+    @Id
+    val id: String,
     val surname:String?=null,
     val name:String?=null,
     val gender:String?=null,
@@ -14,8 +16,4 @@ data class Student (
     @JoinColumn(name = "codDegree", referencedColumnName = "codDegree", insertable = false, updatable = false)
     val degree: Degree? = null,
     val enrollmentYear:String?=null
-){
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    val id: UUID?=null
-}
+)
