@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import BottomNavbar from "../components/BottomNavbar/BottomNavbar";
 import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
-import RequestedProposals from "../components/RequestedProposalList/RequestedProposalList";
 import ThesisProposalsList from "../components/ThesisProposalList/ThesisProposalList";
 
 
@@ -11,7 +10,7 @@ import Box from "@mui/material/Box";
 
 const sidebarWidth = 240;
 
-const StudentDashboardPage = () => {
+const ProfessorDashboardPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -55,4 +54,4 @@ const StudentDashboardPage = () => {
   );
 };
 
-export default StudentDashboardPage;
+export default ProfessorDashboardPage;
