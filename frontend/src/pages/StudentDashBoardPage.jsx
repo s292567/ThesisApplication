@@ -4,9 +4,10 @@ import BottomNavbar from "../components/BottomNavbar/BottomNavbar";
 import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
 import RequestedProposals from "../components/RequestedProposalList/RequestedProposalList";
 import ThesisProposalsList from "../components/ThesisProposalList/ThesisProposalList";
-
+import ThesisProposalDetails from "../components/ThesisProposalDetails/ThesisProposalDetails";
 
 import Box from "@mui/material/Box";
+
 
 const sidebarWidth = 240;
 
@@ -42,9 +43,11 @@ const StudentDashBoardPage = () => {
           marginBottom: "6rem",
         }}
       >
-        {/* Main content */}
-        <RequestedProposals />
-        <ThesisProposalsList />
+        {/* Main content 
+          <RequestedProposals />
+          <ThesisProposalsList />
+        */}
+        <ThesisProposalDetails />
       </Box>
 
       <BottomNavbar />
