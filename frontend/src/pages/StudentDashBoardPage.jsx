@@ -4,7 +4,7 @@ import BottomNavbar from "../components/BottomNavbar/BottomNavbar";
 import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
 import RequestedProposals from "../components/RequestedProposalList/RequestedProposalList";
 import ThesisProposalsList from "../components/ThesisProposalList/ThesisProposalList";
-import ThesisProposalDetails from "../components/ThesisProposalDetails/ThesisProposalDetails";
+
 
 import Box from "@mui/material/Box";
 
@@ -45,9 +45,9 @@ const StudentDashBoardPage = () => {
       >
         {/* Main content 
           <RequestedProposals />
-          <ThesisProposalsList />
+          
         */}
-        <ThesisProposalDetails />
+        <ThesisProposalsList />
       </Box>
 
       <BottomNavbar />

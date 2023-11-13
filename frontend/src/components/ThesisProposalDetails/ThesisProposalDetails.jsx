@@ -44,12 +44,10 @@ const formatDate = (date) => {
   return { day, month, year };
 };
 
-/**                             { proposal } the proposal will be passed down to the element from the caller  */
-export default function ThesisProposalDetails() {
-  const [open, setOpen] = React.useState(false);
+
+export default function ThesisProposalDetails({ proposal, open, setOpen}) {
   const [childOpen, setChildOpen] = React.useState(false);
 
-  const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     setChildOpen(false); // Close child modal as well when parent is closed
@@ -58,22 +56,6 @@ export default function ThesisProposalDetails() {
   const handleApply = () => setChildOpen(true);
   const handleChildClose = () => setChildOpen(false);
 
-  const proposal = {
-    id: "P12345",
-    title: "Development of an Advanced AI Assistant",
-    supervisor: "Dr. Jane Smith",
-    coSupervisors: "Prof. John Doe, Dr. Emily White",
-    keywords: "Artificial Intelligence, Machine Learning, User Interface",
-    type: "Research",
-    groups: "AI Lab, ML Group",
-    description:
-      "This proposal focuses on developing an advanced AI assistant capable of understanding and performing complex tasks. The project will involve developing novel machine learning models and user interface improvements.",
-    requiredKnowledge: "Python, Machine Learning, Natural Language Processing",
-    notes: "Previous experience with deep learning frameworks is a plus.",
-    expiration: "2023-12-31",
-    level: "MSc",
-    cds: "Computer Science and Engineering",
-  };
 
   const hasOptionalFields =
     proposal.coSupervisors && proposal.requiredKnowledge && proposal.notes;
@@ -82,8 +64,6 @@ export default function ThesisProposalDetails() {
 
   return (
     <div>
-      {/** The button must me removed in the final version and also the handleOpen must be passed down from the parent component */}
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         open={open}
         onClose={handleClose}

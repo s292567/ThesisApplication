@@ -2,42 +2,76 @@ import React from "react";
 import { List, ListItem, Typography, Grid, Paper } from "@mui/material";
 import "./ThesisProposalList.css";
 import { useNavigate } from "react-router-dom";
+import ThesisProposalDetails from "../ThesisProposalDetails/ThesisProposalDetails";
+import { useWindowDimensions } from "../useWindowDimensions";
 
 const ThesisProposalsList = () => {
-  
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   // Function to handle See More button click
   const handleSeeMoreClick = () => {
     navigate("studentDashboard-:studentId/requestedProposals");
   };
 
-  
-    const fakeProposals = [
+  const [openDetails, setOpenDetails] = React.useState(false);
+  const handleOpenDetails = () => setOpenDetails(true);
+
+  const windowWidth = useWindowDimensions().width;
+
+  const fakeProposals = [
     {
-      id: 1,
-      deadline: new Date(2023, 3, 9), // 9th April 2023
-      title: "Database and Information Systems",
+      id: "P12345",
+      title: "Development of an Advanced AI Assistant",
+      supervisor: "Dr. Jane Smith",
+      coSupervisors: "Prof. John Doe, Dr. Emily White",
+      keywords: "Artificial Intelligence, Machine Learning, User Interface",
+      type: "Research",
+      groups: "AI Lab, ML Group",
       description:
-        "A Little Description, Key Words, Type, Groups, Requirements",
-      supervisor: "Professor Maurizio Morisio",
+        "This proposal focuses on developing an advanced AI assistant capable of understanding and performing complex tasks. The project will involve developing novel machine learning models and user interface improvements.",
+      requiredKnowledge:
+        "Python, Machine Learning, Natural Language Processing",
+      notes: "Previous experience with deep learning frameworks is a plus.",
+      expiration: "2023-12-31",
+      level: "MSc",
+      cds: "Computer Science and Engineering",
     },
     {
-      id: 2,
-      deadline: new Date(2023, 11, 10), // 10th December 2023
-      title: "AI and Machine Learning",
+      id: "P67890",
+      title: "Exploring Quantum Computing in Cryptography",
+      supervisor: "Dr. Alan Turing",
+      keywords: "Quantum Computing, Cryptography, Security",
+      type: "Research",
+      groups: "Quantum Research Lab",
       description:
-        "A little description, Key Words, Type, Groups, Requirements",
-      supervisor: "Professor Caboy",
+        "This proposal aims to explore the applications of quantum computing in the field of cryptography, focusing on developing secure communication methods.",
+      requiredKnowledge: "Cryptography, Quantum Mechanics, Programming",
+      notes: "Interest in quantum algorithms is desirable.",
+      expiration: "2024-05-30",
+      level: "PhD",
+      cds: "Physics and Computer Science",
     },
-    // ... add more fake proposals if needed
+    {
+      id: "P24680",
+      title: "Innovations in Renewable Energy Sources",
+      supervisor: "Prof. Emma Green",
+      coSupervisors: "Dr. John Doe, Dr. Emily White",
+      keywords: "Renewable Energy, Sustainability, Environmental Science",
+      type: "Development",
+      groups: "Sustainable Energy Lab",
+      description:
+        "The project focuses on developing innovative and efficient renewable energy sources to reduce carbon footprint and promote sustainability.",
+      requiredKnowledge: "Environmental Science, Engineering, Material Science",
+      expiration: "2023-11-15",
+      level: "MSc",
+      cds: "Environmental Engineering",
+    },
   ];
 
   const formatDate = (date) => {
-    const day = date.getDate();
-    const month = date
-      .toLocaleString("default", { month: "short" })
-      .toUpperCase();
-    const year = date.getFullYear();
+    const tmp = date.split("-");
+    const day = tmp[2];
+    const month = tmp[1].toUpperCase().slice(0, 3);
+    const year = tmp[0];
     return { day, month, year };
   };
 
@@ -69,7 +103,7 @@ const ThesisProposalsList = () => {
         </ListItem>
 
         {fakeProposals.map((proposal) => {
-          const { day, month, year } = formatDate(proposal.deadline);
+          const { day, month, year } = formatDate(proposal.expiration);
           return (
             <ListItem key={proposal.id} className="list-item">
               <Grid container alignItems="center" spacing={0}>
@@ -108,9 +142,16 @@ const ThesisProposalsList = () => {
                     {proposal.title}
                   </Typography>
                   <Typography variant="body2" component="div">
-                    {proposal.description}
+                    {windowWidth > 1024
+                      ? proposal.description
+                      : `${proposal.description.substring(0, 50)}...`}
                   </Typography>
-                  <button className="read-more-button">Read More</button>
+                  <button
+                    className="read-more-button"
+                    onClick={handleOpenDetails}
+                  >
+                    Read More
+                  </button>
                 </Grid>
 
                 <Grid
@@ -126,6 +167,11 @@ const ThesisProposalsList = () => {
                   </Typography>
                 </Grid>
               </Grid>
+              <ThesisProposalDetails
+                open={openDetails}
+                setOpen={setOpenDetails}
+                proposal={proposal}
+              />
             </ListItem>
           );
         })}
