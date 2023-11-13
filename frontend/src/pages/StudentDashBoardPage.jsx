@@ -5,10 +5,12 @@ import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
 import RequestedProposals from "../components/RequestedProposalList/RequestedProposalList";
 import ThesisProposalsList from "../components/ThesisProposalList/ThesisProposalList";
 
+
+import Box from "@mui/material/Box";
+
 const sidebarWidth = 240;
 
 const StudentDashBoardPage = () => {
-  
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -16,15 +18,35 @@ const StudentDashBoardPage = () => {
   };
 
   return (
-    <div >
-      
-      <header style={{display: "flex"}}>
-        <LoggedInNavbar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} sidebarWidth={sidebarWidth}/>
+    <div>
+      <header style={{ display: "flex" }}>
+        <LoggedInNavbar
+          sidebarOpen={sidebarOpen}
+          toggleSidebar={toggleSidebar}
+          sidebarWidth={sidebarWidth}
+        />
       </header>
-      <main style={{marginTop: "7rem", marginBottom: "6rem"}}>
+
+      {/**Logic to have the transition effect is inside the sx element in Box */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          transition: (theme) =>
+            theme.transitions.create("margin", {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+          marginLeft: sidebarOpen ? `${sidebarWidth}px` : "0",
+          marginTop: "7rem",
+          marginBottom: "6rem",
+        }}
+      >
+        {/* Main content */}
         <RequestedProposals />
         <ThesisProposalsList />
-      </main>
+      </Box>
+
       <BottomNavbar />
     </div>
   );
