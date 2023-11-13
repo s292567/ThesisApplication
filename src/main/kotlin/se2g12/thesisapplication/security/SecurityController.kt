@@ -53,7 +53,7 @@ class SecurityController (private val userService: UserService, private val prof
             catch(ex: PrimaryKeyNotFoundException){
 
                 var profileinfo=userService.findByUsername(userDTO.username).first()
-                profileService.addProfile(ProfileDTO(profileinfo.username,userService.getRoleById(profileinfo.id).find { it=="Student" || it=="Professor" }.toString()))
+                profileService.addProfile(ProfileDTO(userService.getRoleById(profileinfo.id).find { it=="Student" || it=="Professor" ||it=="Admin"}.toString(),profileinfo.username))
             }
         return response.body()
 
@@ -83,7 +83,7 @@ class SecurityController (private val userService: UserService, private val prof
     }
     private fun userCreationByDTOAndRole(userDTO: UserDTO, roleName:String) :ResponseEntity<URI> {
         val role = userService.findRoleByName(roleName)
-        profileService.addProfile(ProfileDTO(userDTO.username, role.name))
+        profileService.addProfile(ProfileDTO(role.name,userDTO.username))
 
         val response = userService.create(userDTO)
 
