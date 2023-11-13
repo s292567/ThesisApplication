@@ -106,7 +106,7 @@ const ThesisProposalsList = () => {
           const { day, month, year } = formatDate(proposal.expiration);
           return (
             <ListItem key={proposal.id} className="list-item">
-              <Grid container alignItems="center" spacing={0}>
+              <Grid container alignItems="center" spacing={1}>
                 <Grid
                   item
                   xs={2}
@@ -128,10 +128,7 @@ const ThesisProposalsList = () => {
 
                 <Grid
                   item
-                  xs={6}
-                  sm={6}
-                  md={7}
-                  lg={7}
+                  xs={6} sm={7} md={7} lg={7}
                   className="class-container"
                 >
                   <Typography
@@ -156,10 +153,7 @@ const ThesisProposalsList = () => {
 
                 <Grid
                   item
-                  xs={3}
-                  sm={3}
-                  md={3}
-                  lg={3}
+                  xs={4} sm={3} md={3} lg={3}
                   className="supervisor-container"
                 >
                   <Typography variant="body1" component="div">
