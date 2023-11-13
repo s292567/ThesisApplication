@@ -5,15 +5,16 @@ import java.util.*
 
 @Entity
 data class Student (
-    @Id
-    val id: String,
     val surname:String?=null,
     val name:String?=null,
     val gender:String?=null,
     val nationality:String?=null,
     val email: String?=null,
     @ManyToOne
-    @JoinColumn(name = "codDegree", referencedColumnName = "codDegree", insertable = false, updatable = false)
+    @JoinColumn(name = "codDegree", referencedColumnName = "codDegree")
     val degree: Degree? = null,
     val enrollmentYear:String?=null
-)
+){
+    @Id
+    val id: String?=null
+}

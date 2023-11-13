@@ -4,7 +4,6 @@ import se2g12.thesisapplication.student.Student
 import java.util.*
 
 data class CareerDTO(
-    val id: UUID? = null,
     val student: Student? = null,  // Reference to the associated student
     val codCourse: String? = null,
     val titleCourse: String? = null,

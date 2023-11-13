@@ -6,7 +6,7 @@ import java.io.Serializable
 import java.util.*
 
 data class CareerId(
-    val student: UUID? = null,
+    val student: String? = null,
     val codCourse: String? = null
 ) : Serializable
 
@@ -19,6 +19,7 @@ data class Career(
     val student: Student? = null,
 
     @Id
+    @Column(name = "codCourse")
     val codCourse: String? = null,
     val titleCourse: String? = null,
     val cfu: Int? = null,

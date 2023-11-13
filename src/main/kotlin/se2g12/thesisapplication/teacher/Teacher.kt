@@ -1,17 +1,22 @@
 package se2g12.thesisapplication.teacher
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import java.util.*
+import jakarta.persistence.*
+import se2g12.thesisapplication.GroupDep.GroupDep
+import se2g12.thesisapplication.department.Department
 
 @Entity
 data class Teacher(
-    @Id
-    val id: String,
     val surname: String? = null,
     val name: String? = null,
     val email: String? = null,
-    val codGroup: String? = null,
-    val codDepartment: String? = null
-)
+    @ManyToOne
+    @JoinColumn(name = "codGroup", referencedColumnName = "id")
+    val group: GroupDep? = null,
+
+    @ManyToOne
+    @JoinColumn(name = "codDepartment", referencedColumnName = "codDepartment")
+    val department: Department? = null,
+){
+    @Id
+    val id: String? = null
+}

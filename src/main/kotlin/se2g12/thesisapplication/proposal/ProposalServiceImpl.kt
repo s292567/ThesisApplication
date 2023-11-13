@@ -20,7 +20,7 @@ class ProposalServiceImpl (
         var coSupervisors=""
         newProposal.checkBody()
 
-        val possibleGroups: MutableList<String?> = mutableListOf(supervisor.codGroup)
+        val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
         if(! newProposal.coSupervisors.isNullOrEmpty()){
             for (coSup in newProposal.coSupervisors!!){
 //                string as: "name surname"
@@ -28,7 +28,7 @@ class ProposalServiceImpl (
                 val t = teacherRepository.findByNameSurname(name, surname)
                 if (t.isNotEmpty()){
                     // internal co-supervisor
-                    possibleGroups.add(t.first().codGroup)
+                    possibleGroups.add(t.first().group?.id)
                 }
                 // else external co-sup
             }
@@ -43,9 +43,10 @@ class ProposalServiceImpl (
 
         val expiration = Date(newProposal.expiration)
         val proposal = Proposal(newProposal.title,
-            supervisor, newProposal.coSupervisors, newProposal.keywords, newProposal.type,
-            newProposal.groups, newProposal.description, newProposal.requiredKnowledge, newProposal.notes,
-            expiration, newProposal.level, newProposal.CdS)
+            supervisor, newProposal.coSupervisors?.joinToString { "," }, newProposal.keywords.joinToString { "," },
+            newProposal.type,
+            newProposal.groups.joinToString { "," }, newProposal.description, newProposal.requiredKnowledge, newProposal.notes,
+            expiration, newProposal.level, newProposal.CdS.joinToString { "," })
         proposalRepository.save(proposal)
 
     }
