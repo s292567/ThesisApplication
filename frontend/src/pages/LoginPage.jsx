@@ -2,15 +2,19 @@ import Navbar from "../components/Navbar/Navbar";
 import LoginForm from "../components/LoginForm/LoginForm";
 
 // in some way this page must not display the login button on the top navbar
-const LoginPage = () => {
+const LoginPage = (props) => {
+
   return (
     <>
       <header>
-        <Navbar loginButton={false}/>
+
+        <Navbar isLoggedIn={props.isLoggedIn} logout={props.logout}/>
       </header>
-      <main style={{height: "100vh", backgroundColor: "#004c99"}}>
+      <main >
         <div className="container">
-          <LoginForm />
+          <LoginForm login={props.login} loggedIn={props.loggedIn} logout={props.logout}
+                     errorMsg={props.errorMsg} setErrorMsg={props.setErrorMsg}
+                     isLoggedIn={props.isLoggedIn}/>
         </div>
       </main>
     </>
