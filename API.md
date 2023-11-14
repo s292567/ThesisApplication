@@ -60,7 +60,7 @@ Display proposals that contain query string (caps-insensitive) in any of their f
   "notes": "This thesis focuses on developing innovative solutions in structural engineering. The student should have a strong background in structural engineering.",
   "expiration": "2024-02-28",
   "level": "MSc",
-  "cds": "Civil Engineering",
+  "cds": ["Civil Engineering"],
   "id": "000003e8-8169-21ee-8000-325096b39f47"
   }
   ```
