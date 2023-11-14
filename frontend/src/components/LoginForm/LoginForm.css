@@ -20,11 +20,13 @@ html {
 }
 
 .login-form {
+  background-color: white;
   width: 300px;
   padding: 2rem;
   border: 1px solid #ccc;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+  margin-top: 10rem ;
 }
 
 .login-form h1 {
@@ -43,14 +45,15 @@ html {
   margin-top: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 12px;
+  background-color: white;
 }
 
 .submit-button {
-  padding: 0.8rem 2.2rem;
-  background-color: #007C1B;
+  padding: 0.6rem 2rem;
+  background-color: #00e6a1;
   color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 15px;
   cursor: pointer;
   font-size: large;
   margin-top: 2.5rem;

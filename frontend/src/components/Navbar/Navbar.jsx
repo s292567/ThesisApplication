@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -7,13 +8,12 @@ import {
   Drawer,
   useMediaQuery,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import politoLogo from "../../assets/politoLogo.png"; // Ensure this path is correct
 import "./Navbar.css";
 
-const ResponsiveAppBar = () => {
+const Navbar = ({ loginButton }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:768px)");
 
@@ -27,19 +27,16 @@ const ResponsiveAppBar = () => {
         aria-label="open drawer"
         edge="start"
         onClick={handleDrawerToggle}
-        sx={{fontSize: "large", position: "absolute", top: "2.5rem", right: "1rem"}}
+        sx={{
+          fontSize: "large",
+          position: "absolute",
+          top: "2.5rem",
+          right: "1rem",
+        }}
       >
         <CancelOutlinedIcon fontSize="large" style={{ color: "blue" }} />
       </IconButton>
-      <img
-        src={politoLogo}
-        alt="Politecnico di Torino Logo"
-        className="navbar-logo"
-      />
-      <Link className="navbar-link">Academics</Link>
-      <Link className="navbar-link">Thesis</Link>
-      <Link className="navbar-link">Innovation</Link>
-      <button className="login-button">Login</button>
+      <NavbarComponents isMobile={false} mobileOpen={mobileOpen}/>
     </Box>
   );
 
@@ -47,19 +44,8 @@ const ResponsiveAppBar = () => {
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" color="default">
         <Toolbar sx={{ justifyContent: "space-between", overflowX: "auto" }}>
-          <img
-            src={politoLogo}
-            alt="Politecnico di Torino Logo"
-            className="navbar-logo"
-          />
-          {!isMobile && (
-            <div>
-              <Link className="navbar-link">Academics</Link>
-              <Link className="navbar-link">Thesis</Link>
-              <Link className="navbar-link">Innovation</Link>
-              <button className="login-button">Login</button>
-            </div>
-          )}
+          <NavbarComponents isMobile={isMobile} mobileOpen={mobileOpen} />
+
           {isMobile && (
             <IconButton
               color="default"
@@ -73,6 +59,7 @@ const ResponsiveAppBar = () => {
           )}
         </Toolbar>
       </AppBar>
+
       <Drawer
         variant="temporary"
         open={mobileOpen}
@@ -89,4 +76,35 @@ const ResponsiveAppBar = () => {
   );
 };
 
-export default ResponsiveAppBar;
+const NavbarComponents = ({ isMobile, mobileOpen }) => {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <Link to="/">
+        <img
+          src={politoLogo}
+          alt="Politecnico Di Torino"
+          className="navbar-logo"
+          style={{
+            marginTop: mobileOpen ? "3rem" : "1rem",
+          }}
+        />
+      </Link>
+      {!isMobile && (
+        <div style={{display: mobileOpen ? "block" :"flex", alignItems: "center"}}>
+          <div className="navbar-links">
+            <Link to="/">Academics</Link>
+            <Link>Thesis</Link>
+            <Link>Innovation</Link>
+          </div>
+          <button onClick={() => navigate("/login")} className="login-button">
+            Login
+          </button>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Navbar;

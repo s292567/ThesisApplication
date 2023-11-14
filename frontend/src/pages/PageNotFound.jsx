@@ -2,11 +2,14 @@ import React from 'react';
 import './PageNotFound.css';
 import Navbar from '../components/Navbar/Navbar';
 
+// it needs to receive update from the general context user 
+// because if the page not found is in the student dashboard or professor dashboard
+// it needs to redirect to the correct page and not always to the landing page /
 const PageNotFound = () => {
   return (
     <div className="page-not-found-container">
       <header>
-        <Navbar />
+        <Navbar loginButton={true}/>
       </header>
       <main className="page-not-found-main">
         <div className="page-not-found-card">

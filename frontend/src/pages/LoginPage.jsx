@@ -6,9 +6,9 @@ const LoginPage = () => {
   return (
     <>
       <header>
-        <Navbar />
+        <Navbar loginButton={false}/>
       </header>
-      <main>
+      <main style={{height: "100vh", backgroundColor: "#004c99"}}>
         <div className="container">
           <LoginForm />
         </div>
