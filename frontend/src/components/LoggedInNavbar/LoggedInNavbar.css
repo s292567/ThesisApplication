@@ -1,0 +1,67 @@
+.navbar {
+  background: #ffffff;
+  display: flex; /* Ensure flex layout for the Toolbar */
+  justify-content: space-between !important; /* Space out elements */
+  align-items: center; /* Vertically align items */
+  padding: 1rem;
+}
+
+/* Styling for the logo within the Typography component */
+.logo {
+  width: 173px;
+  height: auto;
+}
+
+/* IconButton used for the sidebar toggle */
+.navbar-sidebar {
+  border: none;
+  background-color: transparent;
+}
+
+/* Styling for the search bar */
+.navbar-searchbar-container {
+  flex: 1; /* Take up remaining space */
+  display: flex;
+  justify-content: center; /* Center the search bar */
+}
+
+/* Styling for the container holding icons */
+.navbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between icons */
+}
+
+.navbar-icons button{
+  background: #0056b3; /* Blue background */
+  color: #ffffff;
+}
+
+.navbar-icons button:hover{
+  background-color: dodgerblue !important; /* Blue background */
+  color: #ffffff;
+}
+/* Hide the notifications button on smaller screens */
+@media (max-width: 800px) {
+  .logo {
+    width: 100px;
+    height: auto;
+  }
+}
+
+/* Additional media query styling if needed */
+@media (max-width: 768px) {
+  /* Add any specific styles for very small screens here */
+  .navbar-mail, .navbar-notifications{
+    display: none !important;
+  } 
+}
+
+@media (max-width: 600px) {
+   .logo{
+    display: none !important;
+   }
+   .navbar-sidebar-button{
+    size: smaller !important;
+   }
+}

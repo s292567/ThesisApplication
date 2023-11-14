@@ -1,6 +1,8 @@
 import Navbar from "../components/Navbar/Navbar";
+import LoginForm from "../components/LoginForm/LoginForm";
 
-const LandingPage = () => {
+// in some way this page must not display the login button on the top navbar
+const LoginPage = () => {
   return (
     <>
       <header>
@@ -8,11 +10,11 @@ const LandingPage = () => {
       </header>
       <main>
         <div className="container">
-          
+          <LoginForm />
         </div>
       </main>
     </>
   );
 };
 
-export default LandingPage;
+export default LoginPage;

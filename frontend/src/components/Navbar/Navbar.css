@@ -1,133 +1,57 @@
-/* General styles */
-.navbar,
-.navbarMobile-clicked {
-    font-family: Arial, Helvetica, sans-serif;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 5rem;
-    background-color: #fff;
-    transition: padding 0.3s ease;
-}
-  .logo {
-    width: 173px;
-    height: auto;
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-  } 
-  
-  .nav-links li a {
-    text-decoration: none;
-    padding: 0 1rem;
-    color: #000;
-    transition: color 0.3s;
-    font-size: x-large; /* Makes text x-large */
-    line-height: 3rem; /* Adjust as needed to align with the button */
-    vertical-align: middle; /* Vertically aligns text */
-  }
-  
-  .nav-links li a:hover {
-    color: #0056b3;
-  }
-  .nav-links li:nth-last-child(2) a {
-    margin-right: 2rem; /* This targets the second-last <li>, adjusting for the login button */
-  }
-
-  .login-button {
-    padding: 0.5rem 2rem;
-    margin-left: 1rem;
-    border: none;
-    background-color: #002147;
-    color: #fff;
-    border-radius: 12px;
-    cursor: pointer;
-    height: max-content;
-    width: max-content;
-    font-size: x-large;
-    vertical-align: middle; /* Vertically aligns text */
-  }
-  
-  .login-button:hover {
-    background-color: #003d82;
-  }
-  
-  /* Mobile navigation styles */
-  .mobile-nav-toggle {
-    display: none;
-    border: none;
-    background: none;
-    font-size: 48px;
-    transform: scaleX(1.5);
-    cursor: pointer;
-  }
-  
-  @media screen and (max-width: 950px) {
-    .navbar{
-        padding: 1rem 3rem;
-    }
-  }
-
-  .navbarMobile-clicked {
-    position: relative;
-    height: 100vh;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-
-.navbarMobile-clicked .logo {
-    position: absolute;
-    top: 1rem;
-    left: 3rem;
+/* Navbar background */
+.AppBar {
+  background-color: white !important;
 }
 
-.navbarMobile-clicked .mobile-nav-toggle {
-    position: absolute;
-    top: 1.7rem;
-    right: 3rem;
+/* Link styling */
+.navbar-link {
+  text-decoration: none;
+  color: #002147;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
+  font-weight: bold;
+  margin-right: 1rem;
+  margin-left: 2rem; /* Added margin on the left */
 }
-  /* Mobile styles */
-  @media screen and (max-width: 864px) {
-    
-    .nav-links {
-      display: none;
-      width: 100%;
-      flex-direction: column;
-      align-items: start;
-      font-family: Arial, Helvetica, sans-serif;
-      
-    }
-  
-    .nav-links.mobile {
-      display: flex;
-    }
-  
-    .mobile-nav-toggle {
-      display: block;
-    }
-  
-    .nav-links li {
-      margin: 1rem 0;
-    }
-  
-  }
-  
-  @media screen and (max-width: 375px) {
 
-    .navbar,
-    .navbarMobile-clicked {
-        padding: 1rem 0.8rem;
-    }
-    
-    .navbarMobile-clicked .logo {
-        left: 0.8rem;
-    }
+/* Login button styling */
+.login-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 12px;
+  background-color: #003576;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
+  font-weight: bold;
+  margin-left: 2rem; /* Added margin on the left */
+}
 
-    .navbarMobile-clicked .mobile-nav-toggle {
-      position: absolute;
-      top: 1.7rem;
-      right: 0.8rem;
-    }
-  }
+/* Drawer link styling */
+.drawer-links > a {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.drawer-links > img {
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+}
+
+.drawer-links > button {
+  margin-top: 2rem;
+}
+
+/* Logo styling */
+.navbar-logo {
+  max-width: 176px;
+  height: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* MenuIcon styling */
+.MuiIconButton-root {
+  font-size: 2rem; /* Increase the size */
+  color: black; /* Change the color */
+}

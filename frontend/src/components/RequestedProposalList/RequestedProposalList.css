@@ -1,0 +1,75 @@
+.requested-proposals-container {
+  margin: 20px !important ;
+  padding: 20px !important ;
+  border-radius: 20px !important ;
+  background-color: #fff !important ; /* Match the background color to your theme */
+}
+
+.title-section {
+  color: #fc7a08; /* Or your preferred header color */
+  font-weight: bolder !important ;
+  margin-left: 1rem !important ;
+  margin-bottom: 1rem !important ;
+  margin-top: 1rem !important ;
+}
+
+.read-more-button {
+  background-color: #e7e7ff; /* Button color */
+  color: #003576;
+  border-radius: 20px; /* Rounded corners */
+  font-size: medium;
+  padding: 6px 15px; /* Smaller padding */
+  border: none; /* No border */
+  margin-top: 2rem;
+}
+
+.see-more-button {
+  color: #003576; /* 'See more' text color */
+  background-color: transparent; /* No background */
+  font-size: medium;
+  padding: 6px 15px; /* Smaller padding */
+  border: 2px solid #003576; /* Add a border */
+  margin-top: 1rem; /* Add margin to the top */
+  border-radius: 20px;
+}
+/* Center the see more button */
+.see-more-container {
+  text-align: center;
+  padding-top: 1rem;
+}
+
+
+.title-round-shape {
+  background-color: #003576;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  padding: 5px 10px;
+  border-radius: 20px; /* Makes the shape round-square */
+  display: inline-block; /* To fit the content */
+  margin-bottom: 0.5rem !important; /* Space between title and description */
+}
+
+
+/* Ensuring space between description and buttons */
+.list-item-text {
+  margin-bottom: 1rem !important;
+  margin-top: 0.5rem !important;
+}
+
+/* ... existing styles ... */
+
+.list-item-text {
+  margin-bottom: 1rem !important;
+  margin-top: 0.5rem !important;
+  flex-grow: 1; /* Makes the text section grow to occupy available space */
+}
+
+.supervisor-container {
+  flex-grow: 1; /* Allows the button section to occupy the remaining space */
+}
+
+/* Bold style for department */
+.department-bold {
+  font-weight: bold;
+}
