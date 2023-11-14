@@ -70,7 +70,8 @@ Display proposals that contain query string (caps-insensitive) in any of their f
   - `500 Internal Server Error`: Generic server error
 
 ## Insert Proposal
-**POST `/API/thesis/proposals`**
+**POST `/API/thesis/proposals/{professorId}`**
+- path variable `professorId`: the id of the professor inserting the proposal
 - request body example:
     ```
     {
@@ -90,7 +91,7 @@ Display proposals that contain query string (caps-insensitive) in any of their f
     request body notes & constraints:
     - `coSupervisors`, `requiredKnowledge`, `notes` are *optional*
     - `expiration` is a date in the form `YYYY-MM-DD`
-    - the **supervisor** is retrieved by the authenticated user
+    - the **supervisor** is retrieved by path variable and the authenticated user
 
 - response status:
   - `201 Created`: The proposal has been inserted in the DB
@@ -98,3 +99,18 @@ Display proposals that contain query string (caps-insensitive) in any of their f
   - `401 Unauthorized`: The user is not logged in
   - `500 Internal Server Error`: Generic server error
 
+## Apply to Proposal
+**POST `/API/thesis/proposals/apply`**
+- request body example:
+    ```
+    {
+        "studentId" : "s654140",
+        "proposalId": "000003e8-8169-21ee-ae00-325096b39f47",
+    }
+    ```
+
+- response status:
+  - `201 Created`: The application to the proposal has been created
+  - `404 Not Found`: The proposal has not been found
+  - `401 Unauthorized`: The user is not logged in
+  - `500 Internal Server Error`: Generic server error
