@@ -15,10 +15,9 @@ class ProposalServiceImpl (
     private val teacherRepository: TeacherRepository)
     : ProposalService {
     //@PreAuthorize("hasRole('')")
-    override fun addNewProposal(newProposal: NewProposalDTO) {
-        // username=email of the logged in professor
-        //val supervisor = this.getAuth()
-        val supervisor = teacherRepository.findById("p101").get()
+    override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
+        // username=email of the logged in professor; check if ok
+        val supervisor = teacherRepository.findById(professorId).get()
         newProposal.checkBody()
 
         val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
