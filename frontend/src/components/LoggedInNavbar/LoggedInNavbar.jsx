@@ -32,11 +32,12 @@ const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth, searchBar}) 
               duration: theme.transitions.duration.leavingScreen,
             }),
           marginLeft: sidebarOpen ? `${sidebarWidth}px` : "0",
+          display: "flex",
         }}
       >
         <Toolbar className="navbar">
           {!sidebarOpen ? (
-            <>
+            <div style={{display: 'flex'}}>
               <IconButton
                 size="large"
                 edge="start"
@@ -55,7 +56,7 @@ const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth, searchBar}) 
                   style={{marginRight: "1rem"}}
                 />
               </Link>
-            </>
+            </div>
           ) : (
             <></>
           )}

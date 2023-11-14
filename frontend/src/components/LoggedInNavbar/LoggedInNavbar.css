@@ -1,7 +1,7 @@
 .navbar {
   background: #ffffff;
   display: flex; /* Ensure flex layout for the Toolbar */
-  justify-content: space-between; /* Space out elements */
+  justify-content: space-between !important; /* Space out elements */
   align-items: center; /* Vertically align items */
   padding: 1rem;
 }
