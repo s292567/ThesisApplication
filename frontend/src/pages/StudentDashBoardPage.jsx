@@ -25,6 +25,7 @@ const StudentDashboardPage = () => {
           sidebarOpen={sidebarOpen}
           toggleSidebar={toggleSidebar}
           sidebarWidth={sidebarWidth}
+          searchBar={true}
         />
       </header>
 

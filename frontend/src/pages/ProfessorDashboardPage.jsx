@@ -24,6 +24,7 @@ const ProfessorDashboardPage = () => {
           sidebarOpen={sidebarOpen}
           toggleSidebar={toggleSidebar}
           sidebarWidth={sidebarWidth}
+          searchBar={false}
         />
       </header>
 

@@ -9,7 +9,7 @@ import Badge from "@mui/material/Badge";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import SearchBarStudent from "../SearchBarStudent/SearchBarStudent";
 
@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import "./LoggedInNavbar.css";
 
 
-const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth }) => {
+const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth, searchBar}) => {
   return (
     <>
       <AppBar
@@ -32,11 +32,12 @@ const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth }) => {
               duration: theme.transitions.duration.leavingScreen,
             }),
           marginLeft: sidebarOpen ? `${sidebarWidth}px` : "0",
+          display: "flex",
         }}
       >
         <Toolbar className="navbar">
           {!sidebarOpen ? (
-            <>
+            <div style={{display: 'flex'}}>
               <IconButton
                 size="large"
                 edge="start"
@@ -55,12 +56,12 @@ const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth }) => {
                   style={{marginRight: "1rem"}}
                 />
               </Link>
-            </>
+            </div>
           ) : (
             <></>
           )}
 
-          <SearchBarStudent />
+          {searchBar && <SearchBarStudent />}
 
           <div className="navbar-icons">
             <IconButton size="large" aria-label="show 4 new mails" className="navbar-mail">
