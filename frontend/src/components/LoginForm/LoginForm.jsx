@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button"; // Import the corresponding CSS fil
 
 
 const LoginForm = (props) => {
+
   const {errorMsg, setErrorMsg} = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

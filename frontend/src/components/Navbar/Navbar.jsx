@@ -36,7 +36,7 @@ const Navbar = (props) => {
       >
         <CancelOutlinedIcon fontSize="large" style={{ color: "blue" }} />
       </IconButton>
-      <NavbarComponents isMobile={false} mobileOpen={mobileOpen}/>
+      <NavbarComponents isLoggedIn={props.isLoggedIn} logout={props.logout} isMobile={false} mobileOpen={mobileOpen}/>
     </Box>
   );
 
@@ -44,7 +44,7 @@ const Navbar = (props) => {
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" color="default">
         <Toolbar sx={{ justifyContent: "space-between", overflowX: "auto" }}>
-          <NavbarComponents isLoggedIn={props.isLoggedIn} logout={props.logout} isMobile={isMobile} mobileOpen={mobileOpen} />
+          <NavbarComponents  isMobile={isMobile} mobileOpen={mobileOpen} isLoggedIn={props.isLoggedIn} logout={props.logout} />
 
           {isMobile && (
             <IconButton

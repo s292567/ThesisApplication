@@ -70,8 +70,10 @@ function Layout() {
             setLoggedIn(true);
             API_Profile.getProfile(username).then((loggedUser) => {
                 setUser(loggedUser);
-                if (path == '/login' || path == '/signup')
-                    navigate('/');
+                if (loggedUser.role==="Student")
+                    navigate('/studentDashboard/:'+loggedUser.username);
+                if (loggedUser.role==="Professor")
+                    navigate('/professorDashboard/:'+loggedUser.username);
 
             }).catch((err) => {
                 setErrorMsg(err.detail)
@@ -107,7 +109,7 @@ function Layout() {
                     <Routes>
 
                         <Route index element={<LandingPage isLoggedIn={loggedIn}/>}/>
-                        <Route path="/login" element={<LoginPage LoginForm login={doLogIn} loggedIn={loggedIn} logout={doLogout}
+                        <Route path="/login" element={<LoginPage login={doLogIn} loggedIn={loggedIn} logout={doLogout}
                                                                  errorMsg={errorMsg} setErrorMsg={setErrorMsg}
                                                                  isLoggedIn={loggedIn}></LoginPage>}/>
 
@@ -125,49 +127,6 @@ function Layout() {
     )
 }
 
-function Content() {
-    const [errorMsg, setErrorMsg] = useState("");
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [user, setUser] = useState("");
-    const [jwtToken, setJwtToken] = useState('');
-    const navigate = useNavigate();
-
-
-
-    const path = useLocation().pathname.toString();
-
-
-
-
-
-    switch (path) {
-        case '':
-        case '/':
-        case '/ProfessorDashboard/:professorId':
-            if (loggedIn && user.role === "Professor")
-                return (<><ProfessorDashboardPage/>
-
-                </>)
-            else return <>Error</>
-        case'/studentDashboard/:studendId':
-            if (loggedIn && user.role === "Professor")
-                return (<>
-                <StudentDashboardPage /></>
-                )
-        case '/login':
-            if (loggedIn)
-                return (<>
-                    <div className="col-9">You are already logged in!</div>
-                </>)
-            else
-                return (<><LoginPage LoginForm login={doLogIn} loggedIn={loggedIn} logout={doLogout}
-                                     errorMsg={errorMsg} setErrorMsg={setErrorMsg}
-                                     isLoggedIn={loggedIn}></LoginPage>
-                </>);
-        default:
-            return <h1>Path not found</h1>
-    }
-}
 
 export default App;
 
