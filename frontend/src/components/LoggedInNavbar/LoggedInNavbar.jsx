@@ -9,7 +9,7 @@ import Badge from "@mui/material/Badge";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import SearchBarStudent from "../SearchBarStudent/SearchBarStudent";
 
@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import "./LoggedInNavbar.css";
 
 
-const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth }) => {
+const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth, searchBar}) => {
   return (
     <>
       <AppBar
@@ -60,7 +60,7 @@ const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth }) => {
             <></>
           )}
 
-          <SearchBarStudent />
+          {searchBar && <SearchBarStudent />}
 
           <div className="navbar-icons">
             <IconButton size="large" aria-label="show 4 new mails" className="navbar-mail">
