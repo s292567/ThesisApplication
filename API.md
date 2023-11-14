@@ -1,8 +1,76 @@
 # Backend APIs
 
-## Insert proposal
+## Get All Proposals
 
-POST `/API/thesis/proposals`
+**GET `/API/thesis/proposals/all`**
+  
+  Display all existing proposals
+
+- response body: JSON containing all proposals
+- response status:
+  - `200 OK`: All proposals are being displayed
+  - `401 Unauthorized`: The user is not logged in
+  - `500 Internal Server Error`: Generic server error
+
+## Get Proposals by cds
+**GET `API/thesis/proposals/cds`**
+
+  Display proposals filtered by cds
+- example request URL:
+```http://localhost:8080/API/thesis/proposals/cds?cds=ENG4``` => *show all proposals that are part of the cds "ENG4"*
+- response body: JSON containing all filtered proposals
+- response status:
+  - `200 OK`: All filtered proposals are being displayed
+  - `401 Unauthorized`: The user is not logged in
+  - `500 Internal Server Error`: Generic server error
+
+## Search Proposals
+**GET `API/thesis/proposals/search`**
+
+Display proposals that contain query string (caps-insensitive) in any of their fields
+
+- example request URL:
+  ```http://localhost:8080/API/thesis/proposals/search?query=innovative``` 
+=> *show all proposals that contain the word "innovative" in any of their fields*
+- response body: JSON containing all filtered proposals 
+```json
+  {
+  "title": "Structural Engineering",
+  "supervisor": {
+  "surname": "Crociera",
+  "name": "Tommaso",
+  "email": "tommaso.crociera@example.com",
+  "group": {
+  "id": "G41",
+  "department": {
+  "codDepartment": "DEP04"
+  }
+  },
+  "department": {
+  "codDepartment": "DEP04"
+  },
+  "id": "p110"
+  },
+  "coSupervisors": "",
+  "keywords": "Structural Engineering, Construction",
+  "type": "Development",
+  "groups": "G41",
+  "description": "Develop innovative solutions in structural engineering.",
+  "requiredKnowledge": "Strong background in structural engineering",
+  "notes": "This thesis focuses on developing innovative solutions in structural engineering. The student should have a strong background in structural engineering.",
+  "expiration": "2024-02-28T23:00:00.000+00:00",
+  "level": "MSc",
+  "cds": "ENG4",
+  "id": "000003e8-8169-21ee-8000-325096b39f47"
+  }
+  ```
+- response status:
+  - `200 OK`: All filtered proposals are being displayed
+  - `401 Unauthorized`: The user is not logged in
+  - `500 Internal Server Error`: Generic server error
+
+## Insert Proposal
+**POST `/API/thesis/proposals`**
 - request body example:
     ```
     {
@@ -29,3 +97,4 @@ POST `/API/thesis/proposals`
   - `400 Bad Request`: Error in the request body
   - `401 Unauthorized`: The user is not logged in
   - `500 Internal Server Error`: Generic server error
+
