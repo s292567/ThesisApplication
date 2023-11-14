@@ -1,10 +1,12 @@
 import Navbar from "../components/Navbar/Navbar";
 
-const LandingPage = () => {
+const LandingPage = (props) => {
   return (
     <>
       <header>
-        <Navbar loginButton={true}/>
+
+        <Navbar isLoggedIn={props.isLoggedIn} logout={props.logout}/>
+
       </header>
       <main>
         <div className="container" style={{display: "flex", flexDirection: "row", justifyContent:"center", marginTop: "12rem"}}>

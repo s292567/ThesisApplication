@@ -10,7 +10,9 @@ import Box from "@mui/material/Box";
 
 const sidebarWidth = 240;
 
-const ProfessorDashboardPage = () => {
+const ProfessorDashboardPage = (props) => {
+    let user;
+    user=props.user;
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
