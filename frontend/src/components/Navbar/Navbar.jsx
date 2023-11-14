@@ -13,7 +13,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import politoLogo from "../../assets/politoLogo.png"; // Ensure this path is correct
 import "./Navbar.css";
 
-const Navbar = ({ loginButton }) => {
+const Navbar = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:768px)");
 
@@ -44,7 +44,7 @@ const Navbar = ({ loginButton }) => {
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" color="default">
         <Toolbar sx={{ justifyContent: "space-between", overflowX: "auto" }}>
-          <NavbarComponents isMobile={isMobile} mobileOpen={mobileOpen} />
+          <NavbarComponents isLoggedIn={props.isLoggedIn} logout={props.logout} isMobile={isMobile} mobileOpen={mobileOpen} />
 
           {isMobile && (
             <IconButton
@@ -76,7 +76,7 @@ const Navbar = ({ loginButton }) => {
   );
 };
 
-const NavbarComponents = ({ isMobile, mobileOpen }) => {
+const NavbarComponents = ({ isMobile, mobileOpen ,isLoggedIn,logout}) => {
   const navigate = useNavigate();
 
   return (
@@ -98,9 +98,14 @@ const NavbarComponents = ({ isMobile, mobileOpen }) => {
             <Link>Thesis</Link>
             <Link>Innovation</Link>
           </div>
-          <button onClick={() => navigate("/login")} className="login-button">
-            Login
-          </button>
+          <button className="login-button" onClick={(event) => {
+              event.preventDefault()
+              if (isLoggedIn)
+                  logout();
+              else
+                  navigate("/login");
+          }}>{!isLoggedIn ? "Login" : "Logout"}</button>
+
         </div>
       )}
     </>
