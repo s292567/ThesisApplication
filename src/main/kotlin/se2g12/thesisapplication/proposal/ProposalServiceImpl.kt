@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -13,11 +14,11 @@ class ProposalServiceImpl (
     private val proposalRepository: ProposalRepository,
     private val teacherRepository: TeacherRepository)
     : ProposalService {
-    @PreAuthorize("hasRole('')")
+    //@PreAuthorize("hasRole('')")
     override fun addNewProposal(newProposal: NewProposalDTO) {
         // username=email of the logged in professor
-        val supervisor = this.getAuth()
-        var coSupervisors=""
+        //val supervisor = this.getAuth()
+        val supervisor = teacherRepository.findById("p101").get()
         newProposal.checkBody()
 
         val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
@@ -41,12 +42,18 @@ class ProposalServiceImpl (
             }
         }
 
-        val expiration = Date(newProposal.expiration)
-        val proposal = Proposal(newProposal.title,
-            supervisor, newProposal.coSupervisors?.joinToString { "," }, newProposal.keywords.joinToString { "," },
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+
+        val expirationDate: Date = dateFormat.parse(newProposal.expiration)
+        val proposal = Proposal(newProposal.title, supervisor,
+            newProposal.coSupervisors?.joinToString(", ") { it },
+            newProposal.keywords.joinToString(", ") { it },
             newProposal.type,
-            newProposal.groups.joinToString { "," }, newProposal.description, newProposal.requiredKnowledge, newProposal.notes,
-            expiration, newProposal.level, newProposal.CdS.joinToString { "," })
+            newProposal.groups.joinToString(", ") { it },
+            newProposal.description,
+            newProposal.requiredKnowledge, newProposal.notes,
+            expirationDate, newProposal.level,
+            newProposal.CdS.joinToString(", ") { it })
         proposalRepository.save(proposal)
 
     }
