@@ -1,13 +1,14 @@
 package se2g12.thesisapplication.Profile
 
 data class ProfileDTO (
-    val username:String,
-    val role:String
+    val role:String,
+    val username:String
+
 )
 fun Profile.toDTO():ProfileDTO{
-    return ProfileDTO(this.username!!,this.role!!)
+    return ProfileDTO(this.role!!,this.username!!)
 }
 
 fun ProfileDTO.toProfile():Profile{
-    return Profile(this.username,this.role)
+    return Profile(this.role,this.username)
 }
