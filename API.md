@@ -2,7 +2,8 @@
 
 ## Insert proposal
 
-POST `/API/thesis/proposals`
+POST `/API/thesis/proposals/{professorId}`
+- path variable `professorId`: the id of the professor inserting the proposal
 - request body example:
     ```
     {
@@ -22,7 +23,7 @@ POST `/API/thesis/proposals`
     request body notes & constraints:
     - `coSupervisors`, `requiredKnowledge`, `notes` are *optional*
     - `expiration` is a date in the form `YYYY-MM-DD`
-    - the **supervisor** is retrieved by the authenticated user
+    - the **supervisor** is retrieved by the path variable and authenticated user
 
 - response status:
   - `201 Created`: The proposal has been inserted in the DB
