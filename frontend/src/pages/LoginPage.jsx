@@ -7,7 +7,6 @@ const LoginPage = (props) => {
   return (
     <>
       <header>
-
         <Navbar isLoggedIn={props.isLoggedIn} logout={props.logout}/>
       </header>
       <main >
