@@ -2,7 +2,6 @@ package se2g12.thesisapplication.proposal
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import se2g12.thesisapplication.proposal.Proposal
 
 @Service
 class ProposalService(@Autowired private val proposalRepository: ProposalRepository) {
