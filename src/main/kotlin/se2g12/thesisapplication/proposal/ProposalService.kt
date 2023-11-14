@@ -1,51 +1,23 @@
 package se2g12.thesisapplication.proposal
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
 
-@Service
-class ProposalService(@Autowired private val proposalRepository: ProposalRepository) {
-    //getAll
-    fun getAllProposals(): List<Proposal> {
-        return proposalRepository.findAll()
-    }
+interface ProposalService {
+    fun addNewProposal(newProposal: NewProposalDTO, professorId: String)
+    fun getAllProposals(): List<ProposalDTO>
+    fun getProposalsByCds(cds: String): List<ProposalDTO>
+    fun searchProposals(query: String): List<ProposalDTO>
 
-    //getByCds
-    fun getProposalsByCds(cds: String): List<Proposal> {
-        return proposalRepository.findByCds(cds)
-    }
-
-    fun searchProposals(query: String): List<Proposal> {
-        return proposalRepository.searchProposals(query)
-    }
-
-    //searchByAttributes----------------------- search functions of the previous search implementation
-//    fun searchProposalsByTitle(title: String): List<Proposal> {
-//        return proposalRepository.findByTitleContaining(title)
-//    }
+//    fun searchProposalsByTitle(title: String): List<Proposal>
 //
-//    fun searchProposalsBySupervisorName(supervisorName: String): List<Proposal> {
-//        return proposalRepository.findBySupervisorNameContaining(supervisorName)
-//    }
+//    fun searchProposalsBySupervisorName(supervisorName: String): List<Proposal>
 //
-//    fun searchProposalsBycoSupervisors(coSupervisors: String): List<Proposal> {
-//        return proposalRepository.findBycoSupervisorsContaining(coSupervisors)
-//    }
+//    fun searchProposalsBycoSupervisors(coSupervisors: String): List<Proposal>
 //
-//    fun searchProposalsByKeywords(keyword: String): List<Proposal> {
-//        return proposalRepository.findByKeywordsContaining(keyword)
-//    }
+//    fun searchProposalsByKeywords(keyword: String): List<Proposal>
 //
-//    fun searchProposalsByCds(cds: String): List<Proposal> {
-//        return proposalRepository.findByCdsContaining(cds)
-//    }
+//    fun searchProposalsByCds(cds: String): List<Proposal>
 //
-//    fun searchProposalsByLevel(level: String): List<Proposal> {
-//        return proposalRepository.findByLevelContaining(level)
-//    }
+//    fun searchProposalsByLevel(level: String): List<Proposal>
 //
-//    fun searchProposalsByDescription(description: String): List<Proposal> {
-//        return proposalRepository.findByDescriptionContaining(description)
-//    }
-    //------------------------------------------
+//    fun searchProposalsByDescription(description: String): List<Proposal>
 }

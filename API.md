@@ -37,30 +37,30 @@ Display proposals that contain query string (caps-insensitive) in any of their f
   {
   "title": "Structural Engineering",
   "supervisor": {
-  "surname": "Crociera",
-  "name": "Tommaso",
-  "email": "tommaso.crociera@example.com",
-  "group": {
-  "id": "G41",
-  "department": {
-  "codDepartment": "DEP04"
-  }
+    "surname": "Crociera",
+    "name": "Tommaso",
+    "email": "tommaso.crociera@example.com",
+    "group": {
+      "id": "G41",
+      "department": {
+        "codDepartment": "DEP04"
+      }
+    },
+    "department": {
+      "codDepartment": "DEP04"
+    },
+    "id": "p110"
   },
-  "department": {
-  "codDepartment": "DEP04"
-  },
-  "id": "p110"
-  },
-  "coSupervisors": "",
-  "keywords": "Structural Engineering, Construction",
+  "coSupervisors": [],
+  "keywords": ["Structural Engineering", "Construction"],
   "type": "Development",
-  "groups": "G41",
+  "groups": ["G41"],
   "description": "Develop innovative solutions in structural engineering.",
   "requiredKnowledge": "Strong background in structural engineering",
   "notes": "This thesis focuses on developing innovative solutions in structural engineering. The student should have a strong background in structural engineering.",
-  "expiration": "2024-02-28T23:00:00.000+00:00",
+  "expiration": "2024-02-28",
   "level": "MSc",
-  "cds": "ENG4",
+  "cds": ["Civil Engineering"],
   "id": "000003e8-8169-21ee-8000-325096b39f47"
   }
   ```
