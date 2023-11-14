@@ -12,13 +12,13 @@ class ProposalController(@Autowired private val proposalService: ProposalService
 
     //getAll
         @GetMapping("/API/thesis/proposals/all")
-    fun getAllProposals(): List<Proposal> {
+    fun getAllProposals(): List<ProposalDTO> {
         return proposalService.getAllProposals()
     }
 
     //getByCds
     @GetMapping("API/thesis/proposals/cds")
-    fun getProposalsByCds(@RequestParam cds: String): List<Proposal> {
+    fun getProposalsByCds(@RequestParam cds: String): List<ProposalDTO> {
         return proposalService.getProposalsByCds(cds)
     }
 
@@ -26,7 +26,7 @@ class ProposalController(@Autowired private val proposalService: ProposalService
     @GetMapping("API/thesis/proposals/search")
     fun searchProposals(
         @RequestParam(required = false) query: String?,
-    ): List<Proposal> {
+    ): List<ProposalDTO> {
         // if query null => return all proposals
         if (query.isNullOrBlank()) {
             return proposalService.getAllProposals()

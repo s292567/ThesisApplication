@@ -3,6 +3,7 @@ package se2g12.thesisapplication.proposal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.text.SimpleDateFormat
@@ -12,7 +13,8 @@ import java.util.*
 @Service
 class ProposalServiceImpl (
     private val proposalRepository: ProposalRepository,
-    private val teacherRepository: TeacherRepository)
+    private val teacherRepository: TeacherRepository,
+    private val degreeRepository: DegreeRepository)
     : ProposalService {
     //@PreAuthorize("hasRole('')")
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
@@ -62,17 +64,17 @@ class ProposalServiceImpl (
         return teacherRepository.findByEmail(authUser).first()
     }
     //getAll
-    override fun getAllProposals(): List<Proposal> {
-        return proposalRepository.findAll()
+    override fun getAllProposals(): List<ProposalDTO> {
+        return proposalRepository.findAll().map { it.toDTO(degreeRepository) }
     }
 
     //getByCds
-    override fun getProposalsByCds(cds: String): List<Proposal> {
-        return proposalRepository.findByCds(cds)
+    override fun getProposalsByCds(cds: String): List<ProposalDTO> {
+        return proposalRepository.findByCds(cds).map { it.toDTO(degreeRepository) }
     }
 
-    override fun searchProposals(query: String): List<Proposal> {
-        return proposalRepository.searchProposals(query)
+    override fun searchProposals(query: String): List<ProposalDTO> {
+        return proposalRepository.searchProposals(query).map { it.toDTO(degreeRepository) }
     }
 
     //searchByAttributes----------------------- search functions of the previous search implementation

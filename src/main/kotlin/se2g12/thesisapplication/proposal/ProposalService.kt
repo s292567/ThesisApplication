@@ -3,9 +3,9 @@ package se2g12.thesisapplication.proposal
 
 interface ProposalService {
     fun addNewProposal(newProposal: NewProposalDTO, professorId: String)
-    fun getAllProposals(): List<Proposal>
-    fun getProposalsByCds(cds: String): List<Proposal>
-    fun searchProposals(query: String): List<Proposal>
+    fun getAllProposals(): List<ProposalDTO>
+    fun getProposalsByCds(cds: String): List<ProposalDTO>
+    fun searchProposals(query: String): List<ProposalDTO>
 
 //    fun searchProposalsByTitle(title: String): List<Proposal>
 //
