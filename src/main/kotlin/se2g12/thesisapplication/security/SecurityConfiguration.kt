@@ -22,8 +22,7 @@ class SecurityConfiguration (private val jwtAuthConverter: JwtAuthConverter) {
             http.authorizeHttpRequests {
                 it.requestMatchers("/user/validate/").permitAll()
                     .requestMatchers("/user/signup").anonymous()
-                    .requestMatchers("/user/createExpert").hasRole("Manager")
-                    .requestMatchers("/user/createUser").hasRole("Manager")
+                    //.requestMatchers("/user/createExpert").hasRole("Manager")
                     .anyRequest().permitAll()
                 http.oauth2ResourceServer(){it.jwt(){it.jwtAuthenticationConverter (jwtAuthConverter)}}
             }
