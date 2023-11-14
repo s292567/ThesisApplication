@@ -1,7 +1,8 @@
+package se2g12.thesisapplication.proposal
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import se2g12.thesisapplication.proposal.Proposal
-import java.util.UUID
 
 @Service
 class ProposalService(@Autowired private val proposalRepository: ProposalRepository) {
@@ -15,6 +16,10 @@ class ProposalService(@Autowired private val proposalRepository: ProposalReposit
         return proposalRepository.findByCds(cds)
     }
 
+    fun searchProposals(query: String): List<Proposal> {
+        return proposalRepository.searchProposals(query)
+    }
+
     //searchByAttributes-----------------------
     fun searchProposalsByTitle(title: String): List<Proposal> {
         return proposalRepository.findByTitleContaining(title)
@@ -24,8 +29,8 @@ class ProposalService(@Autowired private val proposalRepository: ProposalReposit
         return proposalRepository.findBySupervisorNameContaining(supervisorName)
     }
 
-    fun searchProposalsByCoSupervisorName(coSupervisorName: String): List<Proposal> {
-        return proposalRepository.findBycoSupervisorNameContaining(coSupervisorName)
+    fun searchProposalsBycoSupervisors(coSupervisors: String): List<Proposal> {
+        return proposalRepository.findBycoSupervisorsContaining(coSupervisors)
     }
 
     fun searchProposalsByKeywords(keyword: String): List<Proposal> {
