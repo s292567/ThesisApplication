@@ -8,6 +8,7 @@ import LandingPage from "./pages/LandingPage";
 import PageNotFound from "./pages/PageNotFound";
 import StudentDashboardPage from "./pages/StudentDashBoardPage";
 import ProfessorDashboardPage from "./pages/ProfessorDashboardPage";
+import ProfessorProposalCreationPage from "./pages/ProfessorProposalCreation.jsx";
 import LoginPage from "./pages/LoginPage";
 
 import Login from "./API/Login.js";
@@ -135,6 +136,11 @@ function Layout() {
           <Route
             path="/studentDashboard/:studendId"
             element={<StudentDashboardPage />}
+          />
+
+          <Route
+            path="/professor/proposal/create"
+            element={<ProfessorProposalCreationPage />} 
           />
 
           <Route path="*" element={<PageNotFound />} />
