@@ -68,6 +68,51 @@ Display proposals that contain query string (caps-insensitive) in any of their f
   - `200 OK`: All filtered proposals are being displayed
   - `401 Unauthorized`: The user is not logged in
   - `500 Internal Server Error`: Generic server error
+  - 
+## Search Proposals By Student CdS
+**GET `API/thesis/proposals/search/:studentId`**
+
+Display proposals that contain query string (caps-insensitive) in any of their fields, and filter by the student Cds.
+
+- example request URL: (s644427 has CdS=ENG4 Civil Engineering)
+  ```http://localhost:8080/API/thesis/proposals/search/s644427?query=innovative```
+  => *show all proposals that contain the word "innovative" in any of their fields*
+- response body: JSON containing all filtered proposals
+```json
+  {
+  "title": "Structural Engineering",
+  "supervisor": {
+    "surname": "Crociera",
+    "name": "Tommaso",
+    "email": "tommaso.crociera@example.com",
+    "group": {
+      "id": "G41",
+      "department": {
+        "codDepartment": "DEP04"
+      }
+    },
+    "department": {
+      "codDepartment": "DEP04"
+    },
+    "id": "p110"
+  },
+  "coSupervisors": [],
+  "keywords": ["Structural Engineering", "Construction"],
+  "type": "Development",
+  "groups": ["G41"],
+  "description": "Develop innovative solutions in structural engineering.",
+  "requiredKnowledge": "Strong background in structural engineering",
+  "notes": "This thesis focuses on developing innovative solutions in structural engineering. The student should have a strong background in structural engineering.",
+  "expiration": "2024-02-28",
+  "level": "MSc",
+  "cds": ["Civil Engineering"],
+  "id": "000003e8-8169-21ee-8000-325096b39f47"
+  }
+  ```
+- response status:
+  - `200 OK`: All filtered proposals are being displayed
+  - `401 Unauthorized`: The user is not logged in
+  - `500 Internal Server Error`: Generic server error
 
 ## Insert Proposal
 **POST `/API/thesis/proposals/{professorId}`**

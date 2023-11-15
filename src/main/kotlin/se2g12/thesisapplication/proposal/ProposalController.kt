@@ -1,10 +1,7 @@
 package se2g12.thesisapplication.proposal
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @CrossOrigin
@@ -34,6 +31,13 @@ class ProposalController(@Autowired private val proposalService: ProposalService
 
         // else, search across multiple fields
         return proposalService.searchProposals(query)
+    }
+    @GetMapping("API/thesis/proposals/search/{studentId}")
+    fun searchProposalsByStudentCds(
+        @RequestParam(required = false) query: String?,
+        @PathVariable studentId : String
+    ): List<ProposalDTO> {
+        return proposalService.searchProposalByStudentCds(studentId, query)
     }
 
     //text search - OLD VERSION

@@ -6,6 +6,7 @@ interface ProposalService {
     fun getAllProposals(): List<ProposalDTO>
     fun getProposalsByCds(cds: String): List<ProposalDTO>
     fun searchProposals(query: String): List<ProposalDTO>
+    fun searchProposalByStudentCds(studentId: String, query: String? ): List<ProposalDTO>
 
 //    fun searchProposalsByTitle(title: String): List<Proposal>
 //

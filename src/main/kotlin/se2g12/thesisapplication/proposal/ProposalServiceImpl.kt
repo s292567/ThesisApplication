@@ -4,6 +4,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import se2g12.thesisapplication.degree.DegreeRepository
+import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.text.SimpleDateFormat
@@ -14,7 +15,8 @@ import java.util.*
 class ProposalServiceImpl (
     private val proposalRepository: ProposalRepository,
     private val teacherRepository: TeacherRepository,
-    private val degreeRepository: DegreeRepository)
+    private val degreeRepository: DegreeRepository,
+    private val studentRepository: StudentRepository)
     : ProposalService {
     //@PreAuthorize("hasRole('')")
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
@@ -75,6 +77,15 @@ class ProposalServiceImpl (
 
     override fun searchProposals(query: String): List<ProposalDTO> {
         return proposalRepository.searchProposals(query).map { it.toDTO(degreeRepository) }
+    }
+    override fun searchProposalByStudentCds(studentId: String, query: String? ): List<ProposalDTO> {
+        val cdsCode = studentRepository.findById(studentId).get().degree!!.codDegree!!
+        if (query.isNullOrBlank())
+            return getProposalsByCds(cdsCode)
+        return proposalRepository.searchProposals(query)
+        // filtering if the proposal contains the cdsCode in the field cds (a list of cds codes)
+            .filter { it.cds.split(", ", ",").contains(cdsCode) }
+            .map { it.toDTO(degreeRepository) }
     }
 
     //searchByAttributes----------------------- search functions of the previous search implementation
