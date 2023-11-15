@@ -38,20 +38,20 @@ fun Proposal.toDTO(degreeRepository: DegreeRepository) : ProposalDTO{
     else
         this.groups.split(", ", ",")
     val date = SimpleDateFormat("yyyy-MM-dd").format(this.expiration)
-    val cdsCodes= this.cds.split(", ", ",")
-    val cdsNames = mutableListOf<String>()
-    for (code in cdsCodes){
-        val degree = degreeRepository.findById(code)
-        if(degree.isPresent){
-            cdsNames.add(degree.get().titleDegree!!)
-        }
-    }
+
+    val cdsNames = this.cds.split(", ", ",")
     return ProposalDTO(
         this.id,
         this.title,
         this.supervisor,
         coSup, key,
         this.type,
-        gr, this.description, this.requiredKnowledge, this.notes,
-        date, this.level, cdsNames)
+        gr,
+        this.description,
+        this.requiredKnowledge,
+        this.notes,
+        date,
+        this.level,
+        cdsNames.toList() // cdsNames is converted to List<String>
+    )
 }
