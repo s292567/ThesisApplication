@@ -9,3 +9,4 @@ class ThesisApplication
 fun main(args: Array<String>) {
 	runApplication<ThesisApplication>(*args)
 }
+
