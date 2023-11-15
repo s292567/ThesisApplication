@@ -75,39 +75,134 @@ Display proposals that contain query string (caps-insensitive) in any of their f
 Display proposals that contain query string (caps-insensitive) in any of their fields, and filter by the student Cds.
 
 - example request URL: (s644427 has CdS=ENG4 Civil Engineering)
-  ```http://localhost:8080/API/thesis/proposals/search/s644427?query=innovative```
-  => *show all proposals that contain the word "innovative" in any of their fields*
+  ```http://localhost:8081/API/thesis/proposals/search/s644427?query=innovative```
+  => *show all proposals that contain the word "innovative" in any of their fields and filters by cds Civil Engeneering*
 - response body: JSON containing all filtered proposals
 ```json
+  [
   {
-  "title": "Structural Engineering",
-  "supervisor": {
-    "surname": "Crociera",
-    "name": "Tommaso",
-    "email": "tommaso.crociera@example.com",
-    "group": {
-      "id": "G41",
+    "id": "000003e8-8169-21ee-8000-325096b39f47",
+    "title": "Structural Engineering",
+    "supervisor": {
+      "surname": "Crociera",
+      "name": "Tommaso",
+      "email": "tommaso.crociera@example.com",
+      "group": {
+        "id": "G41",
+        "department": {
+          "codDepartment": "DEP04"
+        }
+      },
       "department": {
         "codDepartment": "DEP04"
-      }
+      },
+      "id": "p110"
     },
-    "department": {
-      "codDepartment": "DEP04"
-    },
-    "id": "p110"
-  },
-  "coSupervisors": [],
-  "keywords": ["Structural Engineering", "Construction"],
-  "type": "Development",
-  "groups": ["G41"],
-  "description": "Develop innovative solutions in structural engineering.",
-  "requiredKnowledge": "Strong background in structural engineering",
-  "notes": "This thesis focuses on developing innovative solutions in structural engineering. The student should have a strong background in structural engineering.",
-  "expiration": "2024-02-28",
-  "level": "MSc",
-  "cds": ["Civil Engineering"],
-  "id": "000003e8-8169-21ee-8000-325096b39f47"
+    "coSupervisors": [],
+    "keywords": [
+      "Structural Engineering",
+      "Construction"
+    ],
+    "type": "Development",
+    "groups": [
+      "G41"
+    ],
+    "description": "Develop innovative solutions in structural engineering.",
+    "requiredKnowledge": "Strong background in structural engineering",
+    "notes": "This thesis focuses on developing innovative solutions in structural engineering. The student should have a strong background in structural engineering.",
+    "expiration": "2024-02-29",
+    "level": "MSc",
+    "cds": [
+      "Civil Engineering"
+    ]
   }
+  ]
+  ```
+- example request URL: (s654140 has CdS=ENG1 Computer Engineering)
+  ```http://localhost:8081/API/thesis/proposals/search/s654140```
+  => *show all proposals filtered only by the student CdS*
+- response body: JSON containing all filtered proposals
+```json
+  [
+  {
+    "id": "000003e8-8169-21ee-9d00-325096b39f47",
+    "title": "AI in Robotics",
+    "supervisor": {
+      "surname": "García",
+      "name": "Sofía",
+      "email": "sofia.garcia@example.com",
+      "group": {
+        "id": "G13",
+        "department": {
+          "codDepartment": "DEP01"
+        }
+      },
+      "department": {
+        "codDepartment": "DEP01"
+      },
+      "id": "p103"
+    },
+    "coSupervisors": [
+      "Ji-Sung Park"
+    ],
+    "keywords": [
+      "AI",
+      "Robotics"
+    ],
+    "type": "Research",
+    "groups": [
+      "G11",
+      "G13"
+    ],
+    "description": "Exploring the integration of AI in Robotics applications.",
+    "requiredKnowledge": "Strong background in AI and Robotics",
+    "notes": "This thesis aims to explore the current landscape and future potential of AI in Robotics applications. The student is expected to have a strong background in both AI and Robotics.",
+    "expiration": "2024-12-31",
+    "level": "BSc",
+    "cds": [
+      "Computer Engineering"
+    ]
+  },
+  {
+    "id": "000003e8-8169-21ee-ae00-325096b39f47",
+    "title": "Cybersecurity in Critical Infrastructure",
+    "supervisor": {
+      "surname": "Park",
+      "name": "Ji-sung",
+      "email": "jisung.park@example.com",
+      "group": {
+        "id": "G11",
+        "department": {
+          "codDepartment": "DEP01"
+        }
+      },
+      "department": {
+        "codDepartment": "DEP01"
+      },
+      "id": "p111"
+    },
+    "coSupervisors": [
+      "Sofía García"
+    ],
+    "keywords": [
+      "Cybersecurity",
+      "Critical Infrastructure"
+    ],
+    "type": "Research",
+    "groups": [
+      "G11",
+      "G13"
+    ],
+    "description": "Investigate cybersecurity measures for critical infrastructure protection.",
+    "requiredKnowledge": "Cybersecurity background",
+    "notes": "This thesis involves the investigation of cybersecurity measures for critical infrastructure protection. The student should have a background in cybersecurity.",
+    "expiration": "2025-12-31",
+    "level": "BSc",
+    "cds": [
+      "Computer Engineering"
+    ]
+  }
+  ]
   ```
 - response status:
   - `200 OK`: All filtered proposals are being displayed
