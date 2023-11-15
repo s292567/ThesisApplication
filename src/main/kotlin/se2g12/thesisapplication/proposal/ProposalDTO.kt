@@ -1,11 +1,9 @@
 package se2g12.thesisapplication.proposal
 
-import org.springframework.beans.factory.annotation.Autowired
 import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.teacher.Teacher
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.jvm.optionals.getOrNull
 
 data class ProposalDTO(
     val id: UUID? = null,
