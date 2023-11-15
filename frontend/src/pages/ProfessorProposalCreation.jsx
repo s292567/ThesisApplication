@@ -9,7 +9,10 @@ import Box from "@mui/material/Box";
 
 const sidebarWidth = 240;
 
-const ProfessorProposalCreationPage = () => {
+const ProfessorProposalCreationPage = ({userId}) => {
+
+  console.log(userId);
+  
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -47,7 +50,7 @@ const ProfessorProposalCreationPage = () => {
           
         */}
 
-        <ProposalForm />
+        <ProposalForm userId={userId}/>
       </Box>
 
       <BottomNavbar />
