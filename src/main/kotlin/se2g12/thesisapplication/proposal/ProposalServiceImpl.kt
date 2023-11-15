@@ -89,33 +89,48 @@ class ProposalServiceImpl (
     }
 
     //searchByAttributes----------------------- search functions of the previous search implementation
-//    fun searchProposalsByTitle(title: String): List<Proposal> {
-//        return proposalRepository.findByTitleContaining(title)
-//    }
-//
-//    fun searchProposalsBySupervisorName(supervisorName: String): List<Proposal> {
-//        return proposalRepository.findBySupervisorNameContaining(supervisorName)
-//    }
-//
-//    fun searchProposalsBycoSupervisors(coSupervisors: String): List<Proposal> {
-//        return proposalRepository.findBycoSupervisorsContaining(coSupervisors)
-//    }
-//
-//    fun searchProposalsByKeywords(keyword: String): List<Proposal> {
-//        return proposalRepository.findByKeywordsContaining(keyword)
-//    }
-//
-//    fun searchProposalsByCds(cds: String): List<Proposal> {
-//        return proposalRepository.findByCdsContaining(cds)
-//    }
-//
-//    fun searchProposalsByLevel(level: String): List<Proposal> {
-//        return proposalRepository.findByLevelContaining(level)
-//    }
-//
-//    fun searchProposalsByDescription(description: String): List<Proposal> {
-//        return proposalRepository.findByDescriptionContaining(description)
-//    }
+    override fun searchProposalsByTitle(title: String): List<Proposal> {
+        return proposalRepository.findByTitleContaining(title)
+    }
+    override fun searchProposalsBySupervisorName(supervisorName: String): List<Proposal> {
+        return proposalRepository.findBySupervisorNameContaining(supervisorName)
+    }
+    override fun searchProposalsBycoSupervisors(coSupervisors: String): List<Proposal> {
+        return proposalRepository.findBycoSupervisorsContaining(coSupervisors)
+    }
+    override fun searchProposalsByKeywords(keyword: String): List<Proposal> {
+        return proposalRepository.findByKeywordsContaining(keyword)
+    }
+    override fun searchProposalsByCds(cds: String): List<Proposal> {
+        return proposalRepository.findByCdsContaining(cds)
+    }
+    override fun searchProposalsByLevel(level: String): List<Proposal> {
+        return proposalRepository.findByLevelContaining(level)
+    }
+    override fun searchProposalsByDescription(description: String): List<Proposal> {
+        return proposalRepository.findByDescriptionContaining(description)
+    }
     //------------------------------------------
+    override fun searchProposalsByTitleIgnoreCase(title: String): List<Proposal> {
+        return proposalRepository.findByTitleIgnoreCaseContaining(title)
+    }
+    override fun searchProposalsBySupervisorNameIgnoreCase(supervisorName: String): List<Proposal> {
+        return proposalRepository.findBySupervisorNameIgnoreCaseContaining(supervisorName)
+    }
+    override fun searchProposalsBycoSupervisorsIgnoreCase(coSupervisors: String): List<Proposal> {
+        return proposalRepository.findBycoSupervisorsIgnoreCaseContaining(coSupervisors)
+    }
+    override fun searchProposalsByKeywordsIgnoreCase(keywords: String): List<Proposal> {
+        return proposalRepository.findByKeywordsIgnoreCaseContaining(keywords)
+    }
+    override fun searchProposalsByCdsIgnoreCase(cds: String): List<Proposal> {
+        return proposalRepository.findByCdsIgnoreCaseContaining(cds)
+    }
+    override fun searchProposalsByLevelIgnoreCase(level: String): List<Proposal> {
+        return proposalRepository.findByLevelIgnoreCaseContaining(level)
+    }
+    override fun searchProposalsByDescriptionIgnoreCase(description: String): List<Proposal> {
+        return proposalRepository.findByDescriptionIgnoreCaseContaining(description)
+    }
 
 }
