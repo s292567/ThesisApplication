@@ -139,7 +139,7 @@ function Layout() {
           />
 
           <Route
-            path="/professor/proposal/create"
+            path="/ProfessorDashboard/:professorId/proposal/create"
             element={<ProfessorProposalCreationPage />} 
           />
 
