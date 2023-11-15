@@ -24,7 +24,7 @@
   - `401 Unauthorized`: The user is not logged in
   - `500 Internal Server Error`: Generic server error
 
-## Search Proposals
+## Search Proposals text search
 **GET `API/thesis/proposals/search`**
 
 Display proposals that contain query string (caps-insensitive) in any of their fields
@@ -68,7 +68,7 @@ Display proposals that contain query string (caps-insensitive) in any of their f
   - `200 OK`: All filtered proposals are being displayed
   - `401 Unauthorized`: The user is not logged in
   - `500 Internal Server Error`: Generic server error
-  - 
+
 ## Search Proposals By Student CdS
 **GET `API/thesis/proposals/search/:studentId`**
 
