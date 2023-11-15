@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import BottomNavbar from "../components/BottomNavbar/BottomNavbar";
 import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
 import ThesisProposalsList from "../components/ThesisProposalList/ThesisProposalList";
+import { useNavigation } from "react-router-dom";
+import DefaultButton from "../components/DefaultButton/DefaultButton";
 
 
 import Box from "@mui/material/Box";
@@ -49,6 +51,7 @@ const ProfessorDashboardPage = (props) => {
           <RequestedProposals />
           
         */}
+        <DefaultButton buttonText={"+ Create new proposal"} navigationRoute={"/professor/proposal/create"}/>
         <ThesisProposalsList />
       </Box>
 

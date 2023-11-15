@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import "./ProposalForm.css"
 
-const KeywordsField = () => {
+const KeywordsField = ({labelText, placeholderText, isRequired, onValueChange}) => {
     const [inputValue, setInputValue] = useState('');
     const [tags, setTags] = useState([]);
     const [keywordId, setKeywordId] = useState(0)  
-
+  
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
@@ -20,17 +20,19 @@ const KeywordsField = () => {
 
       console.log(tags); 
       setInputValue('');
-      setKeywordId(keywordId + 1);  
+      setKeywordId(keywordId + 1);   
     }
   };
 
   const handleAddition = newTag => {
     setTags([...tags, newTag]);
+    onValueChange(tags);
   };
 
   const handleDelete = index => {
     const newTags = tags.filter((tag) => tag.id !== index);
     setTags(newTags);
+    onValueChange(newTags); 
   };
 
   const AddedKeywordsList = () => {
@@ -48,15 +50,26 @@ const KeywordsField = () => {
 
   return (
     <div>
-        <label htmlFor="text" className="label">Keywords</label>
-        <input
-        type="text"
-        className="input"
-        value={inputValue}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        placeholder="Type here..."
-        />
+        <label htmlFor="text" className="label">{labelText}</label>
+        {(isRequired) ? 
+          <input
+          type="text"
+          className="input"
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholderText}
+          required
+          /> : 
+          <input
+          type="text"
+          className="input"
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholderText}
+          />
+        }
         <AddedKeywordsList />
     </div>
   );
