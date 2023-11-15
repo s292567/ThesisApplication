@@ -16,7 +16,9 @@ const SearchBarStudent = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`/API/thesis/proposals/search?query=${searchQuery}`);
+      const response = await fetch(
+        `/API/thesis/proposals/search?query=${searchQuery}`
+      );
       const data = await response.json();
       setProposals(data);
     } catch (error) {
@@ -26,7 +28,9 @@ const SearchBarStudent = () => {
 
   const handleFilterByCds = async () => {
     try {
-      const response = await fetch(`/API/thesis/proposals/cds?cds=${cdsFilter}`);
+      const response = await fetch(
+        `/API/thesis/proposals/cds?cds=${cdsFilter}`
+      );
       const data = await response.json();
       setProposals(data);
     } catch (error) {
@@ -96,7 +100,13 @@ const SearchBarStudent = () => {
   );
 };
 
-const FiltersDropdown = ({ handleFilterByCds, handleSearch, handleApplyFilters, cdsFilter, setCdsFilter }) => {
+const FiltersDropdown = ({
+  handleFilterByCds,
+  handleSearch,
+  handleApplyFilters,
+  cdsFilter,
+  setCdsFilter,
+}) => {
   const handleCdsChange = (event) => {
     setCdsFilter(event.target.value);
   };
@@ -119,6 +129,27 @@ const FiltersDropdown = ({ handleFilterByCds, handleSearch, handleApplyFilters, 
       </button>
     </div>
   );
+};
+
+const CheckBoxes = () => {
+  
+  const [checked, setChecked] = useState({
+    title: false,
+    supervisor: false,
+    coSupervisors: false,
+    keywords: false,
+    type: false,
+    groups: false,
+    description: false,
+    requiredKnowledge: false,
+    notes: false,
+    expiration: false,
+    Msc: false,
+    Bsc: false, 
+    cds: false,
+  });
+
+  return <div className="checkboxes">{/* Add checkboxes as needed */}</div>;
 };
 
 export default SearchBarStudent;
