@@ -50,8 +50,6 @@ function Layout() {
             if (username !== null) {
                 API_Profile.getProfile(username).then((loggedUser) => {
                     setUser(loggedUser);
-                    if (path == '/login' || path == '/signup')
-                        navigate('/');
                 }).catch((err) => {
                     setErrorMsg(err.detail)
                     setJwtToken('');
@@ -113,15 +111,15 @@ function Layout() {
           <Route
             path="/login"
             element={
+                {loggedIn}?
               <LoginPage
-                LoginForm
                 login={doLogIn}
                 loggedIn={loggedIn}
                 logout={doLogout}
                 errorMsg={errorMsg}
                 setErrorMsg={setErrorMsg}
                 isLoggedIn={loggedIn}
-              ></LoginPage>
+              ></LoginPage>:<></>
             }
           />
 
