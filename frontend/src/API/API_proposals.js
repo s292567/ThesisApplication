@@ -1,5 +1,5 @@
-import axiosInstance from './axiosInstance'; // Import your axios instance
-import routes from './routes.json'; // Import your routes
+import axiosInstance from './API_Config.js'; // Import your axios instance
+import routes from '../assets/routes.json'; // Import your routes
 
 /**
  * Get all thesis proposals.

@@ -138,7 +138,7 @@ function Layout() {
 
           <Route
             path="/ProfessorDashboard/:professorId/proposal/create"
-            element={<ProfessorProposalCreationPage />} 
+            element={<ProfessorProposalCreationPage userId={user.username}/>} 
           />
 
           <Route path="*" element={<PageNotFound />} />

@@ -51,7 +51,7 @@ const ProfessorDashboardPage = (props) => {
           <RequestedProposals />
           
         */}
-        <DefaultButton buttonText={"+ Create new proposal"} navigationRoute={"/ProfessorDashboard/:professorId/proposal/create"}/>
+        <DefaultButton buttonText={"+ Create new proposal"} navigationRoute={"/ProfessorDashboard/:professorId/proposal/create "}/>
 
       </Box>
 
