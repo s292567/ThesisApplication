@@ -8,7 +8,7 @@ import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRound
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 import "./Sidebar.css";
-
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const Sidebar = ({ isOpen, closeSidebar, sidebarWidth }) => {
 
@@ -20,7 +20,7 @@ const Sidebar = ({ isOpen, closeSidebar, sidebarWidth }) => {
       sx={{
         width: isWideScreen ? `${sidebarWidth}px` : '100%',
         '& .MuiDrawer-paper': {
-          backgroundColor: '#FC7A08',
+          background: 'linear-gradient(to bottom, #FC7A08, #F0EFF5)',
           width: isWideScreen ? `${sidebarWidth}px` : '100%',
           boxSizing: 'border-box',
           border: 'none',
