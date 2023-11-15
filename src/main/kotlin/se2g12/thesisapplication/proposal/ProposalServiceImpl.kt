@@ -79,12 +79,12 @@ class ProposalServiceImpl (
         return proposalRepository.searchProposals(query).map { it.toDTO(degreeRepository) }
     }
     override fun searchProposalByStudentCds(studentId: String, query: String? ): List<ProposalDTO> {
-        val cdsCode = studentRepository.findById(studentId).get().degree!!.codDegree!!
+        val cdsName = studentRepository.findById(studentId).get().degree!!.titleDegree!!
         if (query.isNullOrBlank())
-            return getProposalsByCds(cdsCode)
+            return getProposalsByCds(cdsName)
         return proposalRepository.searchProposals(query)
         // filtering if the proposal contains the cdsCode in the field cds (a list of cds codes)
-            .filter { it.cds.split(", ", ",").contains(cdsCode) }
+            .filter { it.cds.split(", ", ",").contains(cdsName) }
             .map { it.toDTO(degreeRepository) }
     }
 

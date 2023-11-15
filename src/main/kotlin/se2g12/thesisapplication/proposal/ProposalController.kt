@@ -36,11 +36,11 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         // else, search across multiple fields
         return proposalService.searchProposals(query)
     }
-    @GetMapping("API/thesis/proposals/search/{studentId}")
+    @GetMapping("/API/thesis/proposals/search/{studentId}")
     @PreAuthorize("hasRole('Student')")
     fun searchProposalsByStudentCds(
         @RequestParam(required = false) query: String?,
-        @PathVariable studentId : String
+        @PathVariable studentId: String
     ): List<ProposalDTO> {
         return proposalService.searchProposalByStudentCds(studentId, query)
     }
