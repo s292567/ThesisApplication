@@ -17,6 +17,29 @@ export const getAllProposals = () => {
   });
 };
 
+/*
+getting proposals by CDS
+ */
+export const GetProposalsByCds = async (cds) => {
+    try {
+        const response = await fetch(routes.getProposalsByCds + `?cds=${cds}`);
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log("getProposalsByCds: ", data);
+            return data;
+        } else {
+            console.error('Request failed with status: ', response.status);
+        }
+    } catch (error) {
+        console.error('Error while retrieving proposals by CDS: ', error);
+    }
+};
+
+
+
+
+
 /**
  * Get thesis proposals filtered by Course of Study (CDS).
  */
