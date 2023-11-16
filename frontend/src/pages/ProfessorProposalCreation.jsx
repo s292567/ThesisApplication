@@ -5,11 +5,14 @@ import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
 
 
 import Box from "@mui/material/Box";
+import { useUserContext } from "../userContext";
 
 
 const sidebarWidth = 240;
 
-const ProfessorProposalCreationPage = ({userId}) => {
+const ProfessorProposalCreationPage = () => {
+
+  const {userId, logout} = useUserContext();
 
   console.log(userId);
   
@@ -23,6 +26,7 @@ const ProfessorProposalCreationPage = ({userId}) => {
     <div>
       <header style={{ display: "flex" }}>
         <LoggedInNavbar
+          logout={logout}
           sidebarOpen={sidebarOpen}
           toggleSidebar={toggleSidebar}
           sidebarWidth={sidebarWidth}

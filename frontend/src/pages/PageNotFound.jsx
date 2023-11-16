@@ -2,10 +2,10 @@ import React from 'react';
 import './PageNotFound.css';
 import Navbar from '../components/Navbar/Navbar';
 
-// it needs to receive update from the general context user 
-// because if the page not found is in the student dashboard or professor dashboard
-// it needs to redirect to the correct page and not always to the landing page /
+// IT HAS TO BE A FUNCTIONAL COMPONENT
+// REDONE COMPLETELY
 const PageNotFound = () => {
+
   return (
     <div className="page-not-found-container">
       <header>

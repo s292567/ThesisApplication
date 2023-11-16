@@ -7,12 +7,14 @@ import ThesisProposalsList from "../components/ThesisProposalList/ThesisProposal
 
 
 import Box from "@mui/material/Box";
+import {useUserContext} from "../userContext.jsx";
 
 
 const sidebarWidth = 240;
 
-const StudentDashboardPage = (props) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+const StudentDashboardPage = () => {
+    const  {logout} = useUserContext();
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -22,7 +24,7 @@ const StudentDashboardPage = (props) => {
     <div>
       <header style={{ display: "flex" }}>
         <LoggedInNavbar
-            logout={props.logout}
+          logout={logout}
           sidebarOpen={sidebarOpen}
           toggleSidebar={toggleSidebar}
           sidebarWidth={sidebarWidth}

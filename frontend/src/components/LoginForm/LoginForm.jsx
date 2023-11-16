@@ -1,22 +1,24 @@
 import React, {useState} from "react";
 import "./LoginForm.css";
+import { useUserContext } from "../../userContext";
 
 const LoginForm = (props) => {
 
-  const {errorMsg, setErrorMsg} = props;
+  const {login, isLoggedIn, errorMsg, setErrorMsg} = useUserContext();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const handleSubmit = (event) => {
+
+  // THERE IS A PROBLEM HERE WITH THE LOGIN FUNCTION THAT IS ASYNC AND THE REDIRECT OF IT IS CAUSING ERRORS
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
     // eventualmente aggiungere qui validation dell'input
-
-    props.login(username, password)
+    login(username, password)
         .catch((err) => {
           setErrorMsg(err.detail ? err.detail : JSON.stringify(err));
         })
   }
-  if (props.isLoggedIn) {
+  if (isLoggedIn) {
     return <div>You are already logged in!</div>
   }
   return (
@@ -43,7 +45,7 @@ const LoginForm = (props) => {
             />
           </div>
           {errorMsg ? <div className="col-5" style={{color: "red"}}>Login was unsuccessful: {errorMsg}</div> : <></>}
-          <button type="submit" className="submit-button">
+          <button className="submit-button" onClick={(ev) => handleSubmit(ev)}>
             Login
           </button>
         </form>

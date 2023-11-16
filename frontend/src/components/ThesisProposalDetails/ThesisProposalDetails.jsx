@@ -8,8 +8,9 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import axios from 'axios';
-import {useContext, useEffect} from "react";
-import UserContext from "../../userContext.js";
+import {useContext} from "react";
+import { useUserContext } from "../../userContext";
+
 
 const modalStyle = {
   position: "absolute",
@@ -58,7 +59,7 @@ export default function ThesisProposalDetails({ proposal, open, setOpen}) {
   };
 
   const handleApply = () => setChildOpen(true);
-    const {user} = useContext(UserContext)
+    const {user} = useUserContext();
 
     const handleYesClick = async () => {
         try {
@@ -77,7 +78,7 @@ export default function ThesisProposalDetails({ proposal, open, setOpen}) {
             if (response.status === 201) {
                 // Application to the proposal has been created
                 setChildOpen(false);
-                setAppModelOpen(true);
+                setAppModelOPen(true);
             } else {
                 // Handle other response statuses
                 console.error('Failed to apply to thesis proposal. Status:', response.status);

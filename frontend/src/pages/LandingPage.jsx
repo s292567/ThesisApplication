@@ -1,11 +1,12 @@
 import Navbar from "../components/Navbar/Navbar";
 
-const LandingPage = (props) => {
+const LandingPage = () => {
+  
   return (
     <>
       <header>
 
-        <Navbar isLoggedIn={props.isLoggedIn} logout={props.logout}/>
+        <Navbar/>
 
       </header>
       <main>
