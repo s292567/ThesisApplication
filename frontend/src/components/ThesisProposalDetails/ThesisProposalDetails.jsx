@@ -8,6 +8,8 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import axios from 'axios';
+import {useContext, useEffect} from "react";
+import UserContext from "../../userContext.js";
 
 const modalStyle = {
   position: "absolute",
@@ -56,17 +58,18 @@ export default function ThesisProposalDetails({ proposal, open, setOpen}) {
   };
 
   const handleApply = () => setChildOpen(true);
+    const {user} = useContext(UserContext)
 
     const handleYesClick = async () => {
         try {
             // Prepare the request body
             const requestBody = {
-                studentId: "s654140",
-                proposalId: "000003e8-8169-21ee-ae00-325096b39f47",
+                studentId: user.username,
+                proposalId: proposal.id,
             };
 
             // Make the API call using Axios
-            const response = await axios.post('http://localhost:5432/API/thesis/proposals/apply', requestBody);
+            const response = await axios.post('http://localhost:8081/API/thesis/proposals/apply', requestBody);
 
             // Check the response status and handle accordingly
             if (response.status === 201) {
@@ -149,7 +152,7 @@ const handleAppModelClose=() => {
                    </span>
                 <br />
                   <span style={{ fontSize: '1.1rem' }}>
-                {proposal.supervisor}
+                {proposal.supervisor.name+" "+proposal.supervisor.surname}
                   </span>
               </Typography>
             </Grid>

@@ -15,6 +15,7 @@ import Login from "./API/Login.js";
 import API_Profile from "./API/API_Profile.js";
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+import UserContext from "./userContext.js";
 
 function App() {
   return (
@@ -106,8 +107,9 @@ function Layout() {
       style={{ height: "90vh", marginTop: "7rem" }}
     >
       <div className="row align-items-start">
+        <UserContext.Provider value={{ user, setUser }}>
         <Routes>
-          <Route index element={<LandingPage isLoggedIn={loggedIn} />} />
+          <Route index element={<LandingPage logout={doLogout} isLoggedIn={loggedIn} />} />
           <Route
             path="/login"
             element={
@@ -143,6 +145,7 @@ function Layout() {
 
           <Route path="*" element={<PageNotFound />} />
         </Routes>
+        </UserContext.Provider>
       </div>
     </div>
   );

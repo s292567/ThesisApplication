@@ -20,7 +20,8 @@ class ApplicationServiceImpl (
     : ApplicationService {
     //@PreAuthorize("hasRole('Student')")
     override fun addNewApplication(newApplication: NewApplicationDTO) {
-        val student=studentRepository.findById(newApplication.studentId).get()
+//        val student=studentRepository.findById(newApplication.studentId).get()
+        val student=studentRepository.findByEmail(newApplication.studentId).first()
         // check with auth
         val proposal=proposalRepository.findById(newApplication.proposalId)
         if (proposal.isEmpty)

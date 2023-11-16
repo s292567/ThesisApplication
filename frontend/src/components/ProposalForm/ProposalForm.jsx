@@ -47,7 +47,7 @@ const ProposalForm = ({userId}) => {
   // handles the submission of data
   const handleSubmit = (event) => {
     event.preventDefault();
-    insertProposal(Number(userId), formData); 
+    insertProposal(userId, formData);
     console.log('Form Submitted');
   }; 
 

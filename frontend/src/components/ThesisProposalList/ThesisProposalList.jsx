@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { List, ListItem, Typography, Grid, Paper } from "@mui/material";
 import "./ThesisProposalList.css";
 import { useNavigate } from "react-router-dom";
 import ThesisProposalDetails from "../ThesisProposalDetails/ThesisProposalDetails";
 import { useWindowDimensions } from "../useWindowDimensions";
+import {getAllProposals} from "../../API/API_proposals.js";
 
 const ThesisProposalsList = () => {
   const navigate = useNavigate();
@@ -11,13 +12,17 @@ const ThesisProposalsList = () => {
   const handleSeeMoreClick = () => {
     navigate("studentDashboard-:studentId/requestedProposals");
   };
-
+  const [proposals, setProposals]=React.useState([])
   const [openDetails, setOpenDetails] = React.useState(false);
-  const handleOpenDetails = () => setOpenDetails(true);
+  const [proposal, setProposal] =useState()
+  const handleOpenDetails = (prop) => {
+    setProposal(prop)
+    setOpenDetails(true)
+  };
 
   const windowWidth = useWindowDimensions().width;
 
-  const fakeProposals = [
+  /*const fakeProposals = [
     {
       id: "P12345",
       title: "Development of an Advanced AI Assistant",
@@ -65,7 +70,14 @@ const ThesisProposalsList = () => {
       level: "MSc",
       cds: "Environmental Engineering",
     },
-  ];
+  ];*/
+  useEffect(()=>{
+    const getProposals=async ()=> {
+      let prop = await getAllProposals()
+      setProposals(prop)
+    }
+    getProposals();
+  },[])
 
   const formatDate = (date) => {
     const tmp = date.split("-");
@@ -75,7 +87,7 @@ const ThesisProposalsList = () => {
     return { day, month, year };
   };
 
-  return (
+  return (<>
     <Paper elevation={3} className="thesis-proposals-list-container">
       <Typography variant="h6" className="title-section">
         Thesis Proposals List
@@ -102,7 +114,7 @@ const ThesisProposalsList = () => {
           </Grid>
         </ListItem>
 
-        {fakeProposals.map((proposal) => {
+        {proposals.map((proposal) => {
           const { day, month, year } = formatDate(proposal.expiration);
           return (
             <ListItem key={proposal.id} className="list-item">
@@ -145,7 +157,7 @@ const ThesisProposalsList = () => {
                   </Typography>
                   <button
                     className="read-more-button"
-                    onClick={handleOpenDetails}
+                    onClick={()=>handleOpenDetails(proposal)}
                   >
                     Read More
                   </button>
@@ -157,7 +169,7 @@ const ThesisProposalsList = () => {
                   className="supervisor-container"
                 >
                   <Typography variant="body1" component="div">
-                    {proposal.supervisor}
+                    {proposal.supervisor.name+" "+proposal.supervisor.surname}
                   </Typography>
                 </Grid>
               </Grid>
@@ -179,6 +191,11 @@ const ThesisProposalsList = () => {
         </button>
       </div>
     </Paper>
+        {proposal?
+            <ThesisProposalDetails proposal={proposal} open={openDetails} setOpen={setOpenDetails}/>:
+            <></>
+        }
+    </>
   );
 };
 

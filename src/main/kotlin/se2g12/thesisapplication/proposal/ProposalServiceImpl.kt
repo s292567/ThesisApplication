@@ -21,8 +21,9 @@ class ProposalServiceImpl (
     //@PreAuthorize("hasRole('')")
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
         // username=email of the logged in professor; check if ok
-        val supervisor = teacherRepository.findById(professorId).get()
-        newProposal.checkBody()
+//        val supervisor = teacherRepository.findById(professorId).get()
+        val supervisor = teacherRepository.findByEmail(professorId).first()
+        //newProposal.checkBody()
 
         val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
         if(! newProposal.coSupervisors.isNullOrEmpty()){

@@ -10,21 +10,21 @@ class ProposalController(@Autowired private val proposalService: ProposalService
 
     //getAll
         @GetMapping("/API/thesis/proposals/all")
-        @PreAuthorize("hasRole('Student') or hasRole('Professor')")
+//        @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun getAllProposals(): List<ProposalDTO> {
         return proposalService.getAllProposals()
     }
 
     //getByCds
     @GetMapping("API/thesis/proposals/cds")
-    @PreAuthorize("hasRole('Student')")
+//    @PreAuthorize("hasRole('Student')")
     fun getProposalsByCds(@RequestParam cds: String): List<ProposalDTO> {
         return proposalService.getProposalsByCds(cds)
     }
 
     // search input string across all fields
     @GetMapping("API/thesis/proposals/search")
-    @PreAuthorize("hasRole('Student') or hasRole('Professor')")
+//    @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun searchProposals(
         @RequestParam(required = false) query: String?,
     ): List<ProposalDTO> {
@@ -37,7 +37,7 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         return proposalService.searchProposals(query)
     }
     @GetMapping("/API/thesis/proposals/search/{studentId}")
-    @PreAuthorize("hasRole('Student')")
+//    @PreAuthorize("hasRole('Student')")
     fun searchProposalsByStudentCds(
         @RequestParam(required = false) query: String?,
         @PathVariable studentId: String
