@@ -5,7 +5,9 @@ import routes from '../assets/routes.json'; // Import your routes
  * Get all thesis proposals.
  */
 export const getAllProposals = () => {
-  return axiosInstance.get(routes.getAllProposals).then(response => {
+  return axiosInstance.get(routes.getAllProposals,{        headers: {
+          'Content-Type' : 'application/json' ,            'Authorization': 'Bearer '+ localStorage.getItem("jwt")
+      }}).then(response => {
       if (response.status === 200) {
           console.log("getAllProposals: ", response.data);
           return response.data;
