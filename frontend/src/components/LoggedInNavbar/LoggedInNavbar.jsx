@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import "./LoggedInNavbar.css";
 
 
-const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth, searchBar}) => {
+const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth, searchBar,logout}) => {
   return (
     <>
       <AppBar
@@ -46,6 +46,7 @@ const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth, searchBar}) 
                 onClick={toggleSidebar}
                 className="navbar-sidebar-button"
               >
+
                 <ArrowForwardIosIcon />
               </IconButton>
               <Link to="/studentDashboard" >
@@ -81,6 +82,9 @@ const LoggedInNavbar = ({ sidebarOpen, toggleSidebar, sidebarWidth, searchBar}) 
               edge="end"
               aria-label="account of current user"
               className="navbar-user"
+              onClick={event => {event.preventDefault()
+                  logout()
+              }}
             >
               <AccountCircle />
             </IconButton>

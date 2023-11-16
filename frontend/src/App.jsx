@@ -98,7 +98,7 @@ function Layout() {
     setJwtToken("");
     setUser("");
     setLoggedIn(false);
-    navigate("/");
+    navigate('/')
   };
 
   return (
@@ -129,18 +129,18 @@ function Layout() {
           {/** TO GO THE SPECIFIC ROUTE YOU NEED TO PUT professorDashboard/1 */}
           <Route
             path="/ProfessorDashboard/:professorId"
-            element={<ProfessorDashboardPage />}
+            element={<ProfessorDashboardPage logout={doLogout}/>}
           />
           {/*<Route path="/ProfessorDashboard-:professorId/CreateNewProposal" element={<... />} />*/}
 
           <Route
             path="/studentDashboard/:studendId"
-            element={<StudentDashboardPage />}
+            element={<StudentDashboardPage logout={doLogout}/>}
           />
 
           <Route
             path="/ProfessorDashboard/:professorId/proposal/create"
-            element={<ProfessorProposalCreationPage userId={user.username}/>} 
+            element={<ProfessorProposalCreationPage userId={user.username} logout={doLogout}/>}
           />
 
           <Route path="*" element={<PageNotFound />} />

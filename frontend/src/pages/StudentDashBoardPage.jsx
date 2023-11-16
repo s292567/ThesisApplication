@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 
 const sidebarWidth = 240;
 
-const StudentDashboardPage = () => {
+const StudentDashboardPage = (props) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -22,6 +22,7 @@ const StudentDashboardPage = () => {
     <div>
       <header style={{ display: "flex" }}>
         <LoggedInNavbar
+            logout={props.logout}
           sidebarOpen={sidebarOpen}
           toggleSidebar={toggleSidebar}
           sidebarWidth={sidebarWidth}

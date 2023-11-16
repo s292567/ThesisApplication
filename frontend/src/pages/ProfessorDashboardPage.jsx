@@ -25,6 +25,7 @@ const ProfessorDashboardPage = (props) => {
     <div>
       <header style={{ display: "flex" }}>
         <LoggedInNavbar
+            logout={props.logout}
           sidebarOpen={sidebarOpen}
           toggleSidebar={toggleSidebar}
           sidebarWidth={sidebarWidth}
