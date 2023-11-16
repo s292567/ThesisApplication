@@ -3,8 +3,10 @@ import "./ProposalForm.css";
 import KeywordsField from "./KeywordsField";
 import DropdownField from "./DropdownField";
 import { insertProposal } from "../../API/API_proposals";
+import {useNavigate} from "react-router-dom";
 
 const ProposalForm = ({userId}) => {
+    const navigate=useNavigate();
 
   const [formData, setFormData] = useState({
     title: '',
@@ -48,6 +50,7 @@ const ProposalForm = ({userId}) => {
     event.preventDefault();
     insertProposal(userId, formData);
     console.log('Form Submitted');
+    navigate('/login')
   }; 
 
   return (
