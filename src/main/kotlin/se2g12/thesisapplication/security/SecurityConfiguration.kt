@@ -22,6 +22,7 @@ class SecurityConfiguration (private val jwtAuthConverter: JwtAuthConverter) {
             http.authorizeHttpRequests {
                 it.requestMatchers("/user/validate/").permitAll()
                     .requestMatchers("/user/signup").anonymous()
+                    .requestMatchers("http://localhost:8081/API/thesis/proposals/apply").hasRole("Student")
                     .requestMatchers("http://localhost:8081/API/thesis/proposals/all").hasRole("Student")
                     //.requestMatchers("/user/createExpert").hasRole("Manager")
                     .anyRequest().permitAll()

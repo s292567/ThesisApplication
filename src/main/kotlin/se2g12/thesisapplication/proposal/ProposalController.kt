@@ -10,7 +10,7 @@ class ProposalController(@Autowired private val proposalService: ProposalService
 
     //getAll
         @GetMapping("/API/thesis/proposals/all")
-//        @PreAuthorize("hasRole('Student') or hasRole('Professor')")
+        @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun getAllProposals(): List<ProposalDTO> {
         return proposalService.getAllProposals()
     }

@@ -69,7 +69,9 @@ export default function ThesisProposalDetails({ proposal, open, setOpen}) {
             };
 
             // Make the API call using Axios
-            const response = await axios.post('http://localhost:8081/API/thesis/proposals/apply', requestBody);
+            const response = await axios.post('http://localhost:8081/API/thesis/proposals/apply', requestBody,{        headers: {
+                    'Content-Type' : 'application/json' ,            'Authorization': 'Bearer '+ localStorage.getItem("jwt")
+                }});
 
             // Check the response status and handle accordingly
             if (response.status === 201) {
