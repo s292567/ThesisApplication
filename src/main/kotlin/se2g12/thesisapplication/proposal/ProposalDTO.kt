@@ -21,7 +21,7 @@ data class ProposalDTO(
     val cds: List<String>? = null
 )
 
-fun Proposal.toDTO(degreeRepository: DegreeRepository) : ProposalDTO{
+fun Proposal.toDTO() : ProposalDTO{
     val coSup=if (this.coSupervisors.isNullOrBlank())
         emptyList<String>()
     else
@@ -50,6 +50,6 @@ fun Proposal.toDTO(degreeRepository: DegreeRepository) : ProposalDTO{
         this.notes,
         date,
         this.level,
-        cdsNames.toList() // cdsNames is converted to List<String>
+        cdsNames // cdsNames is converted to List<String>
     )
 }

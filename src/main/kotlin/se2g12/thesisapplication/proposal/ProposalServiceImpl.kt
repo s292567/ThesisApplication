@@ -15,7 +15,6 @@ import java.util.*
 class ProposalServiceImpl (
     private val proposalRepository: ProposalRepository,
     private val teacherRepository: TeacherRepository,
-    private val degreeRepository: DegreeRepository,
     private val studentRepository: StudentRepository)
     : ProposalService {
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
@@ -64,16 +63,16 @@ class ProposalServiceImpl (
     }
     //getAll
     override fun getAllProposals(): List<ProposalDTO> {
-        return proposalRepository.findAll().map { it.toDTO(degreeRepository) }
+        return proposalRepository.findAll().map { it.toDTO() }
     }
 
     //getByCds
     override fun getProposalsByCds(cds: String): List<ProposalDTO> {
-        return proposalRepository.findByCds(cds).map { it.toDTO(degreeRepository) }
+        return proposalRepository.findByCds(cds).map { it.toDTO() }
     }
 
     override fun searchProposals(query: String): List<ProposalDTO> {
-        return proposalRepository.searchProposals(query).map { it.toDTO(degreeRepository) }
+        return proposalRepository.searchProposals(query).map { it.toDTO() }
     }
     override fun searchProposalByStudentCds(studentId: String, query: String? ): List<ProposalDTO> {
         val cdsName = studentRepository.findById(studentId).get().degree!!.titleDegree!!
@@ -82,7 +81,7 @@ class ProposalServiceImpl (
         return proposalRepository.searchProposals(query)
         // filtering if the proposal contains the cdsCode in the field cds (a list of cds codes)
             .filter { it.cds.split(", ", ",").contains(cdsName) }
-            .map { it.toDTO(degreeRepository) }
+            .map { it.toDTO() }
     }
 
     //searchByAttributes----------------------- search functions of the previous search implementation
