@@ -21,7 +21,7 @@ const DropdownField = ({ data, placeholder, onValueChange }) => {
       <select id="types" className="select-style" onChange={handleDropdownChange}>
         {(placeholderActive) ? <option value="">{placeholder}</option> : null}
         {data.map((value) => (
-          <option key={value.id} value={value.id}>{value.name}</option>
+          <option key={value.id} value={value.name}>{value.name}</option>
         ))}
       </select>
     </div>

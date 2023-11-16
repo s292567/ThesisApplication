@@ -19,4 +19,5 @@ class ProfessorController(private val proposalService: ProposalService) {
     fun addNewProposal(@RequestBody obj: NewProposalDTO, @PathVariable professorId:String){
         proposalService.addNewProposal(obj, professorId)
     }
+
 }

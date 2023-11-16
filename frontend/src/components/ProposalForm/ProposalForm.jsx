@@ -36,10 +36,9 @@ const ProposalForm = ({userId}) => {
 
   // Function to handle changes in child components and update the form data
   const handleFormChange = (fieldName, value) => {
-    setFormData({
-      ...formData,
-      [fieldName]: value,
-    });
+      const newData=formData
+      newData[fieldName]=value
+    setFormData(newData);
 
     console.log(formData);
   };
@@ -60,7 +59,7 @@ const ProposalForm = ({userId}) => {
       </div>
       <KeywordsField 
         labelText={"CoSupervisors"} 
-        placeholderText={"Please type in the ID..."} 
+        placeholderText={"Please type in the name and surname..."}
         isRequired={false} 
         onValueChange={(value) => handleFormChange('coSupervisors', value)}
       />
@@ -71,7 +70,7 @@ const ProposalForm = ({userId}) => {
         onValueChange={(value) => handleFormChange('keywords', value)}
       />
       <DropdownField 
-        data={[{id: 1, name: 'Type 1'}, {id: 2, name: 'Type 2'}]} 
+        data={[{id: 1, name: 'Research'}, {id: 2, name: 'Development'}]}
         placeholder={"Select a type..."} 
         onValueChange={(value) => handleFormChange('type', value)}
       />
