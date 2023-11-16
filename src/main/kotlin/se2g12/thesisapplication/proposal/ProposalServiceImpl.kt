@@ -18,24 +18,25 @@ class ProposalServiceImpl (
     private val degreeRepository: DegreeRepository,
     private val studentRepository: StudentRepository)
     : ProposalService {
-    //@PreAuthorize("hasRole('')")
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
-        // username=email of the logged in professor; check if ok
-//        val supervisor = teacherRepository.findById(professorId).get()
+        // username=email of the logged in professor
         val supervisor = teacherRepository.findByEmail(professorId).first()
-        //newProposal.checkBody()
-
+        val newPropGroups = newProposal.groups.map { it.uppercase(Locale.getDefault()) }
         val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
         if(! newProposal.coSupervisors.isNullOrEmpty()){
             for (coSup in newProposal.coSupervisors!!){
+                try {
 //                string as: "name surname"
-                val (name, surname) = coSup.split(" ")
-                val t = teacherRepository.findByNameSurname(name, surname)
-                if (t.isNotEmpty()){
-                    // internal co-supervisor
-                    possibleGroups.add(t.first().group?.id)
+                    val (name, surname) = coSup.split(" ")
+                    val t = teacherRepository.findByNameSurname(name, surname)
+                    if (t.isNotEmpty()) {
+                        // internal co-supervisor
+                        possibleGroups.add(t.first().group?.id)
+                    }
+                    // else external co-sup
+                }catch (_: IndexOutOfBoundsException){
+                    // the name was not in the form "name surname"
                 }
-                // else external co-sup
             }
 
         }
@@ -60,11 +61,6 @@ class ProposalServiceImpl (
             newProposal.CdS.joinToString(", ") { it })
         proposalRepository.save(proposal)
 
-    }
-    private fun getAuth(): Teacher {
-//        authUser == email
-        val authUser = SecurityContextHolder.getContext().authentication.name
-        return teacherRepository.findByEmail(authUser).first()
     }
     //getAll
     override fun getAllProposals(): List<ProposalDTO> {
