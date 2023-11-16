@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SearchIcon from "@mui/icons-material/Search";
+import {searchProposals} from "../../API/API_proposals.js";
 import "./SearchBarStudent.css";
 
 const SearchBarStudent = () => {
@@ -10,26 +11,28 @@ const SearchBarStudent = () => {
   const toggleFilters = () => {
     setShowFilters(!showFilters);
   };
-
+  const [searchbarInput,setSearchbarInput]=useState("")
   return (
     <div className="search-bar">
       <SearchIcon className="search-icon" />
+      <form className="form"  onSubmit={(event) => {event.preventDefault()
+        var username= localStorage.getItem("username")
+          console.log(searchbarInput)
+
+        searchProposals(username.split("@")[0].toString(),searchbarInput.toString())
+      }}>
       <input
         type="text"
         placeholder="Search proposal..."
         className="search-input"
+        onChange={(value)=>{
+          setSearchbarInput(value)
+        }}
       />
-      <div className="filter-container">
-        <button
-          className={`filter-button ${showFilters ? "active" : ""}`}
-          onClick={toggleFilters}
-        >
-          <FilterAltIcon className="filter-icon" />
-          <span className="filter-text">Filters</span>
-          <KeyboardArrowDownIcon className="arrow-icon" />
-        </button>
-        {showFilters && <FiltersDropdown />}
-      </div>
+      </form>
+
+
+
     </div>
   );
 };

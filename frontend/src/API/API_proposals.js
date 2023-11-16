@@ -1,5 +1,6 @@
 import axiosInstance from './API_Config.js'; // Import your axios instance
 import routes from '../assets/routes.json'; // Import your routes
+const url = 'http://localhost:8081/';
 
 /**
  * Get all thesis proposals.
@@ -61,8 +62,9 @@ export const getProposalsByCds = (cds) => {
 /**
  * Search thesis proposals based on a query string.
  */
-export const searchProposals = (query) => {
-  return axiosInstance.get(routes.searchProposals + `?query=${query}`).then(response => {
+export const searchProposals = (studentId,query) => {
+  return axiosInstance.post(url+"API/thesis/proposals/search/" + studentId+'?query='+query).then(
+      (response) => {
       if (response.status === 200) {
           console.log("searchProposals: ", response.data);
           return response.data;

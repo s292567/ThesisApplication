@@ -73,9 +73,9 @@ function Layout() {
             API_Profile.getProfile(username).then((loggedUser) => {
                 setUser(loggedUser);
                 if (loggedUser.role==="Student")
-                    navigate('/studentDashboard/:'+loggedUser.username);
+                    navigate('/studentDashboard/:'+loggedUser.username.split("@")[0]);
                 if (loggedUser.role==="Professor")
-                    navigate('/professorDashboard/:'+loggedUser.username);
+                    navigate('/professorDashboard/:'+loggedUser.username.split("@")[0]);
 
             }).catch((err) => {
                 setErrorMsg(err.detail)
