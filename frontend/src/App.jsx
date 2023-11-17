@@ -11,15 +11,17 @@ import AuthenticatedRoutes from "./AuthenticatedRoutes";
 import routes from "./assets/Routes.json";
 
 function App() {
-
-    return (
-
-          <BrowserRouter>
-              <UserProvider>
-                <AuthenticatedRoutes />
-              </UserProvider>
-          </BrowserRouter>
-
+  return (
+    <BrowserRouter>
+      <UserProvider>
+        <Routes>
+          <Route path={routes.landing} element={<LandingPage />} />
+          <Route path={routes.login} element={<LoginPage />} />
+          <Route path="*" element={<PageNotFound />} />
+          <AuthenticatedRoutes />
+        </Routes>
+      </UserProvider>
+    </BrowserRouter>
   );
 }
 

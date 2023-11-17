@@ -61,7 +61,7 @@ const UserProvider = ({ children }) => {
             navigateBasedOnRole(loggedUser);
         } catch (error) {
             setErrorMsg(error.detail);
-            navigate("/login");
+            navigate(routes.login);
             // this is a temporary solution, we should handle the error in a better way
             // in fact it's not working at all
         }
