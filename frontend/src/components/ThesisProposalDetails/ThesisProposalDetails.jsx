@@ -49,12 +49,12 @@ const formatDate = (date) => {
 
 export default function ThesisProposalDetails({ proposal, open, setOpen}) {
   const [childOpen, setChildOpen] = React.useState(false);
-  const [appModelOPen,setAppModelOPen]=React.useState(false);
+  const [appModelOpen,setAppModelOpen]=React.useState(false);
 
   const handleClose = () => {
     setOpen(false);
     setChildOpen(false); // Close child modal as well when parent is closed
-    setAppModelOPen(false);
+    setAppModelOpen(false);
   };
 
   const handleApply = () => setChildOpen(true);
@@ -91,7 +91,7 @@ export default function ThesisProposalDetails({ proposal, open, setOpen}) {
 
     const handleChildClose = () => setChildOpen(false);
 const handleAppModelClose=() => {
-    setAppModelOPen(false);
+    setAppModelOpen(false);
     handleClose();
 }
 
@@ -404,7 +404,7 @@ const handleAppModelClose=() => {
           </Box>
         </Box>
       </Modal>
-        <Modal open={appModelOPen} onClose={handleAppModelClose}>
+        <Modal open={appModelOpen} onClose={handleAppModelClose}>
             <Box
                 sx={{
                     ...modalStyle,
