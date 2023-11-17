@@ -41,8 +41,8 @@ sections:
 | #1     |    3    |    3   |   3 days   |   4 days 2 hours            |
 | #3     |    2    |    3   |   2 days   |   2 days 4 hours 20minutes  |
 
-
-
+#### Time Report (Youtrack)
+![report](https://github.com/s292567/ThesisApplication/blob/master/retrospective_image.jpg?raw=true)
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
@@ -94,3 +94,4 @@ The new work split division wasn’t working well at all, and we wren’t able t
 - One thing you are proud of as a Team!!
 	- The team have a good availability to meet on weekly scrum meetings to fix questions and code
   - The collaboration was great on pair programming
+
