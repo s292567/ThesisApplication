@@ -1,4 +1,4 @@
-TEMPLATE FOR RETROSPECTIVE (Team ##)
+TEMPLATE FOR RETROSPECTIVE (Team 12)
 =====================================
 
 The 
