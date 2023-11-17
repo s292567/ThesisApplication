@@ -1,11 +1,10 @@
 import axiosInstance from './API_Config.js'; // Import your axios instance
-import routes from '../assets/routes.json'; // Import your routes
-const url = 'http://localhost:8081/';
+import routes from '../assets/ApiRoutes.json'; // Import your routes
 
 /**
  * Get all thesis proposals.
  */
-export const getAllProposals = () => {
+export const getAllProposals = async () => {
   return axiosInstance.get(routes.getAllProposals,{        headers: {
           'Content-Type' : 'application/json' ,            'Authorization': 'Bearer '+ localStorage.getItem("jwt")
       }}).then(response => {
@@ -46,7 +45,7 @@ export const GetProposalsByCds = async (cds) => {
 /**
  * Get thesis proposals filtered by Course of Study (CDS).
  */
-export const getProposalsByCds = (cds) => {
+export const getProposalsByCds = async (cds) => {
   return axiosInstance.get(routes.getProposalsByCds + `?cds=${cds}`).then(response => {
       if (response.status === 200) {
           console.log("getProposalsByCds: ", response.data);
@@ -62,8 +61,8 @@ export const getProposalsByCds = (cds) => {
 /**
  * Search thesis proposals based on a query string.
  */
-export const searchProposals = (studentId,query) => {
-  return axiosInstance.post(url+"API/thesis/proposals/search/" + studentId+'?query='+query).then(
+export const searchProposals = async (studentId,query) => {
+  return axiosInstance.post( routes.searchProposals + studentId + '?query='+query).then(
       (response) => {
       if (response.status === 200) {
           console.log("searchProposals: ", response.data);
@@ -79,7 +78,7 @@ export const searchProposals = (studentId,query) => {
 /**
  * Insert a new thesis proposal.
  */
-export const insertProposal = (professorId, proposalData) => {
+export const insertProposal = async (professorId, proposalData) => {
   return axiosInstance.post(routes.insertProposal + `${professorId}`, proposalData).then(response => {
       if (response.status === 201) {
           console.log("insertProposal: ", response.data);
@@ -95,7 +94,7 @@ export const insertProposal = (professorId, proposalData) => {
 /**
  * Apply to a thesis proposal.
  */
-export const applyToProposal = (applicationData) => {
+export const applyToProposal = async (applicationData) => {
   return axiosInstance.post(routes.applyToProposal, applicationData).then(response => {
       if (response.status === 201) {
           console.log("applyToProposal: ", response.data);

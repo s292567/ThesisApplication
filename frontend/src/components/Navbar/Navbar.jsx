@@ -12,10 +12,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import politoLogo from "../../assets/politoLogo.png"; // Ensure this path is correct
 import "./Navbar.css";
+import { useUserContext } from "../../userContext";
 
-const Navbar = (props) => {
+const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:768px)");
+
+  const { isLoggedIn, logout } = useUserContext();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -36,7 +39,7 @@ const Navbar = (props) => {
       >
         <CancelOutlinedIcon fontSize="large" style={{ color: "blue" }} />
       </IconButton>
-      <NavbarComponents isLoggedIn={props.isLoggedIn} logout={props.logout} isMobile={false} mobileOpen={mobileOpen}/>
+      <NavbarComponents isLoggedIn={isLoggedIn} logout={logout} isMobile={false} mobileOpen={mobileOpen}/>
     </Box>
   );
 
@@ -44,7 +47,7 @@ const Navbar = (props) => {
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" color="default">
         <Toolbar sx={{ justifyContent: "space-between", overflowX: "auto" }}>
-          <NavbarComponents  isMobile={isMobile} mobileOpen={mobileOpen} isLoggedIn={props.isLoggedIn} logout={props.logout} />
+          <NavbarComponents  isMobile={isMobile} mobileOpen={mobileOpen} isLoggedIn={isLoggedIn} logout={logout} />
 
           {isMobile && (
             <IconButton

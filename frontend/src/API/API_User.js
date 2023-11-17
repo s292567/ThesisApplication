@@ -1,6 +1,6 @@
 const url = 'http://localhost:8081/';
 
-async function login(username,password){
+export const loginApi = async (username,password) => {
 
     let respJson;
     let response;
@@ -20,4 +20,22 @@ async function login(username,password){
     else
         throw respJson;
 }
-export default {login}
+
+export const getProfileApi = async (username=undefined) => {
+
+    let tmpUser = null ;
+    let response;
+    try{
+        response = await fetch(url+"API/profiles/"+ username);
+        tmpUser = await response.json();
+    }catch (e) {
+        throw {status:404,detail:"Cannot communicate with server",instance:"/API/profiles/{"+username+"}"}
+    }
+
+
+    if(response.ok)
+        return tmpUser;
+    else
+        throw tmpUser;
+
+}
