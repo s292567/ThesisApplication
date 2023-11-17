@@ -42,7 +42,7 @@ sections:
 | #3     |    2    |    3   |   2 days   |   2 days 4 hours 20minutes  |
 
 #### Time Report (Youtrack)
-![report](https://github.com/s292567/ThesisApplication/blob/master/retrospective_image.jpg?raw=true)
+![report](https://github.com/s292567/ThesisApplication/blob/master/restrospectives/retrospective_image.jpg?raw=true)
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
