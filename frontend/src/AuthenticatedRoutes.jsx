@@ -7,22 +7,23 @@ import StudentDashboardPage from "./pages/StudentDashboardPage.jsx";
 import ProfessorDashboardPage from "./pages/ProfessorDashboardPage.jsx";
 import ProfessorProposalCreationPage from "./pages/ProfessorProposalCreation.jsx";
 import routes from "./assets/Routes.json";
+import LandingPage from "./pages/LandingPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import PageNotFound from "./pages/PageNotFound.jsx";
 
 const AuthenticatedRoutes = () => {
     const { loggedIn } = useUserContext();
 
-    if (!loggedIn) {
-        return <></>;
-    }
-
     return (
         <Routes>
-            {/**N.B: for the future is better to have a routes wrapper instead of recreating everytime the page.  
-             *       like professor creation proposal page is inside the professor dashboard page route --> means no need to recreate the page entirely
-            */}
+            <Route path={routes.landingPage} element={<LandingPage />} />
+            <Route path={routes.login} element={<LoginPage />} />
+            <Route path="*" element={<PageNotFound />} />
+            { loggedIn && <>
             <Route path={routes.professorDashboard} element={<ProfessorDashboardPage />} />
             <Route path={routes.professorDashboardCreateNewProposal} element={<ProfessorProposalCreationPage />} />
             <Route path={routes.studentDashboard} element={<StudentDashboardPage />} />
+            </>}
         </Routes>
     );
 }

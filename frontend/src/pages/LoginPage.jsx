@@ -7,7 +7,7 @@ const LoginPage = () => {
   const {isLoggedIn} = useUserContext();
 
   if (isLoggedIn) {
-    return <></>;
+    return <p>Already LoggedIn</p>;
   }
 
   return (

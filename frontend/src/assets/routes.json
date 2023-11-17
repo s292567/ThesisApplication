@@ -1,8 +1,8 @@
 {
     "landingPage": "/",
     "login": "/login",
-    "professorDashboardCreateNewProposal": "/professorDashboard/:professorId/createNewProposal",
-    "studentDashboard": "/studentDashboard/:studentId",
-    "professorDashboard": "/professorDashboard/:professorId",
+    "professorDashboardCreateNewProposal": "/professorDashboard/createNewProposal",
+    "studentDashboard": "/studentDashboard",
+    "professorDashboard": "/professorDashboard",
     "pageNotFound": "/pageNotFound"
 }

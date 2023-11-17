@@ -1,10 +1,11 @@
 // userContext
-import React, { useState, createContext, useContext } from 'react';
+import React, {useState, createContext, useContext, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginApi, getProfileApi } from './API/API_User.js'; // Assicurati che il percorso sia corretto
 import routes from './assets/Routes.json';
 
-const UserContext = createContext();
+
+const UserContext = createContext(undefined);
 
 const useUserContext = () => useContext(UserContext);
 
@@ -17,6 +18,36 @@ const UserProvider = ({ children }) => {
     const [errorMsg, setErrorMsg] = useState("");
     const navigate = useNavigate();
 
+
+    useEffect(() => {
+        if (jwtToken !== "") {
+            localStorage.setItem("jwt", jwtToken)
+        } else {
+            const jwt = localStorage.getItem("jwt");
+            if (jwt !== null) {
+                setJwtToken(jwt);
+                setLoggedIn(true);
+            }
+        }
+        if (user !== "") {
+            localStorage.setItem("username", user.username);
+        } else {
+            const username = localStorage.getItem("username");
+            if (username !== null) {
+                getProfileApi(username).then((loggedUser) => {
+                    setUser(loggedUser);
+                }).catch((err) => {
+                    setErrorMsg(err.detail)
+                    setJwtToken('');
+                    setUser('');
+                    setLoggedIn(false);
+                    navigate(routes.login);
+                });
+            }
+        }
+
+
+    }, [jwtToken, user])
     // Funzione di login
     // FOR THE FUTURE --> It's better to have the userId inside the user object directly, instead of retrieving it after
     const login = async (username, password) => {
@@ -30,7 +61,7 @@ const UserProvider = ({ children }) => {
             navigateBasedOnRole(loggedUser);
         } catch (error) {
             setErrorMsg(error.detail);
-            // navigate("/");
+            navigate("/login");
             // this is a temporary solution, we should handle the error in a better way
             // in fact it's not working at all
         }
@@ -48,14 +79,10 @@ const UserProvider = ({ children }) => {
 
     // Funzione per navigare in base al ruolo dell'utente
     const navigateBasedOnRole = (user) => {
-        let route = "";
         if (user.role === "Student") {
-            route = routes.studentDashboard.toString().split(":")[0] + `:${userId}`;
-            navigate(route);
+            navigate(routes.studentDashboard);
         } else if (user.role === "Professor") {
-            console.log( );
-            route = routes.professorDashboard.split(":")[0] + `:${userId}`;
-            navigate(route);
+            navigate(routes.professorDashboard);
         }
     };
 
