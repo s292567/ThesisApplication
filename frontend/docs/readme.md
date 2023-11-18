@@ -1,29 +1,65 @@
-# React + Vite Project
+# Frontend Documentation for ThesisApplication
 
-This project uses React and Vite to provide a dynamic and efficient web application experience. Below you will find information about the updated available routes and components used in this project.
+## Project Overview
+This documentation provides an overview of the frontend structure of the ThesisApplication. The frontend is organized into various directories, each serving specific functions within the application.
 
-## 🚀 Available Routes
+## Table of Contents
+1. [Project Structure](#project-structure)
+2. [Routes and Pages](#🚀-routes-and-pages)
+3. [Component Import/Export](#🧩-component-import-export)
 
-**Note: The routes below are subject to change. The ones written here are only samples right now.**
+## Project Structure
+The frontend is organized into the following directories:
+- `api`: Contains API files with functions for API calls.
+- `assets/images`: Stores image assets.
+- `components`: Contains shared components between pages.
+- `contexts`: Includes the `UserContext`.
+- `pages`: Houses Page components.
+- `routes`: Contains JSON files for indexing frontend and API routes.
+- `tests`: Contains test files.
+- `utils`: Includes utility functions and the `AuthenticatedRoutes.jsx` component.
+- `App.jsx`: The main container that contains the router for the pages.
 
-- `/` - Home page (LandingPage)
-- `/login` - Login page (LoginPage)
-- `/ProfessorDashboard-:professorId` - Professor dashboard (ProfessorDashboardPage)
-- `/studentDashboard-:studentId` - Student dashboard (StudentDashboardPage)
-- `*` - Page not found (PageNotFound)
+## 🚀 Routes and Pages
+The application uses the following routes, each associated with specific pages:
 
-## 🧩 Components
+- Landing Page: `/`
+- Login Page: `/login`
+- Professor Dashboard - Create New Proposal: `/professorDashboard/createNewProposal/`
+- Student Dashboard: `/studentDashboard`
+- Professor Dashboard: `/professorDashboard`
+- Page Not Found: `/pageNotFound`
 
-- `BottomNavbar` - Bottom navigation bar for easy access.
-- `LoggedInNavbar` - Top navigation bar for logged-in users.
-- `Navbar` - Top navigation bar for users who are not logged in.
-- `SearchBarStudent` - Custom search bar for students (without the new proposal button).
-- `SideBar` - Versatile side bar for both students and teachers.
-- `LoginForm` - User-friendly login form.
-- `RequestedProposalList` - Detailed list of requested thesis proposals for students.
-- `ThesisProposalList` - List of thesis proposals tailored for students. **✏️ Must be MODIFIED FOR TEACHER**
-- `ThesisProposalDetails` - Details of the thesis proposals for students **✏️ Must be MODIFIED FOR TEACHER**
-- `SearchBarTeacher` - Search bar for teachers (includes a new proposal button). **🛠️ To be IMPLEMENTED**
-- `ThesisProposalList FOR PROFESSOR` - List of thesis proposals tailored for professors. **🛠️ To be IMPLEMENTED**
-- `ThesisProposalDetails FOR THE PROFESSOR` **🛠️ To be IMPLEMENTED**
-- `?` - Creation Page for a new Thesis proposal **🛠️ To be IMPLEMENTED URGENT TO FRIDAY!!!!!!!**.
+## 🧩 Component Import Export
+Each directory often has an `index.js` file to streamline the import/export process. Here's an example of how to use `index.js` for efficient component management:
+
+### Example
+- To export a component from a directory:
+
+  ```javascript
+  // In your component file (e.g., MyComponent.jsx)
+  export default MyComponent;
+
+  // In index.js of the same directory
+  import MyComponent from './MyComponent';
+  //and then export it
+  export { MyComponent };
+
+  // as example if I want to export from the pages directory
+  import LandingPage from './LandingPage/LandingPage';
+  import LoginPage from './LoginPage/LoginPage';
+  export { LandingPage, LoginPage };
+    ```
+
+- To import this component in another file:
+
+    ```javascript
+    // Instead of importing directly from the component file
+    import MyComponent from '../path/to/MyComponent';
+
+    // Use the index.js for a cleaner import
+    import { MyComponent } from '../path_to_directory';
+
+    // As example if I want to import from the pages directory
+    import { LandingPage, LoginPage } from '../pages';
+    ```
