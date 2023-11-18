@@ -46,6 +46,7 @@ Each directory often has an `index.js` file to streamline the import/export proc
   export { MyComponent };
 
   // as example if I want to export from the pages directory
+  // Into the index.js file:
   import LandingPage from './LandingPage/LandingPage';
   import LoginPage from './LoginPage/LoginPage';
   export { LandingPage, LoginPage };
