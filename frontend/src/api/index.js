@@ -15,6 +15,7 @@ import {
     getProfileApi 
 } from './API_User.js';
 
+
 // Export all the API functions and the axios instance
 export {
     getAllProposals, 
