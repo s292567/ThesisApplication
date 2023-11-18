@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import ProposalForm from "../components/ProposalForm/ProposalForm";
-import BottomNavbar from "../components/BottomNavbar/BottomNavbar";
-import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
 
+import { ProposalForm, BottomNavbar, LoggedInNavbar } from "../../components"
 
 import Box from "@mui/material/Box";
-import { useUserContext } from "../userContext";
-
+import { useUserContext } from "../../contexts"
 
 const sidebarWidth = 240;
 

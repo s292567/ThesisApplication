@@ -1,5 +1,4 @@
-import Navbar from "../components/Navbar/Navbar";
-import LoginForm from "../components/LoginForm/LoginForm";
+import { Navbar, LoginForm } from "../../components";
 import { useUserContext } from "../userContext";
 
 const LoginPage = () => {

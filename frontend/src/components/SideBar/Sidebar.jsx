@@ -2,13 +2,13 @@
 import React from 'react';
 import { useMediaQuery, Drawer } from '@mui/material';
 import { Link } from "react-router-dom";
-import politoLogo from "../../assets/politoLogo.png";
+import politoLogo from "../../assets/images/politoLogo.png";
 
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 import "./Sidebar.css";
-import DashboardIcon from '@mui/icons-material/Dashboard';
+
 
 const Sidebar = ({ isOpen, closeSidebar, sidebarWidth }) => {
 

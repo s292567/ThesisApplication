@@ -1,6 +1,6 @@
 import React from 'react';
 import './PageNotFound.css';
-import Navbar from '../components/Navbar/Navbar';
+import { Navbar } from "../../components";
 
 // IT HAS TO BE A FUNCTIONAL COMPONENT
 // REDONE COMPLETELY

@@ -7,7 +7,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-export default function StudentBottomNavigation() {
+export default function BottomNavbar() {
   const [value, setValue] = React.useState(0);
   const matches = useMediaQuery('(max-width:768px)');
 

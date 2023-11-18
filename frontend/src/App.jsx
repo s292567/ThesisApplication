@@ -1,14 +1,13 @@
 // App.jsx
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { UserProvider } from "./userContext";
 
-import LandingPage from "./pages/LandingPage";
-import LoginPage from "./pages/LoginPage";
-import PageNotFound from "./pages/PageNotFound";
-import AuthenticatedRoutes from "./AuthenticatedRoutes";
+import { UserProvider } from "./contexts"
 
-import routes from "./assets/Routes.json";
+import { AuthenticatedRoutes } from "./utils"
+import { LoginPage, LandingPage, PageNotFound } from "./pages"
+
+import { frontendRoutes as routes } from "./routes" 
 
 function App() {
   return (

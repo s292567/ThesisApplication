@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 
-import BottomNavbar from "../components/BottomNavbar/BottomNavbar";
-import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
-import RequestedProposals from "../components/RequestedProposalList/RequestedProposalList";
-import ThesisProposalsList from "../components/ThesisProposalList/ThesisProposalList";
-
+import {ThesisProposalList, LoggedInNavbar, BottomNavbar } from "../../components";
 
 import Box from "@mui/material/Box";
-import {useUserContext} from "../userContext.jsx";
+import { useUserContext } from "../../contexts";
+
 
 
 const sidebarWidth = 240;
@@ -51,7 +48,7 @@ const StudentDashboardPage = () => {
           <RequestedProposals />
           
         */}
-        <ThesisProposalsList />
+        <ThesisProposalList />
       </Box>
 
       <BottomNavbar />

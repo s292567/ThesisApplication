@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import "./LoginForm.css";
-import { useUserContext } from "../../userContext";
+import { useUserContext } from "../../contexts"
 
-const LoginForm = (props) => {
+const LoginForm = () => {
 
   const {login, isLoggedIn, errorMsg, setErrorMsg} = useUserContext();
 

@@ -1,4 +1,6 @@
-const url = 'http://localhost:8081/';
+// API_user.js
+import {apiRoutes } from "../routes";
+const url = apiRoutes.url;
 
 export const loginApi = async (username,password) => {
 

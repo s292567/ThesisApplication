@@ -1,9 +1,8 @@
-// userContext
+// userContext.jsx
 import React, {useState, createContext, useContext, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginApi, getProfileApi } from './API/API_User.js'; // Assicurati che il percorso sia corretto
-import routes from './assets/Routes.json';
-
+import { getProfileApi, loginApi  } from "../api"
+import { frontendRoutes as routes } from '../routes';
 
 const UserContext = createContext(undefined);
 

@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 
-import BottomNavbar from "../components/BottomNavbar/BottomNavbar";
-import LoggedInNavbar from "../components/LoggedInNavbar/LoggedInNavbar";
-import DefaultButton from "../components/DefaultButton/DefaultButton";
+import { BottomNavbar, LoggedInNavbar } from "../../components";
 
-import routes from "../assets/Routes.json";
+import {Box, Button } from "@mui/material";
 
-
-import Box from "@mui/material/Box";
-import { useUserContext } from "../userContext";
-
+import { useUserContext } from "../../contexts"
+import { frontendRoutes as routes } from "../../routes";
+import { useNavigate } from "react-router-dom";
 
 const sidebarWidth = 240;
 
 const ProfessorDashboardPage = () => {
   const {user, logout } = useUserContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -49,7 +48,8 @@ const ProfessorDashboardPage = () => {
         }}
       >
         {/**if we are going whit a general button in this way is not so convenient at the end, if you want different style, functionalities and so on */}
-        <DefaultButton buttonText={"+ Create new proposal"} navigationRoute={routes.professorDashboardCreateNewProposal}/>
+        { /** <Button buttonText={"+ Create new proposal"} navigationRoute={routes.professorDashboardCreateNewProposal}/>**/}
+        <Button color="primary" variant="contained" onClick={() => {navigate(routes.professorDashboardCreateNewProposal)}}>+ Create new proposal</Button>
 
       </Box>
 

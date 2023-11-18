@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -8,8 +9,8 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import axios from 'axios';
-import {useContext} from "react";
-import { useUserContext } from "../../userContext";
+
+import { useUserContext } from "../../contexts";
 
 
 const modalStyle = {

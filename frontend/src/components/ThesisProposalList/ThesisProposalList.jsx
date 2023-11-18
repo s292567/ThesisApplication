@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react";
-import { List, ListItem, Typography, Grid, Paper } from "@mui/material";
-import "./ThesisProposalList.css";
 import { useNavigate } from "react-router-dom";
-import ThesisProposalDetails from "../ThesisProposalDetails/ThesisProposalDetails";
-import { useWindowDimensions } from "../useWindowDimensions";
-import {getAllProposals} from "../../API/API_proposals.js";
+
+import { List, ListItem, Typography, Grid, Paper } from "@mui/material";
+
+import { ThesisProposalDetails } from "../../components";
+import { useWindowDimensions } from "../../utils";
+import { getAllProposals } from "../../api";
+
+import "./ThesisProposalList.css";
 
 const ThesisProposalsList = () => {
   const navigate = useNavigate();

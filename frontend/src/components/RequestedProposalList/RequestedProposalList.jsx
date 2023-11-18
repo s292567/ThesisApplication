@@ -11,7 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import "./RequestedProposalList.css";
-import { useWindowDimensions } from "../useWindowDimensions";
+import { useWindowDimensions } from "../../utils/useWindowDimensions";
 
 const RequestedProposals = () => {
   const navigate = useNavigate();

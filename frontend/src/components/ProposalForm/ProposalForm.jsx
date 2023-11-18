@@ -1,9 +1,11 @@
 import React, {useState} from "react";
-import "./ProposalForm.css"; 
+import {useNavigate} from "react-router-dom";
+
 import KeywordsField from "./KeywordsField";
 import DropdownField from "./DropdownField";
-import { insertProposal } from "../../API/API_proposals";
-import {useNavigate} from "react-router-dom";
+import { insertProposal } from "../../api";
+
+import "./ProposalForm.css"; 
 
 const ProposalForm = ({userId}) => {
     const navigate=useNavigate();

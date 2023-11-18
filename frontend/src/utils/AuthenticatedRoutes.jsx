@@ -1,13 +1,13 @@
 // AuthenticatedRoutes.jsx
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-import { useUserContext } from "./userContext";
+import Route from "react-router-dom";
 
-import StudentDashboardPage from "./pages/StudentDashboardPage.jsx";
-import ProfessorDashboardPage from "./pages/ProfessorDashboardPage.jsx";
-import ProfessorProposalCreationPage from "./pages/ProfessorProposalCreation.jsx";
-import routes from "./assets/Routes.json";
-import PageNotFound from "./pages/PageNotFound.jsx";
+import { useUserContext } from "../contexts";
+
+import { PageNotFound, StudentDashboardPage, ProfessorDashboardPage, ProfessorProposalCreationPage } from "../pages"
+
+import { frontendRoutes as routes} from "../routes"
+
 
 const AuthenticatedRoutes = () => {
   const { loggedIn } = useUserContext();
