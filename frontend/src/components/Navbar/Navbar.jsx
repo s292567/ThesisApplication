@@ -10,9 +10,9 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import politoLogo from "../../assets/politoLogo.png"; // Ensure this path is correct
+import politoLogo from "../../assets/images/politoLogo.png"; // Ensure this path is correct
 import "./Navbar.css";
-import { useUserContext } from "../../userContext";
+import { useUserContext } from "../../contexts";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);

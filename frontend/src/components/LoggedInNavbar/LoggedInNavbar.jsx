@@ -13,8 +13,8 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import SearchBarStudent from "../SearchBarStudent/SearchBarStudent";
 
-import politoLogo from "../../assets/politoLogo.png";
-import Sidebar from "../SideBar/Sidebar";
+import politoLogo from "../../assets/images/politoLogo.png";
+import { Sidebar } from "../../components";
 import { Link } from "react-router-dom";
 import "./LoggedInNavbar.css";
 

@@ -1,5 +1,5 @@
 import { Navbar, LoginForm } from "../../components";
-import { useUserContext } from "../userContext";
+import { useUserContext } from "../../contexts";
 
 const LoginPage = () => {
 
