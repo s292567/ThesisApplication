@@ -5,8 +5,8 @@ This documentation provides an overview of the frontend structure of the ThesisA
 
 ## Table of Contents
 1. [Project Structure](#project-structure)
-2. [Routes and Pages](#🚀-routes-and-pages)
-3. [Component Import/Export](#🧩-component-import-export)
+2. [Routes and Pages](#routes-and-pages)
+3. [Component Import/Export](#component-import-export)
 
 ## Project Structure
 The frontend is organized into the following directories:
@@ -20,7 +20,7 @@ The frontend is organized into the following directories:
 - `utils`: Includes utility functions and the `AuthenticatedRoutes.jsx` component.
 - `App.jsx`: The main container that contains the router for the pages.
 
-## 🚀 Routes and Pages
+## Routes and Pages
 The application uses the following routes, each associated with specific pages:
 
 - Landing Page: `/`
@@ -30,7 +30,7 @@ The application uses the following routes, each associated with specific pages:
 - Professor Dashboard: `/professorDashboard`
 - Page Not Found: `/pageNotFound`
 
-## 🧩 Component Import Export
+## Component Import Export
 Each directory often has an `index.js` file to streamline the import/export process. Here's an example of how to use `index.js` for efficient component management:
 
 ### Example
