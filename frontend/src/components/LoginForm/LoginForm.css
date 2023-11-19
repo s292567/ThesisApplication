@@ -2,8 +2,6 @@
 
 body,
 html {
-  margin: 0;
-  padding: 0;
   font-family: Arial, sans-serif;
 }
 
@@ -11,10 +9,8 @@ html {
   text-align: center;
 }
 
-
 /* Login form styles */
 .login-form-container {
-  margin-top: 50px; /* Adjust as needed */
   display: flex;
   justify-content: center;
 }
@@ -26,7 +22,6 @@ html {
   border: 1px solid #ccc;
   border-radius: 25px;
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
-  margin-top: 10rem ;
 }
 
 .login-form h1 {

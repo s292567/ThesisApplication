@@ -1,4 +1,4 @@
-import { Navbar, LoginForm } from "../../components";
+import { LoginForm } from "../../components";
 import { useUserContext } from "../../contexts";
 
 const LoginPage = () => {
@@ -10,16 +10,7 @@ const LoginPage = () => {
   }
 
   return (
-    <>
-      <header>
-        <Navbar/>
-      </header>
-      <main >
-        <div className="container">
-          <LoginForm />
-        </div>
-      </main>
-    </>
+    <LoginForm />
   );
 };
 

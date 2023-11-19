@@ -40,13 +40,11 @@ const UserProvider = ({ children }) => {
                     setJwtToken('');
                     setUser('');
                     setLoggedIn(false);
-                    navigate(routes.login);
                 });
             }
         }
+    }, [])
 
-
-    }, [jwtToken, user])
     // Funzione di login
     // FOR THE FUTURE --> It's better to have the userId inside the user object directly, instead of retrieving it after
     const login = async (username, password) => {
@@ -76,13 +74,15 @@ const UserProvider = ({ children }) => {
         navigate("/");
     };
 
+    let homePageRoute = "/";
     // Funzione per navigare in base al ruolo dell'utente
     const navigateBasedOnRole = (user) => {
         if (user.role === "Student") {
-            navigate(routes.studentDashboard);
+            homePageRoute = routes.studentDashboard;
         } else if (user.role === "Professor") {
-            navigate(routes.professorDashboard);
+            homePageRoute = routes.professorDashboard;
         }
+        navigate(homePageRoute);
     };
 
     const contextValue = {
@@ -96,7 +96,8 @@ const UserProvider = ({ children }) => {
         errorMsg,
         setErrorMsg,
         login,
-        logout
+        logout,
+        homePageRoute,
     };
 
     return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;

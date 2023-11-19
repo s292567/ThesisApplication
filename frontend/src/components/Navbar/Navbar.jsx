@@ -1,117 +1,165 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
   IconButton,
-  Box,
-  Drawer,
   useMediaQuery,
+  Button,
+  styled,
+  Box,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+
 import politoLogo from "../../assets/images/politoLogo.png"; // Ensure this path is correct
-import "./Navbar.css";
+
 import { useUserContext } from "../../contexts";
+import { frontendRoutes } from "../../routes";
+import { CancelRounded } from "@mui/icons-material";
+
+// CSS SECTION
+const MyAppBar = styled(AppBar)(({ theme }) => ({
+  backgroundColor: "white",
+}));
+
+const MyToolbar = styled(Toolbar)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "1rem",
+}));
+
+const Logo = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  "& img": {
+    width: "176px",
+  },
+}));
+
+const Links = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  "& a": {
+    textDecoration: "none",
+    color: "black",
+    fontSize: "large",
+    fontWeight: "bold",
+    marginLeft: "2rem",
+    "&:hover": {
+      color: "blue",
+    },
+  },
+}));
+
+const LogButton = styled(Button)(({ theme }) => ({
+  padding: "0.5rem 1rem",
+  border: "none",
+  borderRadius: "12px",
+  backgroundColor: "#003576",
+  color: "white",
+  fontFamily: "Arial, Helvetica, sans-serif",
+  fontSize: "large",
+  fontWeight: "bold",
+  marginLeft: "2rem",
+  "&:hover": {
+    backgroundColor: "#025bc7",
+    color: "white",
+  },
+}));
+// END CSS SECTION
+
+function LinkGroup() {
+  return (
+    <>
+      <Link to="/">Academics</Link>
+      <Link to="/">Thesis</Link>
+      <Link to="/">Innovation</Link>
+    </>
+  );
+}
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:768px)");
 
+  useEffect(() => {
+    if (!isMobile && mobileOpen) {
+      setMobileOpen(!mobileOpen);
+    }
+  }, [isMobile]);
+
   const { isLoggedIn, logout } = useUserContext();
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const drawer = (
-    <Box sx={{ textAlign: "center", p: 1 }} className="drawer-links">
-      <IconButton
-        aria-label="open drawer"
-        edge="start"
-        onClick={handleDrawerToggle}
+  return (
+    <MyAppBar position="sticky" sx={{ height: mobileOpen ? "100vh" : "auto" }}>
+      <MyToolbar
         sx={{
-          fontSize: "large",
-          position: "absolute",
-          top: "2.5rem",
-          right: "1rem",
+          flexDirection: mobileOpen ? "column" : "row",
+          "& div": {
+            marginBottom: mobileOpen ? "5rem" : "0rem",
+            marginTop: mobileOpen ? "3rem" : "0rem",
+          },
         }}
       >
-        <CancelOutlinedIcon fontSize="large" style={{ color: "blue" }} />
-      </IconButton>
-      <NavbarComponents isLoggedIn={isLoggedIn} logout={logout} isMobile={false} mobileOpen={mobileOpen}/>
-    </Box>
-  );
-
-  return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed" color="default">
-        <Toolbar sx={{ justifyContent: "space-between", overflowX: "auto" }}>
-          <NavbarComponents  isMobile={isMobile} mobileOpen={mobileOpen} isLoggedIn={isLoggedIn} logout={logout} />
-
-          {isMobile && (
+        <Logo>
+          <Link to="/">
+            <img
+              src={politoLogo}
+              alt="Politecnico Di Torino"
+              className="navbar-logo"
+            />
+          </Link>
+          {isMobile && mobileOpen && (
             <IconButton
-              color="default"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ ml: "auto", fontSize: "large" }}
+              sx={{ position: "absolute", top: "5rem", right: "1rem" }}
+              onClick={() => {
+                setMobileOpen(!mobileOpen);
+              }}
             >
-              <MenuIcon style={{ fontSize: "2rem" }} />
+              <CancelRounded fontSize="large" sx={{ color: "#003576" }} />
             </IconButton>
           )}
-        </Toolbar>
-      </AppBar>
-
-      <Drawer
-        variant="temporary"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        ModalProps={{ keepMounted: true }}
-        sx={{
-          display: { xs: "block", md: "none" },
-          "& .MuiDrawer-paper": { boxSizing: "border-box", width: "100%" },
-        }}
-      >
-        {drawer}
-      </Drawer>
-    </Box>
-  );
-};
-
-const NavbarComponents = ({ isMobile, mobileOpen ,isLoggedIn,logout}) => {
-  const navigate = useNavigate();
-
-  return (
-    <>
-      <Link to="/">
-        <img
-          src={politoLogo}
-          alt="Politecnico Di Torino"
-          className="navbar-logo"
-          style={{
-            marginTop: mobileOpen ? "3rem" : "1rem",
-          }}
-        />
-      </Link>
-      {!isMobile && (
-        <div style={{display: mobileOpen ? "block" :"flex", alignItems: "center"}}>
-          <div className="navbar-links">
-            <Link to="/">Academics</Link>
-            <Link>Thesis</Link>
-            <Link>Innovation</Link>
-          </div>
-          <button className="login-button" onClick={(event) => {
-              event.preventDefault()
-              if (isLoggedIn)
-                  logout();
-              else
-                  navigate("/login");
-          }}>{!isLoggedIn ? "Login" : "Logout"}</button>
-
-        </div>
-      )}
-    </>
+        </Logo>
+        {((isMobile && mobileOpen) || !isMobile) && (
+          <Links
+            sx={{
+              flexDirection: mobileOpen ? "column" : "row",
+              "& *": {
+                marginBottom: mobileOpen ? "2rem" : "0rem",
+                alignSelf: mobileOpen ? "flex-start" : "center",
+              },
+            }}
+          >
+            <LinkGroup />
+            {location.pathname !== frontendRoutes.login ? (
+              <LogButton
+                variant="contained"
+                onClick={() => {
+                  isLoggedIn ? logout() : navigate(frontendRoutes.login);
+                  setMobileOpen(false);
+                }}
+              >
+                {isLoggedIn ? "Logout" : "Login"}
+              </LogButton>
+            ) : (<Box sx={{padding: "2rem", marginLeft: "2rem"}}/>)}
+          </Links>
+        )}
+        {isMobile && !mobileOpen && (
+          <IconButton
+            edge="start"
+            aria-label="open drawer"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <MenuIcon fontSize="large" sx={{ color: "black" }} />
+          </IconButton>
+        )}
+      </MyToolbar>
+    </MyAppBar>
   );
 };
 

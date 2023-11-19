@@ -14,19 +14,24 @@ import {
 } from "./pages";
 
 import { frontendRoutes as routes } from "./routes";
+import DefaultLayoutPage from "./pages/DefaultLayoutPage/DefaultLayoutPage";
 
 const CheckAuthenticatedRoutes = () => {
-  const { loggedIn } = useUserContext();
+  // const { loggedIn } = useUserContext();
+  const loggedIn = false;
 
   return (
     <Routes>
-      <Route path={routes.landingPage} element={<LandingPage />} />
-      { !loggedIn && <Route path={routes.login} element={<LoginPage />} />}
-      { /** It will be nice to display some popup page regarding the fact that you are already loggedIn.
-       *    if you are not loggedIn you will be redirected to the Not Found Page, to not give you hints on the existence of the page.
-       */}
-      { loggedIn && (
-        <>
+      <Route element={<DefaultLayoutPage />}>
+        <Route path={routes.landingPage} element={<LandingPage />} />
+        {!loggedIn && <Route path={routes.login} element={<LoginPage />} />}
+        {/** It will be nice to display some popup page regarding the fact that you are already loggedIn.
+         *    if you are not loggedIn you will be redirected to the Not Found Page, to not give you hints on the existence of the page.
+         */}
+         <Route path="*" element={<PageNotFound />} />
+      </Route>
+      {loggedIn && (
+        <Route element={<LoggedInLayoutPage />}>
           <Route
             path={routes.professorDashboard}
             element={<ProfessorDashboardPage />}
@@ -39,9 +44,8 @@ const CheckAuthenticatedRoutes = () => {
             path={routes.studentDashboard}
             element={<StudentDashboardPage />}
           />
-        </>
+        </Route>
       )}
-      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };

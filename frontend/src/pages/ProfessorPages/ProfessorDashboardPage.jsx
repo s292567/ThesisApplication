@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 const sidebarWidth = 240;
 
 const ProfessorDashboardPage = () => {
-  const {user, logout } = useUserContext();
+  const { logout } = useUserContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const ProfessorDashboardPage = () => {
     <div>
       <header style={{ display: "flex" }}>
         <LoggedInNavbar
-            logout={logout}
+          logout={logout()}
           sidebarOpen={sidebarOpen}
           toggleSidebar={toggleSidebar}
           sidebarWidth={sidebarWidth}
