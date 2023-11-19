@@ -1,48 +1,47 @@
 // AuthenticatedRoutes.jsx
 import React from "react";
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-import {useUserContext} from "./contexts/index.js";
+import { useUserContext } from "./contexts";
 
 import {
   PageNotFound,
   StudentDashboardPage,
   ProfessorDashboardPage,
   ProfessorProposalCreationPage,
-  LandingPage, LoginPage
-} from "./pages/index.js"
+  LandingPage,
+  LoginPage,
+} from "./pages";
 
-import {frontendRoutes as routes} from "./routes/index.js"
-
+import { frontendRoutes as routes } from "./routes";
 
 const CheckAuthenticatedRoutes = () => {
-  const {loggedIn} = useUserContext();
+  const { loggedIn } = useUserContext();
 
   return (
     <Routes>
-
-      <Route path={routes.landingPage} element={<LandingPage/>}/>
-      <Route path={routes.login} element={<LoginPage/>}/>
-
-      {loggedIn &&
+      <Route path={routes.landingPage} element={<LandingPage />} />
+      { !loggedIn && <Route path={routes.login} element={<LoginPage />} />}
+      { /** It will be nice to display some popup page regarding the fact that you are already loggedIn.
+       *    if you are not loggedIn you will be redirected to the Not Found Page, to not give you hints on the existence of the page.
+       */}
+      { loggedIn && (
         <>
           <Route
             path={routes.professorDashboard}
-            element={<ProfessorDashboardPage/>}
+            element={<ProfessorDashboardPage />}
           />
           <Route
             path={routes.professorDashboardCreateNewProposal}
-            element={<ProfessorProposalCreationPage/>}
+            element={<ProfessorProposalCreationPage />}
           />
           <Route
             path={routes.studentDashboard}
-            element={<StudentDashboardPage/>}
+            element={<StudentDashboardPage />}
           />
         </>
-      }
-
-      <Route path="*" element={<PageNotFound/>}/>
-
+      )}
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };

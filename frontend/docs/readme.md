@@ -17,8 +17,9 @@ The frontend is organized into the following directories:
 - `pages`: Houses Page components.
 - `routes`: Contains JSON files for indexing frontend and API routes.
 - `tests`: Contains test files.
-- `utils`: Includes utility functions and the `AuthenticatedRoutes.jsx` component.
+- `utils`: Includes utility functions
 - `App.jsx`: The main container that contains the router for the pages.
+- `CheckAuthenticatedRoute.jsx`: A component that contains the routes and render some pages only if the user is authenticated.
 
 ## Routes and Pages
 The application uses the following routes, each associated with specific pages:
