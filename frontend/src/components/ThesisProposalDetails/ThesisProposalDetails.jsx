@@ -79,7 +79,7 @@ export default function ThesisProposalDetails({ proposal, open, setOpen}) {
             if (response.status === 201) {
                 // Application to the proposal has been created
                 setChildOpen(false);
-                setAppModelOPen(true);
+                setAppModelOpen(true);
             } else {
                 // Handle other response statuses
                 console.error('Failed to apply to thesis proposal. Status:', response.status);
