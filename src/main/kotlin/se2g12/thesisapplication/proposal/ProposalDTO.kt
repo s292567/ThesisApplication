@@ -11,7 +11,7 @@ data class ProposalDTO(
     val supervisor: Teacher? = null,
     val coSupervisors: List<String>? = null,
     val keywords: List<String>? = null,
-    val type: String? = null,
+    val type: List<String>? = null,
     val groups: List<String>? = null,
     val description: String? = null,
     val requiredKnowledge: String? = null,
@@ -35,6 +35,10 @@ fun Proposal.toDTO() : ProposalDTO{
         emptyList<String>()
     else
         this.groups.split(", ", ",")
+    val type=if(this.groups.isBlank())
+        emptyList<String>()
+    else
+        this.type.split(", ", ",")
     val date = SimpleDateFormat("yyyy-MM-dd").format(this.expiration)
 
     val cdsNames = this.cds.split(", ", ",")
@@ -43,7 +47,7 @@ fun Proposal.toDTO() : ProposalDTO{
         this.title,
         this.supervisor,
         coSup, key,
-        this.type,
+        type,
         gr,
         this.description,
         this.requiredKnowledge,
