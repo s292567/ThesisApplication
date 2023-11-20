@@ -13,7 +13,7 @@ const ThesisProposalsList = () => {
   const navigate = useNavigate();
   // Function to handle See More button click
   const handleSeeMoreClick = () => {
-    navigate("studentDashboard-:studentId/requestedProposals");
+    navigate("/");
   };
   const [proposals, setProposals]=React.useState([])
   const [openDetails, setOpenDetails] = React.useState(false);

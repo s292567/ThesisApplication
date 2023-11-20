@@ -7,15 +7,13 @@ import ProfessorDashboardPage from "./professorPages/ProfessorDashboardPage";
 import ProfessorProposalCreationPage from "./professorPages/ProfessorProposalCreation";
 
 import DefaultLayoutPage from "./DefaultLayoutPage/DefaultLayoutPage";
-import LoggedInDefaultLayoutPage from "./LoggedInDefaultLayoutPage/LoggedInDefaultLayoutPage";
+
 
 export {
     DefaultLayoutPage,
     LandingPage,
     LoginPage,
     PageNotFound,
-
-    LoggedInDefaultLayoutPage,
 
     StudentDashboardPage,
     

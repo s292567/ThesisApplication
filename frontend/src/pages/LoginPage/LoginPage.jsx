@@ -10,7 +10,7 @@ const LoginPage = () => {
   }
 
   return (
-    <LoginForm />
+    <LoginForm style={{marginTop: "2rem"}}/>
   );
 };
 

@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 
 const MyMain = styled(Box)(({ theme }) => ({
   display: "flex",
+  flex: "1",
   flexDirection: "column",
   alignItems: "center",
   padding: "2rem",

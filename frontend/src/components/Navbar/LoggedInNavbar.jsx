@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 
 import politoLogo from "../../assets/images/politoLogo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import {
   ArrowBackIos,
@@ -29,6 +29,7 @@ import {
   Settings,
 } from "@mui/icons-material";
 import { useUserContext } from "../../contexts";
+import { frontendRoutes } from "../../routes";
 
 const MyToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -63,7 +64,8 @@ const Badges = styled(Box)(({ theme }) => ({
 }));
 
 function LoggedInNavbar() {
-  const { homePageRoute, logout } = useUserContext();
+  const { logout } = useUserContext();
+  
   let isMobile = useMediaQuery("(max-width: 600px)");
 
   const [anchorEl, setAnchorEl] = React.useState(null);
