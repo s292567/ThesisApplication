@@ -4,21 +4,14 @@
 This checklist outlines the tasks and features to be implemented or refactored in the frontend of the ThesisApplication. Use this checklist to track progress and ensure all necessary components and functionalities are addressed.
 
 ## General Development Tasks
-- [ ] Refactor routes to use sub-routes under a default layout.
-- [ ] Update the Navbar to render elements based on user status.
-- [ ] Implement DefaultLayoutPage to include the Navbar.
+- [x] Refactor routes to use sub-routes under a default layout.
+- [x] Update the Navbar to render elements based on user status.
+- [x] Implement DefaultLayoutPage to include the Navbar.
 - [ ] Implement some elements to put inside the LandingPage.
+<br></br>
+- [ ] Reformat all the page inside considering that now is UP to the specific page to implement Wrapping the contents and padding and so ON.
 
 ## Specific Tasks
-
-### Refactoring Routes
-- [ ] Update the `<Route>` structure to nest other routes within the `DefaultLayoutPage`. Example:
-
-  ```javascript
-  <Route path={routes.landingPage} element={<DefaultLayoutPage/>}>
-    // ...other routes with corresponding pages
-  </Route>
-  ```
 
 ### Dynamic Loading and Skeletons
 - [ ] Implement Dynamic loading of imports --> LazyLoading and effects to it. Like Skeleton objects for the waiting during theloading
@@ -26,11 +19,20 @@ This checklist outlines the tasks and features to be implemented or refactored i
 
 
 ### Update Navbar
-- [ ] Modify Navbar component to dynamically render based on user status (logged in, logged out, user role, etc.).
+- [x] Modify Navbar component to dynamically render based on user status (logged in, logged out, user role, etc.).
 
 ### Implement DefaultLayoutPage
-- [ ] Create `DefaultLayoutPage` component.
-- [ ] Ensure `DefaultLayoutPage` includes the Navbar and appropriate styling.
+- [x] Create `DefaultLayoutPage` component.
+- [x] Ensure `DefaultLayoutPage` includes the Navbar and appropriate styling.
+
+### Refactoring Routes
+- [x] Update the `<Route>` structure to nest other routes within the `DefaultLayoutPage`. Example:
+
+  ```javascript
+  <Route path={routes.landingPage} element={<DefaultLayoutPage/>}>
+    // ...other routes with corresponding pages
+  </Route>
+  ```
 
 ---
 

@@ -78,7 +78,7 @@ function LoggedInNavbar() {
   };
 
   return (
-    <AppBar>
+    <AppBar position="sticky" sx={{height: "auto"}}>
       <MyToolbar>
         <Logo>
           <IconButton>

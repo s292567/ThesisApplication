@@ -1,16 +1,12 @@
 import React from "react";
-import { ThesisProposalList } from "../../components";
 import { Box, Typography, styled } from "@mui/material";
-import { frontendRoutes } from "../../routes";
-import { useUserContext } from "../../contexts";
 
 function ProfessorDashboardPage() {
 
   return (
-    <>
+    <Box>
       <Typography variant="h3">Hello</Typography>
-
-    </>
+    </Box>
   );
 }
 
