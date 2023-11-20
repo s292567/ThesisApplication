@@ -16,7 +16,7 @@ const UserProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
-  const [homePageRoute, setHomePageRoute] = useState("/");
+  const [homeRoute, setHomeRoute] = useState("/");
 
   useEffect(() => {
     if (jwtToken !== "") {
@@ -57,9 +57,15 @@ const UserProvider = ({ children }) => {
       userId = username.split("@")[0];
 
       const loggedUser = await getProfileApi(username);
-
       setUser(loggedUser);
-      navigateBasedOnRole(loggedUser);
+
+      if (loggedUser.role === "Student") {
+        setHomeRoute(routes.studentDashboard);
+        navigate(routes.studentDashboard);
+      } else if (loggedUser.role === "Professor") {
+        setHomeRoute(routes.professorDashboard);
+        navigate(routes.professorDashboard);
+      }
     } catch (error) {
       setErrorMsg(error.detail);
       navigate(routes.login);
@@ -74,16 +80,9 @@ const UserProvider = ({ children }) => {
     setJwtToken("");
     setUser("");
     setLoggedIn(false);
+    setHomeRoute("/");
+    console.log("logout with route ", homeRoute);
     navigate("/");
-  };
-
-  // Funzione per navigare in base al ruolo dell'utente
-  const navigateBasedOnRole = (user) => {
-    if (user.role === "Student") {
-      navigate(routes.studentDashboard);
-    } else if (user.role === "Professor") {
-      navigate(routes.professorDashboard);
-    }
   };
 
   const contextValue = {
@@ -98,6 +97,7 @@ const UserProvider = ({ children }) => {
     setErrorMsg,
     login,
     logout,
+    homeRoute,
   };
 
   return (

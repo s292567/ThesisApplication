@@ -1,7 +1,8 @@
 // DefaultLayoutPage.jsx
 import { Box, styled } from "@mui/material";
-import { Navbar } from "../../components";
+import {BottomNavbar, Navbar} from "../../components";
 import { Outlet } from "react-router-dom";
+import {useUserContext} from "../../contexts";
 
 const MyMain = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -14,12 +15,16 @@ const MyMain = styled(Box)(({ theme }) => ({
 }));
 
 function DefaultLayoutPage() {
+
+  const { loggedIn } = useUserContext();
+
   return (
     <Box>
       <Navbar />
       <MyMain>
         <Outlet />
       </MyMain>
+      { loggedIn && <BottomNavbar />}
     </Box>
   );
 }

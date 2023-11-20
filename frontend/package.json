@@ -22,7 +22,9 @@
     "react-router-dom": "^6.18.0",
     "react-tag-input": "^6.8.1",
     "start": "^5.1.0",
-    "styled-components": "^6.1.1"
+    "styled-components": "^6.1.1",
+    "@react-buddy/ide-toolbox": "^2.4.0",
+    "@react-buddy/palette-mui": "^5.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

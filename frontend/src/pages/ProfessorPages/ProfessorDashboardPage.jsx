@@ -9,7 +9,7 @@ function ProfessorDashboardPage() {
   return (
     <>
       <Typography variant="h3">Hello</Typography>
-      <ThesisProposalList />
+
     </>
   );
 }

@@ -64,8 +64,8 @@ const Badges = styled(Box)(({ theme }) => ({
 }));
 
 function LoggedInNavbar() {
-  const { logout } = useUserContext();
-  
+  const { logout, homeRoute } = useUserContext();
+
   let isMobile = useMediaQuery("(max-width: 600px)");
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -87,7 +87,7 @@ function LoggedInNavbar() {
               sx={{ color: "orange" }}
             />
           </IconButton>
-          <Link to={homePageRoute}>
+          <Link to={homeRoute}>
             <img
               src={politoLogo}
               alt="Politecnico Di Torino"
