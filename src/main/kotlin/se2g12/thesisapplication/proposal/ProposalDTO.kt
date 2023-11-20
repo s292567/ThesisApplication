@@ -1,6 +1,5 @@
 package se2g12.thesisapplication.proposal
 
-import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.teacher.Teacher
 import java.text.SimpleDateFormat
 import java.util.*
