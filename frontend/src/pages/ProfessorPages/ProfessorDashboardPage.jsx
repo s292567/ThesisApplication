@@ -1,11 +1,11 @@
 // ProfessorDashboardPage.jsx
 import React, {useState, useEffect} from "react";
 import {Box, Paper, Skeleton, Stack, styled, Typography} from "@mui/material";
-import { ThesisProposalList} from "../../components";
+import { ThesesList } from "../../components";
 import {getAllProposals} from "../../api";
 
 function ProfessorDashboardPage() {
-  /*
+
   const proposals = [
     {
       id: "P12345",
@@ -55,8 +55,8 @@ function ProfessorDashboardPage() {
       cds: "Environmental Engineering",
     },
   ];
-  */
 
+  /*
   const [proposals, setProposals] = useState(null);
 
   useEffect(() => {
@@ -71,12 +71,12 @@ function ProfessorDashboardPage() {
 
     fetchProposals();
   }, []);
-
+  */
 
   return (<>
       <Typography variant="h3" color={"orange"} mb={3} mt={3}>Theses preview:</Typography>
       {proposals ? (
-        <ThesisProposalList thesesData={proposals.slice(0, 3)}/>
+        <ThesesList thesesData={proposals.slice(0, 3)}/>
       ) : (
         <SkeletonThesisList count={3}/>
       )}

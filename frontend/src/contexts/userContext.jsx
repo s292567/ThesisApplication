@@ -13,7 +13,7 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState("");
   let userId = undefined;
   const [jwtToken, setJwtToken] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
   const [homeRoute, setHomeRoute] = useState("/");

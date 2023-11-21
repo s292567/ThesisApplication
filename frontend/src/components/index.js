@@ -6,8 +6,8 @@ import Sidebar from "./SideBar/Sidebar"
 
 import LoggedInNavbar from "./Navbar/LoggedInNavbar"
 
-import ThesisProposalDetails from "./ThesisProposalDetails/ThesisProposalDetails" 
-import ThesisProposalList from "./ThesisProposalList/ThesisProposalList"
+import ThesesList from "./ThesesList/ThesesList.jsx";
+import ThesisDetail from "./ThesisDetail/ThesisDetail.jsx";
 
 export {
     BottomNavbar,
@@ -17,6 +17,6 @@ export {
     LoggedInNavbar,
     
     ProposalForm, 
-    ThesisProposalDetails,
-    ThesisProposalList,
+    ThesisDetail,
+    ThesesList,
 }
