@@ -8,7 +8,7 @@ import {useUserContext} from "../../contexts/index.js";
 const MyMain = styled(Box)(({theme}) => ({
   display: "flex",
   justifyContent: "center",
-  height: "120dvh",
+  height: "max-content",
   backgroundColor: "whitesmoke",
 }));
 

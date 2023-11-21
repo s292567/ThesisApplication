@@ -2,6 +2,8 @@
 import React, {useState} from 'react';
 import {Paper, Stack, Typography, styled, Box, Button, useMediaQuery, useTheme} from '@mui/material';
 import {ThesisDetail} from "../index.js";
+import {useLocation} from "react-router-dom";
+import {useUserContext} from "../../contexts/index.js";
 
 // Custom styled Paper component
 const DemoPaper = styled(Paper)(({theme}) => ({
@@ -29,43 +31,64 @@ const myOutlineButtonStyle = (color, hoverColor) => ({
     backgroundColor: 'transparent',
   },
 });
-export default function ThesesList({thesesData}) {
+export default function ThesesList({ thesesData, view='' }) {
+
+  const location = useLocation();
+  const { homeRoute } = useUserContext();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const [openThesis, setOpenThesis] = useState(false);
+  // State to track the selected thesis
+  const [selectedThesis, setSelectedThesis] = useState(null);
 
   if (thesesData === undefined) {
     thesesData = [];
   }
 
+  // Function to handle opening a thesis detail
+  const handleOpenThesisDetail = (thesis) => {
+    setSelectedThesis(thesis);
+  };
+
+  // Function to handle closing the thesis detail
+  const handleCloseThesisDetail = () => {
+    setSelectedThesis(null);
+  };
+
   return (
-    <Box sx={{flexGrow: 1}}>
-      <Stack direction="column" flexWrap="wrap" justifyContent="center" alignItems="flex-start" spacing={2}
-             mb={3}>
+    <Box sx={{ flexGrow: 1 }}>
+      <Stack direction="column" flexWrap="wrap" justifyContent="center" alignItems="flex-start" spacing={2} mb={3}>
         {thesesData.map((thesis) => (
-          <>
-            <DemoPaper key={thesis.id} elevation={1} onClick={() => {
-            }}>
+          <Box key={thesis.id}>
+            <DemoPaper elevation={1} onClick={() => handleOpenThesisDetail(thesis)}>
               <Typography variant="h4" mb={2}>{thesis.title}</Typography>
               <Typography fontSize="large" mb={2}>
                 {!isMobile ? thesis.description : `${thesis.description.substring(0, 90)}...`}
               </Typography>
-              <Button variant="outlined" size="large" sx={myOutlineButtonStyle("orange", "red")} onClick={() => {
-                setOpenThesis(!openThesis);
+              <Button variant="outlined" size="large" sx={myOutlineButtonStyle("orange", "red")} onClick={(event) => {
+                event.stopPropagation(); // Prevents the paper's onClick from firing
+                handleOpenThesisDetail(thesis);
               }}>View</Button>
             </DemoPaper>
-            <ThesisDetail open={openThesis} onClose={setOpenThesis} thesis={thesis}/>
-          </>
+          </Box>
         ))}
       </Stack>
+      { (location.pathname === homeRoute) &&
       <Button variant='outlined' size="x-large" sx={{
-        ...myOutlineButtonStyle("#003366", "#1976d2  "),
+        ...myOutlineButtonStyle("#003366", "#1976d2"),
         marginLeft: '2rem',
         borderRadius: '12px'
       }}> See More Theses </Button>
+      }
       <Box padding={3}></Box>
+
+
+      {selectedThesis && (
+        <ThesisDetail open={!!selectedThesis} handleClose={handleCloseThesisDetail} thesis={selectedThesis} view={view}/>
+      )}
+
+
     </Box>
   );
 }

@@ -1,62 +1,11 @@
 // ProfessorDashboardPage.jsx
 import React, {useState, useEffect} from "react";
 import {Box, Paper, Skeleton, Stack, styled, Typography} from "@mui/material";
-import { ThesesList } from "../../components";
+import {ThesesList} from "../../components";
 import {getAllProposals} from "../../api";
 
-function ProfessorDashboardPage() {
+export default function ProfessorDashboardPage() {
 
-  const proposals = [
-    {
-      id: "P12345",
-      title: "Development of an Advanced AI Assistant",
-      supervisor: "Dr. Jane Smith",
-      coSupervisors: "Prof. John Doe, Dr. Emily White",
-      keywords: "Artificial Intelligence, Machine Learning, User Interface",
-      type: "Research",
-      groups: "AI Lab, ML Group",
-      description:
-        "This proposal focuses on developing an advanced AI assistant capable of understanding and performing complex tasks. The project will involve developing novel machine learning models and user interface improvements.",
-      requiredKnowledge:
-        "Python, Machine Learning, Natural Language Processing",
-      notes: "Previous experience with deep learning frameworks is a plus.",
-      expiration: "2023-12-31",
-      level: "MSc",
-      cds: "Computer Science and Engineering",
-    },
-    {
-      id: "P67890",
-      title: "Exploring Quantum Computing in Cryptography",
-      supervisor: "Dr. Alan Turing",
-      keywords: "Quantum Computing, Cryptography, Security",
-      type: "Research",
-      groups: "Quantum Research Lab",
-      description:
-        "This proposal aims to explore the applications of quantum computing in the field of cryptography, focusing on developing secure communication methods.",
-      requiredKnowledge: "Cryptography, Quantum Mechanics, Programming",
-      notes: "Interest in quantum algorithms is desirable.",
-      expiration: "2024-05-30",
-      level: "PhD",
-      cds: "Physics and Computer Science",
-    },
-    {
-      id: "P24680",
-      title: "Innovations in Renewable Energy Sources",
-      supervisor: "Prof. Emma Green",
-      coSupervisors: "Dr. John Doe, Dr. Emily White",
-      keywords: "Renewable Energy, Sustainability, Environmental Science",
-      type: "Development",
-      groups: "Sustainable Energy Lab",
-      description:
-        "The project focuses on developing innovative and efficient renewable energy sources to reduce carbon footprint and promote sustainability.",
-      requiredKnowledge: "Environmental Science, Engineering, Material Science",
-      expiration: "2023-11-15",
-      level: "MSc",
-      cds: "Environmental Engineering",
-    },
-  ];
-
-  /*
   const [proposals, setProposals] = useState(null);
 
   useEffect(() => {
@@ -71,20 +20,18 @@ function ProfessorDashboardPage() {
 
     fetchProposals();
   }, []);
-  */
+
 
   return (<>
       <Typography variant="h3" color={"orange"} mb={3} mt={3}>Theses preview:</Typography>
       {proposals ? (
-        <ThesesList thesesData={proposals.slice(0, 3)}/>
+        <ThesesList thesesData={proposals.slice(0, 3)} view={'displayApply'}/>
       ) : (
         <SkeletonThesisList count={3}/>
       )}
     </>
   );
 }
-
-export default ProfessorDashboardPage;
 
 // Helper component to render Skeletons
 const SkeletonDemoPaper = styled(Paper)(({theme}) => ({
