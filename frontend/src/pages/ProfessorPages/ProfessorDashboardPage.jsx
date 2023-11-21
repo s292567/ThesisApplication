@@ -25,7 +25,7 @@ export default function ProfessorDashboardPage() {
   return (<>
       <Typography variant="h3" color={"orange"} mb={3} mt={3}>Theses preview:</Typography>
       {proposals ? (
-        <ThesesList thesesData={proposals.slice(0, 3)} view={'displayApply'}/>
+        <ThesesList thesesData={proposals.slice(0, 3)} />
       ) : (
         <SkeletonThesisList count={3}/>
       )}

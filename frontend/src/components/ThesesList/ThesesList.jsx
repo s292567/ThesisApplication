@@ -31,7 +31,7 @@ const myOutlineButtonStyle = (color, hoverColor) => ({
     backgroundColor: 'transparent',
   },
 });
-export default function ThesesList({ thesesData, view='' }) {
+export default function ThesesList({ thesesData }) {
 
   const location = useLocation();
   const { homeRoute } = useUserContext();
@@ -85,7 +85,7 @@ export default function ThesesList({ thesesData, view='' }) {
 
 
       {selectedThesis && (
-        <ThesisDetail open={!!selectedThesis} handleClose={handleCloseThesisDetail} thesis={selectedThesis} view={view}/>
+        <ThesisDetail open={!!selectedThesis} handleClose={handleCloseThesisDetail} thesis={selectedThesis} />
       )}
 
 

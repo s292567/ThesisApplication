@@ -52,7 +52,7 @@ const ApplyButton = ({isMobile, onCLick}) => {
 
 export default function ThesisDetail({open, handleClose, thesis, view = ''}) {
 
-  const { userId } = useUserContext();
+  const { userId, user } = useUserContext();
 
   const isMobile = useMediaQuery('(max-width: 600px)');
   const [warningOpen, setWarningOpen] = useState(false);
@@ -120,7 +120,7 @@ export default function ThesisDetail({open, handleClose, thesis, view = ''}) {
               <TextWrap variant="body1">Expiration: {thesis.expiration}</TextWrap>
 
 
-              {(view === 'displayApply') && <ApplyButton key='lateral' isMobile={isMobile} onCLick={handleApply}/>}
+              {(user.role === "Student") && <ApplyButton key='lateral' isMobile={isMobile} onCLick={handleApply}/>}
 
 
             </Box>
@@ -152,7 +152,7 @@ export default function ThesisDetail({open, handleClose, thesis, view = ''}) {
         <DialogActions sx={{justifyContent: 'space-between', alignItems: 'flex-end'}}>
 
 
-          {(view === 'displayApply') && <ApplyButton key='lateral' isMobile={!isMobile} onCLick={handleApply}/>}
+          {(user.role === "Student") && <ApplyButton key='lateral' isMobile={!isMobile} onCLick={handleApply}/>}
 
 
           <Button onClick={handleClose} color="error" size='large'>Close</Button>
