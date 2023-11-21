@@ -30,4 +30,21 @@ class ApplicationServiceImpl (
         applicationRepository.save(application)
     }
 
+    override fun declineApplication(applicationId: UUID) {
+        val app= applicationRepository.findById(applicationId)
+        // double check if exists
+        applicationRepository.updateStatusById(applicationId, "declined")
+    }
+
+    override fun acceptApplication(applicationId: UUID) {
+        val app= applicationRepository.findById(applicationId).get()
+        applicationRepository.updateStatusById(applicationId ,"accepted")
+        // decline all student applications
+        applicationRepository.updateStatusByStudentId(app.student.id!!, "declined")
+        // decline all proposal applications
+        applicationRepository.updateStatusByProposalId(app.proposal.id!!, "declined")
+        // archive proposal
+        TODO("add active/archived status to proposals")
+    }
+
 }
