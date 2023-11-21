@@ -1,52 +1,110 @@
-// Sidebar.jsx
-import React from 'react';
-import { useMediaQuery, Drawer } from '@mui/material';
-import { Link } from "react-router-dom";
-import politoLogo from "../../assets/images/politoLogo.png";
+import {
+  AccountBox,
+  Article,
+  Group,
+  Home,
+  ModeNight,
+  Person,
+  Settings,
+  Storefront,
+} from "@mui/icons-material";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Switch,
+} from "@mui/material";
+import React from "react";
+import {useUserContext} from "../../contexts";
 
-import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+export default function Sidebar({mode,setMode}){
 
-import "./Sidebar.css";
-
-
-const Sidebar = ({ isOpen, closeSidebar, sidebarWidth }) => {
-
-  const isWideScreen = useMediaQuery('(min-width: 768px)');
+  const { homeRoute } = useUserContext();
 
   return (
-    <Drawer
-      variant={isWideScreen ? isOpen ? 'permanent' : 'temporary' : 'temporary'}
-      sx={{
-        width: isWideScreen ? `${sidebarWidth}px` : '100%',
-        '& .MuiDrawer-paper': {
-          background: 'linear-gradient(to bottom, #FC7A08, #F0EFF5)',
-          width: isWideScreen ? `${sidebarWidth}px` : '100%',
-          boxSizing: 'border-box',
-          border: 'none',
-        },
-      }}
-      open={isOpen}
-    >
-      <div className="sidebar-content">
-        <Link to="/studentDashboard">
-          <img src={politoLogo} alt="Politecnico Di Torino" />
-        </Link>
-        <ul>
-          <li>Dashboard</li>
-          <li>Proposal List</li>
-          
-        </ul>
-      </div>
-      <button className="sidebar-close-button" onClick={closeSidebar}>
-        { isWideScreen ? (
-          <ArrowBackIosNewRoundedIcon style={{ color: "white" }} />
-        ) : (
-          <CancelOutlinedIcon fontSize="large" style={{ color: "white" }} />
-        )}
-      </button>
-    </Drawer>
+
+      <Box position="sticky">
+        <List >
+
+          <ListItem disablePadding>
+            <ListItemButton component="a" href={homeRoute}>
+              <ListItemIcon>
+                <Home />
+              </ListItemIcon>
+              <ListItemText primary="Homepage" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component="a" href="#simple-list">
+              <ListItemIcon>
+                <Article />
+              </ListItemIcon>
+              <ListItemText primary="Pages" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component="a" href="#simple-list">
+              <ListItemIcon>
+                <Group />
+              </ListItemIcon>
+              <ListItemText primary="Groups" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component="a" href="#simple-list">
+              <ListItemIcon>
+                <Storefront />
+              </ListItemIcon>
+              <ListItemText primary="Marketplace" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component="a" href="#simple-list">
+              <ListItemIcon>
+                <Person />
+              </ListItemIcon>
+              <ListItemText primary="Friends" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component="a" href="#simple-list">
+              <ListItemIcon>
+                <Settings />
+              </ListItemIcon>
+              <ListItemText primary="Settings" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component="a" href="#simple-list">
+              <ListItemIcon>
+                <AccountBox />
+              </ListItemIcon>
+              <ListItemText primary="Profile" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component="a" href="#simple-list">
+              <ListItemIcon>
+                <ModeNight />
+              </ListItemIcon>
+              <Switch onChange={e=>setMode(mode === "light" ? "dark" : "light")}/>
+            </ListItemButton>
+          </ListItem>
+
+        </List>
+
+      </Box>
+
+
   );
 };
-
-export default Sidebar;

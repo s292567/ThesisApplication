@@ -6,4 +6,5 @@ export default function Navbar() {
     const {loggedIn} = useUserContext();
 
     return <>{loggedIn ? <LoggedInNavbar/> : <NavbarNormal/>}</>;
+    //return <LoggedInNavbar></LoggedInNavbar>;
 }

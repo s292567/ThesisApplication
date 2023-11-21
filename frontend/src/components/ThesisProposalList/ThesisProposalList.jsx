@@ -4,9 +4,6 @@ import {Paper, Stack, Typography, styled, Box, Button, useMediaQuery, useTheme} 
 
 // Custom styled Paper component
 const DemoPaper = styled(Paper)(({theme}) => ({
-    [theme.breakpoints.up('md')]: {
-        maxWidth: "60%",
-    },
     padding: "2rem",
     borderRadius: "0.8rem",
     ...theme.typography.body2,
@@ -41,7 +38,7 @@ export default function ThesisProposalList({thesesData}) {
     }
 
     return (
-        <Box sx={{flexGrow: 1, marginBottom: "2rem"}}>
+        <Box sx={{flexGrow: 1}}>
             <Stack direction="column" flexWrap="wrap" justifyContent="center" alignItems="flex-start" spacing={2}
                    mb={3}>
                 {thesesData.map((thesis) => (
@@ -60,6 +57,7 @@ export default function ThesisProposalList({thesesData}) {
                 marginLeft: '2rem',
                 borderRadius: '12px'
             }}> See More Theses </Button>
+            <Box padding={3}></Box>
         </Box>
     );
 }
