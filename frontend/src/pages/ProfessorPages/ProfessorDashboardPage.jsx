@@ -1,15 +1,8 @@
 // ProfessorDashboardPage.jsx
 import React, {useState, useEffect} from "react";
 import {Box, Paper, Skeleton, Stack, styled, Typography} from "@mui/material";
-import {Sidebar, ThesisProposalList} from "../../components";
+import { ThesisProposalList} from "../../components";
 import {getAllProposals} from "../../api";
-
-const MyMain = styled(Box)(({theme}) => ({
-  display: "flex",
-  justifyContent: "center",
-  height: "120dvh",
-  backgroundColor: "whitesmoke",
-}));
 
 function ProfessorDashboardPage() {
   /*
@@ -67,34 +60,27 @@ function ProfessorDashboardPage() {
   const [proposals, setProposals] = useState(null);
 
   useEffect(() => {
-      const fetchProposals = async () => {
-          try {
-              const response = await getAllProposals(); // This should be your API call
-              setProposals(response);
-          } catch (error) {
-              console.error("Failed to fetch proposals:", error);
-          }
-      };
+    const fetchProposals = async () => {
+      try {
+        const response = await getAllProposals(); // This should be your API call
+        setProposals(response);
+      } catch (error) {
+        console.error("Failed to fetch proposals:", error);
+      }
+    };
 
-      fetchProposals();
+    fetchProposals();
   }, []);
 
 
-  return (
-    <MyMain>
-      <Box flex={1}  p={2} bgcolor={"white"} sx={{ borderRight: '1px solid lightgrey', display: { xs: "none", md: "block" } }}>
-        <Sidebar/>
-      </Box>
-      <Box flex={4} ml={3} mr={3}>
-        <Typography variant="h3" color={"orange"} mb={3} mt={3}>Theses preview:</Typography>
-        {proposals ? (
-          <ThesisProposalList thesesData={proposals.slice(0, 3)}/>
-        ) : (
-          <SkeletonThesisList count={3}/>
-        )}
-      </Box>
-      <Box flex={1} p={2} sx={{ display: { xs: "none", md: "block" } }} />
-    </MyMain>
+  return (<>
+      <Typography variant="h3" color={"orange"} mb={3} mt={3}>Theses preview:</Typography>
+      {proposals ? (
+        <ThesisProposalList thesesData={proposals.slice(0, 3)}/>
+      ) : (
+        <SkeletonThesisList count={3}/>
+      )}
+    </>
   );
 }
 
