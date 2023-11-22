@@ -1,9 +1,10 @@
 import NavbarNormal from "./NavbarNormal";
 import LoggedInNavbar from "./LoggedInNavbar";
-import { useUserContext } from "../../contexts";
+import {useUserContext} from "../../contexts";
 
 export default function Navbar() {
-  const { loggedIn } = useUserContext();
+    const {loggedIn} = useUserContext();
 
-  return <>{loggedIn ? <LoggedInNavbar /> : <NavbarNormal />}</>;
+    return <>{loggedIn ? <LoggedInNavbar/> : <NavbarNormal/>}</>;
+    //return <LoggedInNavbar></LoggedInNavbar>;
 }

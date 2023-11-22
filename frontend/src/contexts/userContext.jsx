@@ -28,7 +28,6 @@ const UserProvider = ({ children }) => {
         setLoggedIn(true);
       }
     }
-
     if (user !== "") {
       localStorage.setItem("username", user.username);
     } else {
@@ -37,6 +36,11 @@ const UserProvider = ({ children }) => {
         getProfileApi(username)
           .then((loggedUser) => {
             setUser(loggedUser);
+            if( loggedUser.role === "Student"){
+              setHomeRoute(routes.studentDashboard);
+            }else if( loggedUser.role === "Professor"){
+              setHomeRoute(routes.professorDashboard);
+            }
           })
           .catch((err) => {
             setErrorMsg(err.detail);
@@ -46,6 +50,7 @@ const UserProvider = ({ children }) => {
           });
       }
     }
+
   }, []);
 
   // Funzione di login
@@ -55,9 +60,11 @@ const UserProvider = ({ children }) => {
       setJwtToken(token);
       setLoggedIn(true);
       userId = username.split("@")[0];
+      localStorage.setItem("jwt", token);
 
       const loggedUser = await getProfileApi(username);
       setUser(loggedUser);
+      localStorage.setItem("username", loggedUser.username);
 
       if (loggedUser.role === "Student") {
         setHomeRoute(routes.studentDashboard);
