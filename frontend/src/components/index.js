@@ -9,6 +9,8 @@ import LoggedInNavbar from "./Navbar/LoggedInNavbar"
 import ThesesList from "./ThesesList/ThesesList.jsx";
 import ThesisDetail from "./ThesisDetail/ThesisDetail.jsx";
 
+import SkeletonThesisList from "./Skeletons/SkeletonThesisList.jsx";
+
 export {
     BottomNavbar,
     LoginForm, 
@@ -19,4 +21,6 @@ export {
     ProposalForm, 
     ThesisDetail,
     ThesesList,
+
+    SkeletonThesisList
 }

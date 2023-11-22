@@ -11,7 +11,7 @@ import {
     ProfessorProposalCreationPage,
     LandingPage,
     LoginPage,
-    DefaultLayoutPage,
+    DefaultLayoutPage, StudentThesesPage, ProfessorThesesPage,
 } from "./pages";
 
 import {frontendRoutes as routes} from "./routes";
@@ -31,13 +31,23 @@ const CheckAuthenticatedRoutes = () => {
                             element={<ProfessorDashboardPage/>}
                         />
                         <Route
-                            path={routes.professorDashboardCreateNewProposal}
+                            path={routes.professorNewThesis}
                             element={<ProfessorProposalCreationPage/>}
                         />
+                        <Route
+                          path={routes.professorTheses}
+                          element={<ProfessorThesesPage/>}
+                        />
+
                         <Route
                             path={routes.studentDashboard}
                             element={<StudentDashboardPage/>}
                         />
+                        <Route
+                          path={routes.studentTheses}
+                          element={<StudentThesesPage />}
+                        />
+
                     </>
                 )}
                 <Route path="*" element={<PageNotFound/>}/>

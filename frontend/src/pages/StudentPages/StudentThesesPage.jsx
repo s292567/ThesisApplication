@@ -1,10 +1,10 @@
 // ProfessorDashboardPage.jsx
 import React, {useState, useEffect} from "react";
-import { Typography} from "@mui/material";
+import {Typography} from "@mui/material";
 import {ThesesList, SkeletonThesisList} from "../../components";
 import {getAllProposals} from "../../api";
 
-export default function ProfessorDashboardPage() {
+export default function StudentThesesPage() {
 
   const [proposals, setProposals] = useState(null);
 
@@ -23,12 +23,14 @@ export default function ProfessorDashboardPage() {
 
 
   return (<>
-      <Typography variant="h3" color={"orange"} mb={3} mt={3}>Theses preview:</Typography>
+      <Typography variant="h3" color={"orange"} mb={3} mt={3}>Theses:</Typography>
       {proposals ? (
-        <ThesesList thesesData={proposals.slice(0, 3)} />
+        <ThesesList thesesData={proposals} />
       ) : (
         <SkeletonThesisList count={3}/>
       )}
     </>
   );
 }
+
+

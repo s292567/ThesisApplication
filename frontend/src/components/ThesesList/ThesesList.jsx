@@ -11,10 +11,10 @@ const DemoPaper = styled(Paper)(({theme}) => ({
   [theme.breakpoints.down('md')]: {
     width: '600px',
   },
-  [theme.breakpoints.down(700)]:{
+  [theme.breakpoints.down(700)]: {
     width: '500px',
   },
-  [theme.breakpoints.down('sm')]:{
+  [theme.breakpoints.down('sm')]: {
     width: 'auto',
   },
   padding: "2rem",
@@ -41,10 +41,10 @@ const myOutlineButtonStyle = (color, hoverColor) => ({
     backgroundColor: 'transparent',
   },
 });
-export default function ThesesList({ thesesData }) {
+export default function ThesesList({thesesData}) {
 
   const location = useLocation();
-  const { homeRoute } = useUserContext();
+  const {homeRoute, generalRoutes } = useUserContext();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -68,7 +68,8 @@ export default function ThesesList({ thesesData }) {
 
   return (
     <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-      <Stack direction="column" flexWrap="wrap" spacing={2} mb={3} sx={{display: 'flex', justifyContent:"center", alignItems:"flex-start",}}>
+      <Stack direction="column" flexWrap="wrap" spacing={2} mb={3}
+             sx={{display: 'flex', justifyContent: "center", alignItems: "flex-start",}}>
         {thesesData.map((thesis) => (
           <Box key={thesis.id} flex={1} sx={{display: 'flex'}}>
             <DemoPaper elevation={1} onClick={() => handleOpenThesisDetail(thesis)}>
@@ -84,18 +85,24 @@ export default function ThesesList({ thesesData }) {
           </Box>
         ))}
       </Stack>
-      { (location.pathname === homeRoute) &&
-      <Button variant='outlined' sx={{
-        ...myOutlineButtonStyle("#003366", "#1976d2"),
-        marginLeft: '2rem',
-        borderRadius: '12px',
-        fontSize: 'large',
-      }}> See More Theses </Button>
+      {(location.pathname === homeRoute) &&
+        <Button
+          variant='outlined'
+          sx={{
+          ...myOutlineButtonStyle("#003366", "#1976d2"),
+          marginLeft: '2rem',
+          borderRadius: '12px',
+          fontSize: 'large',
+          }}
+          onClick={() => {
+            window.location.href = generalRoutes.theses;
+          }}
+        > See More Theses </Button>
       }
       <Box padding={3}></Box>
 
       {selectedThesis && (
-        <ThesisDetail open={!!selectedThesis} handleClose={handleCloseThesisDetail} thesis={selectedThesis} />
+        <ThesisDetail open={!!selectedThesis} handleClose={handleCloseThesisDetail} thesis={selectedThesis}/>
       )}
 
 
