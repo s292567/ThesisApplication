@@ -11,7 +11,7 @@ const useUserContext = () => useContext(UserContext);
 // it's used to Load the user context the first time the app is loaded
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState("");
-  let userId = undefined;
+  const [userId, setUserId] = useState("")
   const [jwtToken, setJwtToken] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -59,7 +59,7 @@ const UserProvider = ({ children }) => {
       const token = await loginApi(username, password);
       setJwtToken(token);
       setLoggedIn(true);
-      userId = username.split("@")[0];
+      setUserId(username.split("@")[0]);
       localStorage.setItem("jwt", token);
 
       const loggedUser = await getProfileApi(username);
