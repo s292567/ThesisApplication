@@ -7,6 +7,8 @@ import {useUserContext} from "../../contexts/index.js";
 
 // Custom styled Paper component
 const DemoPaper = styled(Paper)(({theme}) => ({
+  width: '90%',
+  minWidth: '90%',
   padding: "2rem",
   borderRadius: "0.8rem",
   ...theme.typography.body2,
@@ -35,6 +37,7 @@ export default function ThesesList({ thesesData }) {
 
   const location = useLocation();
   const { homeRoute } = useUserContext();
+  console.log(homeRoute);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
