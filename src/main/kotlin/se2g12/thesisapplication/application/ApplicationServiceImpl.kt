@@ -2,6 +2,8 @@ package se2g12.thesisapplication.application
 
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import se2g12.thesisapplication.archive.Archive
+import se2g12.thesisapplication.archive.ArchiveRepository
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
@@ -15,12 +17,12 @@ import java.util.*
 class ApplicationServiceImpl (
     private val applicationRepository: ApplicationRepository,
     private val proposalRepository: ProposalRepository,
-    private val studentRepository: StudentRepository
+    private val studentRepository: StudentRepository,
+    private val archiveRepository: ArchiveRepository
 )
     : ApplicationService {
-    //@PreAuthorize("hasRole('Student')")
+
     override fun addNewApplication(newApplication: NewApplicationDTO) {
-//        val student=studentRepository.findById(newApplication.studentId).get()
         val student=studentRepository.findByEmail(newApplication.studentId).first()
         // check with auth
         val proposal=proposalRepository.findById(newApplication.proposalId)
@@ -32,7 +34,6 @@ class ApplicationServiceImpl (
 
     override fun declineApplication(applicationId: UUID) {
         val app= applicationRepository.findById(applicationId)
-        // double check if exists
         applicationRepository.updateStatusById(applicationId, "declined")
     }
 
@@ -44,7 +45,7 @@ class ApplicationServiceImpl (
         // decline all proposal applications
         applicationRepository.updateStatusByProposalId(app.proposal.id!!, "declined")
         // archive proposal
-        TODO("add active/archived status to proposals")
+        archiveRepository.save(Archive(app.proposal))
     }
 
 }
