@@ -80,5 +80,23 @@ Stores information about research proposals for academic projects. Includes deta
     level: Level of the proposal (e.g., BSc, MSc).
     cds: Course of study associated with the proposal.
 
+## Application Table
+
+Stores information about the applications to thesis proposals made by students. Uses a generated UUID (id) as the primary key.
+### Fields
+
+    id: Unique identifier for the application.
+    student_id: Identifier of the student who applied.
+    proposal_id: Identifier of the proposal applied to.
+    status: String representing the application status (pending/accepted/declined)
+
+## Archive Table
+
+Stores information about the archived proposals. Uses a generated UUID (id) as the primary key.
+### Fields
+
+    id: Unique identifier for the application.
+    proposal_id: Identifier of the archived proposal.
+
 # Relational Diagram
 ![diagram](https://github.com/s292567/ThesisApplication/blob/master/diagram.png?raw=true)
