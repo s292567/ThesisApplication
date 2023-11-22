@@ -43,7 +43,7 @@ const SkeletonDemoPaper = styled(Paper)(({theme}) => ({
   transition: 'box-shadow .3s', // Smooth transition for shadow
   boxShadow: theme.shadows[1], // Default shadow
   [theme.breakpoints.up('md')]: {
-    width: "60%",
+    width: "80%",
   },
 }));
 

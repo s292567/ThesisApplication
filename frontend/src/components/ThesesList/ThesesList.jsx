@@ -7,8 +7,16 @@ import {useUserContext} from "../../contexts/index.js";
 
 // Custom styled Paper component
 const DemoPaper = styled(Paper)(({theme}) => ({
-  width: '90%',
-  minWidth: '90%',
+  width: '800px',
+  [theme.breakpoints.down('md')]: {
+    width: '600px',
+  },
+  [theme.breakpoints.down(700)]:{
+    width: '500px',
+  },
+  [theme.breakpoints.down('sm')]:{
+    width: 'auto',
+  },
   padding: "2rem",
   borderRadius: "0.8rem",
   ...theme.typography.body2,
@@ -26,7 +34,7 @@ const DemoPaper = styled(Paper)(({theme}) => ({
 const myOutlineButtonStyle = (color, hoverColor) => ({
   fontWeight: "bold",
   color: `${color}`,
-  border: `1px solid ${color}`,
+  border: `2px solid ${color}`,
   "&:hover": {
     color: `${hoverColor}`,
     border: `2px solid ${hoverColor}`,
@@ -37,7 +45,6 @@ export default function ThesesList({ thesesData }) {
 
   const location = useLocation();
   const { homeRoute } = useUserContext();
-  console.log(homeRoute);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -60,10 +67,10 @@ export default function ThesesList({ thesesData }) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Stack direction="column" flexWrap="wrap" justifyContent="center" alignItems="flex-start" spacing={2} mb={3}>
+    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+      <Stack direction="column" flexWrap="wrap" spacing={2} mb={3} sx={{display: 'flex', justifyContent:"center", alignItems:"flex-start",}}>
         {thesesData.map((thesis) => (
-          <Box key={thesis.id}>
+          <Box key={thesis.id} flex={1} sx={{display: 'flex'}}>
             <DemoPaper elevation={1} onClick={() => handleOpenThesisDetail(thesis)}>
               <Typography variant="h4" mb={2}>{thesis.title}</Typography>
               <Typography fontSize="large" mb={2}>
@@ -78,14 +85,14 @@ export default function ThesesList({ thesesData }) {
         ))}
       </Stack>
       { (location.pathname === homeRoute) &&
-      <Button variant='outlined' size="x-large" sx={{
+      <Button variant='outlined' sx={{
         ...myOutlineButtonStyle("#003366", "#1976d2"),
         marginLeft: '2rem',
-        borderRadius: '12px'
+        borderRadius: '12px',
+        fontSize: 'large',
       }}> See More Theses </Button>
       }
       <Box padding={3}></Box>
-
 
       {selectedThesis && (
         <ThesisDetail open={!!selectedThesis} handleClose={handleCloseThesisDetail} thesis={selectedThesis} />
