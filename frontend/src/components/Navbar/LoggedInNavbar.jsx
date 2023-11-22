@@ -67,7 +67,7 @@ const Links = styled(Box)(({theme}) => ({
 export default function LoggedInNavbar() {
   const theme = useTheme();
 
-  const { logout, homeRoute } = useUserContext();
+  const { logout, homeRoute, user } = useUserContext();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -178,7 +178,7 @@ export default function LoggedInNavbar() {
                   aria-expanded={open ? "true" : undefined}
                 >
                   <Avatar
-                    children="MR"
+                    children={ user ? `${user.username[0]}${user.username[1]}` : "MR"}
                     sx={{
                       bgcolor: "#007baa",
                       padding: isMobile ? "0.2rem" : "0.5rem",
