@@ -6,12 +6,10 @@ import StudentDashboardPage from "./studentPages/StudentDashBoardPage";
 import ProfessorDashboardPage from "./professorPages/ProfessorDashboardPage";
 
 import ProfessorProposalCreationPage from "./professorPages/ProfessorProposalCreation";
-import ProfessorThesesPage from "./ProfessorPages/ProfessorThesesPage.jsx";
-
-import StudentThesesPage from "./StudentPages/StudentThesesPage.jsx";
 
 import DefaultLayoutPage from "./DefaultLayoutPage/DefaultLayoutPage";
 
+import ThesesPage from "./ThesesPage/ThesesPage.jsx";
 
 export {
     DefaultLayoutPage,
@@ -20,9 +18,9 @@ export {
     PageNotFound,
 
     StudentDashboardPage,
-    StudentThesesPage,
     
     ProfessorDashboardPage,
     ProfessorProposalCreationPage,
-    ProfessorThesesPage,
+
+    ThesesPage,
 }

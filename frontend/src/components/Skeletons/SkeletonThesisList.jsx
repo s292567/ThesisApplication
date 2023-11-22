@@ -17,7 +17,7 @@ const SkeletonDemoPaper = styled(Paper)(({theme}) => ({
 
 export default function SkeletonThesisList({count}) {
   return (
-    <Box sx={{flexGrow: 1}}>
+    <Box sx={{flexGrow: 1, marginBottom: '2rem'}}>
       <Stack direction="column" flexWrap="wrap" justifyContent="center" alignItems="flex-start" spacing={2}>
         {Array.from({length: count}, (_, index) => (
           <SkeletonDemoPaper key={index} variant="rectangular" animation="wave">
