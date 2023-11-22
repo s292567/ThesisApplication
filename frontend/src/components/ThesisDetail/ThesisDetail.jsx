@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -13,7 +13,7 @@ import {
   IconButton
 } from '@mui/material';
 import {Close, WarningRounded} from "@mui/icons-material";
-import { applyToProposal } from "../../api/index.js";
+import {applyToProposal} from "../../api/index.js";
 import {useUserContext} from "../../contexts/index.js";
 
 
@@ -52,12 +52,14 @@ const ApplyButton = ({isMobile, onCLick}) => {
 
 export default function ThesisDetail({open, handleClose, thesis, view = ''}) {
 
-  const { userId, user } = useUserContext();
+  const {userId, user} = useUserContext();
 
   const isMobile = useMediaQuery('(max-width: 600px)');
   const [warningOpen, setWarningOpen] = useState(false);
   const [confirmedOpen, setConfirmedOpen] = useState(false);
-  const [msg, setMsg ] = useState('');
+  const [msg, setMsg] = useState('');
+
+  const formatFullName = (person) => `${person.name} ${person.surname}`;
 
   const handleApply = () => {
     setWarningOpen(true);
@@ -119,21 +121,25 @@ export default function ThesisDetail({open, handleClose, thesis, view = ''}) {
                 Knowledge: {thesis.requiredKnowledge}</TextWrap>
               <TextWrap variant="body1">Expiration: {thesis.expiration}</TextWrap>
 
-
               {(user.role === "Student") && <ApplyButton key='lateral' isMobile={isMobile} onCLick={handleApply}/>}
-
 
             </Box>
             {/* Right Section */}
             <Divider orientation="vertical" flexItem sx={{display: isMobile ? 'none' : 'flex'}}/>
             <Box sx={{flex: '1 1 auto', marginLeft: 2}}>
-              <Typography variant="subtitle1" gutterBottom sx={{fontWeight: '500'}}>
-                Supervisor: <TextWrap sx={{maxWidth: '200px'}}>{thesis.supervisor}</TextWrap>
-              </Typography>
+              <Box sx={{fontSize: '1.2rem', fontWeight: '500'}}>
+                Supervisor:
+                <TextWrap sx={{maxWidth: '200px'}}>
+                  {formatFullName(thesis.supervisor)}
+                </TextWrap>
+              </Box>
               {thesis.coSupervisors && (
-                <Typography variant="subtitle1" gutterBottom sx={{fontWeight: '500'}}>
-                  Co-Supervisors: <TextWrap>{thesis.coSupervisors}</TextWrap>
-                </Typography>
+                <Box sx={{fontSize: '1.2rem', fontWeight: '500'}}>
+                  Co-Supervisors:
+                  <TextWrap>
+                    {thesis.coSupervisors.map(coSupervisor => formatFullName(coSupervisor)).join(", ")}
+                  </TextWrap>
+                </Box>
               )}
               <TextWrap mt={4}>
                 <Typography gutterBottom sx={{fontSize: '1.8rem', color: theme => theme.palette.primary.dark}}>
@@ -204,7 +210,6 @@ export default function ThesisDetail({open, handleClose, thesis, view = ''}) {
             </Box>
           </MyDialog>
         </MyDialog>
-
       </MyDialog>
     </>
   )
