@@ -11,13 +11,20 @@ import java.util.UUID
 @CrossOrigin
 class ApplicationController(private val applicationService: ApplicationService) {
 
-    //@PreAuthorize("hasRole('Professor')")
-    @PatchMapping("/API/thesis/applications/{applicationId}")
-    fun updateApplication(@RequestBody status: String, @PathVariable applicationId: UUID){
-        if (status.lowercase() === "accepted")
-            applicationService.acceptApplication(applicationId)
-        else if (status.lowercase() === "declided")
-            applicationService.declineApplication(applicationId)
+    @PostMapping("/API/thesis/proposals/apply")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun addNewProposal(@RequestBody obj: NewApplicationDTO){
+        applicationService.addNewApplication(obj)
+    }
+
+    @PatchMapping("/API/thesis/applications")
+    fun updateApplication(@RequestBody application: ApplicationDTO){
+
+        if (application.status == "accepted") {
+            applicationService.acceptApplication(application.id)
+        }else if (application.status == "declined") {
+            applicationService.declineApplication(application.id)
+        }
         // if another status is passed, do nothing
     }
 }

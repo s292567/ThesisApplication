@@ -2,6 +2,7 @@ package se2g12.thesisapplication.application
 
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import se2g12.thesisapplication.archive.Archive
 import se2g12.thesisapplication.archive.ArchiveRepository
 import se2g12.thesisapplication.proposal.ProposalRepository
@@ -14,6 +15,7 @@ import java.util.*
 
 
 @Service
+@Transactional
 class ApplicationServiceImpl (
     private val applicationRepository: ApplicationRepository,
     private val proposalRepository: ProposalRepository,
@@ -23,8 +25,7 @@ class ApplicationServiceImpl (
     : ApplicationService {
 
     override fun addNewApplication(newApplication: NewApplicationDTO) {
-        val student=studentRepository.findByEmail(newApplication.studentId).first()
-        // check with auth
+        val student=studentRepository.findById(newApplication.studentId).get()
         val proposal=proposalRepository.findById(newApplication.proposalId)
         if (proposal.isEmpty)
             throw ProposalNotFoundError("Proposal ${newApplication.proposalId} not found")
