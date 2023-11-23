@@ -12,7 +12,7 @@ import {
     LandingPage,
     LoginPage,
     DefaultLayoutPage,
-    ThesesPage,
+    ThesesPage, ProfessorApplicants,
 } from "./pages";
 
 import {frontendRoutes as routes} from "./routes";
@@ -38,6 +38,10 @@ const CheckAuthenticatedRoutes = () => {
                         <Route
                           path={routes.professorTheses}
                           element={<ThesesPage />}
+                        />
+                        <Route
+                          path={routes.professorApplicants}
+                          element={<ProfessorApplicants />}
                         />
 
                         <Route

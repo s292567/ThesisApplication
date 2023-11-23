@@ -4,6 +4,7 @@
 
     "professorNewThesis": "/professorDashboard/addNewThesis/",
     "professorTheses": "/professorDashboard/thesisList/",
+    "professorApplicants": "/professorDashboard/applicantsList/",
 
     "studentTheses": "/studentDashboard/thesisList/",
 

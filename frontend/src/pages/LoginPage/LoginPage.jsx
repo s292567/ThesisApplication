@@ -47,14 +47,21 @@ export default function LoginPage() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [helper, setHelper] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setOpen(true);
-    // eventualmente aggiungere qui validation dell'input
-    login(username, password).catch((err) => {
-      setErrorMsg(err.detail ? err.detail : JSON.stringify(err));
-    });
+
+    if (!username || !password) {
+      setErrorMsg("Username or password cannot be empty");
+      setHelper(true);
+    } else {
+      setHelper(false);
+      login(username, password).catch((err) => {
+        setErrorMsg(err.detail ? err.detail : JSON.stringify(err));
+      });
+    }
   };
 
   const [open, setOpen] = useState(true);
@@ -84,7 +91,8 @@ export default function LoginPage() {
           {errorMsg ? (
             <Alert
               severity="error"
-              sx={{mb: 2, fontSize: 'large', backgroundColor: '#ffdeda', color: '#aa2111'}}
+              icon={<Info/>}
+              sx={{mb: 2, }}
               action={
                 <IconButton
                   aria-label="close"
@@ -97,7 +105,7 @@ export default function LoginPage() {
                   <Close fontSize="inherit"/>
                 </IconButton>
               }>
-              Login was unsuccessful: {errorMsg}
+              Login was unsuccessful: <strong>{errorMsg}</strong>
             </Alert>
           ) : (
             <Alert
@@ -125,18 +133,27 @@ export default function LoginPage() {
         <form onSubmit={(e) => handleSubmit(e)}>
           <TextField
             required
+            helperText={helper && "cannot be empty"}
             fullWidth
             id="email"
             label="Email address"
             name="email"
             autoComplete="email"
             margin="normal"
-            sx={{'.MuiInputBase-root, .MuiOutlinedInput-root': {borderRadius: '10px',}}}
+            sx={{
+              '.MuiInputBase-root, .MuiOutlinedInput-root': {borderRadius: '10px',},
+              '.MuiFormHelperText-root': {color: 'red'},
+              '& input:invalid + fieldset': {
+                borderColor: helper ? 'red' : 'default',
+                borderWidth: 2,
+              },
+            }}
             onChange={(ev) => setUsername(ev.target.value)}
           />
           <TextField
             required
             fullWidth
+            helperText={helper && "cannot be empty"}
             name="password"
             label="Password"
             type={showPassword ? 'text' : 'password'}
@@ -157,7 +174,15 @@ export default function LoginPage() {
                 </InputAdornment>
               ),
             }}
-            sx={{'.MuiInputBase-root, .MuiOutlinedInput-root': {borderRadius: '10px',}}}
+            sx={{
+              '.MuiFormHelperText-root': {color: 'red'},
+              '& input:invalid + fieldset': {
+                borderColor: helper ? 'red' : 'default',
+                borderWidth: 2,
+              },
+              '.MuiInputBase-root, .MuiOutlinedInput-root': {borderRadius: '10px',},
+            }}
+
             onChange={(ev) => setPassword(ev.target.value)}
           />
           <Box sx={{padding: '0.7rem'}}/>
