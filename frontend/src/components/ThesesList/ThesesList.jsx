@@ -1,7 +1,7 @@
 // ThesesList.jsx
 import React, {useState} from 'react';
-import {Paper, Stack, Typography, styled, Box, Button, useMediaQuery, useTheme} from '@mui/material';
-import {ThesisDetail} from "../index.js";
+import {Paper, Stack, Typography, styled, Box, useMediaQuery, useTheme} from '@mui/material';
+import {MyOutlinedButton, ThesisDetail} from "../index.js";
 import {useLocation} from "react-router-dom";
 import {useUserContext} from "../../contexts/index.js";
 
@@ -31,20 +31,10 @@ const DemoPaper = styled(Paper)(({theme}) => ({
   },
 }));
 
-const myOutlineButtonStyle = (color, hoverColor) => ({
-  fontWeight: "bold",
-  color: `${color}`,
-  border: `2px solid ${color}`,
-  "&:hover": {
-    color: `${hoverColor}`,
-    border: `2px solid ${hoverColor}`,
-    backgroundColor: 'transparent',
-  },
-});
 export default function ThesesList({thesesData}) {
 
   const location = useLocation();
-  const {homeRoute, generalRoutes } = useUserContext();
+  const {homeRoute, generalRoutes} = useUserContext();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -77,27 +67,29 @@ export default function ThesesList({thesesData}) {
               <Typography fontSize="large" mb={2}>
                 {!isMobile ? thesis.description : `${thesis.description.substring(0, 90)}...`}
               </Typography>
-              <Button variant="outlined" size="large" sx={myOutlineButtonStyle("orange", "red")} onClick={(event) => {
-                event.stopPropagation(); // Prevents the paper's onClick from firing
-                handleOpenThesisDetail(thesis);
-              }}>View</Button>
+
+              <MyOutlinedButton text={'view'}
+                                colorBorder={'orange'}
+                                colorBorderHover={'red'}
+                                style={{fontSize: 'large',}}
+                                onClick={(event) => {
+                                  event.stopPropagation(); // Prevents the paper's onClick from firing
+                                  handleOpenThesisDetail(thesis);
+                                }}
+              />
+
             </DemoPaper>
           </Box>
         ))}
       </Stack>
       {(location.pathname === homeRoute) &&
-        <Button
-          variant='outlined'
-          sx={{
-          ...myOutlineButtonStyle("#003366", "#1976d2"),
-          marginLeft: '2rem',
-          borderRadius: '12px',
-          fontSize: 'large',
-          }}
-          onClick={() => {
-            window.location.href = generalRoutes.theses;
-          }}
-        > See More Theses </Button>
+        <MyOutlinedButton text={'See More Theses'}
+                          colorBorder={"#003366"}
+                          colorBorderHover={'#1976d2'}
+                          style={{fontSize: 'large', marginLeft: '3rem'}}
+                          onClick={() => {
+                            window.location.href = generalRoutes.theses;
+                          }}/>
       }
       <Box padding={3}></Box>
 

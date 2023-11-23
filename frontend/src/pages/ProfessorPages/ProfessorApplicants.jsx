@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Paper, Stack, Typography} from "@mui/material";
+import {Box, Button, Paper, Stack, styled, Typography} from "@mui/material";
+
+const MyPaperWrap = styled(Paper)(({theme}) => ({
+  width: '100%',
+  padding: '2rem',
+  borderRadius: '18px',
+}));
 
 export default function ProfessorApplicants() {
   /*
@@ -70,33 +76,39 @@ export default function ProfessorApplicants() {
   console.log(groupedByStudentArray);
 
   return (
-    <Box sx={{dipslay: 'flex', marginTop: '2rem', marginBottom: '2rem', padding: '2rem'}}>
-    <Stack direction='column' sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px'}}>
-      {groupedByProposalArray.map((application) => {
-        return (
-          <Paper key={application.proposal_id} elevation={3} p={2}>
-            <Stack direction='row' sx={{display: 'flex', justifyContent: 'space-between', gap: '20px'}}>
-              {/* Thesis Title */}
-              <Typography variant='h5'>{application.proposal_title}</Typography>
-              {/* Mapped to the number of students */}
-              <Stack direction='column' spacign={3}>
-                {application.applicants.map((applicant) => {
-                  return (
-                    <Stack direction='row' sx={{display: 'flex', justifyContent: 'space-between', gap:'10px'}}>
-                      {/* Student Names */}
-                      <Typography variant='h6'>{applicant.student_name}</Typography>
-                      {/* Student Status */}
-                      <Button variant='contained' color='success'>Accept</Button>
-                      <Button variant='contained' color='error'>Decline</Button>
-                    </Stack>
-                  )
-                })}
+    <Box sx={{dipslay: 'flex', marginTop: '2rem', marginBottom: '2rem', padding: '4rem', height: '100vh', flexGrow: '1'}}>
+      <Stack direction='column' sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', flexGrow: '1'}}>
+        {groupedByProposalArray.map((application) => {
+          return (
+            <MyPaperWrap key={application.proposal_id} elevation={3}>
+              <Stack sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                flexDirection: {md: 'row', xs: 'column'},
+              }}>
+                {/* Thesis Title */}
+                <Typography variant='h5' sx={{mb: {'(maxWidth: 950px)':  0, xs: 3}, }}>{application.proposal_title}</Typography>
+                {/* Mapped to the number of students */}
+                <Stack direction='column' spacign={3}>
+                  {application.applicants.map((applicant) => {
+                    return (
+                      <Stack key={applicant.id} direction='row' sx={{display: 'flex', justifyContent: 'space-between', flexDirection: {sm: 'row', xs: 'column'},}}>
+                        {/* Student Names */}
+                        <Typography variant='h6' mr={6}>{applicant.student_name}</Typography>
+                        {/* Student Status */}
+                        <Box sx={{display: 'flex', gap: '10px'}}>
+                          <Button variant='contained' color='success'>Accept</Button>
+                          <Button variant='contained' color='error'>Decline</Button>
+                        </Box>
+                      </Stack>
+                    )
+                  })}
+                </Stack>
               </Stack>
-            </Stack>
-          </Paper>
-        )
-      })}
-    </Stack>
+            </MyPaperWrap>
+          )
+        })}
+      </Stack>
     </Box>
   )
 }

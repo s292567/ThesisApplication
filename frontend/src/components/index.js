@@ -11,6 +11,8 @@ import ThesisDetail from "./ThesisDetail/ThesisDetail.jsx";
 
 import SkeletonThesisList from "./Skeletons/SkeletonThesisList.jsx";
 
+import MyOutlinedButton from "./MyOutlinedButton/MyOutlinedButton.jsx";
+
 export {
     BottomNavbar,
     LoginForm, 
@@ -21,6 +23,8 @@ export {
     ProposalForm, 
     ThesisDetail,
     ThesesList,
+
+    MyOutlinedButton,
 
     SkeletonThesisList
 }
