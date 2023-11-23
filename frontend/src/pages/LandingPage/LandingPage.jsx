@@ -1,11 +1,8 @@
 
-const LandingPage = () => {
-  
-  return (
-    <>
-      <p>Hello Landing Page</p>
-    </>
-  );
-};
-
-export default LandingPage;
+export default function LandingPage() {
+    return (
+        <div>
+            <h1>Landing Page</h1>
+        </div>
+    )
+}

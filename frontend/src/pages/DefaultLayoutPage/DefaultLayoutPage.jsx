@@ -1,6 +1,6 @@
 // DefaultLayoutPage.jsx
 import {Box, styled} from "@mui/material";
-import {Navbar, Sidebar } from "../../components";
+import {Navbar} from "../../components";
 import {Outlet} from "react-router-dom";
 import React from "react";
 import {useUserContext} from "../../contexts/index.js";
@@ -22,15 +22,20 @@ function DefaultLayoutPage() {
                 <Navbar/>
             </header>
             <main>
-              { loggedIn ?
               <MyMain>
+              { loggedIn ?
+                <>
                 <Box flex={1}  p={2} sx={{ display: { xs: "none", md: "block" } }} />
                 <Box sx={{display: 'flex', flexDirection: 'column'}} flex={5} ml={3} mr={3} >
                   <Outlet/>
                 </Box>
                 <Box flex={1} p={2} sx={{ display: { xs: "none", md: "block" } }} />
+                </>
+               :
+                <Outlet />
+              }
               </MyMain>
-               : <Outlet />}
+
             </main>
             <footer>
             </footer>
