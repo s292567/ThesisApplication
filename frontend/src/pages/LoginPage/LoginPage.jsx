@@ -75,13 +75,12 @@ export default function LoginPage() {
           Hi, Welcome back
         </Typography>
         <img src={politoLogo} alt="politecnico Di Torino" style={{height: '200px'}}/>
-        {/* ... Icons for authentication methods ... */}
       </StyleColumn>
 
       <StyleColumn direction='column'
                    sx={{
                      backgroundColor: 'whitesmoke', maxWidth: 400, minWidth: 300, maxHeight: '600px',
-                     gap: '0', justifyContent: 'center', display: 'flex', ml: {xs: 'none', md: '6rem'},
+                     gap: '0', justifyContent: 'center', display: 'flex', ml: {xs: 'none', md: '2rem', xl: '10rem'},
                    }}
       >
         <Typography variant="h4" component="h1" gutterBottom mb={3}>
