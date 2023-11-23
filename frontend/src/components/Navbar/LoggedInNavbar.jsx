@@ -26,6 +26,7 @@ import {
 } from '@mui/icons-material';
 import politoLogo from '../../assets/images/politoLogo.png';
 import {useUserContext} from "../../contexts";
+import {frontendRoutes} from "../../routes/index.js";
 
 const MyToolbar = styled(Toolbar)(({theme}) => ({
   display: 'flex',
@@ -67,7 +68,7 @@ const Links = styled(Box)(({theme}) => ({
 export default function LoggedInNavbar() {
   const theme = useTheme();
 
-  const { logout, homeRoute } = useUserContext();
+  const {logout, homeRoute, user} = useUserContext();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -142,12 +143,26 @@ export default function LoggedInNavbar() {
               <Link href={homeRoute} color="inherit" sx={{mx: 2}}>
                 Home
               </Link>
-              <Link href="/theses" color="inherit" sx={{mx: 2}}>
-                Theses
-              </Link>
-              <Link href="/new-proposal" color="inherit" sx={{mx: 2, verticalAlign: 'center'}}>
-                Add New Proposal
-              </Link>
+
+              {user.role === "Professor" && (<>
+                  <Link href={frontendRoutes.professorTheses} color="inherit" sx={{mx: 2}}>
+                    Theses
+                  </Link>
+                  <Link href={frontendRoutes.professorNewThesis} color="inherit" sx={{mx: 2, verticalAlign: 'center'}}>
+                    New Thesis
+                  </Link>
+                  {/* Here NEW LINKS ON THE NAVBAR */}
+                </>
+              )}
+
+              {user.role === "Student" && (<>
+                  <Link href={frontendRoutes.studentTheses} color="inherit" sx={{mx: 2}}>
+                    Theses
+                  </Link>
+                  {/* Here NEW LINKS ON THE NAVBAR */}
+                </>
+              )}
+
             </Links>)}
           {isMobile && !mobileOpen && (
             <IconButton
@@ -178,7 +193,7 @@ export default function LoggedInNavbar() {
                   aria-expanded={open ? "true" : undefined}
                 >
                   <Avatar
-                    children="MR"
+                    children={user ? `${user.username[0]}${user.username[1]}` : "MR"}
                     sx={{
                       bgcolor: "#007baa",
                       padding: isMobile ? "0.2rem" : "0.5rem",
@@ -235,7 +250,9 @@ export default function LoggedInNavbar() {
             </ListItemIcon>
             Settings
           </MenuItem>
-          <MenuItem onClick={() => { logout() }}>
+          <MenuItem onClick={() => {
+            logout()
+          }}>
             <ListItemIcon>
               <Logout fontSize="small" color="error"/>
             </ListItemIcon>

@@ -133,11 +133,11 @@ export default function ThesisDetail({open, handleClose, thesis, view = ''}) {
                   {formatFullName(thesis.supervisor)}
                 </TextWrap>
               </Box>
-              {thesis.coSupervisors && (
+              {thesis.coSupervisors.length && (
                 <Box sx={{fontSize: '1.2rem', fontWeight: '500'}}>
                   Co-Supervisors:
                   <TextWrap>
-                    {thesis.coSupervisors.map(coSupervisor => formatFullName(coSupervisor)).join(", ")}
+                    {thesis.coSupervisors.join(', ')}
                   </TextWrap>
                 </Box>
               )}
