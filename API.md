@@ -254,3 +254,34 @@ Display proposals that contain query string (caps-insensitive) in any of their f
   - `404 Not Found`: The proposal has not been found
   - `401 Unauthorized`: The user is not logged in
   - `500 Internal Server Error`: Generic server error
+
+## Accept an application
+**PATCH `/API/thesis/applications`**
+
+Changes the application status to `accepted` or `declined`.
+When an application is accepted, it automatically declines all the applications made by the same student to other proposals and 
+by other students to the same proposal, and archives the proposal.
+
+Example:
+> There are 3 applications in the db:
+> 
+> (id:1, student:A, proposal:p1)
+> 
+> (id:2, student:B, proposal:p1)
+> 
+> (id:3, student:A, proposal:p3)
+> 
+> If application 1 is accepted, then application 2 (made by another student to the same proposal p1)
+> and application 3 (made by the same student A) are declined. Furthermore, proposal p1 is archived
+
+- request body example:
+    ```
+    {
+        "id" : "f92b3e16-5291-44eb-ab6b-29d0ab97df9b",
+        "status": "accepted",
+    }
+    ```
+
+- response status:
+  - `200 Ok`: The application status has been changed
+  - `500 Internal Server Error`: Generic server error

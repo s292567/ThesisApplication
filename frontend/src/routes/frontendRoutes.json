@@ -1,8 +1,15 @@
 {
     "landingPage": "/",
     "login": "/login",
-    "professorDashboardCreateNewProposal": "/professorDashboard/createNewProposal/",
+
+    "professorNewThesis": "/professorDashboard/addNewThesis/",
+    "professorTheses": "/professorDashboard/thesisList/",
+    "professorApplicants": "/professorDashboard/applicantsList/",
+
+    "studentTheses": "/studentDashboard/thesisList/",
+
     "studentDashboard": "/studentDashboard",
     "professorDashboard": "/professorDashboard",
+
     "pageNotFound": "/pageNotFound"
 }

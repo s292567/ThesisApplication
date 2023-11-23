@@ -11,12 +11,16 @@ const useUserContext = () => useContext(UserContext);
 // it's used to Load the user context the first time the app is loaded
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState("");
-  let userId = undefined;
+  const [userId, setUserId] = useState("")
   const [jwtToken, setJwtToken] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const navigate = useNavigate();
   const [homeRoute, setHomeRoute] = useState("/");
+  const [generalRoutes, setGeneralRoutes] = useState({
+    theses: "/",
+
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (jwtToken !== "") {
@@ -38,8 +42,10 @@ const UserProvider = ({ children }) => {
             setUser(loggedUser);
             if( loggedUser.role === "Student"){
               setHomeRoute(routes.studentDashboard);
+              setGeneralRoutes(prev => ({...prev, theses: routes.studentTheses}));
             }else if( loggedUser.role === "Professor"){
               setHomeRoute(routes.professorDashboard);
+              setGeneralRoutes(prev => ({...prev, theses: routes.professorTheses}));
             }
           })
           .catch((err) => {
@@ -59,7 +65,7 @@ const UserProvider = ({ children }) => {
       const token = await loginApi(username, password);
       setJwtToken(token);
       setLoggedIn(true);
-      userId = username.split("@")[0];
+      setUserId(username.split("@")[0]);
       localStorage.setItem("jwt", token);
 
       const loggedUser = await getProfileApi(username);
@@ -68,9 +74,11 @@ const UserProvider = ({ children }) => {
 
       if (loggedUser.role === "Student") {
         setHomeRoute(routes.studentDashboard);
+        setGeneralRoutes(prev => ({...prev, theses: routes.studentTheses}));
         navigate(routes.studentDashboard);
       } else if (loggedUser.role === "Professor") {
         setHomeRoute(routes.professorDashboard);
+        setGeneralRoutes(prev => ({...prev, theses: routes.professorTheses}));
         navigate(routes.professorDashboard);
       }
     } catch (error) {
@@ -105,6 +113,7 @@ const UserProvider = ({ children }) => {
     login,
     logout,
     homeRoute,
+    generalRoutes,
   };
 
   return (
