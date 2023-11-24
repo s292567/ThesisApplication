@@ -4,7 +4,7 @@ import {Typography} from "@mui/material";
 import {ThesesList, SkeletonThesisList} from "../../components";
 import {getAllProposals} from "../../api";
 
-export default function ProfessorDashboardPage() {
+export default function StudentDashboardPage() {
 
   const [proposals, setProposals] = useState(null);
 
