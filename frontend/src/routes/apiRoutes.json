@@ -1,0 +1,10 @@
+{
+    "url": "http://localhost:8081/",
+    "baseThesisProposalApiURL": "http://localhost:8081/API/thesis/",
+    "getAllProposals": "proposals/all",
+    "getProposalsByCds": "proposals/cds",
+    "searchProposals": "proposals/search/",
+    "insertProposal": "proposals/",
+    "applyToProposal": "proposals/apply",
+    "acceptApplication": "applications"
+}
