@@ -12,6 +12,7 @@ import ThesisDetail from "./ThesisDetail/ThesisDetail.jsx";
 import SkeletonThesisList from "./Skeletons/SkeletonThesisList.jsx";
 
 import MyOutlinedButton from "./MyOutlinedButton/MyOutlinedButton.jsx";
+import PastelComponent from "./PastelComponent/PastelComponent.jsx";
 
 export {
     BottomNavbar,
@@ -25,6 +26,7 @@ export {
     ThesesList,
 
     MyOutlinedButton,
+    PastelComponent,
 
     SkeletonThesisList
 }
