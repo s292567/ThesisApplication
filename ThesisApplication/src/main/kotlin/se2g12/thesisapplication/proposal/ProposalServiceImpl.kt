@@ -1,5 +1,6 @@
 package se2g12.thesisapplication.proposal
 
+import jakarta.transaction.Transactional
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -17,6 +18,7 @@ class ProposalServiceImpl (
     private val teacherRepository: TeacherRepository,
     private val studentRepository: StudentRepository)
     : ProposalService {
+    @Transactional
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
         // username=email of the logged in professor
         val supervisor = teacherRepository.findByEmail(professorId).first()
@@ -46,13 +48,11 @@ class ProposalServiceImpl (
             }
         }
 
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-
-        val expirationDate: Date = dateFormat.parse(newProposal.expiration)
+        val expirationDate = newProposal.expiration
         val proposal = Proposal(newProposal.title, supervisor,
             newProposal.coSupervisors?.joinToString(", ") { it },
             newProposal.keywords.joinToString(", ") { it },
-            newProposal.type,
+            newProposal.type.joinToString(", ") { it },
             newProposal.groups.joinToString(", ") { it },
             newProposal.description,
             newProposal.requiredKnowledge, newProposal.notes,
@@ -62,6 +62,7 @@ class ProposalServiceImpl (
 
     }
     //getAll
+
     override fun getAllProposals(): List<ProposalDTO> {
         return proposalRepository.findAll().map { it.toDTO() }
     }
@@ -106,6 +107,29 @@ class ProposalServiceImpl (
     override fun searchProposalsByDescription(description: String): List<Proposal> {
         return proposalRepository.findByDescriptionContaining(description)
     }
+    override fun searchProposalsWithFilters(
+        supervisorName: String?,
+        coSupervisors: String?,
+        keywords: String?,
+        types: String?,
+        groups: String?,
+        cds: String?,
+        query: String?,
+        startDate: Date?,
+        endDate: Date?
+    ): List<ProposalDTO> {
+        return proposalRepository.searchProposalsWithFilters(
+            supervisorName,
+            coSupervisors,
+            keywords,
+            types,
+            groups,
+            cds,
+            query,
+            startDate,
+            endDate
+        ).map { it.toDTO() }
+    }
     //------------------------------------------
     override fun searchProposalsByTitleIgnoreCase(title: String): List<Proposal> {
         return proposalRepository.findByTitleIgnoreCaseContaining(title)
@@ -127,6 +151,34 @@ class ProposalServiceImpl (
     }
     override fun searchProposalsByDescriptionIgnoreCase(description: String): List<Proposal> {
         return proposalRepository.findByDescriptionIgnoreCaseContaining(description)
+    }
+
+    override fun getDistinctSupervisors(): List<String> {
+        return proposalRepository.findDistinctSupervisors()
+    }
+
+    override fun getDistinctCoSupervisors(): List<String> {
+        return proposalRepository.findDistinctCoSupervisors()
+    }
+
+    override fun getDistinctProposalTypes(): List<String> {
+        return proposalRepository.findDistinctProposalTypes()
+    }
+
+    override fun getDistinctProposalLevels(): List<String> {
+        return proposalRepository.findDistinctProposalLevels()
+    }
+
+    override fun getDistinctProposalKeywords(): List<String> {
+        return proposalRepository.findDistinctProposalKeywords()
+    }
+
+    override fun getDistinctProposalGroups(): List<String> {
+        return proposalRepository.findDistinctProposalGroups()
+    }
+
+    override fun getDistinctProposalCds(): List<String> {
+        return proposalRepository.findDistinctProposalCds()
     }
 
 }
