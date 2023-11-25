@@ -79,53 +79,6 @@ class ProposalServiceImpl (
             .filter { it.cds.split(", ", ",").contains(cdsName) }
             .map { it.toDTO() }
     }
-
-    //searchByAttributes----------------------- search functions of the previous search implementation
-    override fun searchProposalsByTitle(title: String): List<Proposal> {
-        return proposalRepository.findByTitleContaining(title)
-    }
-    override fun searchProposalsBySupervisorName(supervisorName: String): List<Proposal> {
-        return proposalRepository.findBySupervisorNameContaining(supervisorName)
-    }
-    override fun searchProposalsBycoSupervisors(coSupervisors: String): List<Proposal> {
-        return proposalRepository.findBycoSupervisorsContaining(coSupervisors)
-    }
-    override fun searchProposalsByKeywords(keyword: String): List<Proposal> {
-        return proposalRepository.findByKeywordsContaining(keyword)
-    }
-    override fun searchProposalsByCds(cds: String): List<Proposal> {
-        return proposalRepository.findByCdsContaining(cds)
-    }
-    override fun searchProposalsByLevel(level: String): List<Proposal> {
-        return proposalRepository.findByLevelContaining(level)
-    }
-    override fun searchProposalsByDescription(description: String): List<Proposal> {
-        return proposalRepository.findByDescriptionContaining(description)
-    }
-
-    //------------------------------------------
-    override fun searchProposalsByTitleIgnoreCase(title: String): List<Proposal> {
-        return proposalRepository.findByTitleIgnoreCaseContaining(title)
-    }
-    override fun searchProposalsBySupervisorNameIgnoreCase(supervisorName: String): List<Proposal> {
-        return proposalRepository.findBySupervisorNameIgnoreCaseContaining(supervisorName)
-    }
-    override fun searchProposalsBycoSupervisorsIgnoreCase(coSupervisors: String): List<Proposal> {
-        return proposalRepository.findBycoSupervisorsIgnoreCaseContaining(coSupervisors)
-    }
-    override fun searchProposalsByKeywordsIgnoreCase(keywords: String): List<Proposal> {
-        return proposalRepository.findByKeywordsIgnoreCaseContaining(keywords)
-    }
-    override fun searchProposalsByCdsIgnoreCase(cds: String): List<Proposal> {
-        return proposalRepository.findByCdsIgnoreCaseContaining(cds)
-    }
-    override fun searchProposalsByLevelIgnoreCase(level: String): List<Proposal> {
-        return proposalRepository.findByLevelIgnoreCaseContaining(level)
-    }
-    override fun searchProposalsByDescriptionIgnoreCase(description: String): List<Proposal> {
-        return proposalRepository.findByDescriptionIgnoreCaseContaining(description)
-    }
-
     override fun getDistinctSupervisors(): List<String> {
         return proposalRepository.findDistinctSupervisors()
     }
