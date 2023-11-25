@@ -47,7 +47,8 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         return proposalService.searchProposalByStudentCds(studentId, query)
     }
 
-    @PostMapping("/API/thesis/proposals/search-custom")
+    //dafault filtered search
+    @PostMapping("/API/thesis/proposals/search-filtered")
     @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun searchProposalsCustom(
         @RequestBody filterCriteria: ProposalFilterCriteria
@@ -139,52 +140,6 @@ class ProposalController(@Autowired private val proposalService: ProposalService
 
         return filteredList
     }
-
-
-
-
-
-
-    //text search - OLD VERSION
-//    @PostMapping("/API/thesis/proposals/filtered")
-//    @PreAuthorize("hasRole('Student')")
-//    fun searchProposals(@RequestBody searchRequest: SearchRequest): List<Proposal> {
-//
-//        var results = proposalService.getAllProposals()
-//
-//        if (searchRequest.title != null) {
-//            results = filterByTitle(results, searchRequest.title)
-//        }
-//
-//        if (searchRequest.supervisorName != null) {
-//            results = filterBySupervisorName(results, searchRequest.supervisorName)
-//        }
-//
-//        if (searchRequest.coSupervisors != null) {
-//            results = filterByCoSupervisors(results, searchRequest.coSupervisors)
-//        }
-//
-//        if (searchRequest.keywords != null) {
-//            results = filterByKeywords(results, searchRequest.keywords)
-//        }
-//
-//        if (searchRequest.cds != null) {
-//            results = filterByCds(results, searchRequest.cds)
-//        }
-//
-//        if (searchRequest.level != null) {
-//            results = filterByLevel(results, searchRequest.level)
-//        }
-//
-//        if (searchRequest.description != null) {
-//            results = filterByDescription(results, searchRequest.description)
-//        }
-//
-//        return results
-//    }
-//
-//    fun filterByTitle(proposals: List<Proposal>, title: String) =
-//        proposals.filter { it.title.contains(title) }
 
         @GetMapping("/API/thesis/proposals/supervisors")
         fun getDistinctSupervisorNames(): List<String> {
