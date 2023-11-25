@@ -285,3 +285,238 @@ Example:
 - response status:
   - `200 Ok`: The application status has been changed
   - `500 Internal Server Error`: Generic server error
+
+## Filtered Search Proposals
+**POST `/API/thesis/proposals/search-filtered`**
+
+- Filters search results through sending a body request with various **optional** filters, 
+- The result is the **intersection** of:
+    - `supervisor` 
+    - `coSupervisors` 
+    - `keywords` 
+    - `type`   
+    - `groups` 
+    - `cds` 
+- Plus an optional `queryString` contained in `title` **or** `description` **or** `notes` **or** `requiredKnowledge`
+- A filter in `endDate` within `Proposal.expiration`
+### Authentication
+- Requires a valid access token.
+- Accessible to users with the roles 'Student' or 'Professor'.
+
+### Request Body
+
+  - The request body should contain a JSON object with the following filter criteria:
+
+
+    supervisor (String, optional): Filter by supervisor's name.
+    coSupervisors (List of Strings, optional): Filter by co-supervisors' names.
+    keywords (List of Strings, optional): Filter by proposal keywords.
+    types (List of Strings, optional): Filter by proposal types.
+    groups (List of Strings, optional): Filter by proposal groups.
+    cds (List of Strings, optional): Filter by Course of Study names.
+    queryString (String, optional): Filter by a general query string.
+    endDate (LocalDate, optional): Filter proposals with expiration dates on or before this date.
+
+- Example Request Body #1:
+
+```json
+{
+  "supervisor": "Luca Ferrari",
+  "coSupervisors": ["Ji-Sung Park"],
+  "keywords":["AI"],
+  "types":["Research"],
+  "groups": ["G11", "G13"],
+  "cds": ["Computer Engineering"],
+  "queryString": "AI",
+  "endDate": "2024-09-01"
+}
+```
+### Response
+
+    Returns a list of thesis proposals that match the provided filter criteria.
+    Each proposal is represented as a ProposalDTO object.
+
+- Example Response #1:
+
+```json
+[
+  {
+    "id": "000003e8-8169-21ee-9d00-325096b39f47",
+    "title": "AI in Robotics",
+    "supervisor": {
+      "surname": "García",
+      "name": "Sofía",
+      "email": "p103@example.com",
+      "group": {
+        "id": "G13",
+        "department": {
+          "codDepartment": "DEP01"
+        }
+      },
+      "department": {
+        "codDepartment": "DEP01"
+      },
+      "id": "p103"
+    },
+    "coSupervisors": [
+      "Ji-Sung Park"
+    ],
+    "keywords": [
+      "AI",
+      "Robotics"
+    ],
+    "type": [
+      "Research"
+    ],
+    "groups": [
+      "G11",
+      "G13"
+    ],
+    "description": "Exploring the integration of AI in Robotics applications.",
+    "requiredKnowledge": "Strong background in AI and Robotics",
+    "notes": "This thesis aims to explore the current landscape and future potential of AI in Robotics applications. The student is expected to have a strong background in both AI and Robotics.",
+    "expiration": "2024-12-31",
+    "level": "BSc",
+    "cds": [
+      "Computer Engineering"
+    ]
+  },
+  {
+    "id": "000003e8-8169-21ee-a500-325096b39f47",
+    "title": "AI-driven Healthcare Systems",
+    "supervisor": {
+      "surname": "Ferrari",
+      "name": "Luca",
+      "email": "p101@example.com",
+      "group": {
+        "id": "G13",
+        "department": {
+          "codDepartment": "DEP01"
+        }
+      },
+      "department": {
+        "codDepartment": "DEP01"
+      },
+      "id": "p101"
+    },
+    "coSupervisors": [
+      "Ji-Sung Park"
+    ],
+    "keywords": [
+      "AI",
+      "Healthcare Systems"
+    ],
+    "type": [
+      "Research"
+    ],
+    "groups": [
+      "G11",
+      "G13"
+    ],
+    "description": "Explore the application of AI in healthcare systems.",
+    "requiredKnowledge": "Healthcare and AI knowledge",
+    "notes": "This thesis explores the application of AI in healthcare systems. The student should have knowledge in both healthcare and AI.",
+    "expiration": "2024-08-31",
+    "level": "BSc",
+    "cds": [
+      "Computer Engineering"
+    ]
+  }
+]
+```
+- Example Request Body #2:
+
+```json
+{
+  "cds": ["Civil Engineering"],
+  "endDate": "2024-12-01"
+}
+
+```
+- Example Response #2:
+
+```json
+[
+  {
+    "id": "000003e8-8169-21ee-8000-325096b39f47",
+    "title": "Structural Engineering",
+    "supervisor": {
+      "surname": "Crociera",
+      "name": "Tommaso",
+      "email": "p110@example.com",
+      "group": {
+        "id": "G41",
+        "department": {
+          "codDepartment": "DEP04"
+        }
+      },
+      "department": {
+        "codDepartment": "DEP04"
+      },
+      "id": "p110"
+    },
+    "coSupervisors": [],
+    "keywords": [
+      "Structural Engineering",
+      "Construction"
+    ],
+    "type": [
+      "Development"
+    ],
+    "groups": [
+      "G41"
+    ],
+    "description": "Develop innovative solutions in structural engineering.",
+    "requiredKnowledge": "Strong background in structural engineering",
+    "notes": "This thesis focuses on developing innovative solutions in structural engineering. The student should have a strong background in structural engineering.",
+    "expiration": "2024-02-29",
+    "level": "MSc",
+    "cds": [
+      "Civil Engineering"
+    ]
+  },
+  {
+    "id": "000003e8-8169-21ee-9900-325096b39f47",
+    "title": "Environmental Impact of Renewable Energy",
+    "supervisor": {
+      "surname": "Crociera",
+      "name": "Tommaso",
+      "email": "p110@example.com",
+      "group": {
+        "id": "G41",
+        "department": {
+          "codDepartment": "DEP04"
+        }
+      },
+      "department": {
+        "codDepartment": "DEP04"
+      },
+      "id": "p110"
+    },
+    "coSupervisors": [],
+    "keywords": [
+      "Environmental Impact",
+      "Renewable Energy"
+    ],
+    "type": [
+      "Development"
+    ],
+    "groups": [
+      "G41"
+    ],
+    "description": "Assess the environmental impact of renewable energy projects.",
+    "requiredKnowledge": "Environmental science background",
+    "notes": "This thesis focuses on assessing the environmental impact of renewable energy projects. The student should have a background in environmental science.",
+    "expiration": "2024-11-30",
+    "level": "MSc",
+    "cds": [
+      "Civil Engineering"
+    ]
+  }
+]
+```
+### Error Responses
+
+    - 400 Bad Request: If the request body is malformed or contains invalid data.
+    - 403 Forbidden: If the user does not have the required roles.
+    - 500 Internal Server Error: If an unexpected error occurs.
