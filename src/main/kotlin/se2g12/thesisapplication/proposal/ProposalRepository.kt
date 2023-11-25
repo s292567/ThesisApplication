@@ -7,8 +7,6 @@ import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.util.*
 
-import org.hibernate.type.StandardBasicTypes
-
 @Repository
 interface ProposalRepository : JpaRepository<Proposal, UUID> {
     // Find all proposals
@@ -31,37 +29,6 @@ interface ProposalRepository : JpaRepository<Proposal, UUID> {
             "LOWER(p.level) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
             "LOWER(p.description) LIKE LOWER(CONCAT('%', :query, '%'))")
     fun searchProposals(@Param("query") query: String): List<Proposal>
-
-
-    @Query(
-        "SELECT p " +
-                "FROM Proposal p " +
-                "JOIN p.supervisor s " +
-                "WHERE " +
-                "(?1 IS NULL OR CONCAT(s.name, ' ', s.surname) = ?1) " +
-                "AND (?2 IS NULL OR LOWER(CAST(p.coSupervisors AS text)) LIKE LOWER(CONCAT('%', ?2, '%'))) " +
-                "AND (?3 IS NULL OR LOWER(p.keywords) LIKE LOWER(CONCAT('%', ?3, '%'))) " +
-                "AND (?4 IS NULL OR LOWER(p.type) LIKE LOWER(CONCAT('%', ?4, '%'))) " +
-                "AND (?5 IS NULL OR LOWER(p.groups) LIKE LOWER(CONCAT('%', ?5, '%'))) " +
-                "AND (?6 IS NULL OR LOWER(p.cds) LIKE LOWER(CONCAT('%', ?6, '%'))) " +
-                "AND (?7 IS NULL OR " +
-                "LOWER(p.title || ' ' || p.description || ' ' || p.notes || ' ' || p.requiredKnowledge) " +
-                "LIKE LOWER(CONCAT('%', ?7, '%'))) " +
-                "AND (?8 IS NULL OR ?9 IS NULL OR p.expiration BETWEEN ?8 AND ?9)"
-    )
-    fun searchProposalsWithFilters(
-        supervisorName: String?,
-        coSupervisors: String?,
-        keywords: String?,
-        types: String?,
-        groups: String?,
-        cds: String?,
-        query: String?,
-        startDate: Date?,
-        endDate: Date?
-    ): List<Proposal>
-
-
 
     // Find distinct supervisor names
     @Query("SELECT DISTINCT CONCAT(p.supervisor.name, ' ', p.supervisor.surname) FROM Proposal p")

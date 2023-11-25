@@ -3,7 +3,6 @@
         import jakarta.persistence.Temporal
         import jakarta.persistence.TemporalType
         import se2g12.thesisapplication.teacher.Teacher
-        import java.text.SimpleDateFormat
         import java.time.LocalDate
         import java.util.*
 
