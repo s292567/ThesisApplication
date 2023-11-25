@@ -57,21 +57,5 @@ interface ProposalRepository : JpaRepository<Proposal, UUID> {
     @Query("SELECT DISTINCT unnest(string_to_array(p.cds, ', ')) AS cds FROM Proposal p")
     fun findDistinctProposalCds(): List<String>
 
-     //Find proposal by attribute - previous search implementation
-    fun findByTitleContaining(title: String): List<Proposal>
-    fun findBySupervisorNameContaining(supervisorName: String): List<Proposal>
-    fun findBycoSupervisorsContaining(coSupervisors: String): List<Proposal>
-    fun findByKeywordsContaining(keyword: String): List<Proposal>
-    fun findByCdsContaining(cds: String): List<Proposal>
-    fun findByLevelContaining(level: String): List<Proposal>
-    fun findByDescriptionContaining(description: String): List<Proposal>
-    // Case-insensitive search methods
-    fun findByTitleIgnoreCaseContaining(title: String): List<Proposal>
-    fun findBySupervisorNameIgnoreCaseContaining(supervisorName: String): List<Proposal>
-    fun findBycoSupervisorsIgnoreCaseContaining(coSupervisors: String): List<Proposal>
-    fun findByKeywordsIgnoreCaseContaining(keyword: String): List<Proposal>
-    fun findByCdsIgnoreCaseContaining(cds: String): List<Proposal>
-    fun findByLevelIgnoreCaseContaining(level: String): List<Proposal>
-    fun findByDescriptionIgnoreCaseContaining(description: String): List<Proposal>
 
 }

@@ -3,10 +3,7 @@ package se2g12.thesisapplication.proposal
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
-import java.util.Date
 
 @RestController
 @CrossOrigin

@@ -1,7 +1,5 @@
 package se2g12.thesisapplication.proposal
 
-import java.util.*
-
 
 interface ProposalService {
     fun addNewProposal(newProposal: NewProposalDTO, professorId: String)
