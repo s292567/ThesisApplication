@@ -6,8 +6,8 @@ import se2g12.thesisapplication.department.Department
 
 @Entity
 data class Teacher(
-    val surname: String? = null,
-    val name: String? = null,
+    val surname: String,
+    val name: String,
     val email: String? = null,
     @ManyToOne
     @JoinColumn(name = "codGroup", referencedColumnName = "id")
