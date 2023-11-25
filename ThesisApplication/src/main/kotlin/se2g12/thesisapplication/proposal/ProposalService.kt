@@ -10,18 +10,6 @@ interface ProposalService {
     fun searchProposals(query: String): List<ProposalDTO>
     fun searchProposalByStudentCds(studentId: String, query: String? ): List<ProposalDTO>
 
-    // filtered search
-    fun searchProposalsWithFilters(
-        supervisorName: String?,
-        coSupervisors: String?,
-        keywords: String?,
-        types: String?,
-        groups: String?,
-        cds: String?,
-        query: String?,
-        startDate: Date?,
-        endDate: Date?
-    ): List<ProposalDTO>
 
     //attribute search
     fun searchProposalsByTitle(title: String): List<Proposal>
