@@ -1,14 +1,15 @@
 package se2g12.thesisapplication.proposal
 
+import jakarta.persistence.Temporal
+import jakarta.persistence.TemporalType
 import jakarta.validation.ConstraintViolation
-import jakarta.validation.Valid
 import jakarta.validation.Validation
 import jakarta.validation.Validator
-import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import org.hibernate.validator.constraints.Length
+import java.time.LocalDate
+import java.util.*
 
 @Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY)
 @Retention(AnnotationRetention.RUNTIME)
@@ -22,14 +23,15 @@ data class NewProposalDTO (
     var title : String,
     var coSupervisors : List<String>? = listOf(),
     var keywords : List<String>,
-    var type : String,
+    var type : List<String>,
     var groups : List<String>,
     @NotBlank(message = "A description must be provided")
     var description : String,
     var requiredKnowledge : String?,
     var notes : String?,
     @ValidDate
-    var expiration : String,
+    @Temporal(TemporalType.DATE)
+    var expiration : LocalDate,
     var level: String,
     var CdS: List<String>
 ){
