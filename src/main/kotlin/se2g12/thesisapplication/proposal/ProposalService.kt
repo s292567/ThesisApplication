@@ -1,5 +1,7 @@
 package se2g12.thesisapplication.proposal
 
+import java.util.*
+
 
 interface ProposalService {
     fun addNewProposal(newProposal: NewProposalDTO, professorId: String)
@@ -7,6 +9,19 @@ interface ProposalService {
     fun getProposalsByCds(cds: String): List<ProposalDTO>
     fun searchProposals(query: String): List<ProposalDTO>
     fun searchProposalByStudentCds(studentId: String, query: String? ): List<ProposalDTO>
+
+    // filtered search
+    fun searchProposalsWithFilters(
+        supervisorName: String?,
+        coSupervisors: String?,
+        keywords: String?,
+        types: String?,
+        groups: String?,
+        cds: String?,
+        query: String?,
+        startDate: Date?,
+        endDate: Date?
+    ): List<ProposalDTO>
 
     //attribute search
     fun searchProposalsByTitle(title: String): List<Proposal>
@@ -25,5 +40,25 @@ interface ProposalService {
     fun searchProposalsByCdsIgnoreCase(cds: String): List<Proposal>
     fun searchProposalsByLevelIgnoreCase(level: String): List<Proposal>
     fun searchProposalsByDescriptionIgnoreCase(description: String): List<Proposal>
+
+
+    fun getDistinctSupervisors(): List<String>
+    // Retrieve distinct co-supervisor names
+    fun getDistinctCoSupervisors(): List<String>
+
+    // Retrieve distinct proposal types
+    fun getDistinctProposalTypes(): List<String>
+
+    // Retrieve distinct proposal levels
+    fun getDistinctProposalLevels(): List<String>
+
+    // Retrieve distinct proposal keywords
+    fun getDistinctProposalKeywords(): List<String>
+
+    // Retrieve distinct proposal groups
+    fun getDistinctProposalGroups(): List<String>
+
+    // Retrieve distinct proposal cds
+    fun getDistinctProposalCds(): List<String>
 }
 
