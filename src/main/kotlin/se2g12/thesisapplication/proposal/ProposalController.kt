@@ -261,9 +261,5 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         }
 
     }
-    fun Date.toLocalDate(): LocalDate {
-        val instant = Instant.ofEpochMilli(this.time)
-        return instant.atZone(ZoneId.systemDefault()).toLocalDate()
-    }
 
 

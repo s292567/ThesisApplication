@@ -102,29 +102,7 @@ class ProposalServiceImpl (
     override fun searchProposalsByDescription(description: String): List<Proposal> {
         return proposalRepository.findByDescriptionContaining(description)
     }
-    override fun searchProposalsWithFilters(
-        supervisorName: String?,
-        coSupervisors: String?,
-        keywords: String?,
-        types: String?,
-        groups: String?,
-        cds: String?,
-        query: String?,
-        startDate: Date?,
-        endDate: Date?
-    ): List<ProposalDTO> {
-        return proposalRepository.searchProposalsWithFilters(
-            supervisorName,
-            coSupervisors,
-            keywords,
-            types,
-            groups,
-            cds,
-            query,
-            startDate,
-            endDate
-        ).map { it.toDTO() }
-    }
+
     //------------------------------------------
     override fun searchProposalsByTitleIgnoreCase(title: String): List<Proposal> {
         return proposalRepository.findByTitleIgnoreCaseContaining(title)
