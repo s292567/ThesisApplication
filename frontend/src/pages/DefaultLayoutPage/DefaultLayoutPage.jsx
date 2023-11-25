@@ -2,15 +2,15 @@
 import {Box, styled} from "@mui/material";
 import {Navbar} from "../../components";
 import {Outlet} from "react-router-dom";
-import React from "react";
 import {useUserContext} from "../../contexts/index.js";
 
-const MyMain = styled(Box)(({theme}) => ({
+const MyMain = styled(Box)({
   display: "flex",
-  justifyContent: "center",
-  height: "max-content",
-  backgroundColor: "whitesmoke",
-}));
+  flexDirection: "column",
+  minHeight: "100vh",
+  alignItems: "center",
+  backgroundColor: "#ebebeb",
+});
 
 function DefaultLayoutPage() {
 
