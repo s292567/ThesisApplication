@@ -50,32 +50,6 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         return proposalService.searchProposalByStudentCds(studentId, query)
     }
 
-    @GetMapping("/API/thesis/proposals/search-with-filters")
-    @PreAuthorize("hasRole('Student') or hasRole('Professor')")
-    fun searchProposalsWithFilters(
-        @RequestParam(required = false) supervisorName: String?,
-        @RequestParam(required = false) coSupervisors: String?,
-        @RequestParam(required = false) keywords: String?,
-        @RequestParam(required = false) types: String?,
-        @RequestParam(required = false) groups: String?,
-        @RequestParam(required = false) cds: String?,
-        @RequestParam(required = false) query: String?,
-        @RequestParam(required = false) startDate: Date?,
-        @RequestParam(required = false) endDate: Date?
-    ): List<ProposalDTO> {
-        return proposalService.searchProposalsWithFilters(
-            supervisorName,
-            coSupervisors,
-            keywords,
-            types,
-            groups,
-            cds,
-            query,
-            startDate,
-            endDate
-        )
-    }
-
     @PostMapping("/API/thesis/proposals/search-custom")
     @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun searchProposalsCustom(
