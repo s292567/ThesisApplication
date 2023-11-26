@@ -1,188 +1,174 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Button, Paper, Stack, styled, Typography} from "@mui/material";
+import React, { useState } from "react";
+import {
+  useTheme,
+  useMediaQuery,
+  Box,
+  Card,
+  CardContent,
+  Button,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  IconButton,
+  Collapse,
+  CardHeader,
+} from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@mui/icons-material";
+import { PastelComponent } from "../../components";
 
-const MyPaperWrap = styled(Paper)(({theme}) => ({
-  width: '100%',
-  padding: '2rem',
-  borderRadius: '18px',
-}));
+export default function ProfessorApplicants({
+  groupedByProposalArray,
+  groupedByStudentArray,
+}) {
+  const [showApplicants, setShowApplicants] = useState({});
 
-export default function ProfessorApplicants() {
-  /*
-  const [applications, setApplications] = useState([]);
-  const [students, setStudents] = useState([]);
-  const [proposals, setProposals] = useState([]);
-  */
-  const [combinedList, setCombinedList] = useState([]);
-  let groupedByProposalArray = [];
-  let groupedByStudentArray = [];
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
-  const combinedListTmp = applications.map(application => {
-    const student = students.find(s => s.id === application.student_id);
-    const proposal = proposals.find(p => p.id === application.proposal_id);
+  // Toggle function for showing/hiding applicants on each proposal
+  const toggleApplicants = (id) => {
+    setShowApplicants((prevShow) => ({
+      ...prevShow,
+      [id]: !prevShow[id],
+    }));
+  };
 
-    return {
-      application_id: application.id,
-      student_id: application.student_id,
-      student_name: student ? `${student.name} ${student.surname}` : 'Unknown',
-      proposal_id: application.proposal_id,
-      proposal_title: proposal ? proposal.title : 'Unknown',
-      status_application_student: application.status
-    };
-  });
+  // Render the table head with field names based on screen size
+  const renderTableHead = () => (
+    <TableHead>
+      <TableRow sx={{ "& .MuiTableCell-root": { fontWeight: "bold" } }}>
+        {groupedByStudentArray ? <TableCell>Proposal Title</TableCell> : <TableCell>Student Name</TableCell>}
+        {(!isSmallScreen || isMediumScreen) && !groupedByStudentArray && (
+          <TableCell>Student Email</TableCell>
+        )}
+        {!isSmallScreen && !isMediumScreen && !groupedByStudentArray && (
+          <TableCell>Student Degree</TableCell>
+        )}
+        <TableCell>Status</TableCell>
+      </TableRow>
+    </TableHead>
+  );
 
-  console.log(combinedListTmp);
-
-  const groupedByProposal = combinedListTmp.reduce((acc, item) => {
-    if (!acc[item.proposal_id]) {
-      acc[item.proposal_id] = {
-        proposal_id: item.proposal_id,
-        proposal_title: item.proposal_title,
-        applicants: []
-      };
-    }
-
-    acc[item.proposal_id].applicants.push({
-      student_id: item.student_id,
-      student_name: item.student_name,
-      status_application_student: item.status_application_student
-    });
-
-    return acc;
-  }, {});
-
-  groupedByProposalArray = Object.values(groupedByProposal);
-  console.log(groupedByProposalArray);
-
-  const groupedByStudent = combinedListTmp.reduce((acc, item) => {
-    if (!acc[item.student_id]) {
-      acc[item.student_id] = {
-        student_id: item.student_id,
-        student_name: item.student_name,
-        applications: []
-      };
-    }
-
-    acc[item.student_id].applications.push({
-      proposal_id: item.proposal_id,
-      proposal_title: item.proposal_title,
-      status: item.status_application_student
-    });
-
-    return acc;
-  }, {});
-
-  groupedByStudentArray = Object.values(groupedByStudent);
-  console.log(groupedByStudentArray);
+  // Render the table rows with applicant information based on screen size
+  const renderTableRows = (items, isStudentGrouping) => (
+    <TableBody>
+      {items.map((item) => (
+        <TableRow key={isStudentGrouping ? item.proposal_id : item.student_id}>
+          <TableCell>{isStudentGrouping ? item.proposal_title : item.student_name}</TableCell>
+          {(!isSmallScreen || isMediumScreen) && !isStudentGrouping && (
+            <TableCell>{item.student_email}</TableCell>
+          )}
+          {!isSmallScreen && !isMediumScreen && !isStudentGrouping && (
+            <TableCell>{item.student_degree}</TableCell>
+          )}
+          <TableCell>
+            <Stack direction={isSmallScreen ? "column" : "row"} spacing={1}>
+              <Button variant="outlined" color="success">Accept</Button>
+              <Button variant="outlined" color="error">Decline</Button>
+            </Stack>
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  );
 
   return (
-    <Box sx={{dipslay: 'flex', marginTop: '2rem', marginBottom: '2rem', padding: '4rem', height: '100vh', flexGrow: '1'}}>
-      <Stack direction='column' sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', flexGrow: '1'}}>
-        {groupedByProposalArray.map((application) => {
-          return (
-            <MyPaperWrap key={application.proposal_id} elevation={3}>
-              <Stack sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                flexDirection: {md: 'row', xs: 'column'},
-              }}>
-                {/* Thesis Title */}
-                <Typography variant='h5' sx={{mb: {'(maxWidth: 950px)':  0, xs: 3}, }}>{application.proposal_title}</Typography>
-                {/* Mapped to the number of students */}
-                <Stack direction='column' spacign={3}>
-                  {application.applicants.map((applicant) => {
-                    return (
-                      <Stack key={applicant.id} direction='row' sx={{display: 'flex', justifyContent: 'space-between', flexDirection: {sm: 'row', xs: 'column'},}}>
-                        {/* Student Names */}
-                        <Typography variant='h6' mr={6}>{applicant.student_name}</Typography>
-                        {/* Student Status */}
-                        <Box sx={{display: 'flex', gap: '10px'}}>
-                          <Button variant='contained' color='success'>Accept</Button>
-                          <Button variant='contained' color='error'>Decline</Button>
-                        </Box>
-                      </Stack>
-                    )
-                  })}
-                </Stack>
-              </Stack>
-            </MyPaperWrap>
-          )
-        })}
-      </Stack>
-    </Box>
-  )
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+          padding: isSmallScreen ? "1rem" : isMediumScreen ? "2rem" : "4rem",
+          height: "max-content",
+        }}
+      >
+        {(groupedByStudentArray || groupedByProposalArray).map((item) => (
+          <Card
+            key={groupedByStudentArray ? item.student_id : item.proposal_id}
+            variant="outlined"
+            sx={{
+              maxWidth: "1000px",
+              borderRadius: "18px",
+              padding: "1rem",
+              backgroundColor: "white",
+              transition: "background-color 0.3s",
+              "&:hover": {
+                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.3)",
+              },
+              cursor: "pointer",
+            }}
+            onClick={() => toggleApplicants(groupedByStudentArray ? item.student_id : item.proposal_id)}
+          >
+            <CardHeader
+              title={
+                groupedByStudentArray ? (
+                  <>
+                    <Typography variant="h5" sx={{ fontWeight: "bold" }}>{item.student_name}</Typography>
+                    <Typography variant="body1">{`${item.student_email} - ${item.student_degree}`}</Typography>
+                  </>
+                ) : (
+                  <Typography variant="h4" sx={{ fontWeight: "bold", color: "#03468f" }}>{item.proposal_title}</Typography>
+                )
+              }
+              action={
+                <IconButton
+                  size="large"
+                  sx={{
+                    color: "#03468f",
+                    backgroundColor: "#ffe0c8",
+                    padding: "12px",
+                    borderRadius: "15px",
+                    "&:hover": {
+                      backgroundColor: "#ffd0b0",
+                    },
+                    height: "48px",
+                    display: "inline-flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    toggleApplicants(groupedByStudentArray ? item.student_id : item.proposal_id);
+                  }}
+                >
+                  {showApplicants[groupedByStudentArray ? item.student_id : item.proposal_id] ? <KeyboardArrowUpRounded /> : <KeyboardArrowDownRounded />}
+                  <Typography variant="body1" sx={{ marginLeft: "8px", fontWeight: "bold" }}>
+                    {groupedByStudentArray ? item.applications.length : item.applicants.length}
+                  </Typography>
+                </IconButton>
+              }
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                alignContent: "center",
+                verticalAlign: "middle",
+                "& .MuiCardHeader-action": {
+                  display: "flex",
+                  alignSelf: "center",
+                },
+              }}
+            />
+            <CardContent>
+              <Collapse in={showApplicants[groupedByStudentArray ? item.student_id : item.proposal_id]}>
+                <TableContainer>
+                  <Table>
+                    {renderTableHead()}
+                    {renderTableRows(groupedByStudentArray ? item.applications : item.applicants, !!groupedByStudentArray)}
+                  </Table>
+                </TableContainer>
+              </Collapse>
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
+    </>
+  );
 }
-
-const students = [
-  {
-    id: 1,
-    surname: 'Rossi',
-    name: 'Mario',
-    gender: 'Male',
-    nationality: 'Italian',
-    email: 'mario.rossi@email.com',
-    degree: 'Computer Science',
-    enrollmentYear: 2020
-  },
-  {
-    id: 2,
-    surname: 'Bianchi',
-    name: 'Luca',
-    gender: 'Male',
-    nationality: 'Italian',
-    email: 'luca.bianchi@email.com',
-    degree: 'Electrical Engineering',
-    enrollmentYear: 2021
-  },
-  {
-    id: 3,
-    surname: 'Verdi',
-    name: 'Sofia',
-    gender: 'Female',
-    nationality: 'Italian',
-    email: 'sofia.verdi@email.com',
-    degree: 'Mechanical Engineering',
-    enrollmentYear: 2019
-  },
-  // ... more students
-];
-const proposals = [
-  {
-    id: 'a1b2c3',
-    title: 'Artificial Intelligence in Robotics',
-    supervisor: 'Prof. Gianni',
-    coSupervisors: 'Prof. Marta, Prof. Carlo',
-    keywords: 'AI, Robotics',
-    type: 'Research',
-    groups: 'G1, G2',
-    description: 'Exploring AI applications in autonomous robots.',
-    requiredKnowledge: 'Basics of AI, Machine Learning',
-    notes: 'Focus on practical implementations',
-    expiration: '2023-12-31',
-    level: 'MSc',
-    cds: 'Computer Science'
-  },
-  {
-    id: 'd4e5f6',
-    title: 'Renewable Energy Systems',
-    supervisor: 'Prof. Elena',
-    coSupervisors: '',
-    keywords: 'Renewable Energy, Sustainability',
-    type: 'Development',
-    groups: 'G3',
-    description: 'Designing sustainable energy solutions.',
-    requiredKnowledge: 'Fundamentals of Renewable Energy',
-    notes: '',
-    expiration: '2023-06-30',
-    level: 'BSc',
-    cds: 'Electrical Engineering'
-  },
-  // ... more proposals
-];
-
-const applications = [
-  {id: 'x123', student_id: 1, proposal_id: 'a1b2c3', status: 'pending'},
-  {id: 'y456', student_id: 2, proposal_id: 'a1b2c3', status: 'accepted'},
-  {id: 'z789', student_id: 3, proposal_id: 'd4e5f6', status: 'declined'},
-  // ... more applications
-];
