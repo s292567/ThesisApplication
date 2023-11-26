@@ -32,7 +32,7 @@ const StyleColumn = styled(Stack)(({theme}) => ({
 }));
 
 const Wrapper = styled(Box)(({theme}) => ({
-  display: 'flex', minHeight: '100vh', backgroundColor: 'whitesmoke', flexGrow: '1',
+  display: 'flex', minHeight: '100vh', backgroundColor: '#ebebeb', flexGrow: '1',
   [theme.breakpoints.down('md')]: {
     flexDirection: 'column',
     alignItems: 'center',
@@ -79,7 +79,7 @@ export default function LoginPage() {
 
       <StyleColumn direction='column'
                    sx={{
-                     backgroundColor: 'whitesmoke', maxWidth: 400, minWidth: 300, maxHeight: '600px',
+                     backgroundColor: 'inherit', maxWidth: 400, minWidth: 300, maxHeight: '600px',
                      gap: '0', justifyContent: 'center', display: 'flex', ml: {xs: 'none', md: '2rem', xl: '10rem'},
                    }}
       >

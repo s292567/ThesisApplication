@@ -18,15 +18,59 @@ import {
   Collapse,
   CardHeader,
 } from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@mui/icons-material";
+import {
+  KeyboardArrowDownRounded,
+  KeyboardArrowUpRounded,
+} from "@mui/icons-material";
+
 import { PastelComponent } from "../../components";
+import { WarningPopup } from "../../components";
 
 export default function ProfessorApplicants({
   groupedByProposalArray,
   groupedByStudentArray,
 }) {
   const [showApplicants, setShowApplicants] = useState({});
+
+  /**
+   * Warning Popup States and Handlers
+   */
+  const [warningOpen, setWarningOpen] = useState(false);
+  const [confirmedOpen, setConfirmedOpen] = useState(false);
+  const [msgWarning, setMsgWarning] = useState("");
+  const [msgDone, setMsgDone] = useState("");
+
+  const handleCloseWarning = () => {
+    setWarningOpen(false);
+  };
+
+  const handleCloseConfirmed = () => {
+    setConfirmedOpen(false);
+  };
+  /** */
+
+  const handleApplyed = () => {
+    // Logic after accepting the warning popup
+    // Logic for modifying the application of the Student so that the groupBy list is changed
+
+    /**
+     * ASYNC API CALL FUNCTION HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     */
+
+    setWarningOpen(false);
+    setConfirmedOpen(true);
+    setMsgDone("Application successfully processed.");
+  };
+
+  const handleAccept = () => {
+    setMsgWarning("Are you sure you want to accept this application?");
+    setWarningOpen(true);
+  };
+
+  const handleDecline = () => {
+    setMsgWarning("Are you sure you want to decline this application?");
+    setWarningOpen(true);
+  };
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -44,7 +88,11 @@ export default function ProfessorApplicants({
   const renderTableHead = () => (
     <TableHead>
       <TableRow sx={{ "& .MuiTableCell-root": { fontWeight: "bold" } }}>
-        {groupedByStudentArray ? <TableCell>Proposal Title</TableCell> : <TableCell>Student Name</TableCell>}
+        {groupedByStudentArray ? (
+          <TableCell>Proposal Title</TableCell>
+        ) : (
+          <TableCell>Student Name</TableCell>
+        )}
         {(!isSmallScreen || isMediumScreen) && !groupedByStudentArray && (
           <TableCell>Student Email</TableCell>
         )}
@@ -60,8 +108,25 @@ export default function ProfessorApplicants({
   const renderTableRows = (items, isStudentGrouping) => (
     <TableBody>
       {items.map((item) => (
-        <TableRow key={isStudentGrouping ? item.proposal_id : item.student_id}>
-          <TableCell>{isStudentGrouping ? item.proposal_title : item.student_name}</TableCell>
+        <TableRow
+          key={isStudentGrouping ? item.proposal_id : item.student_id}
+          sx={{
+            "&:last-child td, &:last-child th": {
+              border: 0,
+            },
+            "& .MuiTableCell-root": {
+              fontSize: "medium",
+            },
+          }}
+        >
+          <TableCell
+            sx={{
+              fontWeight: isStudentGrouping ? "bolder" : "inherit",
+              color: isStudentGrouping ? "#03468f" : "black",
+            }}
+          >
+            {isStudentGrouping ? item.proposal_title : item.student_name}
+          </TableCell>
           {(!isSmallScreen || isMediumScreen) && !isStudentGrouping && (
             <TableCell>{item.student_email}</TableCell>
           )}
@@ -69,9 +134,31 @@ export default function ProfessorApplicants({
             <TableCell>{item.student_degree}</TableCell>
           )}
           <TableCell>
+            {/* Buttons or status indicators */}
             <Stack direction={isSmallScreen ? "column" : "row"} spacing={1}>
-              <Button variant="outlined" color="success">Accept</Button>
-              <Button variant="outlined" color="error">Decline</Button>
+              <PastelComponent
+                bgColor="#ACCEA6"
+                textColor="white"
+                text="accept"
+                fontSize="medium"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  /* Accept logic here */
+                  handleAccept();
+                }}
+              />
+
+              <PastelComponent
+                bgColor="#B41632"
+                textColor="white"
+                text="decline"
+                fontSize="medium"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  /* Decline logic here */
+                  handleDecline();
+                }}
+              />
             </Stack>
           </TableCell>
         </TableRow>
@@ -86,7 +173,7 @@ export default function ProfessorApplicants({
           display: "flex",
           flexDirection: "column",
           gap: "20px",
-          padding: isSmallScreen ? "1rem" : isMediumScreen ? "2rem" : "4rem",
+          padding: isSmallScreen ? "0.5rem" : isMediumScreen ? "2rem" : "4rem",
           height: "max-content",
         }}
       >
@@ -98,6 +185,9 @@ export default function ProfessorApplicants({
               maxWidth: "1000px",
               borderRadius: "18px",
               padding: "1rem",
+              display: "flex",
+              flex: 1,
+              flexDirection: "column",
               backgroundColor: "white",
               transition: "background-color 0.3s",
               "&:hover": {
@@ -105,17 +195,35 @@ export default function ProfessorApplicants({
               },
               cursor: "pointer",
             }}
-            onClick={() => toggleApplicants(groupedByStudentArray ? item.student_id : item.proposal_id)}
+            onClick={() =>
+              toggleApplicants(
+                groupedByStudentArray ? item.student_id : item.proposal_id
+              )
+            }
           >
             <CardHeader
               title={
                 groupedByStudentArray ? (
                   <>
-                    <Typography variant="h5" sx={{ fontWeight: "bold" }}>{item.student_name}</Typography>
+                    <Typography
+                      variant="h4"
+                      sx={{ fontWeight: "bold", marginRight: "1rem" }}
+                    >
+                      {item.student_name}
+                    </Typography>
                     <Typography variant="body1">{`${item.student_email} - ${item.student_degree}`}</Typography>
                   </>
                 ) : (
-                  <Typography variant="h4" sx={{ fontWeight: "bold", color: "#03468f" }}>{item.proposal_title}</Typography>
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      fontWeight: "bold",
+                      color: "#03468f",
+                      marginRight: "1rem",
+                    }}
+                  >
+                    {item.proposal_title}
+                  </Typography>
                 )
               }
               action={
@@ -136,12 +244,25 @@ export default function ProfessorApplicants({
                   }}
                   onClick={(event) => {
                     event.stopPropagation();
-                    toggleApplicants(groupedByStudentArray ? item.student_id : item.proposal_id);
+                    toggleApplicants(
+                      groupedByStudentArray ? item.student_id : item.proposal_id
+                    );
                   }}
                 >
-                  {showApplicants[groupedByStudentArray ? item.student_id : item.proposal_id] ? <KeyboardArrowUpRounded /> : <KeyboardArrowDownRounded />}
-                  <Typography variant="body1" sx={{ marginLeft: "8px", fontWeight: "bold" }}>
-                    {groupedByStudentArray ? item.applications.length : item.applicants.length}
+                  {showApplicants[
+                    groupedByStudentArray ? item.student_id : item.proposal_id
+                  ] ? (
+                    <KeyboardArrowUpRounded />
+                  ) : (
+                    <KeyboardArrowDownRounded />
+                  )}
+                  <Typography
+                    variant="body1"
+                    sx={{ marginLeft: "8px", fontWeight: "bold" }}
+                  >
+                    {groupedByStudentArray
+                      ? item.applications.length
+                      : item.applicants.length}
                   </Typography>
                 </IconButton>
               }
@@ -157,17 +278,37 @@ export default function ProfessorApplicants({
               }}
             />
             <CardContent>
-              <Collapse in={showApplicants[groupedByStudentArray ? item.student_id : item.proposal_id]}>
+              <Collapse
+                in={
+                  showApplicants[
+                    groupedByStudentArray ? item.student_id : item.proposal_id
+                  ]
+                }
+              >
                 <TableContainer>
                   <Table>
                     {renderTableHead()}
-                    {renderTableRows(groupedByStudentArray ? item.applications : item.applicants, !!groupedByStudentArray)}
+                    {renderTableRows(
+                      groupedByStudentArray
+                        ? item.applications
+                        : item.applicants,
+                      !!groupedByStudentArray
+                    )}
                   </Table>
                 </TableContainer>
               </Collapse>
             </CardContent>
           </Card>
         ))}
+        <WarningPopup
+          warningOpen={warningOpen}
+          handleCloseWarning={handleCloseWarning}
+          confirmedOpen={confirmedOpen}
+          handleClose={handleCloseConfirmed}
+          msgWarning={msgWarning}
+          msgDone={msgDone}
+          handleApplyed={handleApplyed}
+        />
       </Box>
     </>
   );

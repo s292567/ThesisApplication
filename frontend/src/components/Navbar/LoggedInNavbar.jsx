@@ -151,6 +151,9 @@ export default function LoggedInNavbar() {
                   <Link href={frontendRoutes.professorNewThesis} color="inherit" sx={{mx: 2, verticalAlign: 'center'}}>
                     New Thesis
                   </Link>
+                  <Link href={frontendRoutes.professorApplicants} color="inherit" sx={{mx: 2}}>
+                    Applicants
+                  </Link>
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
               )}

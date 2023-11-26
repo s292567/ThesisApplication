@@ -1,5 +1,5 @@
 // ProfessorApplicantsPage.jsx is used to render the page for the professor to see the applicants for each proposal
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Box,
@@ -12,6 +12,8 @@ import { students, proposals, applications } from "./fakeDatas";
 import { groupApplications } from "./groupBy";
 
 import ProfessorApplicants from "./ProfessorApplicants";
+import { SkeletonApplicants } from "../../components";
+import {isStateMemberExpression} from "eslint-plugin-react/lib/util/componentUtil.js";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
   justifyContent: "center",
@@ -42,16 +44,29 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
 
 export default function ProfessorApplicantsPage() {
   /*
-  const [applications, setApplications] = useState([]);
-  const [students, setStudents] = useState([]);
-  const [proposals, setProposals] = useState([]);
-  */
+    const [applications, setApplications] = useState([]);
+    const [students, setStudents] = useState([]);
+    const [proposals, setProposals] = useState([]);
+    */
 
-  const { groupedByProposalArray, groupedByStudentArray } = groupApplications(
-    applications,
-    students,
-    proposals
-  );
+  const [groupedByProposalArray, setGroupedByProposalArray] = useState(null);
+  const [groupedByStudentArray, setGroupedByStudentArray] = useState(null);
+
+  useEffect(() => {
+    /**
+     * Here async call to the api to get the applications, students and proposals
+    */ 
+
+    const { groupedByProposals, groupedByStudents } = groupApplications(
+      applications,
+      students,
+      proposals
+    );
+  
+    setGroupedByProposalArray(groupedByProposals);
+    setGroupedByStudentArray(groupedByStudents);
+    
+  }, []);
 
   const [groupBy, setGroupBy] = useState("proposal");
   const handleGroupBy = (event, newGroupBy) => {
@@ -61,16 +76,16 @@ export default function ProfessorApplicantsPage() {
   };
 
   return (
-    <Box>
-      <Box sx={{ display: "flex", padding: "2rem", flexDirection: "column" }}>
+    <>
+      <Box sx={{ display: "flex", flexDirection: "column", padding: '1rem'  }}>
         <StyledToggleButtonGroup
           value={groupBy}
           exclusive
           onChange={handleGroupBy}
           aria-label="group by choice"
         >
-          <ToggleButton value="proposal">Group by Thesis</ToggleButton>
-          <ToggleButton value="student">Group by student</ToggleButton>
+          <ToggleButton value="proposal">View by Thesis</ToggleButton>
+          <ToggleButton value="student">View by student</ToggleButton>
         </StyledToggleButtonGroup>
         <Divider
           orientation="horizontal"
@@ -79,14 +94,18 @@ export default function ProfessorApplicantsPage() {
         />
       </Box>
 
-      <ProfessorApplicants
-        groupedByProposalArray={
-          groupBy === "proposal" ? groupedByProposalArray : null
-        }
-        groupedByStudentArray={
-          groupBy === "student" ? groupedByStudentArray : null
-        }
-      />
-    </Box>
+      {groupedByProposalArray && groupedByStudentArray ? (
+        <ProfessorApplicants
+          groupedByProposalArray={
+            groupBy === "proposal" ? groupedByProposalArray : null
+          }
+          groupedByStudentArray={
+            groupBy === "student" ? groupedByStudentArray : null
+          }
+        />
+      ) : (
+          <SkeletonApplicants count={4} />
+      )}
+    </>
   );
 }

@@ -35,7 +35,7 @@ export function groupApplications(applications, students, proposals) {
     return acc;
   }, {});
 
-  const groupedByProposalArray = Object.values(groupedByProposal);
+  const groupedByProposals = Object.values(groupedByProposal);
 
   const groupedByStudent = combinedListTmp.reduce((acc, item) => {
     if (!acc[item.student_id]) {
@@ -57,7 +57,7 @@ export function groupApplications(applications, students, proposals) {
     return acc;
   }, {});
 
-  const groupedByStudentArray = Object.values(groupedByStudent);
+  const groupedByStudents = Object.values(groupedByStudent);
 
-  return { groupedByProposalArray, groupedByStudentArray };
+  return { groupedByProposals, groupedByStudents };
 }
