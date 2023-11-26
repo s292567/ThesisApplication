@@ -3,8 +3,7 @@ package se2g12.thesisapplication.application
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import se2g12.thesisapplication.application.ApplicationService
-import se2g12.thesisapplication.application.NewApplicationDTO
+import se2g12.thesisapplication.student.StudentDTO
 import java.util.UUID
 
 @RestController
@@ -26,5 +25,11 @@ class ApplicationController(private val applicationService: ApplicationService) 
             applicationService.declineApplication(application.id)
         }
         // if another status is passed, do nothing
+    }
+
+    @GetMapping("/API/thesis/applications/students")
+    @PreAuthorize("hasRole('Professor')")
+    fun getAllApplicationsForProposal(@RequestParam proposalId: UUID) : List<StudentDTO> {
+        return applicationService.getAllApplyingStudentsForProposalById(UUID.fromString(proposalId.toString()))
     }
 }
