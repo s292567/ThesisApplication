@@ -285,3 +285,25 @@ Example:
 - response status:
   - `200 Ok`: The application status has been changed
   - `500 Internal Server Error`: Generic server error
+
+## Browse Applications for Proposal
+**GET `API/thesis/applications/students?proposalId=`**
+
+Returns all Student entries in a list that applied for a specific proposal. The request can only be made by a user with professor 
+access rights. 
+
+- Response body example: 
+  ```
+  [
+    {
+        "id": "s654140",
+        "surname": "Davis",
+        "name": "John",
+        "gender": "Male",
+        "nationality": "American",
+        "email": "s654140@example.com",
+        "codDegree": "2020",
+        "enrollmentYear": null
+    }
+  ]
+  ```
