@@ -27,6 +27,7 @@ import {
 import politoLogo from '../../assets/images/politoLogo.png';
 import {useUserContext} from "../../contexts";
 import {frontendRoutes} from "../../routes/index.js";
+import {useNavigate} from "react-router-dom";
 
 const MyToolbar = styled(Toolbar)(({theme}) => ({
   display: 'flex',
@@ -67,7 +68,7 @@ const Links = styled(Box)(({theme}) => ({
 
 export default function LoggedInNavbar() {
   const theme = useTheme();
-
+  const navigate=useNavigate()
   const {logout, homeRoute, user} = useUserContext();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -145,10 +146,10 @@ export default function LoggedInNavbar() {
               </Link>
 
               {user.role === "Professor" && (<>
-                  <Link href={frontendRoutes.professorTheses} color="inherit" sx={{mx: 2}}>
+                  <Link onClick={navigate(frontendRoutes.professorTheses)} color="inherit" sx={{mx: 2}}>
                     Theses
                   </Link>
-                  <Link href={frontendRoutes.professorNewThesis} color="inherit" sx={{mx: 2, verticalAlign: 'center'}}>
+                  <Link onClick={navigate(frontendRoutes.professorNewThesis)} color="inherit" sx={{mx: 2, verticalAlign: 'center'}}>
                     New Thesis
                   </Link>
                   {/* Here NEW LINKS ON THE NAVBAR */}
@@ -156,7 +157,7 @@ export default function LoggedInNavbar() {
               )}
 
               {user.role === "Student" && (<>
-                  <Link href={frontendRoutes.studentTheses} color="inherit" sx={{mx: 2}}>
+                  <Link onClick={navigate(frontendRoutes.studentTheses)} color="inherit" sx={{mx: 2}}>
                     Theses
                   </Link>
                   {/* Here NEW LINKS ON THE NAVBAR */}

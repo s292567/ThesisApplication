@@ -1,8 +1,9 @@
 // userContext.jsx
 import React, { useState, createContext, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getProfileApi, loginApi } from "../api";
 import { frontendRoutes as routes } from "../routes";
+
+import { AuthContext, AuthProvider, TAuthConfig, TRefreshTokenExpiredEvent,IAuthContext } from "react-oauth2-code-pkce"
 
 const UserContext = createContext(undefined);
 
@@ -10,19 +11,22 @@ const useUserContext = () => useContext(UserContext);
 
 // it's used to Load the user context the first time the app is loaded
 const UserProvider = ({ children }) => {
+  const {token, tokenData,login,logOut,error,loginInProgress} = useContext(AuthContext);
   const [user, setUser] = useState("");
   const [userId, setUserId] = useState("")
   const [jwtToken, setJwtToken] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(tokenData!==undefined || loginInProgress);
   const [errorMsg, setErrorMsg] = useState("");
   const [homeRoute, setHomeRoute] = useState("/");
+  const logout=logOut;
   const [generalRoutes, setGeneralRoutes] = useState({
     theses: "/",
 
   });
   const navigate = useNavigate();
 
-  useEffect(() => {
+
+/*  useEffect(() => {
     if (jwtToken !== "") {
       localStorage.setItem("jwt", jwtToken);
     } else {
@@ -57,21 +61,24 @@ const UserProvider = ({ children }) => {
       }
     }
 
-  }, []);
+  }, []);*/
+  useEffect(() => {
+    setLoggedIn(tokenData!==undefined || loginInProgress);
+    console.log(tokenData);
+    if (tokenData) {
+      let role;
+      if( tokenData.realm_access.roles.includes("Student"))
+        role = "Student";
+      else if(tokenData.realm_access.roles.includes("Professor"))
+        role = "Professor";
+      console.log(tokenData);
+      setUserId(tokenData.email.split("@")[0]);
 
-  // Funzione di login
-  const login = async (username, password) => {
-    try {
-      const token = await loginApi(username, password);
       setJwtToken(token);
-      setLoggedIn(true);
-      setUserId(username.split("@")[0]);
+      const loggedUser = tokenData
+      setUser({username:loggedUser.preferred_username,role:loggedUser.realm_access.roles[3]});
       localStorage.setItem("jwt", token);
-
-      const loggedUser = await getProfileApi(username);
-      setUser(loggedUser);
-      localStorage.setItem("username", loggedUser.username);
-
+      localStorage.setItem("username", loggedUser.preferred_username);
       if (loggedUser.role === "Student") {
         setHomeRoute(routes.studentDashboard);
         setGeneralRoutes(prev => ({...prev, theses: routes.studentTheses}));
@@ -81,24 +88,17 @@ const UserProvider = ({ children }) => {
         setGeneralRoutes(prev => ({...prev, theses: routes.professorTheses}));
         navigate(routes.professorDashboard);
       }
-    } catch (error) {
-      setErrorMsg(error.detail);
-      navigate(routes.login);
-      console.log("in the error catch", error.detail);
-    }
-  };
+    } else {
+      setJwtToken("");
+      setUser("");
 
-  // Funzione di logout
-  const logout = () => {
-    localStorage.removeItem("username");
-    localStorage.removeItem("jwt");
-    setJwtToken("");
-    setUser("");
-    setLoggedIn(false);
-    setHomeRoute("/");
-    console.log("logout with route ", homeRoute);
-    navigate("/");
-  };
+      setErrorMsg(error);
+    }
+  }, [tokenData]);
+
+
+  // Logout Function
+
 
   const contextValue = {
     user,

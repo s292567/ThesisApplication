@@ -18,13 +18,14 @@ import {
 import {frontendRoutes as routes} from "./routes";
 
 const CheckAuthenticatedRoutes = () => {
-    const {loggedIn} = useUserContext();
-
+    const {loggedIn,login} = useUserContext();
+    if(!loggedIn)
+        login();
     return (
         <Routes>
             <Route element={<DefaultLayoutPage/>}>
                 <Route path={routes.landingPage} element={<LandingPage />}/>
-                {!loggedIn && <Route path={routes.login} element={<LoginPage/>}/>}
+
                 {loggedIn && (
                     <>
                         <Route
