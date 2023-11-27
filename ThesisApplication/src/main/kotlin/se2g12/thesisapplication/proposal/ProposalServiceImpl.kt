@@ -1,13 +1,9 @@
 package se2g12.thesisapplication.proposal
 
-import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.context.SecurityContextHolder
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.student.StudentRepository
-import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -17,6 +13,7 @@ class ProposalServiceImpl (
     private val teacherRepository: TeacherRepository,
     private val studentRepository: StudentRepository)
     : ProposalService {
+    @Transactional
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
         // username=email of the logged in professor
         val supervisor = teacherRepository.findByEmail(professorId).first()
@@ -46,13 +43,11 @@ class ProposalServiceImpl (
             }
         }
 
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-
-        val expirationDate: Date = dateFormat.parse(newProposal.expiration)
+        val expirationDate = newProposal.expiration
         val proposal = Proposal(newProposal.title, supervisor,
             newProposal.coSupervisors?.joinToString(", ") { it },
             newProposal.keywords.joinToString(", ") { it },
-            newProposal.type,
+            newProposal.type.joinToString(", ") { it },
             newProposal.groups.joinToString(", ") { it },
             newProposal.description,
             newProposal.requiredKnowledge, newProposal.notes,
@@ -62,6 +57,7 @@ class ProposalServiceImpl (
 
     }
     //getAll
+
     override fun getAllProposals(): List<ProposalDTO> {
         return proposalRepository.findAll().map { it.toDTO() }
     }
@@ -83,50 +79,32 @@ class ProposalServiceImpl (
             .filter { it.cds.split(", ", ",").contains(cdsName) }
             .map { it.toDTO() }
     }
+    override fun getDistinctSupervisors(): List<String> {
+        return proposalRepository.findDistinctSupervisors()
+    }
 
-    //searchByAttributes----------------------- search functions of the previous search implementation
-    override fun searchProposalsByTitle(title: String): List<Proposal> {
-        return proposalRepository.findByTitleContaining(title)
+    override fun getDistinctCoSupervisors(): List<String> {
+        return proposalRepository.findDistinctCoSupervisors()
     }
-    override fun searchProposalsBySupervisorName(supervisorName: String): List<Proposal> {
-        return proposalRepository.findBySupervisorNameContaining(supervisorName)
+
+    override fun getDistinctProposalTypes(): List<String> {
+        return proposalRepository.findDistinctProposalTypes()
     }
-    override fun searchProposalsBycoSupervisors(coSupervisors: String): List<Proposal> {
-        return proposalRepository.findBycoSupervisorsContaining(coSupervisors)
+
+    override fun getDistinctProposalLevels(): List<String> {
+        return proposalRepository.findDistinctProposalLevels()
     }
-    override fun searchProposalsByKeywords(keyword: String): List<Proposal> {
-        return proposalRepository.findByKeywordsContaining(keyword)
+
+    override fun getDistinctProposalKeywords(): List<String> {
+        return proposalRepository.findDistinctProposalKeywords()
     }
-    override fun searchProposalsByCds(cds: String): List<Proposal> {
-        return proposalRepository.findByCdsContaining(cds)
+
+    override fun getDistinctProposalGroups(): List<String> {
+        return proposalRepository.findDistinctProposalGroups()
     }
-    override fun searchProposalsByLevel(level: String): List<Proposal> {
-        return proposalRepository.findByLevelContaining(level)
-    }
-    override fun searchProposalsByDescription(description: String): List<Proposal> {
-        return proposalRepository.findByDescriptionContaining(description)
-    }
-    //------------------------------------------
-    override fun searchProposalsByTitleIgnoreCase(title: String): List<Proposal> {
-        return proposalRepository.findByTitleIgnoreCaseContaining(title)
-    }
-    override fun searchProposalsBySupervisorNameIgnoreCase(supervisorName: String): List<Proposal> {
-        return proposalRepository.findBySupervisorNameIgnoreCaseContaining(supervisorName)
-    }
-    override fun searchProposalsBycoSupervisorsIgnoreCase(coSupervisors: String): List<Proposal> {
-        return proposalRepository.findBycoSupervisorsIgnoreCaseContaining(coSupervisors)
-    }
-    override fun searchProposalsByKeywordsIgnoreCase(keywords: String): List<Proposal> {
-        return proposalRepository.findByKeywordsIgnoreCaseContaining(keywords)
-    }
-    override fun searchProposalsByCdsIgnoreCase(cds: String): List<Proposal> {
-        return proposalRepository.findByCdsIgnoreCaseContaining(cds)
-    }
-    override fun searchProposalsByLevelIgnoreCase(level: String): List<Proposal> {
-        return proposalRepository.findByLevelIgnoreCaseContaining(level)
-    }
-    override fun searchProposalsByDescriptionIgnoreCase(description: String): List<Proposal> {
-        return proposalRepository.findByDescriptionIgnoreCaseContaining(description)
+
+    override fun getDistinctProposalCds(): List<String> {
+        return proposalRepository.findDistinctProposalCds()
     }
 
 }

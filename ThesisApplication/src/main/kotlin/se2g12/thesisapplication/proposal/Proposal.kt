@@ -2,6 +2,7 @@ package se2g12.thesisapplication.proposal
 
 import jakarta.persistence.*
 import se2g12.thesisapplication.teacher.Teacher
+import java.time.LocalDate
 import java.util.*
 
 @Entity
@@ -20,7 +21,8 @@ data class Proposal(
     val description: String,
     val requiredKnowledge: String?=null,
     val notes: String?=null,
-    val expiration: Date,
+    @Temporal(TemporalType.DATE)
+    val expiration: LocalDate,
     val level: String,
     val cds: String
 ){
