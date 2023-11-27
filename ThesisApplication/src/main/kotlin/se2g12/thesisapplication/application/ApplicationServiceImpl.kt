@@ -7,7 +7,9 @@ import se2g12.thesisapplication.archive.Archive
 import se2g12.thesisapplication.archive.ArchiveRepository
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.student.Student
+import se2g12.thesisapplication.student.StudentDTO
 import se2g12.thesisapplication.student.StudentRepository
+import se2g12.thesisapplication.student.toDTO
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.text.SimpleDateFormat
@@ -47,6 +49,13 @@ class ApplicationServiceImpl (
         applicationRepository.updateStatusByProposalId(app.proposal.id!!, "declined")
         // archive proposal
         archiveRepository.save(Archive(app.proposal))
+    }
+
+    /**
+     * Get a list of all students that applied to a specific proposal
+     */
+    override fun getAllApplyingStudentsForProposalById(proposalId: UUID) : List<StudentDTO> {
+        return studentRepository.getApplyingStudentsByProposalId(proposalId).map { it.toDTO() }
     }
 
 }
