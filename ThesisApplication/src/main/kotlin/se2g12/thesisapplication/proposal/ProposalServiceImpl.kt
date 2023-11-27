@@ -9,6 +9,7 @@ import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -21,12 +22,15 @@ class ProposalServiceImpl (
     private val studentRepository: StudentRepository,
     private val groupDepRepository: GroupDepRepository)
     : ProposalService {
-    override fun updateProposal(newProposal: ProposalDTO, professorId: String):ProposalDTO {
-        val old=proposalRepository.findBySupervisorNameContaining(professorId).first()
+    override fun updateProposal(newProposal: NewProposalDTO, professorId: String,oldName:String):ProposalDTO {
+        println(proposalRepository.findAll().filter{it.title==oldName})
+        println(professorId)
+        println(oldName)
+        val old= proposalRepository.findAll().filter{it.title==oldName}.first()
         val message=checkProposal(newProposal)
         if(message=="") {
             old.title=newProposal.title!!
-            old.supervisor=newProposal.supervisor!!
+            old.supervisor=teacherRepository.findByEmail("$professorId@example.com").first()
             old.coSupervisors=newProposal.coSupervisors!!.joinToString(separator = ",")
             old.keywords=newProposal.keywords!!.joinToString(separator = ",")
             old.type=newProposal.type!!
@@ -39,23 +43,23 @@ class ProposalServiceImpl (
             val expirationDate: Date = dateFormat.parse(newProposal.expiration)
             old.expiration=expirationDate
             old.level=newProposal.level!!
-            old.cds= newProposal.cds!!.joinToString(separator = ",")
+            old.cds= newProposal.CdS!!.joinToString(separator = ",")
             return proposalRepository.save(old).toDTO()
         }
         //add custom exception
         println(message)
         return old.toDTO()
     }
-    private fun checkProposal(newProposal: ProposalDTO):String{
+    private fun checkProposal(newProposal: NewProposalDTO):String{
         var message:String=""
         //date check
-        val simpleDate=SimpleDateFormat("yyyy-MM-dd").format(newProposal.expiration)
-        val parsedExpirationDate: LocalDate = LocalDate.parse(simpleDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val currentDate=LocalDate.now()
-        if(currentDate.isAfter(parsedExpirationDate))
+        val simpleDate=SimpleDateFormat("yyyy-MM-dd")
+        val expirationDate=simpleDate.parse(newProposal.expiration)
+        val currentDate=Date.from(Instant.now())
+        if(currentDate.after(expirationDate))
             message= "$message expire date is before now"
         //check list of string
-        if(newProposal.coSupervisors!!.isEmpty()||newProposal.keywords!!.isEmpty())
+        if(newProposal.coSupervisors==null||newProposal.keywords==null)
             message += " coSupervisors or keyword is empty"
         //check type and level and cds
         //if(newProposal.type)
