@@ -3,11 +3,14 @@ package se2g12.thesisapplication.proposal
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import se2g12.thesisapplication.GroupDep.GroupDepRepository
 import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -15,8 +18,55 @@ import java.util.*
 class ProposalServiceImpl (
     private val proposalRepository: ProposalRepository,
     private val teacherRepository: TeacherRepository,
-    private val studentRepository: StudentRepository)
+    private val studentRepository: StudentRepository,
+    private val groupDepRepository: GroupDepRepository)
     : ProposalService {
+    override fun updateProposal(newProposal: ProposalDTO, professorId: String):ProposalDTO {
+        val old=proposalRepository.findBySupervisorNameContaining(professorId).first()
+        val message=checkProposal(newProposal)
+        if(message=="") {
+            old.title=newProposal.title!!
+            old.supervisor=newProposal.supervisor!!
+            old.coSupervisors=newProposal.coSupervisors!!.joinToString(separator = ",")
+            old.keywords=newProposal.keywords!!.joinToString(separator = ",")
+            old.type=newProposal.type!!
+            old.groups=newProposal.groups!!.joinToString(separator = ",")
+            old.description=newProposal.description!!
+            old.requiredKnowledge=newProposal.requiredKnowledge
+            old.notes=newProposal.notes
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+
+            val expirationDate: Date = dateFormat.parse(newProposal.expiration)
+            old.expiration=expirationDate
+            old.level=newProposal.level!!
+            old.cds= newProposal.cds!!.joinToString(separator = ",")
+            return proposalRepository.save(old).toDTO()
+        }
+        //add custom exception
+        println(message)
+        return old.toDTO()
+    }
+    private fun checkProposal(newProposal: ProposalDTO):String{
+        var message:String=""
+        //date check
+        val simpleDate=SimpleDateFormat("yyyy-MM-dd").format(newProposal.expiration)
+        val parsedExpirationDate: LocalDate = LocalDate.parse(simpleDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val currentDate=LocalDate.now()
+        if(currentDate.isAfter(parsedExpirationDate))
+            message= "$message expire date is before now"
+        //check list of string
+        if(newProposal.coSupervisors!!.isEmpty()||newProposal.keywords!!.isEmpty())
+            message += " coSupervisors or keyword is empty"
+        //check type and level and cds
+        //if(newProposal.type)
+        newProposal.groups!!.forEach{if(groupDepRepository.findById(it).isEmpty)
+            message +=" Group"+it+"not present"
+        }
+        if(newProposal.description!!.isEmpty())
+            message +=" description is empty"
+        return message
+
+    }
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
         // username=email of the logged in professor
         val supervisor = teacherRepository.findByEmail(professorId).first()
@@ -61,6 +111,7 @@ class ProposalServiceImpl (
         proposalRepository.save(proposal)
 
     }
+
     //getAll
     override fun getAllProposals(): List<ProposalDTO> {
         return proposalRepository.findAll().map { it.toDTO() }

@@ -2,6 +2,7 @@ package se2g12.thesisapplication.proposal
 
 
 interface ProposalService {
+    fun updateProposal(newProposal: ProposalDTO,professorId : String):ProposalDTO
     fun addNewProposal(newProposal: NewProposalDTO, professorId: String)
     fun getAllProposals(): List<ProposalDTO>
     fun getProposalsByCds(cds: String): List<ProposalDTO>

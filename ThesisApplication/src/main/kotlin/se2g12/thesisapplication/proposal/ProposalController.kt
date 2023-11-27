@@ -1,6 +1,7 @@
 package se2g12.thesisapplication.proposal
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
@@ -45,6 +46,12 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         return proposalService.searchProposalByStudentCds(studentId, query)
     }
 
+    @PutMapping("/API/proposal/update/{professorId}")
+    @PreAuthorize("hasRole('Professor')")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun updateProposal(@PathVariable professorId: String, @RequestBody proposal: NewProposalDTO?) {
+        proposalService.updateProposal(proposal!!,professorId)
+    }
     //text search - OLD VERSION
 //    @PostMapping("/API/thesis/proposals/filtered")
 //    @PreAuthorize("hasRole('Student')")
