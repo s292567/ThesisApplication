@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
   Dialog,
   DialogTitle,
@@ -12,9 +12,9 @@ import {
   useMediaQuery,
 } from "@mui/material";
 
-import { applyToProposal } from "../../api/index.js";
-import { useUserContext } from "../../contexts/index.js";
-import WarningPopup from "./WarningPopup.jsx";
+import {applyToProposal} from "../../api/index.js";
+import {useUserContext} from "../../contexts/index.js";
+import WarningPopup from "../WarningPopup.jsx";
 
 const TextWrap = styled(Box)({
   backgroundColor: "whitesmoke",
@@ -24,7 +24,7 @@ const TextWrap = styled(Box)({
   width: "auto",
 });
 
-const MyDialog = styled(Dialog)(({ theme }) => ({
+const MyDialog = styled(Dialog)(({theme}) => ({
   ".MuiPaper-root": {
     zIndex: 2000,
     borderRadius: "20px",
@@ -33,7 +33,7 @@ const MyDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const StyledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(({theme}) => ({
   backgroundColor: theme.palette.primary.dark,
   "&:hover": {
     backgroundColor: theme.palette.primary.main,
@@ -45,20 +45,20 @@ const StyledButton = styled(Button)(({ theme }) => ({
   padding: theme.spacing(1, 3),
 }));
 
-const ApplyButton = ({ isMobile, onCLick }) => {
+const ApplyButton = ({isMobile, onCLick}) => {
   return (
     <StyledButton
       size="large"
       onClick={() => onCLick()}
-      sx={{ display: isMobile ? "none" : "block", mt: 2 }}
+      sx={{display: isMobile ? "none" : "block", mt: 2}}
     >
       Apply
     </StyledButton>
   );
 };
 
-export default function ThesisDetail({ open, handleClose, thesis}) {
-  const { userId, user } = useUserContext();
+export default function ThesisDetail({open, handleClose, thesis}) {
+  const {userId, user} = useUserContext();
 
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [warningOpen, setWarningOpen] = useState(false);
@@ -73,7 +73,6 @@ export default function ThesisDetail({ open, handleClose, thesis}) {
 
   const handleCloseWarning = () => {
     setWarningOpen(false);
-    setConfirmedOpen(false);
   };
 
   const handleApplyed = () => {
@@ -138,18 +137,18 @@ export default function ThesisDetail({ open, handleClose, thesis}) {
               <TextWrap
                 variant="subtitle1"
                 color="textPrimary"
-                sx={{ fontSize: "1.2rem" }}
+                sx={{fontSize: "1.2rem"}}
               >
                 {thesis.type}
               </TextWrap>
               <TextWrap
                 variant="subtitle1"
                 color="textPrimary"
-                sx={{ fontSize: "1.2rem" }}
+                sx={{fontSize: "1.2rem"}}
               >
                 {thesis.level}
               </TextWrap>
-              <TextWrap variant="body1" sx={{ mt: 1 }}>
+              <TextWrap variant="body1" sx={{mt: 1}}>
                 Required Knowledge: {thesis.requiredKnowledge}
               </TextWrap>
               <TextWrap variant="body1">
@@ -168,17 +167,17 @@ export default function ThesisDetail({ open, handleClose, thesis}) {
             <Divider
               orientation="vertical"
               flexItem
-              sx={{ display: isMobile ? "none" : "flex" }}
+              sx={{display: isMobile ? "none" : "flex"}}
             />
-            <Box sx={{ flex: "1 1 auto", marginLeft: 2 }}>
-              <Box sx={{ fontSize: "1.2rem", fontWeight: "500" }}>
+            <Box sx={{flex: "1 1 auto", marginLeft: isMobile ? 'none' : 2,}}>
+              <Box sx={{fontSize: "1.2rem", fontWeight: "500"}}>
                 Supervisor:
-                <TextWrap sx={{ maxWidth: "200px" }}>
+                <TextWrap sx={{maxWidth: "200px"}}>
                   {formatFullName(thesis.supervisor)}
                 </TextWrap>
               </Box>
               {thesis.coSupervisors.length > 0 && (
-                <Box sx={{ fontSize: "1.2rem", fontWeight: "500" }}>
+                <Box sx={{fontSize: "1.2rem", fontWeight: "500"}}>
                   Co-Supervisors:
                   <TextWrap>{thesis.coSupervisors.join(", ")}</TextWrap>
                 </Box>
@@ -193,13 +192,13 @@ export default function ThesisDetail({ open, handleClose, thesis}) {
                 >
                   Description:
                 </Typography>
-                <Typography sx={{ fontSize: "1.1rem" }}>
+                <Typography sx={{fontSize: "1.1rem"}}>
                   {" "}
                   {thesis.description}{" "}
                 </Typography>
               </TextWrap>
               {thesis.notes && (
-                <Typography variant="body2" sx={{ mt: 6 }}>
+                <Typography variant="body2" sx={{mt: 6}}>
                   <strong>Notes: </strong> {thesis.notes}
                 </Typography>
               )}
@@ -207,28 +206,31 @@ export default function ThesisDetail({ open, handleClose, thesis}) {
           </Box>
         </DialogContent>
         <DialogActions
-          sx={{ justifyContent: "space-between", alignItems: "flex-end" }}
+          sx={{justifyContent: "space-between", alignItems: "flex-end"}}
         >
           {user.role === "Student" && (
-            <ApplyButton
-              key="lateral"
-              isMobile={!isMobile}
-              onCLick={handleApply}
-            />
+            <>
+              <ApplyButton
+                key="lateral"
+                isMobile={!isMobile}
+                onCLick={handleApply}
+              />
+              <WarningPopup
+                warningOpen={warningOpen}
+                confirmedOpen={confirmedOpen}
+                handleCloseWarning={handleCloseWarning}
+                handleClose={()=>{setConfirmedOpen(false)}}
+                handleApplyed={handleApplyed}
+                msgWarning={"Are you sure you want to apply to this thesis?"}
+                msgDone={msg}
+              />
+            </>
           )}
 
           <Button onClick={handleClose} color="error" size="large">
             Close
           </Button>
         </DialogActions>
-        <WarningPopup
-          warningOpen={warningOpen}
-          confirmedOpen={confirmedOpen}
-          handleClose={handleCloseWarning}
-          handleApplyed={handleApplyed}
-          msgWarning={"Are you sure you want to apply to this thesis?"}
-          msgDone={msg}
-        />
       </MyDialog>
     </>
   );

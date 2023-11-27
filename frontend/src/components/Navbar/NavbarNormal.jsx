@@ -107,7 +107,7 @@ export default function NavbarNormal(){
         }}
       >
         <Logo>
-          <Link to="/">
+          <Link to="/" onClick={() => {setMobileOpen(false)}}>
             <img
               src={politoLogo}
               alt="Politecnico Di Torino"
@@ -133,6 +133,7 @@ export default function NavbarNormal(){
                 alignSelf: mobileOpen ? "flex-start" : "center",
               },
             }}
+            onClick={() => {setMobileOpen(false)}}
           >
             <LinkGroup />
             {location.pathname !== frontendRoutes.login ? (

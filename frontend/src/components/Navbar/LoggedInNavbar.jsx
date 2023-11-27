@@ -143,18 +143,18 @@ export default function LoggedInNavbar() {
                 },
               }}
             >
-              <Link to={homeRoute} color="inherit" sx={{mx: 2}}>
+              <Link to={homeRoute} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
                 Home
               </Link>
 
               {user.role === "Professor" && (<>
-                  <Link to={frontendRoutes.professorTheses} color="inherit" sx={{mx: 2}}>
+                  <Link to={frontendRoutes.professorTheses} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
                     Theses
                   </Link>
-                  <Link to={frontendRoutes.professorNewThesis} color="inherit" sx={{mx: 2, verticalAlign: 'center'}}>
+                  <Link to={frontendRoutes.professorNewThesis} color="inherit" sx={{mx: 2, }} onClick={()=>setMobileOpen(false)}>
                     New Thesis
                   </Link>
-                  <Link to={frontendRoutes.professorApplicants} color="inherit" sx={{mx: 2}}>
+                  <Link to={frontendRoutes.professorApplicants} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
                     Applicants
                   </Link>
                   {/* Here NEW LINKS ON THE NAVBAR */}
@@ -162,7 +162,7 @@ export default function LoggedInNavbar() {
               )}
 
               {user.role === "Student" && (<>
-                  <Link to={frontendRoutes.studentTheses} color="inherit" sx={{mx: 2}}>
+                  <Link to={frontendRoutes.studentTheses} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
                     Theses
                   </Link>
                   {/* Here NEW LINKS ON THE NAVBAR */}

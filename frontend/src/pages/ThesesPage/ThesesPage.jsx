@@ -29,7 +29,7 @@ export default function ThesesPage() {
 
 
   return (<>
-      <Typography variant="h3" color={"orange"} mb={3} mt={3}>Theses:</Typography>
+      <Typography variant="h3" color={"orange"} mb={3} sx={{marginTop: '4rem', marginBottom: '2rem'}}>Theses:</Typography>
       {proposals ? (
         <ThesesList thesesData={proposals}/>
       ) : (

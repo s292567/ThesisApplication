@@ -15,7 +15,7 @@ import SkeletonThesisList from "./Skeletons/SkeletonThesisList.jsx";
 import MyOutlinedButton from "./MyOutlinedButton/MyOutlinedButton.jsx";
 import PastelComponent from "./PastelComponent/PastelComponent.jsx";
 
-import WarningPopup from "./ThesisDetail/WarningPopup.jsx"
+import WarningPopup from "./WarningPopup.jsx"
 
 import SkeletonApplicants from "./Skeletons/SkeletonApplicants.jsx";
 
