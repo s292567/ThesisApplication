@@ -329,14 +329,14 @@ access rights.
 - The request body should contain a JSON object with the following filter criteria:
 
 
-    supervisor (String, optional): Filter by supervisor's name.
-    coSupervisors (List of Strings, optional): Filter by co-supervisors' names.
-    keywords (List of Strings, optional): Filter by proposal keywords.
-    types (List of Strings, optional): Filter by proposal types.
-    groups (List of Strings, optional): Filter by proposal groups.
-    cds (List of Strings, optional): Filter by Course of Study names.
-    queryString (String, optional): Filter by a general query string.
-    endDate (LocalDate, optional): Filter proposals with expiration dates on or before this date.
+    - supervisor (String, optional): Filter by supervisor's name.
+    - coSupervisors (List of Strings, optional): Filter by co-supervisors' names.
+    - keywords (List of Strings, optional): Filter by proposal keywords.
+    - types (List of Strings, optional): Filter by proposal types.
+    - groups (List of Strings, optional): Filter by proposal groups.
+    - cds (List of Strings, optional): Filter by Course of Study names.
+    - queryString (String, optional): Filter by a general query string.
+    - endDate (LocalDate, optional): Filter proposals with expiration dates on or before this date.
 
 - Example Request Body #1:
 
