@@ -14,7 +14,7 @@ export default function ThesesPage() {
   useEffect(() => {
     const fetchProposals = async () => {
       try {
-        let response = undefined;
+        let response;
         /* API CALL BASED ON ROLE */
           (user.role === "Professor" ?
             response = await getAllProposals() : response = await getAllProposals()
