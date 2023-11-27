@@ -307,7 +307,65 @@ access rights.
     }
   ]
   ```
-  ## Filtered Search Proposals
+## Thesis Proposals Information Endpoints
+
+The following endpoints provide information about distinct attributes related to thesis proposals.
+
+### Get Distinct Proposal Attributes
+
+#### Endpoint
+
+```http
+GET /API/thesis/proposals/{attribute}
+```
+### Description
+
+- Retrieve a list of distinct values for the specified attribute in thesis proposals.
+Path Parameters
+
+    attribute (String): The attribute for which distinct values are requested. Possible values: `supervisors`, `coSupervisors`, `types`, `levels`, `keywords`, `groups`, `degrees`.
+
+- Response
+
+    200 OK: Returns a list of strings representing distinct values for the specified attribute.
+
+### Examples
+- Get Distinct Supervisor Names
+
+```http
+GET /API/thesis/proposals/supervisors
+```
+- Get Distinct Co-Supervisor Names
+
+```http
+GET /API/thesis/proposals/coSupervisors
+```
+- Get Distinct Proposal Types
+
+```http
+GET /API/thesis/proposals/types
+```
+- Get Distinct Proposal Levels
+
+```http
+GET /API/thesis/proposals/levels
+```
+- Get Distinct Proposal Keywords
+
+```http
+GET /API/thesis/proposals/keywords
+```
+- Get Distinct Proposal Groups
+
+```http
+GET /API/thesis/proposals/groups
+```
+- Get Distinct Proposal Degrees (Cds)
+
+```http
+GET /API/thesis/proposals/degrees
+```
+## Filtered Search Proposals
 **POST `/API/thesis/proposals/search-filtered`**
 
 - Filters search results through sending a body request with various **optional** filters,
