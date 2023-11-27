@@ -12,32 +12,15 @@ import {
 import { MyOutlinedButton, ThesisDetail } from "../index.js";
 import {useLocation, useNavigate} from "react-router-dom";
 import { useUserContext } from "../../contexts/index.js";
-import {frontendRoutes} from "../../routes/index.js";
 
 export default function ThesesList({ thesesData }) {
   const location = useLocation();
   const { homeRoute, generalRoutes } = useUserContext();
   const navigate = useNavigate();
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
-  // State to track the selected thesis
-  const [selectedThesis, setSelectedThesis] = useState(null);
-
   if (thesesData === undefined) {
     thesesData = [];
   }
-
-  // Function to handle opening a thesis detail
-  const handleOpenThesisDetail = (thesis) => {
-    setSelectedThesis(thesis);
-  };
-
-  // Function to handle closing the thesis detail
-  const handleCloseThesisDetail = () => {
-    setSelectedThesis(null);
-  };
 
   return (
     <Box

@@ -39,11 +39,11 @@ const MyToolbar = styled(Toolbar)(({theme}) => ({
   },
 }));
 
-const Icons = styled(Box)(({theme}) => ({
+const Icons = styled(Box)({
   display: "flex",
   alignItems: "center",
   gap: "2rem",
-}));
+});
 
 const Badges = styled(Box)(({theme}) => ({
   display: "none",
@@ -58,12 +58,12 @@ const Badges = styled(Box)(({theme}) => ({
   },
 }));
 
-const Links = styled(Box)(({theme}) => ({
+const Links = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   flexGrow: 1,
   gap: "10px",
-}));
+});
 
 
 export default function LoggedInNavbar() {

@@ -13,7 +13,6 @@ import { groupApplications } from "./groupBy";
 
 import ProfessorApplicants from "./ProfessorApplicants";
 import { SkeletonApplicants } from "../../components";
-import {isStateMemberExpression} from "eslint-plugin-react/lib/util/componentUtil.js";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
   justifyContent: "center",

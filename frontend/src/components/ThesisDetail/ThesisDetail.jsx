@@ -10,20 +10,19 @@ import {
   Divider,
   styled,
   useMediaQuery,
-  IconButton,
 } from "@mui/material";
-import { Close, WarningRounded } from "@mui/icons-material";
+
 import { applyToProposal } from "../../api/index.js";
 import { useUserContext } from "../../contexts/index.js";
 import WarningPopup from "./WarningPopup.jsx";
 
-const TextWrap = styled(Box)(({ theme }) => ({
+const TextWrap = styled(Box)({
   backgroundColor: "whitesmoke",
   borderRadius: "12px",
   padding: "0.3rem 0.8rem",
   marginBottom: "1rem",
   width: "auto",
-}));
+});
 
 const MyDialog = styled(Dialog)(({ theme }) => ({
   ".MuiPaper-root": {

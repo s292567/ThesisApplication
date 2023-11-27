@@ -3,13 +3,13 @@ import {Stack, Box, styled, Paper, Card, CardMedia, CardActionArea, Typography} 
 import politoView from '../../assets/images/politoView.jpg';
 import politoBiblio from '../../assets/images/politoBiblio.jpeg';
 
-const MyBox = styled(Box)(({theme}) => ({
+const MyBox = styled(Box)({
   display: 'flex',
   position: 'relative', // Set the position to relative
   alignItems: 'center', // Align items vertically
   justifyContent: 'center', // Align items horizontally
   flexGrow: '1'
-}));
+});
 
 const StyledPaper = styled(Paper)(({theme}) => ({
   position: 'absolute', // Set the position to absolute
