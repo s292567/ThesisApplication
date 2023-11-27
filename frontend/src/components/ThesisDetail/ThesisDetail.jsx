@@ -26,6 +26,7 @@ const TextWrap = styled(Box)({
 
 const MyDialog = styled(Dialog)(({ theme }) => ({
   ".MuiPaper-root": {
+    zIndex: 2000,
     borderRadius: "20px",
     padding: "2rem",
     backgroundColor: theme.palette.background.paper,
@@ -176,7 +177,7 @@ export default function ThesisDetail({ open, handleClose, thesis}) {
                   {formatFullName(thesis.supervisor)}
                 </TextWrap>
               </Box>
-              {thesis.coSupervisors.length && (
+              {thesis.coSupervisors.length > 0 && (
                 <Box sx={{ fontSize: "1.2rem", fontWeight: "500" }}>
                   Co-Supervisors:
                   <TextWrap>{thesis.coSupervisors.join(", ")}</TextWrap>

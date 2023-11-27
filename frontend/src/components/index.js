@@ -19,6 +19,8 @@ import WarningPopup from "./ThesisDetail/WarningPopup.jsx"
 
 import SkeletonApplicants from "./Skeletons/SkeletonApplicants.jsx";
 
+import WithTooltip from "./WithTooltip.jsx"
+
 export {
     BottomNavbar,
     LoginForm, 
@@ -34,7 +36,8 @@ export {
     MyOutlinedButton,
     PastelComponent,
     WarningPopup,
-    
+    WithTooltip,
+
     SkeletonThesisList,
     SkeletonApplicants,
 }

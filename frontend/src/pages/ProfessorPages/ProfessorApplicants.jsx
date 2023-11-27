@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   useTheme,
   useMediaQuery,
@@ -16,20 +16,19 @@ import {
   IconButton,
   Collapse,
   CardHeader,
-  Tooltip,
 } from "@mui/material";
 import {
   KeyboardArrowDownRounded,
   KeyboardArrowUpRounded,
 } from "@mui/icons-material";
 
-import {PastelComponent} from "../../components";
-import {WarningPopup} from "../../components";
+import { PastelComponent, ThesisRow } from "../../components";
+import { WarningPopup, WithTooltip } from "../../components";
 
 export default function ProfessorApplicants({
-                                              groupedByProposalArray,
-                                              groupedByStudentArray,
-                                            }) {
+  groupedByProposalArray,
+  groupedByStudentArray,
+}) {
   const [showApplicants, setShowApplicants] = useState({});
 
   /**
@@ -86,8 +85,7 @@ export default function ProfessorApplicants({
   // Render the table head with field names based on screen size
   const renderTableHead = () => (
     <TableHead>
-      <TableRow sx={{"& .MuiTableCell-root": {fontWeight: "bold"}}}>
-
+      <TableRow sx={{ "& .MuiTableCell-root": { fontWeight: "bold" } }}>
         {groupedByStudentArray ? (
           <TableCell>Proposal Title</TableCell>
         ) : (
@@ -115,20 +113,26 @@ export default function ProfessorApplicants({
               border: 0,
             },
             "& .MuiTableCell-root": {
-              fontSize: "medium",
+              fontSize: "large",
             },
           }}
         >
-          <Tooltip title={ isStudentGrouping ? 'Thesis Title' : 'Student name'}>
-            <TableCell
-              sx={{
-                fontWeight: isStudentGrouping ? "bolder" : "inherit",
-                color: isStudentGrouping ? "#03468f" : "black",
-              }}
-            >
-              {isStudentGrouping ? item.proposal_title : item.student_name}
-            </TableCell>
-          </Tooltip>
+          <TableCell
+            sx={{
+              fontWeight: isStudentGrouping ? "bolder" : "inherit",
+              color: isStudentGrouping ? "#03468f" : "black",
+            }}
+          >
+            {isStudentGrouping ? (
+              <WithTooltip
+                tooltipContent={<ThesisRow thesis={item.proposal} />}
+                children={item.proposal_title}
+              />
+            ) : (
+              item.student_name
+            )}
+          </TableCell>
+
           {(!isSmallScreen || isMediumScreen) && !isStudentGrouping && (
             <TableCell>{item.student_email}</TableCell>
           )}
@@ -204,23 +208,28 @@ export default function ProfessorApplicants({
                   <>
                     <Typography
                       variant="h4"
-                      sx={{fontWeight: "bold", marginRight: "1rem"}}
+                      sx={{ fontWeight: "bold", marginRight: "1rem" }}
                     >
                       {item.student_name}
                     </Typography>
                     <Typography variant="body1">{`${item.student_email} - ${item.student_degree}`}</Typography>
                   </>
                 ) : (
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      fontWeight: "bold",
-                      color: "#03468f",
-                      marginRight: "1rem",
-                    }}
-                  >
-                    {item.proposal_title}
-                  </Typography>
+                  <WithTooltip
+                    tooltipContent={<ThesisRow thesis={item.proposal} />}
+                    children={
+                      <Typography
+                        variant="h4"
+                        sx={{
+                          fontWeight: "bold",
+                          color: "#03468f",
+                          marginRight: "1rem",
+                        }}
+                      >
+                        {item.proposal_title}
+                      </Typography>
+                    }
+                  />
                 )
               }
               action={
@@ -239,17 +248,22 @@ export default function ProfessorApplicants({
                     justifyContent: "center",
                     alignItems: "center",
                   }}
+                  onClick={() =>
+                    toggleApplicants(
+                      groupedByStudentArray ? item.student_id : item.proposal_id
+                    )
+                  }
                 >
                   {showApplicants[
                     groupedByStudentArray ? item.student_id : item.proposal_id
-                    ] ? (
-                    <KeyboardArrowUpRounded/>
+                  ] ? (
+                    <KeyboardArrowUpRounded />
                   ) : (
-                    <KeyboardArrowDownRounded/>
+                    <KeyboardArrowDownRounded />
                   )}
                   <Typography
                     variant="body1"
-                    sx={{marginLeft: "8px", fontWeight: "bold"}}
+                    sx={{ marginLeft: "8px", fontWeight: "bold" }}
                   >
                     {groupedByStudentArray
                       ? item.applications.length
@@ -267,18 +281,13 @@ export default function ProfessorApplicants({
                   alignSelf: "center",
                 },
               }}
-              onClick={() =>
-                toggleApplicants(
-                  groupedByStudentArray ? item.student_id : item.proposal_id
-                )
-              }
             />
             <CardContent>
               <Collapse
                 in={
                   showApplicants[
                     groupedByStudentArray ? item.student_id : item.proposal_id
-                    ]
+                  ]
                 }
               >
                 <TableContainer>
