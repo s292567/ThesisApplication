@@ -9,4 +9,6 @@ interface ApplicationService {
     fun declineApplication(applicationId: UUID)
     fun acceptApplication(applicationId: UUID)
     fun getAllApplyingStudentsForProposalById(proposalId: UUID) : List<StudentDTO>
+
+    fun getAllApplicationsForProposalById(proposalId: UUID) : List<ApplicationDTO>
 }

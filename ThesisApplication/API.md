@@ -286,7 +286,7 @@ Example:
   - `200 Ok`: The application status has been changed
   - `500 Internal Server Error`: Generic server error
 
-## Browse Applications for Proposal
+## Browse Applying Students for Proposal
 **GET `API/thesis/applications/students?proposalId=`**
 
 Returns all Student entries in a list that applied for a specific proposal. The request can only be made by a user with professor 
@@ -305,6 +305,24 @@ access rights.
         "codDegree": "2020",
         "enrollmentYear": null
     }
+  ]
+  ```
+
+## Browse Applications for Proposal
+**GET `API/thesis/applications/by?proposalId=`**
+
+Returns all applications for a specific proposal. The request can only be made by a user with professor
+access rights.
+
+- Response body example:
+  ```
+  [
+  {
+  "id": "f92b3e16-5291-44eb-ab6b-29d0ab97df9b",
+  "studentId": "s654140",
+  "proposalId": "000003e8-8169-21ee-b800-325096b39f47",
+  "status": "pending"
+  }
   ]
   ```
 ## Thesis Proposals Information Endpoints

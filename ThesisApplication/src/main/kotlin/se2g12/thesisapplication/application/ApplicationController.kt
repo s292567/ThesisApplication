@@ -29,7 +29,13 @@ class ApplicationController(private val applicationService: ApplicationService) 
 
     @GetMapping("/API/thesis/applications/students")
     @PreAuthorize("hasRole('Professor')")
-    fun getAllApplicationsForProposal(@RequestParam proposalId: UUID) : List<StudentDTO> {
+    fun getAllApplyingStudentsForProposal(@RequestParam proposalId: UUID) : List<StudentDTO> {
         return applicationService.getAllApplyingStudentsForProposalById(UUID.fromString(proposalId.toString()))
+    }
+
+    @GetMapping("/API/thesis/applications/by")
+    @PreAuthorize("hasRole('Professor')")
+    fun getAllApplicationsForProposal(@RequestParam proposalId: UUID) : List<ApplicationDTO> {
+        return applicationService.getAllApplicationsForProposalById(UUID.fromString(proposalId.toString()))
     }
 }

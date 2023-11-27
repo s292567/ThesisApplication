@@ -58,4 +58,11 @@ class ApplicationServiceImpl (
         return studentRepository.getApplyingStudentsByProposalId(proposalId).map { it.toDTO() }
     }
 
+    /**
+     * Get a list of all applications for a specific proposal
+     */
+    override fun getAllApplicationsForProposalById(proposalId: UUID) : List<ApplicationDTO> {
+        return applicationRepository.getAllApplicationsByProposalId(proposalId).map { it.toDTO() }
+    }
+
 }

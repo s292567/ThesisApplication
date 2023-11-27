@@ -13,6 +13,8 @@ import { groupApplications } from "./groupBy";
 
 import ProfessorApplicants from "./ProfessorApplicants";
 import { SkeletonApplicants } from "../../components";
+import {getAllApplyingStudentsForProposal} from "../../api/API_applications.js";
+import {getAllApplicationsForProposal} from "../../api/API_applications.js";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
   justifyContent: "center",

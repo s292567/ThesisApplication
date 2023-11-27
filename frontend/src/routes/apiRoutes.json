@@ -6,5 +6,7 @@
     "searchProposals": "proposals/search/",
     "insertProposal": "proposals/",
     "applyToProposal": "proposals/apply",
-    "acceptApplication": "applications"
+    "acceptApplication": "applications", 
+    "browseAllApplyingStudents": "applications/students?proposalId=",
+    "browseAllApplications": "applications/by?proposalId="
 }
