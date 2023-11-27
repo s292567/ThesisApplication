@@ -11,13 +11,13 @@ const myOutlineButtonStyle = (color, hoverColor) => ({
     backgroundColor: 'transparent',
   },
 });
-export default function MyOutlinedButton({text, colorBorder, colorBorderHover, style}) {
+export default function MyOutlinedButton({text, colorBorder, colorBorderHover, style, onClick}) {
 
   if (colorBorderHover === undefined) {
     colorBorderHover = colorBorder;
   }
 
   return (
-    <Button variant='outlined' sx={{...myOutlineButtonStyle(colorBorder, colorBorderHover), ...style}}> {text} </Button>
+    <Button variant='outlined' sx={{...myOutlineButtonStyle(colorBorder, colorBorderHover), ...style}} onClick={onClick}> {text} </Button>
   )
 }

@@ -7,7 +7,6 @@ import {useUserContext} from "../../contexts/index.js";
 const MyMain = styled(Box)({
   display: "flex",
   flexDirection: "column",
-  alignItems: "center",
   minHeight: "100vh",
   backgroundColor: "#ebebeb",
 });
@@ -25,8 +24,7 @@ function DefaultLayoutPage() {
               <MyMain>
               { loggedIn ?
                 <>
-
-                <Box sx={{display: 'flex', flexDirection: 'column'}} flex={5} ml={3} mr={3} >
+                <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}} flex={5} ml={3} mr={3} >
                   <Outlet/>
                 </Box>
                 <Box flex={1} p={2} sx={{ display: { xs: "none", md: "block" } }} />

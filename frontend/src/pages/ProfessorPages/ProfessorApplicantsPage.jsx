@@ -65,7 +65,7 @@ export default function ProfessorApplicantsPage() {
   
     setGroupedByProposalArray(groupedByProposals);
     setGroupedByStudentArray(groupedByStudents);
-    
+    console.log(groupedByProposals);
   }, []);
 
   const [groupBy, setGroupBy] = useState("proposal");

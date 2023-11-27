@@ -57,7 +57,7 @@ const ApplyButton = ({ isMobile, onCLick }) => {
   );
 };
 
-export default function ThesisDetail({ open, handleClose, thesis, view = "" }) {
+export default function ThesisDetail({ open, handleClose, thesis}) {
   const { userId, user } = useUserContext();
 
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -90,7 +90,7 @@ export default function ThesisDetail({ open, handleClose, thesis, view = "" }) {
       }
     };
 
-    applyProposal();
+    applyProposal().then(r => console.log(r));
     handleCloseWarning();
     setConfirmedOpen(true);
   };
@@ -222,7 +222,7 @@ export default function ThesisDetail({ open, handleClose, thesis, view = "" }) {
           </Button>
         </DialogActions>
         <WarningPopup
-          open={warningOpen}
+          warningOpen={warningOpen}
           confirmedOpen={confirmedOpen}
           handleClose={handleCloseWarning}
           handleApplyed={handleApplyed}

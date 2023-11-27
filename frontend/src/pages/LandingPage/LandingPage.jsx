@@ -7,13 +7,13 @@ const MyBox = styled(Box)(({theme}) => ({
   display: 'flex',
   position: 'relative', // Set the position to relative
   alignItems: 'center', // Align items vertically
-  justifyContent: 'start', // Align items horizontally
+  justifyContent: 'center', // Align items horizontally
   flexGrow: '1'
 }));
 
 const StyledPaper = styled(Paper)(({theme}) => ({
-  position: 'absolute', // Position the Paper component absolutely
-  left: theme.spacing(4), // Offset from the left
+  position: 'absolute', // Set the position to absolute
+  left: theme.spacing(6), // Offset from the left
   top: theme.spacing(6), // Offset from the top
   maxWidth: '400px', // Max width of the Paper
   padding: theme.spacing(2), // Padding inside the Paper
@@ -24,7 +24,7 @@ const StyledPaper = styled(Paper)(({theme}) => ({
 
 export default function LandingPage() {
   return (
-    <Box sx={{height: 'max-content', flexDirection: 'column'}}>
+    <Box sx={{height: 'max-content', flexDirection: 'column', justifyContent: 'center'}}>
       <Box sx={{display: 'flex', justifyContent: 'center', padding: '2rem', marginTop: '2rem'}}>
         <Typography variant='h2' component='h1' sx={{color: '#003576', fontWeight: 'bold'}}>
           Welcome @ Politecnico di Torino
