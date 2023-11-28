@@ -256,7 +256,7 @@ Display proposals that contain query string (caps-insensitive) in any of their f
   - `500 Internal Server Error`: Generic server error
 
 ## Accept an application
-**PATCH `/API/thesis/applications`**
+**PATCH `/API/thesis/applications/:professorId`**
 
 Changes the application status to `accepted` or `declined`.
 When an application is accepted, it automatically declines all the applications made by the same student to other proposals and 
@@ -274,6 +274,7 @@ Example:
 > If application 1 is accepted, then application 2 (made by another student to the same proposal p1)
 > and application 3 (made by the same student A) are declined. Furthermore, proposal p1 is archived
 
+- request parameter `professorId`: the logged in professor, which should be the supervisor of the proposal applied to
 - request body example:
     ```
     {
@@ -284,6 +285,9 @@ Example:
 
 - response status:
   - `200 Ok`: The application status has been changed
+  - `403 Forbidden`: The professor can't operate on the application
+  - `404 Not Found`: The application wasn't found
+  - `422 Unprocessable Entity`: The application has already been accepted/declined
   - `500 Internal Server Error`: Generic server error
 
 ## Browse Applying Students for Proposal

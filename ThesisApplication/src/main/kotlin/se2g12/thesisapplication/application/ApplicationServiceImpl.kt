@@ -36,12 +36,12 @@ class ApplicationServiceImpl (
     }
 
     override fun declineApplication(applicationId: UUID) {
-        val app= applicationRepository.findById(applicationId)
+        getModifiableApplication(applicationId)
         applicationRepository.updateStatusById(applicationId, "declined")
     }
 
     override fun acceptApplication(applicationId: UUID) {
-        val app= applicationRepository.findById(applicationId).get()
+        val app= getModifiableApplication(applicationId)
         applicationRepository.updateStatusById(applicationId ,"accepted")
         // decline all student applications
         applicationRepository.updateStatusByStudentId(app.student.id!!, "declined")
@@ -49,6 +49,16 @@ class ApplicationServiceImpl (
         applicationRepository.updateStatusByProposalId(app.proposal.id!!, "declined")
         // archive proposal
         archiveRepository.save(Archive(app.proposal))
+    }
+    private fun getModifiableApplication(applicationId: UUID): Application{
+        val app= applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError(applicationId) }
+        if (app.status !== "pending")
+            throw NotModifiableApplicationError(applicationId, app.status!!)
+        return app
+    }
+    override fun getApplicationProposalSupervisorId(applicationId: UUID): String {
+        val app = applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError(applicationId) }
+        return app.proposal.supervisor.id!!
     }
 
     /**
