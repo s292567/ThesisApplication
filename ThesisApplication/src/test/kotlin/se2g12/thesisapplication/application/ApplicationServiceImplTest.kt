@@ -7,12 +7,15 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.assertThrows
+import se2g12.thesisapplication.archive.ArchiveRepository
 import se2g12.thesisapplication.proposal.Proposal
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.Teacher
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ApplicationServiceImplTest {
@@ -20,16 +23,18 @@ class ApplicationServiceImplTest {
     private val studentRepository = mockk<StudentRepository>()
     private val proposalRepository = mockk<ProposalRepository>()
     private val applicationRepository = mockk<ApplicationRepository>()
+    private val archiveRepository = mockk<ArchiveRepository>()
 
-    private val applicationService = ApplicationServiceImpl(applicationRepository, proposalRepository, studentRepository)
+    private val applicationService = ApplicationServiceImpl(applicationRepository, proposalRepository, studentRepository, archiveRepository)
 
     @Test
     fun `test addNewApplication successful`() {
         val uuid=UUID.randomUUID()
-        val email="s123456@example.com"
+        val studentId="s123456"
         // Arrange
-        val newApplication = NewApplicationDTO(email, uuid)
-        val student = Student(surname = "Rossi", name =  "Mario", email = email)
+        val newApplication = NewApplicationDTO(studentId, uuid)
+        val student = Student(surname = "Rossi", name =  "Mario")
+        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         val proposal = Proposal("Advanced algorithms for image processing",
             Teacher("Ferrari", "Luca"),
             "Paolo Ricci, Mario Rossi" ,
@@ -39,11 +44,11 @@ class ApplicationServiceImplTest {
             "Work in a company to develop new algorithms for image processing",
             "Basics of machine learning and image processing",
             "Collaboration with company equipe. Reimbursement of expenses",
-            SimpleDateFormat("yyyy-MM-dd").parse("2024-04-23"),
+            localDate,
             "MSc",
             "Computer Engineering, Civil Engineering")
 
-        every { studentRepository.findByEmail(newApplication.studentId) } returns listOf(student)
+        every { studentRepository.findById(newApplication.studentId) } returns Optional.of(student)
         every { proposalRepository.findById(newApplication.proposalId) } returns Optional.of(proposal)
         every { applicationRepository.save(any()) } returns mockk()
 
@@ -60,10 +65,10 @@ class ApplicationServiceImplTest {
     fun `test addNewApplication proposalNotFound`() {
 
         val uuid=UUID.randomUUID()
-        val email="s123456@example.com"
-        val newApplication = NewApplicationDTO(email, uuid)
+        val studentId="s123456"
+        val newApplication = NewApplicationDTO(studentId, uuid)
 
-        every { studentRepository.findByEmail(newApplication.studentId) } returns listOf(Student())
+        every { studentRepository.findById(newApplication.studentId) } returns Optional.of(Student())
         every { proposalRepository.findById(newApplication.proposalId) } returns Optional.empty()
 
         // Act and Assert
