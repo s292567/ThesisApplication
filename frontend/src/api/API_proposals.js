@@ -114,7 +114,7 @@ export const applyToProposal = async (applicationData) => {
 export const updateProposal = async (professorId,oldName, proposalData) => {
     let path=professorId+","+oldName
 
-    return axiosInstance.post(routes.updateProposal + `${path}`, proposalData,{        headers: {
+    return axiosInstance.put(routes.updateProposal + `${path}`, proposalData,{        headers: {
             'Content-Type' : 'application/json' ,            'Authorization': 'Bearer '+ localStorage.getItem("jwt")
         }}).then(response => {
         if (response.status === 201) {

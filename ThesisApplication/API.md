@@ -285,3 +285,34 @@ Example:
 - response status:
   - `200 Ok`: The application status has been changed
   - `500 Internal Server Error`: Generic server error
+
+## Update Proposal
+**PUT `/API/thesis/proposals/update/{path}`**
+- path variable path: is the concatenation of the string oldName and ProfessorId, separated by "," oldName is the old Title of the Thesis
+  professorId is the Id of the supervisor
+- request body example:
+    ```
+  {
+  "title": "AI in Robotics",
+  "coSupervisors": ["p10", "p11"],
+  "keywords": ["Keyword1", "Keyword2"],
+  "type": "Type",
+  "groups": ["G21", "G22"],
+  "description": "Description",
+  "requiredKnowledge": "Required Knowledge",
+  "notes": "Notes",
+  "expiration": "2023-12-31",
+  "level": "MSc",
+  "CdS": ["Computer Engineering","Computer Engineering"]
+  }
+    ```
+  request body notes & constraints:
+  - `coSupervisors`, `requiredKnowledge`, `notes` are *optional*
+  - `expiration` is a date in the form `YYYY-MM-DD`
+  - the **supervisor** is retrieved by path variable and the authenticated user
+
+- response status:
+  - `201 Created`: The proposal has been inserted in the DB
+  - `400 Bad Request`: Error in the request body
+  - `401 Unauthorized`: The user is not logged in
+  - `500 Internal Server Error`: Generic server error
