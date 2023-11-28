@@ -13,8 +13,10 @@ import {
     LoginPage,
     DefaultLayoutPage,
     ThesesPage, ProfessorApplicantsPage,
-} from "./pages";
 
+
+} from "./pages";
+import MyThesesPage from "./pages/StudentPages/MyThesesPage.jsx";
 import {frontendRoutes as routes} from "./routes";
 
 const CheckAuthenticatedRoutes = () => {
@@ -52,6 +54,12 @@ const CheckAuthenticatedRoutes = () => {
                           path={routes.studentTheses}
                           element={<ThesesPage />}
                         />
+
+                        <Route
+                            path={routes.MyTheses}
+                            element={<MyThesesPage/>}
+                        />
+
 
                     </>
                 )}
