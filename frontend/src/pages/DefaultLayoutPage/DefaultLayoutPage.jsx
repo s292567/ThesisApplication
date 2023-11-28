@@ -2,7 +2,8 @@
 import {Box, styled} from "@mui/material";
 import {Navbar} from "../../components";
 import {Outlet} from "react-router-dom";
-import {useUserContext} from "../../contexts/index.js";
+import {AuthContext} from "react-oauth2-code-pkce";
+import {useContext} from "react";
 
 const MyMain = styled(Box)({
   display: "flex",
@@ -14,7 +15,8 @@ const MyMain = styled(Box)({
 
 function DefaultLayoutPage() {
 
-    const { loggedIn } = useUserContext();
+    const { token,loginInProgress } = useContext(AuthContext)
+    const loggedIn=token||loginInProgress?true:false;
 
     return (
         <Box>

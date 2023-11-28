@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import {searchProposals} from "../../API/API_proposals.js";
 import "./SearchBarStudent.css";
+import {AuthContext} from "react-oauth2-code-pkce";
 
 const SearchBarStudent = () => {
   const [showFilters, setShowFilters] = useState(false);
-
+    const {tokenData} = useContext(AuthContext);
   const toggleFilters = () => {
     setShowFilters(!showFilters);
   };
@@ -16,7 +17,8 @@ const SearchBarStudent = () => {
     <div className="search-bar">
       <SearchIcon className="search-icon" />
       <form className="form"  onSubmit={(event) => {event.preventDefault()
-        var username= localStorage.getItem("username")
+
+        var username= tokenData.preferred_username;
           console.log(searchbarInput)
 
         searchProposals(username.split("@")[0].toString(),searchbarInput.toString())

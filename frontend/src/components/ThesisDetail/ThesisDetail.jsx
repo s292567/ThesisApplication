@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -14,7 +14,8 @@ import {
 } from '@mui/material';
 import {Close, WarningRounded} from "@mui/icons-material";
 import {applyToProposal} from "../../api/index.js";
-import {useUserContext} from "../../contexts/index.js";
+import {AuthContext} from "react-oauth2-code-pkce";
+
 
 
 const TextWrap = styled(Box)(({theme}) => ({
@@ -52,8 +53,10 @@ const ApplyButton = ({isMobile, onCLick}) => {
 
 export default function ThesisDetail({open, handleClose, thesis, view = ''}) {
 
-  const {userId, user} = useUserContext();
 
+  const {tokenData} = useContext(AuthContext);
+  const userId = tokenData.email.split("@")[0];
+  const user={username:tokenData.preferred_username,role:tokenData.realm_access.roles[3]}
   const isMobile = useMediaQuery('(max-width: 600px)');
   const [warningOpen, setWarningOpen] = useState(false);
   const [confirmedOpen, setConfirmedOpen] = useState(false);

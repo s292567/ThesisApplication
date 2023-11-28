@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Box,
   Stack,
@@ -15,7 +15,7 @@ import {styled} from '@mui/material/styles';
 import {Info, Close, VisibilityOff, Visibility} from "@mui/icons-material";
 
 import politoLogo from "../../assets/images/politoLogo_bianco.png";
-import {useUserContext} from "../../contexts/index.js"; // Ensure this path is correct
+import {AuthContext} from "react-oauth2-code-pkce";
 
 const StyleColumn = styled(Stack)(({theme}) => ({
   padding: '2rem',
@@ -42,9 +42,8 @@ const Wrapper = styled(Box)(({theme}) => ({
 }));
 
 export default function LoginPage() {
-
-  const {login, errorMsg, setErrorMsg} = useUserContext();
-
+  const {login}=useContext(AuthContext)
+  const[errorMsg, setErrorMsg]=useState("")
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [helper, setHelper] = useState(false);

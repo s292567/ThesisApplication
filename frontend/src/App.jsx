@@ -5,7 +5,6 @@ import {  AuthProvider } from 'react-oauth2-code-pkce';
 
 import { BrowserRouter } from "react-router-dom";
 
-import { UserProvider } from "./contexts"
 
 import CheckAuthenticatedRoutes from "./CheckAuthenticatedRoutes.jsx"
 
@@ -26,11 +25,9 @@ const authConfig = {
 function App() {
   return (
       <AuthProvider authConfig={authConfig}>
-    <BrowserRouter>
-      <UserProvider>
-          <CheckAuthenticatedRoutes />
-      </UserProvider>
-    </BrowserRouter>
+          <BrowserRouter>
+            <CheckAuthenticatedRoutes />
+          </BrowserRouter>
       </AuthProvider>
   );
 }

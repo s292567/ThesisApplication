@@ -1,8 +1,8 @@
 // AuthenticatedRoutes.jsx
-import React from "react";
+import React, {useContext} from "react";
 import {Route, Routes} from "react-router-dom";
 
-import {useUserContext} from "./contexts";
+
 
 import {
     PageNotFound,
@@ -16,11 +16,12 @@ import {
 } from "./pages";
 
 import {frontendRoutes as routes} from "./routes";
+import {AuthContext} from "react-oauth2-code-pkce";
 
 const CheckAuthenticatedRoutes = () => {
-    const {loggedIn,login} = useUserContext();
-    if(!loggedIn)
-        login();
+    const {token,login,loginInProgress}=useContext(AuthContext);
+    const loggedIn=token||loginInProgress?true:false;
+
     return (
         <Routes>
             <Route element={<DefaultLayoutPage/>}>

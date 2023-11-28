@@ -2,8 +2,7 @@
 import React, {useState} from 'react';
 import {Paper, Stack, Typography, styled, Box, useMediaQuery, useTheme} from '@mui/material';
 import {MyOutlinedButton, ThesisDetail} from "../index.js";
-import {useLocation} from "react-router-dom";
-import {useUserContext} from "../../contexts/index.js";
+import {useLocation, useNavigate} from "react-router-dom";
 
 // Custom styled Paper component
 const DemoPaper = styled(Paper)(({theme}) => ({
@@ -34,7 +33,7 @@ const DemoPaper = styled(Paper)(({theme}) => ({
 export default function ThesesList({thesesData}) {
 
   const location = useLocation();
-  const {homeRoute, generalRoutes} = useUserContext();
+  const navigate=useNavigate()
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -82,13 +81,13 @@ export default function ThesesList({thesesData}) {
           </Box>
         ))}
       </Stack>
-      {(location.pathname === homeRoute) &&
+      {(location.pathname === '/') &&
         <MyOutlinedButton text={'See More Theses'}
                           colorBorder={"#003366"}
                           colorBorderHover={'#1976d2'}
                           style={{fontSize: 'large', marginLeft: '3rem'}}
                           onClick={() => {
-                            window.location.href = generalRoutes.theses;
+                            navigate('/professorDashboard/thesisList/')
                           }}/>
       }
       <Box padding={3}></Box>

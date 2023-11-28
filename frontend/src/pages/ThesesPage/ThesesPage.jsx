@@ -1,30 +1,33 @@
 // ProfessorDashboardPage.jsx
-import React, {useState, useEffect} from "react";
+import {useState, useEffect, useContext} from "react";
 import {Typography} from "@mui/material";
 import {ThesesList, SkeletonThesisList} from "../../components";
 import {getAllProposals} from "../../api";
-import {useUserContext} from "../../contexts/index.js";
+import {AuthContext} from "react-oauth2-code-pkce";
+
 
 export default function ThesesPage() {
 
-  const {user} = useUserContext();
+  const {tokenData,token} = useContext(AuthContext);
+  const user={username:tokenData.preferred_username,role:tokenData.realm_access.roles[3]}
+
 
   const [proposals, setProposals] = useState(null);
-
+  const fetchProposals = async () => {
+    try {
+      let response = undefined;
+      /* API CALL BASED ON ROLE */
+      (user.role === "Professor" ?
+              response = await getAllProposals(token) : response = await getAllProposals()
+      )
+      return response
+    } catch (error) {
+      console.error("Failed to fetch proposals:", error);
+    }
+  };
   useEffect(() => {
-    const fetchProposals = async () => {
-      try {
-        let response = undefined;
-        /* API CALL BASED ON ROLE */
-          (user.role === "Professor" ?
-            response = await getAllProposals() : response = await getAllProposals()
-          )
-        setProposals(response);
-      } catch (error) {
-        console.error("Failed to fetch proposals:", error);
-      }
-    };
-    fetchProposals();
+
+    fetchProposals().then(response=>setProposals(response))
   }, []);
 
 

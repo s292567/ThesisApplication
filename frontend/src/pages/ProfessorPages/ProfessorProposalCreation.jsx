@@ -1,15 +1,18 @@
-import React from "react";
+import React, {useContext} from "react";
 
 import {ProposalForm,} from "../../components"
 
 import Box from "@mui/material/Box";
-import {useUserContext} from "../../contexts"
+import {AuthContext} from "react-oauth2-code-pkce";
+
 
 const ProfessorProposalCreationPage = () => {
 
-  const {userId, } = useUserContext();
+    const {tokenData} = useContext(AuthContext);
+    const userId = tokenData.email.split("@")[0];
 
-  return (
+
+    return (
     <Box sx={{marginBottom: "2rem", marginTop: "2rem"}}>
       <ProposalForm userId={userId}/>
     </Box>

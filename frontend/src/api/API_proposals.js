@@ -3,12 +3,15 @@
 import axiosInstance from './API_Config.js'; // Import your axios instance
 import { apiRoutes as routes } from '../routes';
 
+
+
 /**
  * Get all thesis proposals.
  */
-export const getAllProposals = async () => {
+export const getAllProposals = async (token) => {
+
   return axiosInstance.get(routes.getAllProposals,{        headers: {
-          'Content-Type' : 'application/json' ,            'Authorization': 'Bearer '+ localStorage.getItem("jwt")
+          'Content-Type' : 'application/json' ,            'Authorization': 'Bearer '+ token
       }}).then(response => {
       if (response.status === 200) {
           console.log("getAllProposals: ", response.data);
@@ -111,11 +114,11 @@ export const applyToProposal = async (applicationData) => {
 /**
  *Update a thesis proposal by sending its oldTitle and the supervisor ProfessorId
  */
-export const updateProposal = async (professorId,oldName, proposalData) => {
+export const updateProposal = async (professorId,oldName, proposalData,token) => {
     let path=professorId+","+oldName
 
     return axiosInstance.put(routes.updateProposal + `${path}`, proposalData,{        headers: {
-            'Content-Type' : 'application/json' ,            'Authorization': 'Bearer '+ localStorage.getItem("jwt")
+            'Content-Type' : 'application/json' ,            'Authorization': 'Bearer '+ token
         }}).then(response => {
         if (response.status === 201) {
             console.log("update Proposal: ", response.data);

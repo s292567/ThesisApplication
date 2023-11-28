@@ -18,11 +18,11 @@ import {
   Switch,
 } from "@mui/material";
 import React from "react";
-import {useUserContext} from "../../contexts";
+
 
 export default function Sidebar({mode,setMode}){
 
-  const { homeRoute } = useUserContext();
+
 
   return (
 
@@ -97,7 +97,7 @@ export default function Sidebar({mode,setMode}){
               <ListItemIcon>
                 <ModeNight />
               </ListItemIcon>
-              <Switch onChange={e=>setMode(mode === "light" ? "dark" : "light")}/>
+              <Switch onChange={()=>setMode(mode === "light" ? "dark" : "light")}/>
             </ListItemButton>
           </ListItem>
 
@@ -107,4 +107,4 @@ export default function Sidebar({mode,setMode}){
 
 
   );
-};
+}

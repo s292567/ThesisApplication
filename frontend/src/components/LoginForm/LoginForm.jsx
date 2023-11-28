@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import "./LoginForm.css";
-import { useUserContext } from "../../contexts";
+import {AuthContext} from "react-oauth2-code-pkce";
+
 
 const LoginForm = () => {
-  const { login, loggedIn, errorMsg, setErrorMsg } = useUserContext();
-
+  const{login,token,loginInProgress}=useContext(AuthContext)
+  const loggedIn=token||loginInProgress?true:false;
+  const [errorMsg, setErrorMsg] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
