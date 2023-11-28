@@ -7,7 +7,7 @@ services:
     ports:
       - '5432:5432'
   keycloak:
-    image: 's292567/keycloak-v0.1'
+    image: 's292567/keycloak-saml'
     container_name: keycloak
     ports:
       - "8080:8080"

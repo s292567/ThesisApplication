@@ -37,10 +37,12 @@ export const declineApplication = async (applicationId, professorId) => {
  * Get all students that applied for a proposal
  */
 export const getAllApplyingStudentsForProposal = async (proposalUUID) => {
+    let jwt = localStorage.getItem("ROCP_token");
+    jwt=jwt.substring(1,jwt.length-1);
     return axiosInstance.get(routes.browseAllApplyingStudents + String(proposalUUID), {
         headers: {
             'Content-Type' : 'application/json' ,
-            'Authorization': 'Bearer '+ localStorage.getItem("jwt")
+            'Authorization': 'Bearer '+ jwt
         }
     }).then(response => {
         if (response.status === 200) {
@@ -58,10 +60,12 @@ export const getAllApplyingStudentsForProposal = async (proposalUUID) => {
  * Get all application objects for a proposal
  */
 export const getAllApplicationsForProposal = async (proposalUUID) => {
+    let jwt = localStorage.getItem("ROCP_token");
+    jwt=jwt.substring(1,jwt.length-1);
     return axiosInstance.get(routes.browseAllApplications + String(proposalUUID), {
         headers: {
             'Content-Type' : 'application/json' ,
-            'Authorization': 'Bearer '+ localStorage.getItem("jwt")
+            'Authorization': 'Bearer '+ jwt
         }
     }).then(response => {
         if (response.status === 200) {
