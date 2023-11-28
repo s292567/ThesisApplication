@@ -46,17 +46,7 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         return proposalService.searchProposalByStudentCds(studentId, query)
     }
 
-    @PutMapping("/API/thesis/proposal/update/{path}")
-    //@PreAuthorize("hasRole('Professor')")
-    @ResponseStatus(HttpStatus.CREATED)
-    fun updateProposal(@PathVariable path: String, @RequestBody proposal: NewProposalDTO?) {
-        var professorId:String
-        var oldName:String
-        var array =path.split("-")
-        professorId=array.first()
-        oldName=array.last()
-        proposalService.updateProposal(proposal!!,professorId,oldName)
-    }
+
     //text search - OLD VERSION
 //    @PostMapping("/API/thesis/proposals/filtered")
 //    @PreAuthorize("hasRole('Student')")

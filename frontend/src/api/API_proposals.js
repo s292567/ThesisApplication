@@ -108,3 +108,22 @@ export const applyToProposal = async (applicationData) => {
       console.error('Error while applying to a proposal: ', error);
   });
 };
+/**
+ *Update a thesis proposal by sending its oldTitle and the supervisor ProfessorId
+ */
+export const updateProposal = async (professorId,oldName, proposalData) => {
+    let path=professorId+","+oldName
+
+    return axiosInstance.post(routes.updateProposal + `${path}`, proposalData,{        headers: {
+            'Content-Type' : 'application/json' ,            'Authorization': 'Bearer '+ localStorage.getItem("jwt")
+        }}).then(response => {
+        if (response.status === 201) {
+            console.log("update Proposal: ", response.data);
+            return response.data;
+        } else {
+            console.error('Request failed with status: ', response.status);
+        }
+    }).catch(error => {
+        console.error('Error while inserting a new proposal: ', error);
+    });
+};

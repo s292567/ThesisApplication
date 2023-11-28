@@ -5,6 +5,7 @@
     "getProposalsByCds": "proposals/cds",
     "searchProposals": "proposals/search/",
     "insertProposal": "proposals/",
+    "updateProposal": "proposals/update/",
     "applyToProposal": "proposals/apply",
     "acceptApplication": "applications"
 }
