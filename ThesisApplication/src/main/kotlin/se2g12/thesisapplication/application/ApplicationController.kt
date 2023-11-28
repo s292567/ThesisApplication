@@ -12,7 +12,7 @@ class ApplicationController(private val applicationService: ApplicationService) 
 
     @PostMapping("/API/thesis/proposals/apply")
     @ResponseStatus(HttpStatus.CREATED)
-    fun addNewProposal(@RequestBody obj: NewApplicationDTO){
+    fun addNewApplication(@RequestBody obj: NewApplicationDTO){
         applicationService.addNewApplication(obj)
     }
 
