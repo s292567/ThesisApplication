@@ -8,7 +8,7 @@ const KeywordsField = ({labelText, placeholderText, isRequired, onValueChange, i
     const [keywordId, setKeywordId] = useState(0)
     useEffect(() => {
         // add tags if initial value set
-        if(initialValue.length>0){
+        if(initialValue){
             const initialTags=[]
 
             for (let i = 0; i < initialValue.length; i++) {
