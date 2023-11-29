@@ -4,12 +4,30 @@ import {useNavigate} from "react-router-dom";
 import KeywordsField from "./KeywordsField";
 import DropdownField from "./DropdownField";
 import { insertProposal } from "../../api";
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+
 
 import "./ProposalForm.css";
+import {frontendRoutes} from "../../routes/index.js";
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const ProposalForm = ({userId}) => {
+    const [open,setOpen]=useState(false);
     const navigate=useNavigate();
+    const handleClick = () => {
+        setOpen(true);
+    };
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
 
   const [formData, setFormData] = useState({
     title: '',
@@ -51,9 +69,10 @@ const ProposalForm = ({userId}) => {
   // handles the submission of data
   const handleSubmit = (event) => {
     event.preventDefault();
+
     insertProposal(userId, formData);
     console.log('Form Submitted');
-    navigate('/login')
+    navigate(frontendRoutes.professorDashboard)
   }; 
 
   return (
@@ -114,11 +133,18 @@ const ProposalForm = ({userId}) => {
         onValueChange={(value) => handleFormChange('CdS', value)}
       />
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <button type="submit" className="button" >Create Proposal</button>
+      <button type="submit" className="button" onClick={handleClick} >Create Proposal</button>
+            <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    Proposal Created!
+                </Alert>
+            </Snackbar>
         </div>
     </form>
+
   );
 }
+
 
 export default ProposalForm;
 

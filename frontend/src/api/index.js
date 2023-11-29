@@ -5,8 +5,13 @@ import {
     getProposalsByCds, 
     searchProposals, 
     insertProposal, 
-    applyToProposal 
+    applyToProposal,
+    getProposalsByProfessorId, 
 } from './API_proposals.js';
+
+import {
+    getAllApplicationsDatasForProfessor
+} from './API_applications.js';
 
 import axiosInstance from './API_Config.js'; // Import axios instance
 
@@ -25,6 +30,8 @@ export {
     insertProposal, 
     applyToProposal,
     axiosInstance,
+    getProposalsByProfessorId,
+    getAllApplicationsDatasForProfessor,
     loginApi, 
     getProfileApi
 };
