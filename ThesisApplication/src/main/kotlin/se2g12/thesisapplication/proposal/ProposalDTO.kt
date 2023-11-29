@@ -27,7 +27,7 @@
             val coSup = if (this.coSupervisors.isNullOrBlank())
                 emptyList<String>()
             else
-                this.coSupervisors.split(", ", ",")
+                this.coSupervisors!!.split(", ", ",")
 
             val key = if (this.keywords.isBlank())
                 emptyList<String>()

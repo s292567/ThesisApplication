@@ -7,24 +7,24 @@ import java.util.*
 
 @Entity
 data class Proposal(
-    val title: String,
+    var title: String,
     @ManyToOne
     @JoinColumn(name = "supervisor_id", referencedColumnName = "id")
-    val supervisor: Teacher,  // Reference to the associated teacher
+    var supervisor: Teacher,  // Reference to the associated teacher
     // For simplicity, co-supervisors are stored as a comma-separated string of teacher IDs
-    val coSupervisors: String? = null,
+    var coSupervisors: String? = null,
     // For simplicity, keywords are stored as a comma-separated string
-    val keywords: String,
-    val type: String,
+    var keywords: String,
+    var type: String,
     // For simplicity, groups are stored as a comma-separated string
-    val groups: String,
-    val description: String,
-    val requiredKnowledge: String?=null,
-    val notes: String?=null,
+    var groups: String,
+    var description: String,
+    var requiredKnowledge: String?=null,
+    var notes: String?=null,
     @Temporal(TemporalType.DATE)
-    val expiration: LocalDate,
-    val level: String,
-    val cds: String
+    var expiration: LocalDate,
+    var level: String,
+    var cds: String
 ){
     @Id
     @GeneratedValue(generator = "uuid2")

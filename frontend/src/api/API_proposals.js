@@ -112,3 +112,23 @@ export const applyToProposal = async (applicationData) => {
       console.error('Error while applying to a proposal: ', error);
   });
 };
+//export const updateProposal = async (professorId,oldName, proposalData) => {
+   // let path=professorId+","+oldName
+export const updateProposal = async (proposalId, proposalData) => {
+        let path=proposalId
+    let jwt = localStorage.getItem("ROCP_token");
+    jwt=jwt.substring(1,jwt.length-1);
+    return axiosInstance.put(routes.updateProposal + `${path}`, proposalData,{        headers: {
+            'Content-Type' : 'application/json' ,
+            'Authorization': 'Bearer '+ jwt
+        }}).then(response => {
+        if (response.status === 201) {
+            console.log("update Proposal: ", response.data);
+            return response.data;
+        } else {
+            console.error('Request failed with status: ', response.status);
+        }
+    }).catch(error => {
+        console.error('Error while inserting a new proposal: ', error);
+    });
+};
