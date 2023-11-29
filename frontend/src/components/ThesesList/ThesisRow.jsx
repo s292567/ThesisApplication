@@ -44,7 +44,7 @@ const StyledPaper = styled(Paper)(({theme}) => ({
   },
 }));
 
-export default function ThesisRow({thesis, style = {backgroundColor: '#F4F5FF'}}) {
+export default function ThesisRow({thesis,reload, style = {backgroundColor: '#F4F5FF'}}) {
   const [thessespage, setThessepage] = useState(true);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -69,7 +69,9 @@ export default function ThesisRow({thesis, style = {backgroundColor: '#F4F5FF'}}
     msgWarning: "Are you sure you want to delete THIS thesis?",
     msgDone: "Deleted successfully!",
   });
-
+  const newReload=()=>{
+    reload()
+  }
 
 
   const handleOpenDetail = () => {
@@ -147,6 +149,7 @@ export default function ThesisRow({thesis, style = {backgroundColor: '#F4F5FF'}}
         setEdit={setEdit}
         setSnackbarOpen={setSnackbarOpen}
         thesis={thesis}
+        reload={newReload}
       />
 
       <WarningPopup

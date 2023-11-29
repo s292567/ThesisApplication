@@ -31,10 +31,11 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled"  {...props} />;
 });
 
-export default function EditModal ({open, setEdit, setSnackbarOpen, thesis, fetchProposals}) {
+export default function EditModal ({open, setEdit, setSnackbarOpen, thesis, reload}) {
     const [newData, setNewData] = useState(thesis)
     const navigate = useNavigate();
     const location = useLocation();
+
     /*const handleCancel = () => {
         setOpen(false);
         setSnackbarOpen(false); // Close the Snackbar if it's open when canceling
@@ -84,7 +85,7 @@ export default function EditModal ({open, setEdit, setSnackbarOpen, thesis, fetc
                                               style={{fontSize: 'large',}}
                                               onClick={() => {
                                                   updateProposal(thesis.id, newData);
-                                                  navigate(location.pathname);
+                                                  reload();
                                                   setSnackbarOpen(true);
                                               setEdit(false)}}
                             />
