@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import se2g12.thesisapplication.proposal.ProposalRepository
+import se2g12.thesisapplication.proposal.toDTO
 import se2g12.thesisapplication.student.StudentDTO
 import java.util.UUID
 
@@ -46,7 +47,7 @@ class ApplicationController(private val applicationService: ApplicationService,p
     @PreAuthorize("hasRole('Student')")
     fun getApplicationsForLoggedInStudent(@PathVariable studentId: String): List<ApplicationDTOprop> {
         return applicationService.getApplicationsForStudent(studentId).map{
-            ApplicationDTOprop(id=it.id,studentId=it.studentId, proposal = proposalRepository.getReferenceById(it.proposalId!!), status = it.status)
+            ApplicationDTOprop(id=it.id,studentId=it.studentId, proposal = proposalRepository.getReferenceById(it.proposalId!!).toDTO(), status = it.status)
         }
     }
 }

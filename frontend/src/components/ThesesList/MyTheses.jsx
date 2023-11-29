@@ -38,7 +38,7 @@ const getStatusColor = (status) => {
   switch (status) {
     case 'accepted':
       return 'green';
-    case 'rejected':
+    case 'declined':
       return 'red';
     case 'pending':
       return 'orange';
@@ -52,8 +52,8 @@ const getStatusText = (status) => {
   switch (status) {
     case 'accepted':
       return 'Accepted';
-    case 'rejected':
-      return 'Rejected';
+    case 'declined':
+      return 'declined';
     case 'pending':
       return 'pending';
     default:
@@ -101,10 +101,10 @@ export default function MyTheses({thesesData, isMyThesesPage}) {
               <Box display="flex" alignItems="center">
                 <Box flex={1}>
                   <Typography variant="h4" mb={2}>
-                    {thesis.title}
+                    {thesis.proposal.title}
                   </Typography>
                   <Typography fontSize="large" mb={2}>
-                    {!isMobile ? thesis.description : `${thesis.description}...`}
+                    {!isMobile ? thesis.proposal.description : `${thesis.proposal.description}...`}
                   </Typography>
                   <Stack direction="row" spacing={2}>
 
@@ -147,7 +147,7 @@ export default function MyTheses({thesesData, isMyThesesPage}) {
 
 
         {selectedThesis !== null && (
-          <ThesisDetail open={true} handleClose={() => setSelectedThesis(null)} thesis={selectedThesis}
+          <ThesisDetail open={true} handleClose={() => setSelectedThesis(null)} thesis={selectedThesis.proposal}
                         page={mythesses}/>
         )}
 
