@@ -5,7 +5,8 @@ import KeywordsField from "./KeywordsField";
 import DropdownField from "./DropdownField";
 import { insertProposal } from "../../api";
 
-import "./ProposalForm.css"; 
+import "./ProposalForm.css";
+
 
 const ProposalForm = ({userId}) => {
     const navigate=useNavigate();
@@ -56,7 +57,7 @@ const ProposalForm = ({userId}) => {
   }; 
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
+    <form className="form" onSubmit={handleSubmit} style={{ width: '500px'}}>
         <h1>Create Proposal</h1>
       <div className="mb-6">
         <label htmlFor="text" className="label">Title</label>
@@ -112,7 +113,9 @@ const ProposalForm = ({userId}) => {
         isRequired={true}
         onValueChange={(value) => handleFormChange('CdS', value)}
       />
-      <button type="submit" className="button">Create Proposal</button>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <button type="submit" className="button" >Create Proposal</button>
+        </div>
     </form>
   );
 }

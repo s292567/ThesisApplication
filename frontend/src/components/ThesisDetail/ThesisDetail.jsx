@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   Dialog,
   DialogTitle,
@@ -57,7 +57,8 @@ const ApplyButton = ({isMobile, onCLick}) => {
   );
 };
 
-export default function ThesisDetail({open, handleClose, thesis}) {
+export default function ThesisDetail({open, handleClose, thesis, page}) {
+  const [mypage, setMypage] = useState(page);
   const {userId, user} = useUserContext();
 
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -155,7 +156,7 @@ export default function ThesisDetail({open, handleClose, thesis}) {
                 Expiration: {thesis.expiration}
               </TextWrap>
 
-              {user.role === "Student" && (
+              {user.role === "Student" && mypage === true && (
                 <ApplyButton
                   key="lateral"
                   isMobile={isMobile}

@@ -20,6 +20,9 @@ import WarningPopup from "./WarningPopup.jsx"
 import SkeletonApplicants from "./Skeletons/SkeletonApplicants.jsx";
 
 import WithTooltip from "./WithTooltip.jsx"
+import EditForm from "./EditProposal/EditProposal.jsx";
+import MyTheses from "./ThesesList/MyTheses.jsx";
+
 
 export {
     BottomNavbar,
@@ -37,6 +40,9 @@ export {
     PastelComponent,
     WarningPopup,
     WithTooltip,
+    EditForm,
+    MyTheses,
+
 
     SkeletonThesisList,
     SkeletonApplicants,

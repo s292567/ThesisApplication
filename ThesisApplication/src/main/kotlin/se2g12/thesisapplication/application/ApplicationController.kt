@@ -12,13 +12,14 @@ class ApplicationController(private val applicationService: ApplicationService) 
 
     @PostMapping("/API/thesis/proposals/apply")
     @ResponseStatus(HttpStatus.CREATED)
-    fun addNewProposal(@RequestBody obj: NewApplicationDTO){
+    fun addNewApplication(@RequestBody obj: NewApplicationDTO){
         applicationService.addNewApplication(obj)
     }
 
-    @PatchMapping("/API/thesis/applications")
-    fun updateApplication(@RequestBody application: ApplicationDTO){
-
+    @PatchMapping("/API/thesis/applications/{professorId}")
+    fun updateApplication(@PathVariable professorId: String, @RequestBody application: ApplicationDTO){
+        if (professorId !== applicationService.getApplicationProposalSupervisorId(application.id))
+            throw UnauthorizedProfessorError("Cannot operate on applications to proposals of other professors")
         if (application.status == "accepted") {
             applicationService.acceptApplication(application.id)
         }else if (application.status == "declined") {

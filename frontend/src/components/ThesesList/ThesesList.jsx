@@ -6,12 +6,15 @@ import {
   Typography,
   styled,
   Box,
+  Alert,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { MyOutlinedButton, ThesisDetail } from "../index.js";
 import {useLocation, useNavigate} from "react-router-dom";
 import { useUserContext } from "../../contexts/index.js";
+import EditModal from "../EditProposal/Modal.jsx";
+import Snackbar from '@mui/material/Snackbar';
 
 export default function ThesesList({ thesesData }) {
   const location = useLocation();
@@ -92,11 +95,17 @@ export function ThesisRow({ thesis, style={backgroundColor: '#F4F5FF'} }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [detailOpen, setDetailOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const { userId, user } = useUserContext();
 
   const handleOpenDetail = () => {
     setDetailOpen(true);
   };
 
+  setTimeout(() => {
+    setSnackbarOpen(false);
+  }, 5000)
   const handleCloseDetail = () => {
     setDetailOpen(false);
   };
@@ -113,6 +122,7 @@ export function ThesisRow({ thesis, style={backgroundColor: '#F4F5FF'} }) {
               ? thesis.description
               : `${thesis.description.substring(0, 90)}...`}
           </Typography>
+          <Stack direction="row" spacing={2}>
           <MyOutlinedButton
             text={"View"}
             colorBorder={"orange"}
@@ -123,6 +133,26 @@ export function ThesisRow({ thesis, style={backgroundColor: '#F4F5FF'} }) {
               handleOpenDetail();
             }}
           />
+          {user.role === 'Professor' && (
+              <>
+                <MyOutlinedButton text={'edit'}
+                                  colorBorder={'green'}
+                                  colorBorderHover={'darkgreen'}
+                                  style={{fontSize: 'large',}}
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    setEdit(true);
+                                  }}
+
+                />
+                <MyOutlinedButton text={'delete'}
+                                  colorBorder={'red'}
+                                  colorBorderHover={'darkred'}
+                                  style={{fontSize: 'large',}}
+                />
+              </>
+          )}
+          </Stack>
         </StyledPaper>
       </Box>
 
@@ -130,7 +160,25 @@ export function ThesisRow({ thesis, style={backgroundColor: '#F4F5FF'} }) {
         open={detailOpen}
         handleClose={handleCloseDetail}
         thesis={thesis}
+        page={thessespage}
       />
+
+      <EditModal
+        open={edit}
+        setEdit={setEdit}
+        setSnackbarOpen={setSnackbarOpen}
+        thesis={thesis}
+      />
+
+      <Snackbar
+          open={snackbarOpen}
+          sx={{ width: '400px', height: '200px'}}
+
+      >
+        <Alert severity="success" sx={{ width: '100%' }}>
+          Update successful!
+        </Alert>
+      </Snackbar>
     </>
   );
 }

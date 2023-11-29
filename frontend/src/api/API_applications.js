@@ -7,8 +7,8 @@ import { apiRoutes as routes } from '../routes';
 /**
  * Accept an application to a proposal
  */
-export const acceptApplication = async (applicationId) => {
-    return axiosInstance.patch(routes.acceptApplication, {id:applicationId, status:"accepted"})
+export const acceptApplication = async (applicationId, professorId) => {
+    return axiosInstance.patch(routes.acceptApplication+`/${professorId}`, {id:applicationId, status:"accepted"})
         .then(response => {
             if (response.status === 200)
                 console.log("Application accepted");
@@ -21,8 +21,8 @@ export const acceptApplication = async (applicationId) => {
 /**
  * Decline an application to a proposal
  */
-export const declineApplication = async (applicationId) => {
-    return axiosInstance.patch(routes.acceptApplication, {id:applicationId, status:"declined"})
+export const declineApplication = async (applicationId, professorId) => {
+    return axiosInstance.patch(routes.acceptApplication+`/${professorId}`, {id:applicationId, status:"declined"})
         .then(response => {
             if (response.status === 200)
                 console.log("Application declined");

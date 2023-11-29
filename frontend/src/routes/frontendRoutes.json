@@ -11,5 +11,6 @@
     "studentDashboard": "/studentDashboard",
     "professorDashboard": "/professorDashboard",
 
-    "pageNotFound": "/pageNotFound"
+    "pageNotFound": "/pageNotFound",
+    "MyTheses": "/myTheses"
 }
