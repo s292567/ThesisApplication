@@ -2,8 +2,12 @@ package se2g12.thesisapplication.proposal
 
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import se2g12.thesisapplication.GroupDep.GroupDepRepository
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.TeacherRepository
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
 import java.util.*
 
 
@@ -11,8 +15,52 @@ import java.util.*
 class ProposalServiceImpl (
     private val proposalRepository: ProposalRepository,
     private val teacherRepository: TeacherRepository,
-    private val studentRepository: StudentRepository)
+    private val studentRepository: StudentRepository,
+    private val groupDepRepository: GroupDepRepository
+)
     : ProposalService {
+    override fun updateProposal(newProposal: NewProposalDTO, professorId: String,oldName:String,old: Proposal):ProposalDTO {
+        println(proposalRepository.findAll().filter{it.title==oldName})
+        val old= old
+        val message=checkProposal(newProposal)
+        if(message=="") {
+            old.title=newProposal.title!!
+            old.supervisor=teacherRepository.findByEmail("$professorId@example.com").first()
+            old.coSupervisors=newProposal.coSupervisors!!.joinToString(separator = ",")
+            old.keywords=newProposal.keywords!!.joinToString(separator = ",")
+            old.type=newProposal.type!!.joinToString(separator = ",")
+            old.groups=newProposal.groups!!.joinToString(separator = ",")
+            old.description=newProposal.description!!
+            old.requiredKnowledge=newProposal.requiredKnowledge
+            old.notes=newProposal.notes
+            old.expiration=newProposal.expiration
+            old.level=newProposal.level!!
+            old.cds= newProposal.CdS!!.joinToString(separator = ",")
+            return proposalRepository.save(old).toDTO()
+        }
+        //add custom exception
+        return old.toDTO()
+    }
+    private fun checkProposal(newProposal: NewProposalDTO):String{
+        var message:String=""
+        //date check
+        val simpleDate= SimpleDateFormat("yyyy-MM-dd")
+        val currentDate=LocalDate.now()
+        if(currentDate.isAfter(newProposal.expiration))
+            message= "$message expire date is before now"
+        //check list of string
+        if(newProposal.coSupervisors==null||newProposal.keywords==null)
+            message += " coSupervisors or keyword is empty"
+        //check type and level and cds
+        //if(newProposal.type)
+        newProposal.groups!!.forEach{if(groupDepRepository.findById(it).isEmpty)
+            message +=" Group"+it+"not present"
+        }
+        if(newProposal.description!!.isEmpty())
+            message +=" description is empty"
+        return message
+
+    }
     @Transactional
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
         // username=email of the logged in professor
