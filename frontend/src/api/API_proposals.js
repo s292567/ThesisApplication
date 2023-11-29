@@ -132,3 +132,23 @@ export const updateProposal = async (proposalId, proposalData) => {
         console.error('Error while inserting a new proposal: ', error);
     });
 };
+
+// get all proposals of a professor based on professorId
+export const getProposalsByProfessorId = async (professorId) => {
+    let jwt = localStorage.getItem("ROCP_token");
+    jwt=jwt.substring(1,jwt.length-1);
+    return axiosInstance.get(routes.getProposalsByProfessorId + `${professorId}`,{
+        headers: {
+            'Content-Type' : 'application/json' ,
+            'Authorization': 'Bearer '+ jwt
+        }}).then(response => {
+        if (response.status === 200) {
+            console.log("getProposalsByProfessorId: ", response.data);
+            return response.data;
+        } else {
+            console.error('Request failed with status: ', response.status);
+        }
+    }).catch(error => {
+        console.error('Error while retrieving proposals by professorId: ', error);
+    });
+};

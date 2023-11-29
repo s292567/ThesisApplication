@@ -30,8 +30,8 @@ class ProfessorController(private val proposalService: ProposalService,private v
 
         proposalService.updateProposal(proposal!!,professorId,oldName,old)
     }
-    @GetMapping("/API/thesis/proposals/getBySupervisor/{professorId}")
-    fun addNewProposal(@PathVariable professorId:String){
+    @GetMapping("/API/thesis/proposals/getProfessorProposals/{professorId}")
+    fun getProposalByProfessorId(@PathVariable professorId:String){
         proposalService.getProposalByProfessorId( teacherRepository.findById(professorId).get())
     }
 }

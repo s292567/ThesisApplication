@@ -9,5 +9,6 @@
     "updateProposal": "proposals/update/",
     "acceptApplication": "applications", 
     "browseAllApplyingStudents": "applications/students?proposalId=",
-    "browseAllApplications": "applications/by?proposalId="
+    "browseAllApplications": "applications/by?proposalId=",
+    "getProposalByProfessorId": "proposals/getProfessorProposals/"
 }

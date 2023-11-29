@@ -2,6 +2,7 @@
 
 import axiosInstance from './API_Config.js'; // Import your axios instance
 import { apiRoutes as routes } from '../routes';
+import { getProposalsByProfessorId } from './API_proposals.js';
 
 
 /**
@@ -76,5 +77,31 @@ export const getAllApplicationsForProposal = async (proposalUUID) => {
         }
     }).catch(error => {
         console.error('Error while browsing all applications: ', error);
+    });
+};
+
+/** 
+ * Get all proposals, students and status based on the professor id
+ * @param {UUID} professorId 
+ */
+export const getAllApplicationsDatasForProfessor = async (professorId) => {
+    let applications = [];
+    let propsals = [];
+    let students = [];
+    getProposalsByProfessorId(professorId).then(proposals => {
+        propsals.push(proposals);
+        proposals.forEach(proposal => {
+            getAllApplicationsForProposal(proposal.id).then(apps => {
+                apps.forEach(app => {
+                    applications.push(app);
+                });
+            });
+            getAllApplyingStudentsForProposal(proposal.id).then(studs => {
+                studs.forEach(stud => {
+                    students.push(stud);
+                });
+            });
+        });
+        return {applications: applications, proposals: propsals, students: students};
     });
 };
