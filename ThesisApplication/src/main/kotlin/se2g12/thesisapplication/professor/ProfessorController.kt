@@ -7,11 +7,12 @@ import se2g12.thesisapplication.proposal.NewProposalDTO
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.proposal.ProposalService
 import se2g12.thesisapplication.proposal.toDTO
+import se2g12.thesisapplication.teacher.TeacherRepository
 import java.util.*
 
 @RestController
 @CrossOrigin
-class ProfessorController(private val proposalService: ProposalService,private val proposalRepository: ProposalRepository) {
+class ProfessorController(private val proposalService: ProposalService,private val proposalRepository: ProposalRepository,private val teacherRepository: TeacherRepository) {
 
     @PostMapping("/API/thesis/proposals/{professorId}")
     @ResponseStatus(HttpStatus.CREATED)
@@ -28,5 +29,9 @@ class ProfessorController(private val proposalService: ProposalService,private v
         professorId=old.toDTO().supervisor.id!!
 
         proposalService.updateProposal(proposal!!,professorId,oldName,old)
+    }
+    @GetMapping("/API/thesis/proposals/getBySupervisor/{professorId}")
+    fun addNewProposal(@PathVariable professorId:String){
+        proposalService.getProposalByProfessorId( teacherRepository.findById(professorId).get())
     }
 }
