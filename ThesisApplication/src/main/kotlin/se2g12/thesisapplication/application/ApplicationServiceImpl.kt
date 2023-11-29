@@ -71,7 +71,8 @@ class ApplicationServiceImpl (
      * Get a list of all applications for a specific proposal
      */
     override fun getAllApplicationsForProposalById(proposalId: UUID) : List<ApplicationDTO> {
-        return applicationRepository.getAllApplicationsByProposalId(proposalId).map { it.toDTO() }
+        return applicationRepository.getAllApplicationsByProposalId(proposalId).filter { it.status==="pending" }
+            .map { it.toDTO() }
     }
 
 }

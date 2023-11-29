@@ -10,7 +10,7 @@ export default function ThesesPage() {
   const {user} = useUserContext();
 
   const [proposals, setProposals] = useState(null);
-
+  const [dummy, reload] = useState(false)
   useEffect(() => {
     const fetchProposals = async () => {
       try {
@@ -25,13 +25,13 @@ export default function ThesesPage() {
       }
     };
     fetchProposals();
-  }, []);
+  }, [dummy]);
 
 
   return (<>
       <Typography variant="h3" color={"orange"} mb={3} sx={{marginTop: '4rem', marginBottom: '2rem'}}>Theses:</Typography>
       {proposals ? (
-        <ThesesList thesesData={proposals}/>
+        <ThesesList thesesData={proposals} reload={()=>reload(!dummy)}/>
       ) : (
         <SkeletonThesisList count={3}/>
       )}

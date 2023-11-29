@@ -7,7 +7,7 @@ import { MyOutlinedButton, ThesisRow } from "../index.js";
 import {useLocation, useNavigate} from "react-router-dom";
 import { useUserContext } from "../../contexts";
 
-export default function ThesesList({ thesesData }) {
+export default function ThesesList({ thesesData, reload }) {
   const location = useLocation();
   const { homeRoute, generalRoutes } = useUserContext();
   const navigate = useNavigate();
@@ -15,7 +15,9 @@ export default function ThesesList({ thesesData }) {
   if (thesesData === undefined) {
     thesesData = [];
   }
-
+    const newReload=()=>{
+        reload()
+    }
   return (
     <Box
       sx={{
@@ -36,7 +38,7 @@ export default function ThesesList({ thesesData }) {
         }}
       >
         {thesesData.map((thesis) => {
-          return <ThesisRow key={thesis.id} thesis={thesis}/>
+          return <ThesisRow key={thesis.id} thesis={thesis} reload={newReload}/>
         })}
       </Stack>
       {location.pathname === homeRoute && (
