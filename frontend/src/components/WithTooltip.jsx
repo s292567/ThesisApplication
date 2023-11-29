@@ -47,13 +47,15 @@ export default function WithTooltip({ tooltipContent, children }) {
     return () => clearTimeout(closeTimeout.current);
   }, []);
 
+
   return (
     <div>
       <div onClick={handleTooltipOpen}>
-        {children}
+        {children /** This is the component on which you are displaying the popover */} 
       </div>
       <Tooltip
         title={
+          /** The tooltipContent is what is displayed inside the popover box */
           <div 
             ref={tooltipRef} 
             onMouseEnter={handleMouseEnterTooltip} 
@@ -66,7 +68,7 @@ export default function WithTooltip({ tooltipContent, children }) {
         onClose={handleTooltipClose}
         TransitionComponent={Zoom}
         arrow
-        PopperProps={{ sx: { zIndex: 0 } }}
+        PopperProps={{ sx: { zIndex: 0, maxWidth: '500px' } }}
         componentsProps={{
           tooltip: { sx: { bgcolor: "transparent", boxShadow: "none" } }
         }}

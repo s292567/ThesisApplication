@@ -119,13 +119,13 @@ export default function ProfessorApplicants({
         >
           <TableCell
             sx={{
-              fontWeight: isStudentGrouping ? "bolder" : "inherit",
-              color: isStudentGrouping ? "#03468f" : "black",
+              fontWeight: "bolder" ,
+              color: "#03468f",
             }}
           >
             {isStudentGrouping ? (
               <WithTooltip
-                tooltipContent={<ThesisRow thesis={item.proposal} />}
+                tooltipContent={<ThesisRow thesis={item.proposal} style={{backgroundColor: 'white'}}/>}
                 children={item.proposal_title}
               />
             ) : (
@@ -143,7 +143,7 @@ export default function ProfessorApplicants({
             {/* Buttons or status indicators */}
             <Stack direction={isSmallScreen ? "column" : "row"} spacing={1}>
               <PastelComponent
-                bgColor="#ACCEA6"
+                bgColor="#00B090"
                 textColor="white"
                 text="accept"
                 fontSize="medium"
@@ -155,7 +155,7 @@ export default function ProfessorApplicants({
               />
 
               <PastelComponent
-                bgColor="#B41632"
+                bgColor="#ED174F"
                 textColor="white"
                 text="decline"
                 fontSize="medium"
@@ -194,7 +194,8 @@ export default function ProfessorApplicants({
               display: "flex",
               flex: 1,
               flexDirection: "column",
-              backgroundColor: "white",
+              backgroundColor: "#F4F5FF",
+              border: "none",
               transition: "background-color 0.3s",
               "&:hover": {
                 boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.3)",
@@ -208,7 +209,7 @@ export default function ProfessorApplicants({
                   <>
                     <Typography
                       variant="h4"
-                      sx={{ fontWeight: "bold", marginRight: "1rem" }}
+                      sx={{ fontWeight: "bold", marginRight: "1rem", color: "#2f1c6a", }}
                     >
                       {item.student_name}
                     </Typography>
@@ -216,13 +217,13 @@ export default function ProfessorApplicants({
                   </>
                 ) : (
                   <WithTooltip
-                    tooltipContent={<ThesisRow thesis={item.proposal} />}
+                    tooltipContent={<ThesisRow thesis={item.proposal} style={{backgroundColor: 'white'}} />}
                     children={
                       <Typography
                         variant="h4"
                         sx={{
                           fontWeight: "bold",
-                          color: "#03468f",
+                          color: "#2f1c6a",
                           marginRight: "1rem",
                         }}
                       >
@@ -236,12 +237,12 @@ export default function ProfessorApplicants({
                 <IconButton
                   size="large"
                   sx={{
-                    color: "#03468f",
-                    backgroundColor: "#ffe0c8",
+                    color: "white",
+                    backgroundColor: "#2f1c6a",
                     padding: "12px",
                     borderRadius: "15px",
                     "&:hover": {
-                      backgroundColor: "#ffd0b0",
+                      backgroundColor: "#B2B5E0",
                     },
                     height: "48px",
                     display: "inline-flex",

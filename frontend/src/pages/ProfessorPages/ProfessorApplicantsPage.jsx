@@ -22,20 +22,20 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
     justifyContent: "space-between",
     margin: "2rem",
     fontSize: "large",
-    border: "2px solid #03468f",
-    backgroundColor: "#ffe0c8",
+    border: "none",
+    color: "white",
+    backgroundColor: "#B2B5E0",
     "&:hover": {
-      backgroundColor: "#ffd0b0",
+      backgroundColor: "#B2B5E0",
     },
     "&.Mui-selected": {
-      backgroundColor: "#EDBA7C",
-      color: "#03468f",
+      backgroundColor: "#2f1c6a",
       fontWeight: "bold",
+      color: "white",
     },
     "&:not(:first-of-type)": {
       borderRadius: "20px",
       marginLeft: "2rem",
-      border: "2px solid #03468f",
     },
     "&:first-of-type": {
       borderRadius: "20px",

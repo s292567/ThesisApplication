@@ -41,9 +41,9 @@ export default function ThesesList({ thesesData }) {
           alignItems: "flex-start",
         }}
       >
-        {thesesData.map((thesis) => (
-          <ThesisRow key={thesis.id} thesis={thesis} />
-        ))}
+        {thesesData.map((thesis) => {
+          return <ThesisRow key={thesis.id} thesis={thesis}/>
+        })}
       </Stack>
       {location.pathname === homeRoute && (
         <MyOutlinedButton
@@ -73,6 +73,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     width: "auto",
   },
+  backgroundColor: '#F4F5FF',
   padding: "2rem",
   borderRadius: "0.8rem",
   ...theme.typography.body2,
@@ -87,7 +88,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   },
 }));
 
-export function ThesisRow({ thesis }) {
+export function ThesisRow({ thesis, style={backgroundColor: '#F4F5FF'} }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [detailOpen, setDetailOpen] = useState(false);
@@ -103,7 +104,7 @@ export function ThesisRow({ thesis }) {
   return (
     <>
       <Box flex={1} sx={{ display: "flex" }}>
-        <StyledPaper elevation={1} onClick={handleOpenDetail}>
+        <StyledPaper elevation={1} onClick={handleOpenDetail} sx={{...style}}>
           <Typography variant="h4" mb={2}>
             {thesis.title}
           </Typography>

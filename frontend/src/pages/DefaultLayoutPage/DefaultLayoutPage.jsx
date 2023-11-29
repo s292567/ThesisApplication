@@ -8,7 +8,7 @@ const MyMain = styled(Box)({
   display: "flex",
   flexDirection: "column",
   minHeight: "100vh",
-  backgroundColor: "#ebebeb",
+  backgroundColor: "#FFFFFFFA",
 });
 
 function DefaultLayoutPage() {

@@ -48,7 +48,7 @@ export default function WarningPopup({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            color: "darkred",
+            color: "#ED174F",
             gap: "10px",
             fontSize: "xx-large",
           }}
@@ -68,7 +68,7 @@ export default function WarningPopup({
             }}
           >
             <PastelComponent
-                bgColor="#ACCEA6"
+                bgColor="#00B090"
                 textColor="white"
                 text="yes"
                 fontSize="medium"
@@ -77,11 +77,11 @@ export default function WarningPopup({
               />
 
               <PastelComponent
-                bgColor="#B41632"
+                bgColor="#ED174F"
                 textColor="white"
                 text="no"
                 fontSize="medium"
-                style={{ width: "120px" }}
+                style={{ width: "100px" }}
                 onClick={() => {handleCloseWarning()}}
               />
           </Box>

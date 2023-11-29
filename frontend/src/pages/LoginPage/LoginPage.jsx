@@ -32,7 +32,7 @@ const StyleColumn = styled(Stack)(({theme}) => ({
 }));
 
 const Wrapper = styled(Box)(({theme}) => ({
-  display: 'flex', minHeight: '100vh', backgroundColor: '#ebebeb', flexGrow: '1',
+  display: 'flex', minHeight: '100vh', backgroundColor: 'inherit', flexGrow: '1',
   flexDirection: 'row',
   [theme.breakpoints.down('md')]: {
     flexDirection: 'column',
