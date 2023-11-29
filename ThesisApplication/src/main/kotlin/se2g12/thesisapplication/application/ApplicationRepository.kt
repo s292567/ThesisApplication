@@ -24,4 +24,5 @@ interface ApplicationRepository : JpaRepository<Application, UUID> {
     @Query("SELECT * FROM application WHERE proposal_id = :proposalId", nativeQuery = true)
     fun getAllApplicationsByProposalId(proposalId: UUID): List<Application>
 
+    fun findByStudentId(studentId: String): List<Application>
 }

@@ -1,18 +1,13 @@
 package se2g12.thesisapplication.application
 
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import se2g12.thesisapplication.archive.Archive
 import se2g12.thesisapplication.archive.ArchiveRepository
 import se2g12.thesisapplication.proposal.ProposalRepository
-import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentDTO
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.student.toDTO
-import se2g12.thesisapplication.teacher.Teacher
-import se2g12.thesisapplication.teacher.TeacherRepository
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -66,6 +61,10 @@ class ApplicationServiceImpl (
      */
     override fun getAllApplyingStudentsForProposalById(proposalId: UUID) : List<StudentDTO> {
         return studentRepository.getApplyingStudentsByProposalId(proposalId).map { it.toDTO() }
+    }
+    override fun getApplicationsForStudent(studentId: String): List<ApplicationDTO> {
+        return applicationRepository.findByStudentId(studentId)
+            .map { it.toDTO() }
     }
 
     /**

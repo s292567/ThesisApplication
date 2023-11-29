@@ -47,7 +47,7 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         return proposalService.searchProposalByStudentCds(studentId, query)
     }
 
-    //dafault filtered search
+    //default filtered search
     @PostMapping("/API/thesis/proposals/search-filtered")
     @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun searchProposalsCustom(
