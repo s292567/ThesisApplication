@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import se2g12.thesisapplication.GroupDep.GroupDep
+import se2g12.thesisapplication.GroupDep.GroupDepRepository
 import se2g12.thesisapplication.degree.Degree
 import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.department.Department
@@ -24,6 +25,7 @@ class ProposalServiceImplTest {
     private lateinit var proposalRepository: ProposalRepository
     private lateinit var teacherRepository: TeacherRepository
     private lateinit var studentRepository: StudentRepository
+    private lateinit var groupDepRepository: GroupDepRepository
     private lateinit var proposalService: ProposalServiceImpl
 
 
@@ -32,7 +34,8 @@ class ProposalServiceImplTest {
         proposalRepository = mockk()
         teacherRepository = mockk()
         studentRepository = mockk()
-        proposalService = ProposalServiceImpl(proposalRepository, teacherRepository, studentRepository)
+        groupDepRepository = mockk()
+        proposalService = ProposalServiceImpl(proposalRepository, teacherRepository, studentRepository, groupDepRepository)
     }
 
     @Test
