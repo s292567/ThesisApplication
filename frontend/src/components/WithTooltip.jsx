@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Tooltip, Zoom } from '@mui/material';
+import {Tooltip, useMediaQuery, Zoom} from '@mui/material';
 
 export default function WithTooltip({ tooltipContent, children }) {
   const [open, setOpen] = useState(false);
   const tooltipRef = useRef(null);
   const closeTimeout = useRef(null);
-
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const startCloseTimeout = (time) => {
     // Start a timeout to auto-close the tooltip after 1 second
     let timeout;
@@ -60,6 +60,7 @@ export default function WithTooltip({ tooltipContent, children }) {
             ref={tooltipRef} 
             onMouseEnter={handleMouseEnterTooltip} 
             onMouseLeave={handleMouseLeaveTooltip}
+            style={{width: isMobile ? '350px' : '650px'}}
           >
             {tooltipContent}
           </div>
@@ -68,7 +69,7 @@ export default function WithTooltip({ tooltipContent, children }) {
         onClose={handleTooltipClose}
         TransitionComponent={Zoom}
         arrow
-        PopperProps={{ sx: { zIndex: 0, maxWidth: '500px' } }}
+        PopperProps={{ sx: { zIndex: 0 } }}
         componentsProps={{
           tooltip: { sx: { bgcolor: "transparent", boxShadow: "none" } }
         }}

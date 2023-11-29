@@ -43,7 +43,7 @@ export default function MyThesesPage() {
     return (<>
             <Typography variant="h3" color={"orange"} mb={3} mt={3}>My Theses:</Typography>
         {proposals ? (
-            <MyTheses thesesData={proposals.slice(0, 3)} view={'displayApply'}/>
+            <MyTheses thesesData={proposals} view={'displayApply'}/>
         ) : (
 
                 <SkeletonThesisList count={3}/>

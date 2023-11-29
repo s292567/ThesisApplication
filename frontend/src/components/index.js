@@ -7,7 +7,7 @@ import Sidebar from "./SideBar/Sidebar"
 import LoggedInNavbar from "./Navbar/LoggedInNavbar"
 
 import ThesesList from "./ThesesList/ThesesList.jsx";
-import {ThesisRow} from "./ThesesList/ThesesList.jsx";
+import ThesisRow from "./ThesesList/ThesisRow.jsx";
 import ThesisDetail from "./ThesisDetail/ThesisDetail.jsx";
 
 import SkeletonThesisList from "./Skeletons/SkeletonThesisList.jsx";

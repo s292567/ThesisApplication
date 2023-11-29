@@ -29,6 +29,9 @@ export default function PastelComponent({
     if (!endIcon) {
       endIcon = undefined;
     }
+    if(!text){
+      text = "";
+    }
 
     return onClick ? (
       <Button

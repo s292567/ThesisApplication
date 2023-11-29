@@ -6,11 +6,12 @@ import context from "react-bootstrap/esm/AccordionContext";
 const MySkeletonWrapper = styled(Paper)({
   maxWidth: "1000px",
   borderRadius: "18px",
+  height: '100px',
+  backgroundColor: "#F4F5FF",
   padding: "2rem",
   display: "flex",
   flex: 1,
   flexDirection: "row",
-  backgroundColor: "white",
 });
 
 export default function SkeletonApplicants({ count }) {
