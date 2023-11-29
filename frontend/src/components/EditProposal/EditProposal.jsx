@@ -30,9 +30,10 @@ const EditForm = ({ userId, proposalId, thesis, setNewData}) => {
             ...prevData,
             [fieldName]: value,
         }));
-        setNewData(formData);
     };
-
+    useEffect(()=>{
+        setNewData(formData)
+    }, [formData])
 
     const handleSubmit = async (event) => {
         event.preventDefault();

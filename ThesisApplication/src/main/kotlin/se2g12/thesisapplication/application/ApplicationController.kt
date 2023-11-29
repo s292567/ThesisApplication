@@ -2,6 +2,7 @@ package se2g12.thesisapplication.application
 
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import se2g12.thesisapplication.student.StudentDTO
 import java.util.UUID
@@ -38,5 +39,12 @@ class ApplicationController(private val applicationService: ApplicationService) 
     @PreAuthorize("hasRole('Professor')")
     fun getAllApplicationsForProposal(@RequestParam proposalId: UUID) : List<ApplicationDTO> {
         return applicationService.getAllApplicationsForProposalById(UUID.fromString(proposalId.toString()))
+    }
+
+    @GetMapping("/API/thesis/applications/student")
+    @PreAuthorize("hasRole('Student')")
+    fun getApplicationsForLoggedInStudent(@RequestParam studentId: String): List<ApplicationDTO> {
+        SecurityContextHolder.getContext().authentication.principal
+            return applicationService.getApplicationsForStudent(studentId)
     }
 }
