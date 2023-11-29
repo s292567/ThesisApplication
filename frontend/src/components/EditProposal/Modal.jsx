@@ -9,6 +9,8 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import {updateProposal} from "../../api/API_proposals.js";
 import {useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {frontendRoutes} from "../../routes/index.js";
 
 const style = {
     position: 'absolute',
@@ -29,8 +31,10 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled"  {...props} />;
 });
 
-export default function EditModal ({open, setEdit, setSnackbarOpen, thesis}) {
+export default function EditModal ({open, setEdit, setSnackbarOpen, thesis, fetchProposals}) {
     const [newData, setNewData] = useState(thesis)
+    const navigate = useNavigate();
+    const location = useLocation();
     /*const handleCancel = () => {
         setOpen(false);
         setSnackbarOpen(false); // Close the Snackbar if it's open when canceling
@@ -79,7 +83,8 @@ export default function EditModal ({open, setEdit, setSnackbarOpen, thesis}) {
                                               colorBorderHover={'darkgreen'}
                                               style={{fontSize: 'large',}}
                                               onClick={() => {
-                                                  updateProposal(thesis.id, newData)
+                                                  updateProposal(thesis.id, newData);
+                                                  navigate(location.pathname);
                                                   setSnackbarOpen(true);
                                               setEdit(false)}}
                             />
