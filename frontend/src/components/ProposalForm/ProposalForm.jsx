@@ -1,16 +1,15 @@
-import React, {useContext, useState} from "react";
+import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 import KeywordsField from "./KeywordsField";
 import DropdownField from "./DropdownField";
 import { insertProposal } from "../../api";
 
-import "./ProposalForm.css";
-import {AuthContext} from "react-oauth2-code-pkce";
+import "./ProposalForm.css"; 
 
 const ProposalForm = ({userId}) => {
     const navigate=useNavigate();
-    const {login}=useContext(AuthContext)
+
   const [formData, setFormData] = useState({
     title: '',
     coSupervisors: '',

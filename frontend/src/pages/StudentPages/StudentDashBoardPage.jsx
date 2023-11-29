@@ -1,18 +1,17 @@
 // ProfessorDashboardPage.jsx
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState, useEffect} from "react";
 import {Typography} from "@mui/material";
 import {ThesesList, SkeletonThesisList} from "../../components";
 import {getAllProposals} from "../../api";
-import {AuthContext} from "react-oauth2-code-pkce";
 
 export default function StudentDashboardPage() {
 
   const [proposals, setProposals] = useState(null);
-  const{token}=useContext(AuthContext)
+
   useEffect(() => {
     const fetchProposals = async () => {
       try {
-        const response = await getAllProposals(token); // This should be your API call
+        const response = await getAllProposals(); // This should be your API call
         setProposals(response);
       } catch (error) {
         console.error("Failed to fetch proposals:", error);

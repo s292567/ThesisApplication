@@ -1,6 +1,6 @@
 import { Alert, Box, Button, Typography, styled } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import { useUserContext } from "../../contexts";
 
 const MyAlert = styled(Alert)(({ theme }) => ({
     position: 'absolute', // Added for absolute positioning
@@ -26,7 +26,7 @@ const ErrorText = styled(Box)(({ theme }) => ({
 
 const PageNotFound = () => {
     const navigate = useNavigate();
-
+    const { homeRoute } = useUserContext();
 
     return (
         <Box sx={{
@@ -43,7 +43,7 @@ const PageNotFound = () => {
                     </Typography>
                 </ErrorText>
                 <Button
-                    onClick={() => {navigate("/"); }}
+                    onClick={() => {navigate(homeRoute); }}
                     variant="contained"
                     sx={{
                         borderRadius: theme => theme.shape.borderRadius,

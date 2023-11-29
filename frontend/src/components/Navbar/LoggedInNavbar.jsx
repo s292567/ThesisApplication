@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   AppBar,
   Toolbar,
@@ -25,11 +25,9 @@ import {
   CancelRounded,
 } from '@mui/icons-material';
 import politoLogo from '../../assets/images/politoLogo.png';
-
+import {useUserContext} from "../../contexts";
 import {frontendRoutes} from "../../routes/index.js";
 import {useNavigate} from "react-router-dom";
-import {AuthContext} from "react-oauth2-code-pkce";
-import {Button} from "react-bootstrap";
 
 const MyToolbar = styled(Toolbar)(({theme}) => ({
   display: 'flex',
@@ -69,13 +67,10 @@ const Links = styled(Box)(({theme}) => ({
 
 
 export default function LoggedInNavbar() {
-
-  const{logOut,tokenData}=useContext(AuthContext)
-  if(!tokenData)
-    return<></>
-  const user={username:tokenData.preferred_username,role:tokenData.realm_access.roles[3]}
   const theme = useTheme();
   const navigate=useNavigate()
+  const {logout, homeRoute, user} = useUserContext();
+
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
   useEffect(() => {
@@ -84,7 +79,7 @@ export default function LoggedInNavbar() {
     }
   }, [isMobile]);
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClickAvatar = (event) => {
     setAnchorEl(event.currentTarget);
@@ -146,25 +141,25 @@ export default function LoggedInNavbar() {
                 },
               }}
             >
-              <Button onClick={navigate('/')} color="inherit" sx={{mx: 2}}>
+              <Link href={homeRoute} color="inherit" sx={{mx: 2}}>
                 Home
-              </Button>
+              </Link>
 
               {user.role === "Professor" && (<>
-                  <Button onClick={navigate(frontendRoutes.professorTheses)} color="inherit" sx={{mx: 2}}>
+                  <Link onClick={navigate(frontendRoutes.professorTheses)} color="inherit" sx={{mx: 2}}>
                     Theses
-                  </Button>
-                  <Button onClick={navigate(frontendRoutes.professorNewThesis)} color="inherit" sx={{mx: 2, verticalAlign: 'center'}}>
+                  </Link>
+                  <Link onClick={navigate(frontendRoutes.professorNewThesis)} color="inherit" sx={{mx: 2, verticalAlign: 'center'}}>
                     New Thesis
-                  </Button>
+                  </Link>
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
               )}
 
               {user.role === "Student" && (<>
-                  <Button onClick={navigate(frontendRoutes.studentTheses)} color="inherit" sx={{mx: 2}}>
+                  <Link onClick={navigate(frontendRoutes.studentTheses)} color="inherit" sx={{mx: 2}}>
                     Theses
-                  </Button>
+                  </Link>
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
               )}
@@ -257,7 +252,7 @@ export default function LoggedInNavbar() {
             Settings
           </MenuItem>
           <MenuItem onClick={() => {
-            logOut()
+            logout()
           }}>
             <ListItemIcon>
               <Logout fontSize="small" color="error"/>

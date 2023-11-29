@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -13,10 +13,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import politoLogo from "../../assets/images/politoLogo.png"; // Ensure this path is correct
 
-
+import { useUserContext } from "../../contexts";
 import { frontendRoutes } from "../../routes";
 import { CancelRounded } from "@mui/icons-material";
-import {AuthContext} from "react-oauth2-code-pkce";
 
 // CSS SECTION
 const MyAppBar = styled(AppBar)(({ theme }) => ({
@@ -84,9 +83,7 @@ function LinkGroup() {
 export default function NavbarNormal(){
   const navigate = useNavigate();
   const location = useLocation();
-  const {token,logOut,loginInProgress,login}=useContext(AuthContext);
-  const loggedIn=token||loginInProgress?true:false;
-
+  const { loggedIn, logout } = useUserContext();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:768px)");
@@ -143,7 +140,7 @@ export default function NavbarNormal(){
                 variant="contained"
                 sx={{ backgroundColor: loggedIn ? "darkred" : "#003576" }}
                 onClick={() => {
-                  loggedIn ? logOut() : login();
+                  loggedIn ? logout() : navigate(frontendRoutes.login);
                   setMobileOpen(false);
                 }}
               >
@@ -164,5 +161,5 @@ export default function NavbarNormal(){
       </MyToolbar>
     </MyAppBar>
   );
-}
+};
 
