@@ -7,7 +7,7 @@ import "./DropdownField.css";
  * @param {*} placeholder insert a placeholder string text, that is displyed when no option is selected
  * @returns 
  */
-const DropdownField = ({ data, placeholder, onValueChange }) => {
+const DropdownField = ({ data, placeholder, onValueChange, initialValue }) => {
   const [placeholderActive, setPlaceholderActive] = useState(true);
 
   const handleDropdownChange = (e) => {
@@ -21,7 +21,7 @@ const DropdownField = ({ data, placeholder, onValueChange }) => {
       <select id="types" className="select-style" onChange={handleDropdownChange}>
         {(placeholderActive) ? <option value="">{placeholder}</option> : null}
         {data.map((value) => (
-          <option key={value.id} value={value.name}>{value.name}</option>
+          <option key={value.id} value={value.name} selected={initialValue===value.name}>{value.name}</option>
         ))}
       </select>
     </div>

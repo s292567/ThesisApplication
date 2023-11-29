@@ -6,7 +6,7 @@ import "./ProposalForm.css";
 import {MyOutlinedButton} from "../index.js";
 import Stack from '@mui/material/Stack';
 
-const EditForm = ({ userId, proposalId, thesis}) => {
+const EditForm = ({ userId, proposalId, thesis, setNewData}) => {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -23,19 +23,6 @@ const EditForm = ({ userId, proposalId, thesis}) => {
         CdS: thesis.cds,
     });
 
-    useEffect(() => {
-        const fetchProposalData = async () => {
-            try {
-                const proposalData = await getProposalById(proposalId);
-                setFormData(proposalData);
-            } catch (error) {
-                console.error("Error fetching proposal data:", error);
-            }
-        };
-
-        // Call the function to fetch data when the component mounts
-        fetchProposalData();
-    }, [proposalId]);
 
     // Function to handle changes in child components and update the form data
     const handleFormChange = (fieldName, value) => {
@@ -43,6 +30,7 @@ const EditForm = ({ userId, proposalId, thesis}) => {
             ...prevData,
             [fieldName]: value,
         }));
+        setNewData(formData);
     };
 
 
@@ -70,8 +58,8 @@ const EditForm = ({ userId, proposalId, thesis}) => {
                     id="title"
                     className="input"
                     value={formData.title}
-                    onChange={(value) => {
-                        handleFormChange("title",value);
+                    onChange={(event) => {
+                        handleFormChange("title",event.target.value);
                     }}
                     required
                 />
@@ -94,7 +82,7 @@ const EditForm = ({ userId, proposalId, thesis}) => {
                 data={[{ id: 1, name: 'Research' }, { id: 2, name: 'Development' }]}
                 placeholder={"Select a type..."}
                 onValueChange={(value) => handleFormChange('type', value)}
-                initialValue={formData.type}
+                initialValue={formData.type[0]}
             />
 
             <KeywordsField
@@ -114,7 +102,7 @@ const EditForm = ({ userId, proposalId, thesis}) => {
                     id="description"
                     className="input"
                     onChange={(e) => {
-                        handleFormChange('description',value);
+                        handleFormChange('description',e.target.value);
                     }}
                     value={formData.description}
                     required
@@ -130,7 +118,7 @@ const EditForm = ({ userId, proposalId, thesis}) => {
                     id="knowledge"
                     className="input"
                     onChange={(e) => {
-                        handleFormChange('requiredKnowledge',value);
+                        handleFormChange('requiredKnowledge',e.target.value);
                     }}
                     value={formData.requiredKnowledge}
                 />
@@ -145,7 +133,7 @@ const EditForm = ({ userId, proposalId, thesis}) => {
                     id="notes"
                     className="input"
                     onChange={(e) => {
-                        handleFormChange('notes', value);
+                        handleFormChange('notes', e.target.value);
                     }}
                     value={formData.notes}
                 />
@@ -160,7 +148,7 @@ const EditForm = ({ userId, proposalId, thesis}) => {
                     id="expiration"
                     className="input"
                     onChange={(e) => {
-                        handleFormChange('expiration', value);
+                        handleFormChange('expiration', e.target.value);
                     }}
                     value={formData.expiration}
                     required

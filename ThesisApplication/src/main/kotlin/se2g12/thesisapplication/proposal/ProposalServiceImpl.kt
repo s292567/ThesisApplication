@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import se2g12.thesisapplication.GroupDep.GroupDepRepository
 import se2g12.thesisapplication.student.StudentRepository
+import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -19,6 +20,10 @@ class ProposalServiceImpl (
     private val groupDepRepository: GroupDepRepository
 )
     : ProposalService {
+    override fun getProposalByProfessorId(supervisor: Teacher): List<ProposalDTO> {
+        return proposalRepository.findAll().map{it.toDTO()}.filter{it.supervisor==supervisor}
+    }
+
     override fun updateProposal(newProposal: NewProposalDTO, professorId: String,oldName:String,old: Proposal):ProposalDTO {
         println(proposalRepository.findAll().filter{it.title==oldName})
         val old= old

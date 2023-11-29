@@ -7,6 +7,8 @@ import Stack from "@mui/material/Stack";
 import {MyOutlinedButton} from "../index.js";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import {updateProposal} from "../../api/API_proposals.js";
+import {useState} from "react";
 
 const style = {
     position: 'absolute',
@@ -28,7 +30,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function EditModal ({open, setEdit, setSnackbarOpen, thesis}) {
-
+    const [newData, setNewData] = useState(thesis)
     /*const handleCancel = () => {
         setOpen(false);
         setSnackbarOpen(false); // Close the Snackbar if it's open when canceling
@@ -62,7 +64,7 @@ export default function EditModal ({open, setEdit, setSnackbarOpen, thesis}) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <EditForm thesis={thesis}/>
+                    <EditForm thesis={thesis} setNewData={setNewData}/>
                     <Box mt={4}>
                         <Stack direction="row" spacing={5} alignItems="center" justifyContent="center" >
                             <MyOutlinedButton text={'Back'}
@@ -76,7 +78,9 @@ export default function EditModal ({open, setEdit, setSnackbarOpen, thesis}) {
                                               colorBorder={'green'}
                                               colorBorderHover={'darkgreen'}
                                               style={{fontSize: 'large',}}
-                                              onClick={() => {setSnackbarOpen(true);
+                                              onClick={() => {
+                                                  updateProposal(thesis.id, newData)
+                                                  setSnackbarOpen(true);
                                               setEdit(false)}}
                             />
 
