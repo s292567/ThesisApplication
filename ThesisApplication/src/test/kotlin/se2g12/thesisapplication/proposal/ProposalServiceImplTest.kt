@@ -14,8 +14,6 @@ import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
@@ -39,16 +37,15 @@ class ProposalServiceImplTest {
     fun testAddNewProposal() {
         // Mock data
         val professorId = "p101"
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         val newProposalDTO = NewProposalDTO("Advanced algorithms for image processing",
             listOf( "Paolo Ricci", "Mario Rossi" ),
             listOf("image processing"),
-            listOf("in external company"),
+            "in external company",
             listOf("G13","G21"),
             "Work in a company to develop new algorithms for image processing",
             "Basics of machine learning and image processing",
             "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
+            "2024-04-23",
             "MSc",
             listOf("ENG1", "ENG3")
         )
@@ -72,7 +69,6 @@ class ProposalServiceImplTest {
     @Test
     fun testGetAllProposals() {
         val teacher = Teacher("Ferrari", "Luca")
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         // Mock data
         val proposals = listOf(Proposal("Advanced algorithms for image processing",
             teacher,
@@ -83,7 +79,7 @@ class ProposalServiceImplTest {
             "Work in a company to develop new algorithms for image processing",
             "Basics of machine learning and image processing",
             "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
+            SimpleDateFormat("yyyy-MM-dd").parse("2024-04-23"),
             "MSc",
             "Computer Engineering, Civil Engineering"))
         val proposalsDTO = listOf(ProposalDTO(
@@ -92,12 +88,12 @@ class ProposalServiceImplTest {
             teacher,
             listOf("Paolo Ricci", "Mario Rossi"),
             listOf("image processing"),
-            listOf("in external company"),
+            "in external company",
             listOf("G13","G21"),
             "Work in a company to develop new algorithms for image processing",
             "Basics of machine learning and image processing",
             "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
+            "2024-04-23",
             "MSc",
             listOf("Computer Engineering", "Electrical Engineering")
         ))
@@ -114,8 +110,6 @@ class ProposalServiceImplTest {
     }
     @Test
     fun `test getProposalsByCds`() {
-        val localDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val localDate2 = LocalDate.parse("2026-07-21", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         // Arrange
         val cds = "Computer Engineering"
         val proposalList = listOf(Proposal("Advanced algorithms for image processing",
@@ -127,7 +121,7 @@ class ProposalServiceImplTest {
             "Work in a company to develop new algorithms for image processing",
             "Basics of machine learning and image processing",
             "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
+            SimpleDateFormat("yyyy-MM-dd").parse("2024-04-23"),
             "MSc",
             "Computer Engineering, Civil Engineering"),
             Proposal("Proposal 2",
@@ -139,7 +133,7 @@ class ProposalServiceImplTest {
                 "The description of the proposal",
                 "Basics knowledge",
                 "Collaboration with company equipe. Reimbursement of expenses",
-                localDate2,
+                SimpleDateFormat("yyyy-MM-dd").parse("2026-07-21"),
                 "MSc",
                 "Computer Engineering"))
         every { proposalRepository.findByCds(cds) } returns proposalList
@@ -153,7 +147,6 @@ class ProposalServiceImplTest {
 
     @Test
     fun `test searchProposals`() {
-        val localDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         // Arrange
         val query = "image"
         val proposalList = listOf(Proposal("Advanced algorithms for image processing",
@@ -165,7 +158,7 @@ class ProposalServiceImplTest {
             "Work in a company to develop new algorithms for image processing",
             "Basics of machine learning and image processing",
             "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
+            SimpleDateFormat("yyyy-MM-dd").parse("2024-04-23"),
             "MSc",
             "Computer Engineering, Civil Engineering"))
         every { proposalRepository.searchProposals(query) } returns proposalList
@@ -184,8 +177,6 @@ class ProposalServiceImplTest {
         val query = "something"
         val cdsName = "Computer Engineering"
         val student = Student(degree = Degree(titleDegree = cdsName))
-        val localDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val localDate2 = LocalDate.parse("2026-07-21", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         val proposalList = listOf(Proposal("Advanced algorithms for image processing",
             Teacher("Luca", "Ferrari"),
             "Paolo Ricci, Mario Rossi" ,
@@ -195,7 +186,7 @@ class ProposalServiceImplTest {
             "Work in a company to develop new algorithms for image processing",
             "Basics of machine learning and image processing",
             "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
+            SimpleDateFormat("yyyy-MM-dd").parse("2024-04-23"),
             "MSc",
             "Computer Engineering, Civil Engineering"),
             Proposal("Proposal 2",
@@ -207,7 +198,7 @@ class ProposalServiceImplTest {
                 "The description of the proposal",
                 "Basics knowledge",
                 "Collaboration with company equipe. Reimbursement of expenses",
-                localDate2,
+                SimpleDateFormat("yyyy-MM-dd").parse("2026-07-21"),
                 "MSc",
                 "Computer Engineering"))
         every { studentRepository.findById(studentId) } returns Optional.of(student)
@@ -226,8 +217,6 @@ class ProposalServiceImplTest {
         val query = ""
         val cdsName = "Computer Engineering"
         val student = Student(degree = Degree(titleDegree = cdsName))
-        val localDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val localDate2 = LocalDate.parse("2026-07-21", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         val proposalList = listOf(Proposal("Advanced algorithms for image processing",
             Teacher("Luca", "Ferrari"),
             "Paolo Ricci, Mario Rossi" ,
@@ -237,7 +226,7 @@ class ProposalServiceImplTest {
             "Work in a company to develop new algorithms for image processing",
             "Basics of machine learning and image processing",
             "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
+            SimpleDateFormat("yyyy-MM-dd").parse("2024-04-23"),
             "MSc",
             "Computer Engineering, Civil Engineering"),
             Proposal("Proposal 2",
@@ -249,7 +238,7 @@ class ProposalServiceImplTest {
                 "The description of the proposal",
                 "Basics knowledge",
                 "Collaboration with company equipe. Reimbursement of expenses",
-                localDate2,
+                SimpleDateFormat("yyyy-MM-dd").parse("2026-07-21"),
                 "MSc",
                 "Computer Engineering"))
         every { studentRepository.findById(studentId) } returns Optional.of(student)

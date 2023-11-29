@@ -23,7 +23,7 @@ export default function ProfessorDashboardPage() {
 
 
   return (<>
-      <Typography variant="h3" color={"orange"} sx={{marginTop: '4rem', marginBottom: '2rem'}}>Theses preview:</Typography>
+      <Typography variant="h3" color={"orange"} mb={3} mt={3}>Theses preview:</Typography>
       {proposals ? (
         <ThesesList thesesData={proposals.slice(0, 3)} />
       ) : (

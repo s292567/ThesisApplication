@@ -11,7 +11,6 @@ export function groupApplications(applications, students, proposals) {
       student_degree: student ? student.degree : "Unknown",
       proposal_id: application.proposal_id,
       proposal_title: proposal ? proposal.title : "Unknown",
-      proposal: proposal ? proposal : "Unknown",
       status_application_student: application.status,
     };
   });
@@ -21,7 +20,6 @@ export function groupApplications(applications, students, proposals) {
       acc[item.proposal_id] = {
         proposal_id: item.proposal_id,
         proposal_title: item.proposal_title,
-        proposal: item.proposal,
         applicants: [],
       };
     }
@@ -37,7 +35,7 @@ export function groupApplications(applications, students, proposals) {
     return acc;
   }, {});
 
-  const groupedByProposals = Object.values(groupedByProposal);
+  const groupedByProposalArray = Object.values(groupedByProposal);
 
   const groupedByStudent = combinedListTmp.reduce((acc, item) => {
     if (!acc[item.student_id]) {
@@ -53,14 +51,13 @@ export function groupApplications(applications, students, proposals) {
     acc[item.student_id].applications.push({
       proposal_id: item.proposal_id,
       proposal_title: item.proposal_title,
-      proposal: item.proposal,
       status: item.status_application_student,
     });
 
     return acc;
   }, {});
 
-  const groupedByStudents = Object.values(groupedByStudent);
+  const groupedByStudentArray = Object.values(groupedByStudent);
 
-  return { groupedByProposals, groupedByStudents };
+  return { groupedByProposalArray, groupedByStudentArray };
 }

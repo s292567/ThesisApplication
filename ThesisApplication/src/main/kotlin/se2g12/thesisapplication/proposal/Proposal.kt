@@ -2,7 +2,6 @@ package se2g12.thesisapplication.proposal
 
 import jakarta.persistence.*
 import se2g12.thesisapplication.teacher.Teacher
-import java.time.LocalDate
 import java.util.*
 
 @Entity
@@ -17,14 +16,13 @@ data class Proposal(
     var keywords: String,
     var type: String,
     // For simplicity, groups are stored as a comma-separated string
-    val groups: String,
-    val description: String,
-    val requiredKnowledge: String?=null,
-    val notes: String?=null,
-    @Temporal(TemporalType.DATE)
-    val expiration: LocalDate,
-    val level: String,
-    val cds: String
+    var groups: String,
+    var description: String,
+    var requiredKnowledge: String?=null,
+    var notes: String?=null,
+    var expiration: Date,
+    var level: String,
+    var cds: String
 ){
     @Id
     @GeneratedValue(generator = "uuid2")

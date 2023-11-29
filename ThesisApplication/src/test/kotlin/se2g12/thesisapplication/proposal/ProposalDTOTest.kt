@@ -10,15 +10,12 @@ import se2g12.thesisapplication.degree.Degree
 import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.teacher.Teacher
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Optional
 
 class ProposalDTOTest {
 
     @Test
     fun testToDTO() {
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         // Mock data for Proposal
         val proposal = Proposal(
             title = "Sample Proposal",
@@ -30,7 +27,7 @@ class ProposalDTOTest {
             description = "Sample proposal description",
             requiredKnowledge = "Sample required knowledge",
             notes = "Sample notes",
-            expiration = localDate,
+            expiration = SimpleDateFormat("yyyy-MM-dd").parse("2024-04-23"),
             level = "Master",
             cds = "Computer Science, Data Science"
         )
@@ -46,17 +43,17 @@ class ProposalDTOTest {
         // Assertions
         //assertEquals(1, proposalDTO.id)
         assertEquals("Sample Proposal", proposalDTO.title)
-        assertEquals("Luca", proposalDTO.supervisor.name)
-        assertEquals("Ferrari", proposalDTO.supervisor.surname)
+        assertEquals("Luca", proposalDTO.supervisor!!.name)
+        assertEquals("Ferrari", proposalDTO.supervisor!!.surname)
         assertEquals(listOf("Jane Doe", "Bob Smith"), proposalDTO.coSupervisors)
         assertEquals(listOf("Java", "Kotlin", "MockK"), proposalDTO.keywords)
-        assertEquals("Research", proposalDTO.type.first())
+        assertEquals("Research", proposalDTO.type)
         assertEquals(listOf("GroupA", "GroupB"), proposalDTO.groups)
         assertEquals("Sample proposal description", proposalDTO.description)
         assertEquals("Sample required knowledge", proposalDTO.requiredKnowledge)
         assertEquals("Sample notes", proposalDTO.notes)
         assertEquals(
-            proposal.expiration,
+            SimpleDateFormat("yyyy-MM-dd").format(proposal.expiration),
             proposalDTO.expiration
         )
         assertEquals("Master", proposalDTO.level)

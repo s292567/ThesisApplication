@@ -7,6 +7,7 @@ import {
   Box,
   useMediaQuery,
   useTheme,
+  Link,
   styled,
   Menu,
   MenuItem,
@@ -23,8 +24,6 @@ import {
   DragHandleRounded,
   CancelRounded,
 } from '@mui/icons-material';
-import {Link} from 'react-router-dom';
-
 import politoLogo from '../../assets/images/politoLogo.png';
 import {useUserContext} from "../../contexts";
 import {frontendRoutes} from "../../routes/index.js";
@@ -40,11 +39,11 @@ const MyToolbar = styled(Toolbar)(({theme}) => ({
   },
 }));
 
-const Icons = styled(Box)({
+const Icons = styled(Box)(({theme}) => ({
   display: "flex",
   alignItems: "center",
   gap: "2rem",
-});
+}));
 
 const Badges = styled(Box)(({theme}) => ({
   display: "none",
@@ -59,12 +58,12 @@ const Badges = styled(Box)(({theme}) => ({
   },
 }));
 
-const Links = styled(Box)({
+const Links = styled(Box)(({theme}) => ({
   display: 'flex',
   alignItems: 'center',
   flexGrow: 1,
   gap: "10px",
-});
+}));
 
 
 export default function LoggedInNavbar() {
@@ -132,8 +131,6 @@ export default function LoggedInNavbar() {
                   fontSize: mobileOpen ? "x-large" : "medium",
                   fontWeight: 'bold',
                   textDecoration: 'none',
-                  color: 'white',
-                  marginRight: mobileOpen ? "0rem" : "2rem",
                 },
                 "& a:hover": {
                   backgroundColor: mobileOpen ? "#007baa" : "transparent",
@@ -144,26 +141,23 @@ export default function LoggedInNavbar() {
                 },
               }}
             >
-              <Link to={homeRoute} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
+              <Link href={homeRoute} color="inherit" sx={{mx: 2}}>
                 Home
               </Link>
 
               {user.role === "Professor" && (<>
-                  <Link to={frontendRoutes.professorTheses} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
+                  <Link onClick={navigate(frontendRoutes.professorTheses)} color="inherit" sx={{mx: 2}}>
                     Theses
                   </Link>
-                  <Link to={frontendRoutes.professorNewThesis} color="inherit" sx={{mx: 2, }} onClick={()=>setMobileOpen(false)}>
+                  <Link onClick={navigate(frontendRoutes.professorNewThesis)} color="inherit" sx={{mx: 2, verticalAlign: 'center'}}>
                     New Thesis
-                  </Link>
-                  <Link to={frontendRoutes.professorApplicants} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
-                    Applicants
                   </Link>
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
               )}
 
               {user.role === "Student" && (<>
-                  <Link to={frontendRoutes.studentTheses} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
+                  <Link onClick={navigate(frontendRoutes.studentTheses)} color="inherit" sx={{mx: 2}}>
                     Theses
                   </Link>
                   {/* Here NEW LINKS ON THE NAVBAR */}

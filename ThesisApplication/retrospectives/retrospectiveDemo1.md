@@ -42,7 +42,7 @@ sections:
 | #3     |    2    |    3   |   2 days   |   2 days 4 hours 20minutes  |
 
 #### Time Report (Youtrack)
-![report](retrospective_image.jpg)
+![report](./retrospective_image.jpg)
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)

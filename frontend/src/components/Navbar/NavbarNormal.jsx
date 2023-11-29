@@ -83,7 +83,7 @@ function LinkGroup() {
 export default function NavbarNormal(){
   const navigate = useNavigate();
   const location = useLocation();
-  const { loggedIn, logout,login } = useUserContext();
+  const { loggedIn, logout } = useUserContext();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:768px)");
@@ -107,7 +107,7 @@ export default function NavbarNormal(){
         }}
       >
         <Logo>
-          <Link to="/" onClick={() => {setMobileOpen(false)}}>
+          <Link to="/">
             <img
               src={politoLogo}
               alt="Politecnico Di Torino"
@@ -133,7 +133,6 @@ export default function NavbarNormal(){
                 alignSelf: mobileOpen ? "flex-start" : "center",
               },
             }}
-            onClick={() => {setMobileOpen(false)}}
           >
             <LinkGroup />
             {location.pathname !== frontendRoutes.login ? (
@@ -141,7 +140,7 @@ export default function NavbarNormal(){
                 variant="contained"
                 sx={{ backgroundColor: loggedIn ? "darkred" : "#003576" }}
                 onClick={() => {
-                  loggedIn ? logout() : login()
+                  loggedIn ? logout() : navigate(frontendRoutes.login);
                   setMobileOpen(false);
                 }}
               >

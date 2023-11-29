@@ -32,8 +32,7 @@ const StyleColumn = styled(Stack)(({theme}) => ({
 }));
 
 const Wrapper = styled(Box)(({theme}) => ({
-  display: 'flex', minHeight: '100vh', backgroundColor: '#ebebeb', flexGrow: '1',
-  flexDirection: 'row',
+  display: 'flex', minHeight: '100vh', backgroundColor: 'whitesmoke', flexGrow: '1',
   [theme.breakpoints.down('md')]: {
     flexDirection: 'column',
     alignItems: 'center',
@@ -70,8 +69,8 @@ export default function LoginPage() {
   const handleTogglePasswordVisibility = () => setShowPassword(!showPassword);
 
   return (
-    <Wrapper>
-      <StyleColumn flexDirection='column'>
+    <Wrapper direction='row'>
+      <StyleColumn direction='column'>
         <Typography variant="h3" gutterBottom color={'white'} mt={12}>
           Hi, Welcome back
         </Typography>
@@ -80,7 +79,7 @@ export default function LoginPage() {
 
       <StyleColumn direction='column'
                    sx={{
-                     backgroundColor: 'inherit', maxWidth: 400, minWidth: 300, maxHeight: '600px',
+                     backgroundColor: 'whitesmoke', maxWidth: 400, minWidth: 300, maxHeight: '600px',
                      gap: '0', justifyContent: 'center', display: 'flex', ml: {xs: 'none', md: '2rem', xl: '10rem'},
                    }}
       >
