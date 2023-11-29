@@ -4,12 +4,13 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.student.StudentDTO
 import java.util.UUID
 
 @RestController
 @CrossOrigin
-class ApplicationController(private val applicationService: ApplicationService) {
+class ApplicationController(private val applicationService: ApplicationService,private val proposalRepository: ProposalRepository) {
 
     @PostMapping("/API/thesis/proposals/apply")
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,10 +42,11 @@ class ApplicationController(private val applicationService: ApplicationService) 
         return applicationService.getAllApplicationsForProposalById(UUID.fromString(proposalId.toString()))
     }
 
-    @GetMapping("/API/thesis/applications/student")
+    @GetMapping("/API/thesis/applications/student/{studentId}")
     @PreAuthorize("hasRole('Student')")
-    fun getApplicationsForLoggedInStudent(@RequestParam studentId: String): List<ApplicationDTO> {
-        SecurityContextHolder.getContext().authentication.principal
-            return applicationService.getApplicationsForStudent(studentId)
+    fun getApplicationsForLoggedInStudent(@PathVariable studentId: String): List<ApplicationDTOprop> {
+        return applicationService.getApplicationsForStudent(studentId).map{
+            ApplicationDTOprop(id=it.id,studentId=it.studentId, proposal = proposalRepository.getReferenceById(it.proposalId!!), status = it.status)
+        }
     }
 }

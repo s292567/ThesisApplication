@@ -40,7 +40,7 @@ const getStatusColor = (status) => {
       return 'green';
     case 'rejected':
       return 'red';
-    case 'in_progress':
+    case 'pending':
       return 'orange';
     default:
       return 'black'; // Default color or adjust as needed
@@ -54,8 +54,8 @@ const getStatusText = (status) => {
       return 'Accepted';
     case 'rejected':
       return 'Rejected';
-    case 'in_progress':
-      return 'In Progress';
+    case 'pending':
+      return 'pending';
     default:
       return 'Unknown';
   }
@@ -104,7 +104,7 @@ export default function MyTheses({thesesData, isMyThesesPage}) {
                     {thesis.title}
                   </Typography>
                   <Typography fontSize="large" mb={2}>
-                    {!isMobile ? thesis.description : `${thesis.description.substring(0, 90)}...`}
+                    {!isMobile ? thesis.description : `${thesis.description}...`}
                   </Typography>
                   <Stack direction="row" spacing={2}>
 

@@ -78,3 +78,25 @@ export const getAllApplicationsForProposal = async (proposalUUID) => {
         console.error('Error while browsing all applications: ', error);
     });
 };
+/**
+ * Get all application objects for loggedIn student
+ */
+export const getAllApplicationsForLoggedInStudent = async (studentId) => {
+    let jwt = localStorage.getItem("ROCP_token");
+    jwt=jwt.substring(1,jwt.length-1);
+    return axiosInstance.get(routes.getaAllApplicationsForLoggedInStudent+String(studentId), {
+        headers: {
+            'Content-Type' : 'application/json' ,
+            'Authorization': 'Bearer '+ jwt
+        }
+    }).then(response => {
+        if (response.status === 200) {
+            console.log(response.data);
+            return response.data;
+        } else {
+            console.error('Request failed with status: ', response.status);
+        }
+    }).catch(error => {
+        console.error('Error while browsing all applications: ', error);
+    });
+};

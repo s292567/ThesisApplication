@@ -5,6 +5,7 @@
     "getProposalsByCds": "proposals/cds",
     "searchProposals": "proposals/search/",
     "insertProposal": "proposals/",
+    "getaAllApplicationsForLoggedInStudent": "applications/student/",
     "applyToProposal": "proposals/apply",
     "updateProposal": "proposals/update/",
     "acceptApplication": "applications", 

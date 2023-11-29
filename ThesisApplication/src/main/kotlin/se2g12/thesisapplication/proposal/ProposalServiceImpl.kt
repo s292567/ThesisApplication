@@ -26,7 +26,6 @@ class ProposalServiceImpl (
 
     override fun updateProposal(newProposal: NewProposalDTO, professorId: String,oldName:String,old: Proposal):ProposalDTO {
         println(proposalRepository.findAll().filter{it.title==oldName})
-        val old= old
         val message=checkProposal(newProposal)
         if(message=="") {
             old.title=newProposal.title!!
