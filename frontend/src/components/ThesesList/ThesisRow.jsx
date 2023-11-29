@@ -11,7 +11,7 @@ import {
   useTheme,
 } from "@mui/material";
 import {Delete, EditNoteRounded} from "@mui/icons-material";
-import {MyOutlinedButton, PastelComponent, ThesisDetail, WarningPopup} from "../index.js";
+import { PastelComponent, ThesisDetail, WarningPopup} from "../index.js";
 import {useUserContext} from "../../contexts";
 
 import EditModal from "../EditProposal/Modal.jsx";
