@@ -25,4 +25,5 @@ export {
     ProfessorApplicantsPage,
 
     ThesesPage,
+
 }

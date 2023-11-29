@@ -7,8 +7,12 @@ import { apiRoutes as routes } from '../routes';
  * Get all thesis proposals.
  */
 export const getAllProposals = async () => {
-  return axiosInstance.get(routes.getAllProposals,{        headers: {
-          'Content-Type' : 'application/json' ,            'Authorization': 'Bearer '+ localStorage.getItem("jwt")
+    let jwt = localStorage.getItem("ROCP_token");
+    jwt=jwt.substring(1,jwt.length-1);
+  return axiosInstance.get(routes.getAllProposals,{
+      headers: {
+          'Content-Type' : 'application/json' ,
+          'Authorization': 'Bearer '+ jwt
       }}).then(response => {
       if (response.status === 200) {
           console.log("getAllProposals: ", response.data);

@@ -2,6 +2,7 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { frontendRoutes as routes } from "../routes";
+import {AuthContext} from "react-oauth2-code-pkce";
 
 import { AuthContext, AuthProvider, TAuthConfig, TRefreshTokenExpiredEvent,IAuthContext } from "react-oauth2-code-pkce"
 
@@ -11,8 +12,8 @@ const useUserContext = () => useContext(UserContext);
 
 // it's used to Load the user context the first time the app is loaded
 const UserProvider = ({ children }) => {
-  const {token, tokenData,login,logOut,error,loginInProgress} = useContext(AuthContext);
-  const [user, setUser] = useState("");
+  const { tokenData, token, login, logOut } = useContext(AuthContext);
+  const [user, setUser] = useState(undefined);
   const [userId, setUserId] = useState("")
   const [jwtToken, setJwtToken] = useState("");
   const [loggedIn, setLoggedIn] = useState(tokenData!==undefined || loginInProgress);
@@ -23,57 +24,34 @@ const UserProvider = ({ children }) => {
     theses: "/",
 
   });
-  const navigate = useNavigate();
 
-
-/*  useEffect(() => {
-    if (jwtToken !== "") {
-      localStorage.setItem("jwt", jwtToken);
-    } else {
-      const jwt = localStorage.getItem("jwt");
-      if (jwt !== null) {
-        setJwtToken(jwt);
-        setLoggedIn(true);
-      }
-    }
-    if (user !== "") {
-      localStorage.setItem("username", user.username);
-    } else {
-      const username = localStorage.getItem("username");
-      if (username !== null) {
-        getProfileApi(username)
-          .then((loggedUser) => {
-            setUser(loggedUser);
-            if( loggedUser.role === "Student"){
-              setHomeRoute(routes.studentDashboard);
-              setGeneralRoutes(prev => ({...prev, theses: routes.studentTheses}));
-            }else if( loggedUser.role === "Professor"){
-              setHomeRoute(routes.professorDashboard);
-              setGeneralRoutes(prev => ({...prev, theses: routes.professorTheses}));
-            }
-          })
-          .catch((err) => {
-            setErrorMsg(err.detail);
-            setJwtToken("");
-            setUser("");
-            setLoggedIn(false);
-          });
-      }
-    }
-
-  }, []);*/
   useEffect(() => {
-    setLoggedIn(tokenData!==undefined || loginInProgress);
-    console.log(tokenData);
-    if (tokenData) {
+    if (!user && tokenData) {
       let role;
       if( tokenData.realm_access.roles.includes("Student"))
         role = "Student";
       else if(tokenData.realm_access.roles.includes("Professor"))
         role = "Professor";
-      console.log(tokenData);
-      setUserId(tokenData.email.split("@")[0]);
+      setUser({ username: tokenData.preferred_username, role: role , name: tokenData.firstName, surname: tokenData.lastName, token: token });
+      setLoggedIn(true);
+      if(role === "Student"){
+        setHomeRoute(routes.studentDashboard);
+        setGeneralRoutes(prev => ({...prev, theses: routes.studentTheses}));
+      }else if(role === "Professor"){
+        setHomeRoute(routes.professorDashboard);
+        setGeneralRoutes(prev => ({...prev, theses: routes.professorTheses}));
+      }
+      setJwtToken(token);
+      setUserId(tokenData.preferred_username.split("@")[0]);
+      localStorage.setItem("username", tokenData.preferred_username.split("@")[0]);
 
+    }  }, [tokenData]);
+
+
+  // Funzione di login
+  /*const login = async (username, password) => {
+    try {
+      const token = await loginApi(username, password);
       setJwtToken(token);
       const loggedUser = tokenData
       setUser({username:loggedUser.preferred_username,role:loggedUser.realm_access.roles[3]});
@@ -94,11 +72,17 @@ const UserProvider = ({ children }) => {
 
       setErrorMsg(error);
     }
-  }, [tokenData]);
+  }*/
 
-
-  // Logout Function
-
+  // Funzione di logout
+  const logout = () => {
+    localStorage.removeItem("username");
+    setJwtToken("");
+    setUser("");
+    setLoggedIn(false);
+    setHomeRoute("/");
+    logOut();
+  };
 
   const contextValue = {
     user,
