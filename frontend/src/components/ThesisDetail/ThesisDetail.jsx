@@ -150,6 +150,9 @@ export default function ThesisDetail({open, handleClose, thesis, page}) {
                 {thesis.level}
               </TextWrap>
               <TextWrap variant="body1" sx={{mt: 1}}>
+                Keywords: {thesis.keywords.join(", ")}
+              </TextWrap>
+              <TextWrap variant="body1" sx={{mt: 1}}>
                 Required Knowledge: {thesis.requiredKnowledge}
               </TextWrap>
               <TextWrap variant="body1">

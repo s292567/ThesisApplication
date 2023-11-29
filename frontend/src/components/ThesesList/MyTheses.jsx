@@ -1,7 +1,7 @@
 // ThesesList.jsx
 import React, {useState} from 'react';
 import {Paper, Stack, Typography, styled, Box, useMediaQuery, useTheme,} from '@mui/material';
-import {MyOutlinedButton, ThesisDetail} from "../index.js";
+import {MyOutlinedButton, PastelComponent, ThesisDetail} from "../index.js";
 import {useLocation} from "react-router-dom";
 import {useUserContext} from "../../contexts/index.js";
 import Divider from '@mui/material/Divider';
@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider';
 
 // Custom styled Paper component
 const DemoPaper = styled(Paper)(({theme}) => ({
+  backgroundColor: '#F4F5FF',
   width: '800px',
   [theme.breakpoints.down('md')]: {
     width: '600px',
@@ -106,17 +107,19 @@ export default function MyTheses({thesesData, isMyThesesPage}) {
                     {!isMobile ? thesis.description : `${thesis.description.substring(0, 90)}...`}
                   </Typography>
                   <Stack direction="row" spacing={2}>
-                    <MyOutlinedButton
-                      text={'view'}
-                      colorBorder={'orange'}
-                      colorBorderHover={'darkorange'}
-                      style={{fontSize: 'large'}}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleOpenThesisDetail(thesis);
 
-                      }}
 
+
+                    <PastelComponent
+                        text={'View'}
+                        textColor={"white"}
+                        bgColor={'#9c8ffc'}
+                        style={{width: '75px', height: '55px', borderRadius: '8px',}}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleOpenThesisDetail(thesis);
+
+                        }}
                     />
                   </Stack>
                 </Box>
@@ -141,15 +144,7 @@ export default function MyTheses({thesesData, isMyThesesPage}) {
           </Box>
         ))}
 
-        {(location.pathname === homeRoute) &&
-          <MyOutlinedButton text={'See More Theses'}
-                            colorBorder={"#003366"}
-                            colorBorderHover={'#1976d2'}
-                            style={{fontSize: 'large', marginLeft: '3rem'}}
-                            onClick={() => {
-                              window.location.href = generalRoutes.theses;
-                            }}/>
-        }
+
 
         {selectedThesis !== null && (
           <ThesisDetail open={true} handleClose={() => setSelectedThesis(null)} thesis={selectedThesis}

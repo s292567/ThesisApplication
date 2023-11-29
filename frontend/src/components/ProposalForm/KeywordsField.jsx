@@ -1,11 +1,23 @@
-import React, { useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./ProposalForm.css"
 
-const KeywordsField = ({labelText, placeholderText, isRequired, onValueChange}) => {
+const KeywordsField = ({labelText, placeholderText, isRequired, onValueChange, initialValue}) => {
     const [inputValue, setInputValue] = useState('');
+    /* objects with {id, name}*/
     const [tags, setTags] = useState([]);
     const [keywordId, setKeywordId] = useState(0)
-  
+    useEffect(() => {
+        // add tags if initial value set
+        if(initialValue.length>0){
+            const initialTags=[]
+
+            for (let i = 0; i < initialValue.length; i++) {
+                initialTags.push({id: i, name: initialValue[i]})
+            }
+            setTags(initialTags)
+            setKeywordId(initialValue.length)
+        }
+    }, []);
   const handleInputChange = (event) => {
      if (event.target.value.slice(-1)!==",")
         setInputValue(event.target.value);

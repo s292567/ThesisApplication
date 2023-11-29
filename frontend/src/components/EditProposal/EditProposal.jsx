@@ -23,19 +23,6 @@ const EditForm = ({ userId, proposalId, thesis}) => {
         CdS: thesis.cds,
     });
 
-    useEffect(() => {
-        const fetchProposalData = async () => {
-            try {
-                const proposalData = await getProposalById(proposalId);
-                setFormData(proposalData);
-            } catch (error) {
-                console.error("Error fetching proposal data:", error);
-            }
-        };
-
-        // Call the function to fetch data when the component mounts
-        fetchProposalData();
-    }, [proposalId]);
 
     // Function to handle changes in child components and update the form data
     const handleFormChange = (fieldName, value) => {
