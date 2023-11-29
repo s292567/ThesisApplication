@@ -1,65 +1,57 @@
+// PastelComponent.jsx
 import React from "react";
-import { Button, Paper } from "@mui/material";
+import {Button, Paper, Box} from "@mui/material";
 
 export default function PastelComponent({
-    bgColor,
-    textColor,
-    text,
-    fontSize,
-    onClick,
-    endIcon,
-    style,
-  }) {
-  
-    const stylePastel = {
-      backgroundColor: bgColor,
-      color: textColor,
-      fontSize: fontSize,
-      borderRadius: "18px",
-      width: "100%",
-      height: "100%",
-      padding: "6px 12px",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      fontWeight: "bold",
-      ...style,
-    };
-    
-    if (!endIcon) {
-      endIcon = undefined;
-    }
-    if(!text){
-      text = "";
-    }
+                                          bgColor,
+                                          textColor,
+                                          text = "",
+                                          icon = null,
+                                          fontSize = "1rem",
+                                          onClick = null,
+                                          style = {},
+                                        }) {
+  const stylePastel = {
+    backgroundColor: bgColor,
+    color: textColor,
+    fontSize: fontSize,
+    borderRadius: "18px",
+    width: "100%",
+    height: "100%",
+    padding: "6px 12px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bold",
+    ...style,
+  };
 
-    return onClick ? (
-      <Button
-        variant="text"
-        onClick={onClick}
-        sx={{
-          ...stylePastel,
-          "&:hover": {
-            backgroundColor: bgColor,
-            color: textColor,
-          },
-          ...style,
-        }}
-        endIcon={endIcon}
-      >
-        {text}
-      </Button>
-    ) : (
-      <Paper
-        elevation={0}
-        sx={{
-          ...stylePastel,
-          ...style,
-        }}
-      >
-        {text}
-      </Paper>
-    );
-
+  return onClick ? (
+    <Button
+      variant="text"
+      onClick={onClick}
+      sx={{
+        ...stylePastel,
+        "&:hover": {
+          backgroundColor: bgColor,
+          color: textColor,
+        },
+        ...style,
+      }}
+    >
+      {icon && icon}
+      {text}
+    </Button>
+  ) : (
+    <Paper
+      elevation={0}
+      sx={{
+        ...stylePastel,
+        ...style,
+      }}
+    >
+      {icon && <Box component="span" sx={{marginRight: "8px"}}>{icon}</Box>}
+      {text}
+    </Paper>
+  );
 }
-  

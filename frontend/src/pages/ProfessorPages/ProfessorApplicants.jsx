@@ -114,13 +114,13 @@ export default function ProfessorApplicants({
             },
             "& .MuiTableCell-root": {
               fontSize: "large",
+              color: '#2f1c6a',
             },
           }}
         >
           <TableCell
             sx={{
               fontWeight: "bolder" ,
-              color: "#03468f",
             }}
           >
             {isStudentGrouping ? (
@@ -147,6 +147,7 @@ export default function ProfessorApplicants({
                 textColor="white"
                 text="accept"
                 fontSize="medium"
+                style={{maxWidth: '130px'}}
                 onClick={(event) => {
                   event.stopPropagation();
                   /* Accept logic here */
@@ -159,6 +160,7 @@ export default function ProfessorApplicants({
                 textColor="white"
                 text="decline"
                 fontSize="medium"
+                style={{maxWidth: '130px'}}
                 onClick={(event) => {
                   event.stopPropagation();
                   /* Decline logic here */
