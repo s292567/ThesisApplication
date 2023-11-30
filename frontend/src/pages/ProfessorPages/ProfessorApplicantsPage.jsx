@@ -1,19 +1,19 @@
 // ProfessorApplicantsPage.jsx is used to render the page for the professor to see the applicants for each proposal
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
 import {
   Box,
   Divider,
   ToggleButton,
   ToggleButtonGroup,
-  styled,
+  styled, Typography,
 } from "@mui/material";
-import { students, proposals, applications } from "./fakeDatas";
-import { groupApplications } from "./groupBy";
+import {students, proposals, applications} from "./fakeDatas";
+import {groupApplications} from "./groupBy";
 
 import ProfessorApplicants from "./ProfessorApplicants";
-import { SkeletonApplicants } from "../../components";
-import { getAllApplicationsDataForProfessor } from "../../api";
+import {SkeletonApplicants} from "../../components";
+import {getAllApplicationsDataForProfessor} from "../../api";
 import {useUserContext} from "../../contexts";
 import {getAllApplicationsForLoggedInStudent} from "../../api/API_applications.js";
 
@@ -57,7 +57,7 @@ export default function ProfessorApplicantsPage() {
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
-      let username=localStorage.getItem("username")
+      let username = localStorage.getItem("username")
       try {
         // This should be your API call
         return await getAllApplicationsDataForProfessor(username);
@@ -68,16 +68,22 @@ export default function ProfessorApplicantsPage() {
       }
     };
 
-    fetchData().then(response=>setData(response));
+    fetchData().then(response => setData(response));
     console.log("data:\n", data);
   }, []);
 
   if (isLoading) {
-    return <SkeletonApplicants count={4} />; 
+    return <SkeletonApplicants count={4}/>;
   }
 
   if (error) {
     return <p>Error: {error}</p>;
+  }
+
+  if (data.groupedByProposals.length === 0 && data.groupedByStudents.length === 0) {
+    return <Box sx={{display: "flex", flexDirection: "column", padding: "1rem", marginTop: '3rem'}}>
+      <Typography variant='h3' color='darkblue'>No applications found for yours Theses.</Typography>;
+    </Box>;
   }
 
   /*

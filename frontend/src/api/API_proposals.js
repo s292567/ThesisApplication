@@ -137,13 +137,13 @@ export const updateProposal = async (proposalId, proposalData) => {
 export const getProposalsByProfessorId = async (professorId) => {
     let jwt = localStorage.getItem("ROCP_token");
     jwt=jwt.substring(1,jwt.length-1);
-    return axiosInstance.get(routes.getProposalsByProfessorId + `${professorId}`,{
+    return axiosInstance.get(routes.getProposalByProfessorId + professorId,{
         headers: {
             'Content-Type' : 'application/json' ,
             'Authorization': 'Bearer '+ jwt
         }}).then(response => {
         if (response.status === 200) {
-            console.log("getProposalsByProfessorId: ", response.data);
+            // console.log("API getProposalsByProfessorId: ", response);
             return response.data;
         } else {
             console.error('Request failed with status: ', response.status);

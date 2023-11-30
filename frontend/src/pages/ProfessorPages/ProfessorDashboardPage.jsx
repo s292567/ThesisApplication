@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from "react";
 import { Typography} from "@mui/material";
 import {ThesesList, SkeletonThesisList} from "../../components";
-import {getAllProposals} from "../../api";
+import {getAllProposals, getProposalsByProfessorId} from "../../api";
 
 export default function ProfessorDashboardPage() {
 
@@ -12,14 +12,15 @@ export default function ProfessorDashboardPage() {
   useEffect(() => {
     const fetchProposals = async () => {
       try {
-        const response = await getAllProposals(); // This should be your API call
-        setProposals(response);
+        return await getProposalsByProfessorId(localStorage.getItem("username"));
       } catch (error) {
         console.error("Failed to fetch proposals:", error);
       }
     };
 
-    fetchProposals();
+    fetchProposals().then((data) => {
+      setProposals(data);
+    });
   }, [dummy]);
 
 

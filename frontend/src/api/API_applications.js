@@ -107,7 +107,7 @@ export const getAllApplicationsForLoggedInStudent = async (studentId) => {
  * @param {string} professorId
  */
 export const getAllApplicationsDataForProfessor = async (professorId) => {
-    
+
     let proposalsMap = new Map(); // Use a Map for efficient lookup and grouping by proposals
     let studentsMap = new Map(); // Use a Map for efficient lookup and grouping by students
 
@@ -117,6 +117,10 @@ export const getAllApplicationsDataForProfessor = async (professorId) => {
         for (const proposal of allProposals) {
             const apps = await getAllApplicationsForProposal(proposal.id);
             const studs = await getAllApplyingStudentsForProposal(proposal.id);
+
+            if(apps.length === 0 && studs.length === 0){
+                return { groupedByProposals: [], groupedByStudents: [] };
+            }
 
             if (apps.length > 0 && studs.length > 0) {
                 // Update proposalsMap
@@ -135,7 +139,7 @@ export const getAllApplicationsDataForProfessor = async (professorId) => {
         // Convert Maps to the desired structure
         const groupedByProposals = Array.from(proposalsMap).map(([proposal, students]) => [proposal, students]);
         const groupedByStudents = Array.from(studentsMap).map(([student, proposals]) => [student, proposals]);
-
+        console.log('API GROUPED BY: \n', groupedByProposals, groupedByStudents);
         return { groupedByProposals, groupedByStudents };
     } catch (error) {
         console.error("Error fetching data:", error);
