@@ -30,6 +30,7 @@ export default function ProfessorApplicants({
   groupedByStudentArray,
 }) {
   const [showApplicants, setShowApplicants] = useState({});
+  const [action, setAction] = useState(""); // ["accept", "decline"]
 
   /**
    * Warning Popup States and Handlers
@@ -51,18 +52,24 @@ export default function ProfessorApplicants({
     /**
      * ASYNC API CALL FUNCTION HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      */
-
+    if(action === "accept"){
+      // API CALL HERE TO ACCEPT !!!!!!!!
+    }else if(action === "decline"){
+      // API CALL HERE TO DECLINE !!!!!!!!
+    }
     setWarningOpen(false);
     setConfirmedOpen(true);
     setMsgDone("Application successfully processed.");
   };
 
   const handleAccept = () => {
+    setAction("accept");
     setMsgWarning("Are you sure you want to accept this application?");
     setWarningOpen(true);
   };
 
   const handleDecline = () => {
+    setAction("decline");
     setMsgWarning("Are you sure you want to decline this application?");
     setWarningOpen(true);
   };
@@ -122,19 +129,19 @@ export default function ProfessorApplicants({
           >
             {isStudentGrouping ? (
               <WithTooltip
-                tooltipContent={<ThesisRow thesis={item.proposal} style={{backgroundColor: 'white'}}/>}
+                tooltipContent={<ThesisRow thesis={item} style={{backgroundColor: 'white'}}/>}
                 children={item.title}
               />
             ) : (
-              item.name
+              item.name + " " + item.surname
             )}
           </TableCell>
 
           {(!isSmallScreen || isMediumScreen) && !isStudentGrouping && (
-            <TableCell>{item.student_email}</TableCell>
+            <TableCell>{item.email}</TableCell>
           )}
           {!isSmallScreen && !isMediumScreen && !isStudentGrouping && (
-            <TableCell>{item.student_degree}</TableCell>
+            <TableCell>{item.codDegree}</TableCell>
           )}
           <TableCell>
             {/* Buttons or status indicators */}
@@ -184,7 +191,7 @@ export default function ProfessorApplicants({
       >
         {(groupedByStudentArray || groupedByProposalArray).map((item) => (
           <Card
-            key={groupedByStudentArray ? item.student_id : item.proposal_id}
+            key={groupedByStudentArray ? item.student.id : item.proposal.id }
             variant="outlined"
             sx={{
               maxWidth: "1000px",
@@ -210,9 +217,9 @@ export default function ProfessorApplicants({
                       variant="h4"
                       sx={{ fontWeight: "bold", marginRight: "1rem", color: "#2f1c6a", }}
                     >
-                      {item.student_name}
+                      {item.student.name + " " + item.student.surname}
                     </Typography>
-                    <Typography variant="body1">{`${item.student_email} - ${item.student_degree}`}</Typography>
+                    <Typography variant="body1">{`${item.student.email} - ${item.student.codDegree}`}</Typography>
                   </>
                 ) : (
                   <WithTooltip
@@ -226,7 +233,7 @@ export default function ProfessorApplicants({
                           marginRight: "1rem",
                         }}
                       >
-                        {item.proposal_title}
+                        {item.proposal.title}
                       </Typography>
                     }
                   />
@@ -250,12 +257,12 @@ export default function ProfessorApplicants({
                   }}
                   onClick={() =>
                     toggleApplicants(
-                      groupedByStudentArray ? item.student_id : item.proposal_id
+                      groupedByStudentArray ? item.student.id : item.proposal.id
                     )
                   }
                 >
                   {showApplicants[
-                    groupedByStudentArray ? item.student_id : item.proposal_id
+                    groupedByStudentArray ? item.student.id : item.proposal.id
                   ] ? (
                     <KeyboardArrowUpRounded />
                   ) : (
@@ -266,8 +273,8 @@ export default function ProfessorApplicants({
                     sx={{ marginLeft: "8px", fontWeight: "bold" }}
                   >
                     {groupedByStudentArray
-                      ? item.applications.length
-                      : item.applicants.length}
+                      ? item.proposals.length
+                      : item.students.length}
                   </Typography>
                 </IconButton>
               }
@@ -282,11 +289,13 @@ export default function ProfessorApplicants({
                 },
               }}
             />
+
+            { /* Card content is displaying the table */ }
             <CardContent>
               <Collapse
                 in={
                   showApplicants[
-                    groupedByStudentArray ? item.student_id : item.proposal_id
+                    groupedByStudentArray ? item.student.id : item.proposal.id
                   ]
                 }
               >
@@ -295,8 +304,8 @@ export default function ProfessorApplicants({
                     {renderTableHead()}
                     {renderTableRows(
                       groupedByStudentArray
-                        ? item.applications
-                        : item.applicants,
+                        ? item.proposals
+                        : item.students,
                       !!groupedByStudentArray
                     )}
                   </Table>

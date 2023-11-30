@@ -47,7 +47,7 @@ export const getAllApplyingStudentsForProposal = async (proposalUUID) => {
         }
     }).then(response => {
         if (response.status === 200) {
-            console.log(response.data);
+            // console.log(response.data);
             return response.data; 
         } else {
             console.error('Request failed with status: ', response.status);
@@ -70,7 +70,7 @@ export const getAllApplicationsForProposal = async (proposalUUID) => {
         }
     }).then(response => {
         if (response.status === 200) {
-            console.log(response.data);
+            // console.log(response.data);
             return response.data;
         } else {
             console.error('Request failed with status: ', response.status);
@@ -107,19 +107,15 @@ export const getAllApplicationsForLoggedInStudent = async (studentId) => {
  * @param {string} professorId
  */
 export const getAllApplicationsDataForProfessor = async (professorId) => {
-
     let proposalsMap = new Map(); // Use a Map for efficient lookup and grouping by proposals
     let studentsMap = new Map(); // Use a Map for efficient lookup and grouping by students
 
     try {
         const allProposals = await getProposalsByProfessorId(professorId);
-        console.log(allProposals);
 
         for (const proposal of allProposals) {
             const apps = await getAllApplicationsForProposal(proposal.id);
             const studs = await getAllApplyingStudentsForProposal(proposal.id);
-            console.log('APPS: ', apps);
-            console.log('STUDS: ', studs);
 
             if(apps.length === 0 && studs.length === 0){
                 return { groupedByProposals: [], groupedByStudents: [] };
@@ -140,9 +136,17 @@ export const getAllApplicationsDataForProfessor = async (professorId) => {
         }
 
         // Convert Maps to the desired structure
-        const groupedByProposals = Array.from(proposalsMap).map(([proposal, students]) => [proposal, students]);
-        const groupedByStudents = Array.from(studentsMap).map(([student, proposals]) => [student, proposals]);
-        console.log('API GROUPED BY: \n', groupedByProposals, groupedByStudents);
+        const groupedByProposals = Array.from(proposalsMap).map(([proposal, students]) => ({
+            proposal: proposal,
+            students: students
+        }));
+        const groupedByStudents = Array.from(studentsMap).map(([student, proposals]) => ({
+            student: student,
+            proposals: proposals
+        }));
+
+        console.log('API GROUPED BY PROPOSALS: \n', groupedByProposals);
+        console.log('API GROUPED BY STUDENTS: \n', groupedByStudents);
         return { groupedByProposals, groupedByStudents };
     } catch (error) {
         console.error("Error fetching data:", error);

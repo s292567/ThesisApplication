@@ -8,14 +8,11 @@ import {
   ToggleButtonGroup,
   styled, Typography,
 } from "@mui/material";
-import {students, proposals, applications} from "./fakeDatas";
-import {groupApplications} from "./groupBy";
+
 
 import ProfessorApplicants from "./ProfessorApplicants";
 import {SkeletonApplicants} from "../../components";
 import {getAllApplicationsDataForProfessor} from "../../api";
-import {useUserContext} from "../../contexts";
-import {getAllApplicationsForLoggedInStudent} from "../../api/API_applications.js";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
   justifyContent: "center",
@@ -46,6 +43,8 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
 
 export default function ProfessorApplicantsPage() {
 
+  const [groupBy, setGroupBy] = useState("proposal");
+
   const [data, setData] = useState({
     groupedByProposals: [],
     groupedByStudents: [],
@@ -68,8 +67,10 @@ export default function ProfessorApplicantsPage() {
       }
     };
 
-    fetchData().then(response => setData(response));
-    console.log("data:\n", data);
+    fetchData().then(response => {
+      setData(response);
+    });
+
   }, []);
 
   if (isLoading) {
@@ -85,11 +86,17 @@ export default function ProfessorApplicantsPage() {
       <Typography variant='h3' color='darkblue'>No applications found for yours Theses.</Typography>;
     </Box>;
   }
+  function handleGroupBy() {
+    if (groupBy === "proposal") {
+      setGroupBy("student");
+    } else {
+      setGroupBy("proposal");
+    }
+  }
 
-  /*
   return (
     <>
-      <Box sx={{ display: "flex", flexDirection: "column", padding: "1rem" }}>
+      <Box sx={{display: "flex", flexDirection: "column", padding: "1rem"}}>
         <StyledToggleButtonGroup
           value={groupBy}
           exclusive
@@ -102,23 +109,20 @@ export default function ProfessorApplicantsPage() {
         <Divider
           orientation="horizontal"
           variant="middle"
-          sx={{ bgcolor: "#433F42" }}
+          sx={{bgcolor: "#433F42"}}
         />
       </Box>
 
-      {groupedByProposalArray && groupedByStudentArray ? (
-        <ProfessorApplicants
-          groupedByProposalArray={
-            groupBy === "proposal" ? groupedByProposalArray : null
-          }
-          groupedByStudentArray={
-            groupBy === "student" ? groupedByStudentArray : null
-          }
-        />
-      ) : (
-        <SkeletonApplicants count={4} />
-      )}
+      <ProfessorApplicants
+        groupedByProposalArray={
+          groupBy === "proposal" ? data.groupedByProposals : null
+        }
+        groupedByStudentArray={
+          groupBy === "student" ? data.groupedByStudents : null
+        }
+      />
+
     </>
   );
-  */
+
 }
