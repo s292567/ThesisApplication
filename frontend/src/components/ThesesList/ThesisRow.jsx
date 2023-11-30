@@ -89,8 +89,7 @@ export default function ThesisRow({thesis,reload, style = {backgroundColor: '#F4
       <Box flex={1} sx={{display: "flex"}}>
         <StyledPaper elevation={1} onClick={handleOpenDetail} sx={{...style}}>
           <Typography variant="h4" mb={2} sx={{color: '#2f1c6a', fontWeight: 'bold'}}>
-            {
-              thesis.proposal}
+            {thesis.title}
           </Typography>
           <Typography fontSize="large" mb={2}>
             {!isMobile

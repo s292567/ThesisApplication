@@ -1,8 +1,6 @@
-
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Typography} from "@mui/material";
-import {SkeletonThesisList, ThesesList} from "../../components";
-import {getAllProposals} from "../../api";
+import {SkeletonThesisList} from "../../components";
 import MyTheses from "../../components/ThesesList/MyTheses.jsx";
 import {getAllApplicationsForLoggedInStudent} from "../../api/API_applications.js";
 
@@ -13,8 +11,8 @@ export default function MyThesesPage() {
         const fetchProposals = async () => {
             let username=localStorage.getItem("username")
             try {
-                const response = await getAllApplicationsForLoggedInStudent(username); // This should be your API call
-                return response
+                 // This should be your API call
+                return await getAllApplicationsForLoggedInStudent(username)
             } catch (error) {
                 console.error("Failed to fetch proposals:", error);
             }

@@ -103,28 +103,42 @@ export const getAllApplicationsForLoggedInStudent = async (studentId) => {
 };
 
 /** 
- * Get all proposals, students and status based on the professor id
- * @param {UUID} professorId 
+ * Get all proposals, students and status of a thesis with application on it, based on the professor id
+ * @param {string} professorId
  */
-export const getAllApplicationsDatasForProfessor = async (professorId) => {
-    let applications = [];
-    let propsals = [];
-    let students = [];
-    getProposalsByProfessorId(professorId).then(proposals => {
-        propsals.push(proposals);
-        proposals.forEach(proposal => {
-            getAllApplicationsForProposal(proposal.id).then(apps => {
-                apps.forEach(app => {
-                    applications.push(app);
-                });
-            });
-            getAllApplyingStudentsForProposal(proposal.id).then(studs => {
-                studs.forEach(stud => {
-                    students.push(stud);
-                });
-            });
-        });
-        return {applications: applications, proposals: propsals, students: students};
-    });
-};
+export const getAllApplicationsDataForProfessor = async (professorId) => {
+    
+    let proposalsMap = new Map(); // Use a Map for efficient lookup and grouping by proposals
+    let studentsMap = new Map(); // Use a Map for efficient lookup and grouping by students
 
+    try {
+        const allProposals = await getProposalsByProfessorId(professorId);
+
+        for (const proposal of allProposals) {
+            const apps = await getAllApplicationsForProposal(proposal.id);
+            const studs = await getAllApplyingStudentsForProposal(proposal.id);
+
+            if (apps.length > 0 && studs.length > 0) {
+                // Update proposalsMap
+                proposalsMap.set(proposal, studs);
+
+                // Update studentsMap
+                studs.forEach(student => {
+                    if (!studentsMap.has(student)) {
+                        studentsMap.set(student, []);
+                    }
+                    studentsMap.get(student).push(proposal);
+                });
+            }
+        }
+
+        // Convert Maps to the desired structure
+        const groupedByProposals = Array.from(proposalsMap).map(([proposal, students]) => [proposal, students]);
+        const groupedByStudents = Array.from(studentsMap).map(([student, proposals]) => [student, proposals]);
+
+        return { groupedByProposals, groupedByStudents };
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+    }
+};

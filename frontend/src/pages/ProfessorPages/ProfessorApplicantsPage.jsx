@@ -13,8 +13,9 @@ import { groupApplications } from "./groupBy";
 
 import ProfessorApplicants from "./ProfessorApplicants";
 import { SkeletonApplicants } from "../../components";
-import {getAllApplyingStudentsForProposal} from "../../api/API_applications.js";
-import {getAllApplicationsForProposal} from "../../api/API_applications.js";
+import { getAllApplicationsDataForProfessor } from "../../api";
+import {useUserContext} from "../../contexts";
+import {getAllApplicationsForLoggedInStudent} from "../../api/API_applications.js";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
   justifyContent: "center",
@@ -44,41 +45,45 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
 });
 
 export default function ProfessorApplicantsPage() {
-  /*
-    const [applications, setApplications] = useState([]);
-    const [students, setStudents] = useState([]);
-    const [proposals, setProposals] = useState([]);
-    */
 
-  const [groupedByProposalArray, setGroupedByProposalArray] = useState(null);
-  const [groupedByStudentArray, setGroupedByStudentArray] = useState(null);
+  const [data, setData] = useState({
+    groupedByProposals: [],
+    groupedByStudents: [],
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    /**
-     * Here async call to the api to get the applications, students and proposals
-    */ 
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      let username=localStorage.getItem("username")
+      try {
+        // This should be your API call
+        return await getAllApplicationsDataForProfessor(username);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    const { groupedByProposals, groupedByStudents } = groupApplications(
-      applications,
-      students,
-      proposals
-    );
-  
-    setGroupedByProposalArray(groupedByProposals);
-    setGroupedByStudentArray(groupedByStudents);
-    console.log(groupedByProposals);
+    fetchData().then(response=>setData(response));
+    console.log("data:\n", data);
   }, []);
 
-  const [groupBy, setGroupBy] = useState("proposal");
-  const handleGroupBy = (event, newGroupBy) => {
-    if (newGroupBy !== null) {
-      setGroupBy(newGroupBy);
-    }
-  };
+  if (isLoading) {
+    return <SkeletonApplicants count={4} />; 
+  }
 
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
+  /*
   return (
     <>
-      <Box sx={{ display: "flex", flexDirection: "column", padding: '1rem'  }}>
+      <Box sx={{ display: "flex", flexDirection: "column", padding: "1rem" }}>
         <StyledToggleButtonGroup
           value={groupBy}
           exclusive
@@ -105,8 +110,9 @@ export default function ProfessorApplicantsPage() {
           }
         />
       ) : (
-          <SkeletonApplicants count={4} />
+        <SkeletonApplicants count={4} />
       )}
     </>
   );
+  */
 }

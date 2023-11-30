@@ -48,9 +48,6 @@ export default function ProfessorApplicants({
   };
 
   const handleApplyed = () => {
-    // Logic after accepting the warning popup
-    // Logic for modifying the application of the Student so that the groupBy list is changed
-
     /**
      * ASYNC API CALL FUNCTION HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      */
@@ -105,9 +102,9 @@ export default function ProfessorApplicants({
   // Render the table rows with applicant information based on screen size
   const renderTableRows = (items, isStudentGrouping) => (
     <TableBody>
-      {items.map((item) => (
+      {items.map((item, index) => (
         <TableRow
-          key={isStudentGrouping ? item.proposal_id : item.student_id}
+          key={index}
           sx={{
             "&:last-child td, &:last-child th": {
               border: 0,
@@ -126,10 +123,10 @@ export default function ProfessorApplicants({
             {isStudentGrouping ? (
               <WithTooltip
                 tooltipContent={<ThesisRow thesis={item.proposal} style={{backgroundColor: 'white'}}/>}
-                children={item.proposal_title}
+                children={item.title}
               />
             ) : (
-              item.student_name
+              item.name
             )}
           </TableCell>
 
