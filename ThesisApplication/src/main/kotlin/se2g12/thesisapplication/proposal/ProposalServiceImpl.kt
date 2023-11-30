@@ -20,8 +20,9 @@ class ProposalServiceImpl (
     private val groupDepRepository: GroupDepRepository
 )
     : ProposalService {
-    override fun getProposalByProfessorId(supervisor: Teacher): List<ProposalDTO> {
-        return proposalRepository.findAll().map{it.toDTO()}.filter{it.supervisor==supervisor}
+    override fun getProposalByProfessorId(supervisorId: String): List<ProposalDTO> {
+        var prop = proposalRepository.findAllBySupervisorId(supervisorId)
+        return prop.map{it.toDTO()}
     }
 
     override fun updateProposal(newProposal: NewProposalDTO, professorId: String,oldName:String,old: Proposal):ProposalDTO {
