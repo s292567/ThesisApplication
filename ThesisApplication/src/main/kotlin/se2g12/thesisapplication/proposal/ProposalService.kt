@@ -4,7 +4,7 @@ import se2g12.thesisapplication.teacher.Teacher
 
 
 interface ProposalService {
-    fun getProposalByProfessorId(supervisor:Teacher):List<ProposalDTO>
+    fun getProposalByProfessorId(supervisorId: String):List<ProposalDTO>
     fun updateProposal(newProposal: NewProposalDTO,professorId : String,oldName:String,old: Proposal):ProposalDTO
     fun addNewProposal(newProposal: NewProposalDTO, professorId: String)
     fun getAllProposals(): List<ProposalDTO>

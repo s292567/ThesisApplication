@@ -57,5 +57,7 @@ interface ProposalRepository : JpaRepository<Proposal, UUID> {
     @Query("SELECT DISTINCT unnest(string_to_array(p.cds, ', ')) AS cds FROM Proposal p")
     fun findDistinctProposalCds(): List<String>
 
+    @Query("SELECT * FROM proposal WHERE supervisor_id = :supervisorId", nativeQuery = true)
+    fun findAllBySupervisorId(supervisorId: String) : List<Proposal>
 
 }
