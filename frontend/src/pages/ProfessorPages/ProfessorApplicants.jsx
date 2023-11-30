@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {
   useTheme,
   useMediaQuery,
@@ -24,13 +24,18 @@ import {
 
 import { PastelComponent, ThesisRow } from "../../components";
 import { WarningPopup, WithTooltip } from "../../components";
+import {acceptApplication, declineApplication} from "../../api/API_applications.js";
+import {useUserContext} from "../../contexts/index.js";
 
 export default function ProfessorApplicants({
   groupedByProposalArray,
   groupedByStudentArray,
+    refresh
 }) {
   const [showApplicants, setShowApplicants] = useState({});
   const [action, setAction] = useState(""); // ["accept", "decline"]
+  const [studentId, setStudentId] = useState("")
+  const [proposalId, setProposalId] = useState("")
 
   /**
    * Warning Popup States and Handlers
@@ -39,6 +44,11 @@ export default function ProfessorApplicants({
   const [confirmedOpen, setConfirmedOpen] = useState(false);
   const [msgWarning, setMsgWarning] = useState("");
   const [msgDone, setMsgDone] = useState("");
+  const {userId}=useUserContext()
+
+  useEffect(() => {
+
+  }, []);
 
   const handleCloseWarning = () => {
     setWarningOpen(false);
@@ -53,23 +63,31 @@ export default function ProfessorApplicants({
      * ASYNC API CALL FUNCTION HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      */
     if(action === "accept"){
+      acceptApplication(proposalId, studentId, userId)
       // API CALL HERE TO ACCEPT !!!!!!!!
     }else if(action === "decline"){
+      declineApplication(proposalId, studentId, userId)
       // API CALL HERE TO DECLINE !!!!!!!!
     }
     setWarningOpen(false);
     setConfirmedOpen(true);
     setMsgDone("Application successfully processed.");
+    refresh()
   };
 
-  const handleAccept = () => {
+  const handleAccept = (proposalId, studentId) => {
     setAction("accept");
+    setProposalId(proposalId);
+    setStudentId(studentId);
     setMsgWarning("Are you sure you want to accept this application?");
     setWarningOpen(true);
   };
 
-  const handleDecline = () => {
+  const handleDecline = (proposalId, studentId) => {
     setAction("decline");
+    setProposalId(proposalId);
+    setStudentId(studentId);
+    console.log("ProposalId: "+proposalId +"StudentId: "+studentId);
     setMsgWarning("Are you sure you want to decline this application?");
     setWarningOpen(true);
   };
@@ -107,7 +125,7 @@ export default function ProfessorApplicants({
   );
 
   // Render the table rows with applicant information based on screen size
-  const renderTableRows = (items, isStudentGrouping) => (
+  const renderTableRows = (items, isStudentGrouping, mainId) => (
     <TableBody>
       {items.map((item, index) => (
         <TableRow
@@ -155,7 +173,10 @@ export default function ProfessorApplicants({
                 onClick={(event) => {
                   event.stopPropagation();
                   /* Accept logic here */
-                  handleAccept();
+                  if (!isStudentGrouping)
+                    handleAccept(mainId, item.id);
+                  else
+                    handleAccept(item.id, mainId);
                 }}
               />
 
@@ -168,7 +189,10 @@ export default function ProfessorApplicants({
                 onClick={(event) => {
                   event.stopPropagation();
                   /* Decline logic here */
-                  handleDecline();
+                  if (!isStudentGrouping)
+                    handleDecline(mainId, item.id);
+                  else
+                    handleDecline(item.id, mainId);
                 }}
               />
             </Stack>
@@ -306,7 +330,10 @@ export default function ProfessorApplicants({
                       groupedByStudentArray
                         ? item.proposals
                         : item.students,
-                      !!groupedByStudentArray
+                      !!groupedByStudentArray,
+                        groupedByStudentArray
+                            ? item.student.id
+                            : item.proposal.id,
                     )}
                   </Table>
                 </TableContainer>

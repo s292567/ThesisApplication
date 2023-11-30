@@ -8,8 +8,33 @@ import { getProposalsByProfessorId } from './API_proposals.js';
 /**
  * Accept an application to a proposal
  */
-export const acceptApplication = async (applicationId, professorId) => {
+/*export const acceptApplication = async (applicationId, professorId) => {
     return axiosInstance.patch(routes.acceptApplication+`/${professorId}`, {id:applicationId, status:"accepted"})
+        .then(response => {
+            if (response.status === 200)
+                console.log("Application accepted");
+            else
+                console.error('Request failed with status: ', response.status);
+        }).catch(error =>{
+            console.error('Error while accepting an application: ', error);
+        });
+};
+/!**
+ * Decline an application to a proposal
+ *!/
+export const declineApplication = async (applicationId, professorId) => {
+    return axiosInstance.patch(routes.acceptApplication+`/${professorId}`, {id:applicationId, status:"declined"})
+        .then(response => {
+            if (response.status === 200)
+                console.log("Application declined");
+            else
+                console.error('Request failed with status: ', response.status);
+        }).catch(error =>{
+            console.error('Error while declining an application: ', error);
+        });
+};*/
+export const acceptApplication = async (proposalId,studentId, professorId) => {
+    return axiosInstance.patch(routes.acceptApplication+`/${professorId}`, {studentId:studentId, proposalId: proposalId, status:"accepted"})
         .then(response => {
             if (response.status === 200)
                 console.log("Application accepted");
@@ -22,8 +47,8 @@ export const acceptApplication = async (applicationId, professorId) => {
 /**
  * Decline an application to a proposal
  */
-export const declineApplication = async (applicationId, professorId) => {
-    return axiosInstance.patch(routes.acceptApplication+`/${professorId}`, {id:applicationId, status:"declined"})
+export const declineApplication = async (proposalId,studentId, professorId) => {
+    return axiosInstance.patch(routes.acceptApplication+`/${professorId}`, {studentId:studentId, proposalId: proposalId, status:"declined"})
         .then(response => {
             if (response.status === 200)
                 console.log("Application declined");
@@ -33,7 +58,6 @@ export const declineApplication = async (applicationId, professorId) => {
             console.error('Error while declining an application: ', error);
         });
 };
-
 /**
  * Get all students that applied for a proposal
  */
@@ -117,9 +141,9 @@ export const getAllApplicationsDataForProfessor = async (professorId) => {
             const apps = await getAllApplicationsForProposal(proposal.id);
             const studs = await getAllApplyingStudentsForProposal(proposal.id);
 
-            if(apps.length === 0 && studs.length === 0){
+            /*if(apps.length === 0 && studs.length === 0){
                 return { groupedByProposals: [], groupedByStudents: [] };
-            }
+            }*/
 
             if (apps.length > 0 && studs.length > 0) {
                 // Update proposalsMap

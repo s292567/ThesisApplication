@@ -29,12 +29,14 @@ export default function ProfessorDashboardPage() {
     });
   }, [dummy]);
 
-
+  const refresh=()=>{
+    reload((old)=>!old);
+  }
 
   return (<>
       <Typography variant="h3" color={"orange"} sx={{marginTop: '4rem', marginBottom: '2rem'}}>Theses preview:</Typography>
       {proposals ? (
-        <ThesesList thesesData={proposals.slice(0, 3)} reload={()=>{reload(!dummy)}}/>
+        <ThesesList thesesData={proposals.slice(0, 3)} reload={refresh}/>
       ) : (
         <SkeletonThesisList count={3}/>
       )}
