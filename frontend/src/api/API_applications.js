@@ -113,10 +113,13 @@ export const getAllApplicationsDataForProfessor = async (professorId) => {
 
     try {
         const allProposals = await getProposalsByProfessorId(professorId);
+        console.log(allProposals);
 
         for (const proposal of allProposals) {
             const apps = await getAllApplicationsForProposal(proposal.id);
             const studs = await getAllApplyingStudentsForProposal(proposal.id);
+            console.log('APPS: ', apps);
+            console.log('STUDS: ', studs);
 
             if(apps.length === 0 && studs.length === 0){
                 return { groupedByProposals: [], groupedByStudents: [] };

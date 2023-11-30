@@ -143,7 +143,7 @@ export const getProposalsByProfessorId = async (professorId) => {
             'Authorization': 'Bearer '+ jwt
         }}).then(response => {
         if (response.status === 200) {
-            // console.log("API getProposalsByProfessorId: ", response);
+            console.log("API getProposalsByProfessorId: ", response);
             return response.data;
         } else {
             console.error('Request failed with status: ', response.status);

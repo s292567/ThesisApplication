@@ -3,10 +3,7 @@ package se2g12.thesisapplication.professor
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import se2g12.thesisapplication.proposal.NewProposalDTO
-import se2g12.thesisapplication.proposal.ProposalRepository
-import se2g12.thesisapplication.proposal.ProposalService
-import se2g12.thesisapplication.proposal.toDTO
+import se2g12.thesisapplication.proposal.*
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.util.*
 
@@ -31,7 +28,7 @@ class ProfessorController(private val proposalService: ProposalService,private v
         proposalService.updateProposal(proposal!!,professorId,oldName,old)
     }
     @GetMapping("/API/thesis/proposals/getProfessorProposals/{professorId}")
-    fun getProposalByProfessorId(@PathVariable professorId:String){
-        proposalService.getProposalByProfessorId( professorId )
+    fun getProposalByProfessorId(@PathVariable professorId:String):List<ProposalDTO> {
+        return proposalService.getProposalByProfessorId( professorId );
     }
 }

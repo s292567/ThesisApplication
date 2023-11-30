@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from "react";
 import {Typography} from "@mui/material";
 import {ThesesList, SkeletonThesisList} from "../../components";
-import {getAllProposals} from "../../api";
+import {getAllProposals, getProposalsByProfessorId} from "../../api";
 import {useUserContext} from "../../contexts/index.js";
 
 export default function ThesesPage() {
@@ -15,16 +15,19 @@ export default function ThesesPage() {
     const fetchProposals = async () => {
       try {
         let response;
+        const userId = localStorage.getItem("username");
         /* API CALL BASED ON ROLE */
           (user.role === "Professor" ?
-            response = await getAllProposals() : response = await getAllProposals()
+            response = await getProposalsByProfessorId(userId) : response = await getAllProposals()
           )
-        setProposals(response);
+        return response;
       } catch (error) {
         console.error("Failed to fetch proposals:", error);
       }
     };
-    fetchProposals();
+    fetchProposals().then((response) => {
+      setProposals(response);
+    });
   }, [dummy]);
 
 
