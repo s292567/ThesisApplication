@@ -1,8 +1,8 @@
 // ProfessorDashboardPage.jsx
 import React, {useState, useEffect} from "react";
-import { Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import {ThesesList, SkeletonThesisList} from "../../components";
-import {getAllProposals, getProposalsByProfessorId} from "../../api";
+import { getProposalsByProfessorId} from "../../api";
 
 export default function ProfessorDashboardPage() {
 
@@ -19,9 +19,16 @@ export default function ProfessorDashboardPage() {
     };
 
     fetchProposals().then((data) => {
-      setProposals(data);
+      if(data.length === 0){
+        return <Box sx={{display: "flex", flexDirection: "column", padding: "1rem", marginTop: '3rem'}}>
+          <Typography variant='h3' color='darkblue'>No theses found.</Typography>;
+        </Box>;
+      }else {
+        setProposals(data);
+      }
     });
   }, [dummy]);
+
 
 
   return (<>
