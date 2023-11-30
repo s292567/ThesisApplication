@@ -30,6 +30,7 @@ import {useUserContext} from "../../contexts/index.js";
 export default function ProfessorApplicants({
   groupedByProposalArray,
   groupedByStudentArray,
+    refresh
 }) {
   const [showApplicants, setShowApplicants] = useState({});
   const [action, setAction] = useState(""); // ["accept", "decline"]
@@ -71,6 +72,7 @@ export default function ProfessorApplicants({
     setWarningOpen(false);
     setConfirmedOpen(true);
     setMsgDone("Application successfully processed.");
+    refresh()
   };
 
   const handleAccept = (proposalId, studentId) => {

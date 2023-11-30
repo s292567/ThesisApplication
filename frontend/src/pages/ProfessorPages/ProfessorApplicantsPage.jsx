@@ -50,6 +50,7 @@ export default function ProfessorApplicantsPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [dirty, setDirty]= useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,8 +71,10 @@ export default function ProfessorApplicantsPage() {
       setData(response);
     });
 
-  }, []);
-
+  }, [dirty]);
+  const refresh=()=>{
+    setDirty(!dirty);
+  }
   if (isLoading) {
     return <SkeletonApplicants count={4}/>;
   }
@@ -119,6 +122,7 @@ export default function ProfessorApplicantsPage() {
         groupedByStudentArray={
           groupBy === "student" ? data.groupedByStudents : null
         }
+        refresh={refresh}
       />
 
     </>
