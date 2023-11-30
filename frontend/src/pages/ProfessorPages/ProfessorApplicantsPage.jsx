@@ -9,7 +9,6 @@ import {
   styled, Typography,
 } from "@mui/material";
 
-
 import ProfessorApplicants from "./ProfessorApplicants";
 import {SkeletonApplicants} from "../../components";
 import {getAllApplicationsDataForProfessor} from "../../api";
