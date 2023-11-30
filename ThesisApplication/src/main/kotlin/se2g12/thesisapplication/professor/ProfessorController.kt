@@ -32,6 +32,6 @@ class ProfessorController(private val proposalService: ProposalService,private v
     }
     @GetMapping("/API/thesis/proposals/getProfessorProposals/{professorId}")
     fun getProposalByProfessorId(@PathVariable professorId:String){
-        proposalService.getProposalByProfessorId( teacherRepository.findById(professorId).get())
+        proposalService.getProposalByProfessorId( professorId )
     }
 }
