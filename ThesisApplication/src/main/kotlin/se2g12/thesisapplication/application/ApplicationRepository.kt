@@ -14,6 +14,8 @@ interface ApplicationRepository : JpaRepository<Application, UUID> {
     @Modifying
     @Query("update application set status= :newStatus where id= :applicationId", nativeQuery = true)
     fun updateStatusById(applicationId:UUID, newStatus:String)
+    @Query ("SELECT * FROM application WHERE proposal_id = :proposalId AND student_id = :studentId", nativeQuery = true)
+    fun findByProposalIdAndStudentId(proposalId:UUID, studentId:String): List<Application>
     @Modifying
     @Query("update application set status= :newStatus where student_id= :studentId and status='pending'", nativeQuery = true)
     fun updateStatusByStudentId(studentId:String, newStatus:String)

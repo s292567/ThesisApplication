@@ -8,6 +8,8 @@ interface ApplicationService {
     fun addNewApplication(newApplication: NewApplicationDTO)
     fun declineApplication(applicationId: UUID)
     fun acceptApplication(applicationId: UUID)
+    fun declineApplicationByProposalAndStudent(proposalId: UUID, studentId:String)
+    fun acceptApplicationByProposalAndStudent(proposalId: UUID, studentId:String)
     fun getApplicationProposalSupervisorId(applicationId: UUID) : String
     fun getAllApplyingStudentsForProposalById(proposalId: UUID) : List<StudentDTO>
 

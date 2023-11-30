@@ -45,9 +45,20 @@ class ApplicationServiceImpl (
         // archive proposal
         archiveRepository.save(Archive(app.proposal))
     }
+
+    override fun declineApplicationByProposalAndStudent(proposalId: UUID, studentId: String) {
+        var appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id
+        declineApplication(appId!!)
+    }
+
+    override fun acceptApplicationByProposalAndStudent(proposalId: UUID, studentId: String) {
+        var appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id
+        acceptApplication(appId!!)
+    }
+
     private fun getModifiableApplication(applicationId: UUID): Application{
         val app= applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError(applicationId) }
-        if (app.status !== "pending")
+        if (app.status != "pending")
             throw NotModifiableApplicationError(applicationId, app.status!!)
         return app
     }

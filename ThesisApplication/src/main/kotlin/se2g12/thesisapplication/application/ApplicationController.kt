@@ -20,17 +20,31 @@ class ApplicationController(private val applicationService: ApplicationService,p
     }
 
     @PatchMapping("/API/thesis/applications/{professorId}")
-    fun updateApplication(@PathVariable professorId: String, @RequestBody application: ApplicationDTO){
-        if (professorId !== applicationService.getApplicationProposalSupervisorId(application.id))
-            throw UnauthorizedProfessorError("Cannot operate on applications to proposals of other professors")
-        if (application.status == "accepted") {
-            applicationService.acceptApplication(application.id)
-        }else if (application.status == "declined") {
-            applicationService.declineApplication(application.id)
-        }
+    fun updateApplication(@PathVariable professorId: String, @RequestBody application: ApplicationStatus){
+        updateApplicationByProposalAndStudent(application)
+
         // if another status is passed, do nothing
     }
+    private fun updateApplicationById(professorId: String, application: ApplicationDTO){
+        if (professorId !== applicationService.getApplicationProposalSupervisorId(application.id!!))
+            throw UnauthorizedProfessorError("Cannot operate on applications to proposals of other professors")
+        if (application.status == "accepted") {
+            applicationService.acceptApplication(application.id!!)
+        }else if (application.status == "declined") {
+            applicationService.declineApplication(application.id!!)
+        }
+    }
+    private fun updateApplicationByProposalAndStudent(application: ApplicationStatus){
+        /*if (professorId !== applicationService.getApplicationProposalSupervisorId(application.id!!))
+            throw UnauthorizedProfessorError("Cannot operate on applications to proposals of other professors")
+        */
 
+        if (application.status == "accepted") {
+            applicationService.acceptApplicationByProposalAndStudent(application.proposalId, application.studentId)
+        }else if (application.status == "declined") {
+            applicationService.declineApplicationByProposalAndStudent(application.proposalId, application.studentId)
+        }
+    }
     @GetMapping("/API/thesis/applications/students")
     @PreAuthorize("hasRole('Professor')")
     fun getAllApplyingStudentsForProposal(@RequestParam proposalId: UUID) : List<StudentDTO> {
