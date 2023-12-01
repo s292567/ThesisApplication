@@ -4,6 +4,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 
 function Search({ searchInput, handleSearchInputChange }) {
+
+
     return (
         <OutlinedInput
             sx={{ borderRadius: 4, width: { md: "400px", xs: "200px" } }}

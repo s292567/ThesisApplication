@@ -3,6 +3,7 @@ import {Typography} from "@mui/material";
 import {SkeletonThesisList} from "../../components";
 import MyTheses from "../../components/ThesesList/MyTheses.jsx";
 import {getAllApplicationsForLoggedInStudent} from "../../api/API_applications.js";
+import Search from "../../components/Search.jsx";
 
 export default function MyThesesPage() {
     const [proposals, setProposals] = useState(null);
@@ -20,6 +21,7 @@ export default function MyThesesPage() {
 
         fetchProposals().then(response=>setProposals(response));
     }, []);
+
     /*const fetchStatus = async () => {
         try {
             // Make your API call to get the status
@@ -42,6 +44,7 @@ export default function MyThesesPage() {
 */
     return (<>
             <Typography variant="h3" color={"orange"} mb={3} mt={3}>My Theses:</Typography>
+            <Search />
         {proposals ? (
             <MyTheses thesesData={proposals} view={'displayApply'}/>
         ) : (

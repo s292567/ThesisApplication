@@ -68,7 +68,7 @@ export const getProposalsByCds = async (cds) => {
  * Search thesis proposals based on a query string.
  */
 export const searchProposals = async (studentId,query) => {
-  return axiosInstance.post( routes.searchProposals + studentId + '?query='+query).then(
+  return axiosInstance.get( routes.searchProposals + studentId + '?query='+query).then(
       (response) => {
       if (response.status === 200) {
           console.log("searchProposals: ", response.data);
