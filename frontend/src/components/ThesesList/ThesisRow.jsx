@@ -51,7 +51,7 @@ export default function ThesisRow({thesis,reload, style = {backgroundColor: '#F4
   const [detailOpen, setDetailOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const {userId, user} = useUserContext();
+  const {user} = useUserContext();
 
   const [popupProps, setPopupProps] = useState({
     warningOpen: false,
@@ -72,7 +72,6 @@ export default function ThesisRow({thesis,reload, style = {backgroundColor: '#F4
   const newReload=()=>{
     reload()
   }
-
 
   const handleOpenDetail = () => {
     setDetailOpen(true);

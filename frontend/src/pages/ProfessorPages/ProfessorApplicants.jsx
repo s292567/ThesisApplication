@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   useTheme,
   useMediaQuery,
@@ -18,24 +18,28 @@ import {
   CardHeader,
 } from "@mui/material";
 import {
+  InfoRounded,
   KeyboardArrowDownRounded,
   KeyboardArrowUpRounded,
 } from "@mui/icons-material";
 
 import { PastelComponent, ThesisRow } from "../../components";
 import { WarningPopup, WithTooltip } from "../../components";
-import {acceptApplication, declineApplication} from "../../api/API_applications.js";
-import {useUserContext} from "../../contexts/index.js";
+import {
+  acceptApplication,
+  declineApplication,
+} from "../../api/API_applications.js";
+import { useUserContext } from "../../contexts/index.js";
 
 export default function ProfessorApplicants({
   groupedByProposalArray,
   groupedByStudentArray,
-    refresh
+  refresh,
 }) {
   const [showApplicants, setShowApplicants] = useState({});
   const [action, setAction] = useState(""); // ["accept", "decline"]
-  const [studentId, setStudentId] = useState("")
-  const [proposalId, setProposalId] = useState("")
+  const [studentId, setStudentId] = useState("");
+  const [proposalId, setProposalId] = useState("");
 
   /**
    * Warning Popup States and Handlers
@@ -44,11 +48,9 @@ export default function ProfessorApplicants({
   const [confirmedOpen, setConfirmedOpen] = useState(false);
   const [msgWarning, setMsgWarning] = useState("");
   const [msgDone, setMsgDone] = useState("");
-  const {userId}=useUserContext()
+  const { userId } = useUserContext();
 
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   const handleCloseWarning = () => {
     setWarningOpen(false);
@@ -59,20 +61,15 @@ export default function ProfessorApplicants({
   };
 
   const handleApplyed = () => {
-    /**
-     * ASYNC API CALL FUNCTION HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     */
-    if(action === "accept"){
-      acceptApplication(proposalId, studentId, userId)
-      // API CALL HERE TO ACCEPT !!!!!!!!
-    }else if(action === "decline"){
-      declineApplication(proposalId, studentId, userId)
-      // API CALL HERE TO DECLINE !!!!!!!!
+    if (action === "accept") {
+      acceptApplication(proposalId, studentId, userId);
+    } else if (action === "decline") {
+      declineApplication(proposalId, studentId, userId);
     }
     setWarningOpen(false);
     setConfirmedOpen(true);
     setMsgDone("Application successfully processed.");
-    refresh()
+    refresh();
   };
 
   const handleAccept = (proposalId, studentId) => {
@@ -87,7 +84,7 @@ export default function ProfessorApplicants({
     setAction("decline");
     setProposalId(proposalId);
     setStudentId(studentId);
-    console.log("ProposalId: "+proposalId +"StudentId: "+studentId);
+    console.log("ProposalId: " + proposalId + "StudentId: " + studentId);
     setMsgWarning("Are you sure you want to decline this application?");
     setWarningOpen(true);
   };
@@ -136,20 +133,28 @@ export default function ProfessorApplicants({
             },
             "& .MuiTableCell-root": {
               fontSize: "large",
-              color: '#2f1c6a',
+              color: "#2f1c6a",
             },
           }}
         >
           <TableCell
             sx={{
-              fontWeight: "bolder" ,
+              fontWeight: "bolder",
             }}
           >
             {isStudentGrouping ? (
-              <WithTooltip
-                tooltipContent={<ThesisRow thesis={item} style={{backgroundColor: 'white'}}/>}
-                children={item.title}
-              />
+              <>
+                {item.title}
+                <WithTooltip
+                  tooltipContent={
+                    <ThesisRow
+                      thesis={item}
+                      style={{ backgroundColor: "white" }}
+                    />
+                  }
+                  children={<InfoRounded sx={{ marginLeft: "1rem" }} />}
+                />
+              </>
             ) : (
               item.name + " " + item.surname
             )}
@@ -169,14 +174,12 @@ export default function ProfessorApplicants({
                 textColor="white"
                 text="accept"
                 fontSize="medium"
-                style={{maxWidth: '130px'}}
+                style={{ maxWidth: "130px" }}
                 onClick={(event) => {
                   event.stopPropagation();
                   /* Accept logic here */
-                  if (!isStudentGrouping)
-                    handleAccept(mainId, item.id);
-                  else
-                    handleAccept(item.id, mainId);
+                  if (!isStudentGrouping) handleAccept(mainId, item.id);
+                  else handleAccept(item.id, mainId);
                 }}
               />
 
@@ -185,14 +188,12 @@ export default function ProfessorApplicants({
                 textColor="white"
                 text="decline"
                 fontSize="medium"
-                style={{maxWidth: '130px'}}
+                style={{ maxWidth: "130px" }}
                 onClick={(event) => {
                   event.stopPropagation();
                   /* Decline logic here */
-                  if (!isStudentGrouping)
-                    handleDecline(mainId, item.id);
-                  else
-                    handleDecline(item.id, mainId);
+                  if (!isStudentGrouping) handleDecline(mainId, item.id);
+                  else handleDecline(item.id, mainId);
                 }}
               />
             </Stack>
@@ -215,7 +216,7 @@ export default function ProfessorApplicants({
       >
         {(groupedByStudentArray || groupedByProposalArray).map((item) => (
           <Card
-            key={groupedByStudentArray ? item.student.id : item.proposal.id }
+            key={groupedByStudentArray ? item.student.id : item.proposal.id}
             variant="outlined"
             sx={{
               maxWidth: "1000px",
@@ -239,28 +240,38 @@ export default function ProfessorApplicants({
                   <>
                     <Typography
                       variant="h4"
-                      sx={{ fontWeight: "bold", marginRight: "1rem", color: "#2f1c6a", }}
+                      sx={{
+                        fontWeight: "bold",
+                        marginRight: "1rem",
+                        color: "#2f1c6a",
+                      }}
                     >
                       {item.student.name + " " + item.student.surname}
                     </Typography>
                     <Typography variant="body1">{`${item.student.email} - ${item.student.codDegree}`}</Typography>
                   </>
                 ) : (
-                  <WithTooltip
-                    tooltipContent={<ThesisRow thesis={item.proposal} style={{backgroundColor: 'white'}} />}
-                    children={
-                      <Typography
-                        variant="h4"
-                        sx={{
-                          fontWeight: "bold",
-                          color: "#2f1c6a",
-                          marginRight: "1rem",
-                        }}
-                      >
-                        {item.proposal.title}
-                      </Typography>
-                    }
-                  />
+                  <>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        fontWeight: "bold",
+                        color: "#2f1c6a",
+                        marginRight: "1rem",
+                      }}
+                    >
+                      {item.proposal.title}
+                    </Typography>
+                    <WithTooltip
+                      tooltipContent={
+                        <ThesisRow
+                          thesis={item.proposal}
+                          style={{ backgroundColor: "white" }}
+                        />
+                      }
+                      children={<InfoRounded sx={{ marginLeft: "1rem" }} />}
+                    />
+                  </>
                 )
               }
               action={
@@ -314,7 +325,7 @@ export default function ProfessorApplicants({
               }}
             />
 
-            { /* Card content is displaying the table */ }
+            {/* Card content is displaying the table */}
             <CardContent>
               <Collapse
                 in={
@@ -327,13 +338,9 @@ export default function ProfessorApplicants({
                   <Table>
                     {renderTableHead()}
                     {renderTableRows(
-                      groupedByStudentArray
-                        ? item.proposals
-                        : item.students,
+                      groupedByStudentArray ? item.proposals : item.students,
                       !!groupedByStudentArray,
-                        groupedByStudentArray
-                            ? item.student.id
-                            : item.proposal.id,
+                      groupedByStudentArray ? item.student.id : item.proposal.id
                     )}
                   </Table>
                 </TableContainer>
