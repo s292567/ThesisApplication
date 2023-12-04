@@ -22,6 +22,7 @@ fun Student.toDTO() : StudentDTO {
         this.gender,
         this.nationality,
         this.email,
+        this.degree!!.titleDegree,
         this.enrollmentYear
     )
 }
