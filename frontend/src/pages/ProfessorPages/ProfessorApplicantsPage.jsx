@@ -1,17 +1,18 @@
 // ProfessorApplicantsPage.jsx is used to render the page for the professor to see the applicants for each proposal
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Box,
   Divider,
   ToggleButton,
   ToggleButtonGroup,
-  styled, Typography,
+  styled,
+  Typography,
 } from "@mui/material";
 
 import ProfessorApplicants from "./ProfessorApplicants";
-import {SkeletonApplicants} from "../../components";
-import {getAllApplicationsDataForProfessor} from "../../api";
+import { SkeletonApplicants } from "../../components";
+import { getAllApplicationsDataForProfessor } from "../../api";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
   justifyContent: "center",
@@ -41,7 +42,6 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
 });
 
 export default function ProfessorApplicantsPage() {
-
   const [groupBy, setGroupBy] = useState("proposal");
 
   const [data, setData] = useState({
@@ -50,13 +50,13 @@ export default function ProfessorApplicantsPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [dirty, setDirty]= useState(false)
+  const [dirty, setDirty] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
-      let username = localStorage.getItem("username")
+      let username = localStorage.getItem("username");
       try {
         // This should be your API call
         return await getAllApplicationsDataForProfessor(username);
@@ -67,26 +67,40 @@ export default function ProfessorApplicantsPage() {
       }
     };
 
-    fetchData().then(response => {
+    fetchData().then((response) => {
       setData(response);
     });
-
   }, [dirty]);
-  const refresh=()=>{
+  const refresh = () => {
     setDirty(!dirty);
-  }
+  };
   if (isLoading) {
-    return <SkeletonApplicants count={4}/>;
+    return <SkeletonApplicants count={4} />;
   }
 
   if (error) {
     return <p>Error: {error}</p>;
   }
 
-  if (data.groupedByProposals.length === 0 && data.groupedByStudents.length === 0) {
-    return <Box sx={{display: "flex", flexDirection: "column", padding: "1rem", marginTop: '3rem'}}>
-      <Typography variant='h3' color='darkblue'>No applications found for yours Theses.</Typography>;
-    </Box>;
+  if (
+    data.groupedByProposals.length === 0 &&
+    data.groupedByStudents.length === 0
+  ) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          padding: "1rem",
+          marginTop: "3rem",
+        }}
+      >
+        <Typography variant="h3" color="darkblue">
+          No applications found for yours Theses.
+        </Typography>
+        ;
+      </Box>
+    );
   }
   function handleGroupBy() {
     if (groupBy === "proposal") {
@@ -97,8 +111,16 @@ export default function ProfessorApplicantsPage() {
   }
 
   return (
-    <>
-      <Box sx={{display: "flex", flexDirection: "column", padding: "1rem"}}>
+    <Box sx={{ display: "flex", flexWrap: "wrap", alignContent: "center", flexDirection: "column", }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          padding: "1rem",
+          justifyContent: "center",
+          maxWidth: "1000px",
+        }}
+      >
         <StyledToggleButtonGroup
           value={groupBy}
           exclusive
@@ -111,21 +133,19 @@ export default function ProfessorApplicantsPage() {
         <Divider
           orientation="horizontal"
           variant="middle"
-          sx={{bgcolor: "#433F42"}}
+          sx={{ bgcolor: "#433F42" }}
+        />
+
+        <ProfessorApplicants
+          groupedByProposalArray={
+            groupBy === "proposal" ? data.groupedByProposals : null
+          }
+          groupedByStudentArray={
+            groupBy === "student" ? data.groupedByStudents : null
+          }
+          refresh={refresh}
         />
       </Box>
-
-      <ProfessorApplicants
-        groupedByProposalArray={
-          groupBy === "proposal" ? data.groupedByProposals : null
-        }
-        groupedByStudentArray={
-          groupBy === "student" ? data.groupedByStudents : null
-        }
-        refresh={refresh}
-      />
-
-    </>
+    </Box>
   );
-
 }

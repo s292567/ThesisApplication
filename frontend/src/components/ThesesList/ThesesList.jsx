@@ -1,10 +1,7 @@
 // ThesesList.jsx
-import {
-  Stack,
-  Box,
-} from "@mui/material";
+import { Stack, Box, Grid } from "@mui/material";
 import { MyOutlinedButton, ThesisRow } from "../index.js";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useUserContext } from "../../contexts";
 
 export default function ThesesList({ thesesData, reload }) {
@@ -15,45 +12,42 @@ export default function ThesesList({ thesesData, reload }) {
   if (thesesData === undefined) {
     thesesData = [];
   }
-    const newReload=()=>{
-        reload()
-    }
+  const newReload = () => {
+    reload();
+  };
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-start",
+        flexGrow: 1,
       }}
     >
-      <Stack
-        direction="column"
-        flexWrap="wrap"
-        spacing={2}
-        mb={3}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-start",
-        }}
-      >
+      <Grid container direction="column" justifyContent="center" spacing={3}>
         {thesesData.map((thesis) => {
-          return <ThesisRow key={thesis.id} thesis={thesis} reload={newReload}/>
+          return (
+            <Grid key={thesis.id} container item justifyContent="center">
+              <Grid item xs={10} sm={10} md={8} lg={6} xl={5}>
+                <ThesisRow key={thesis.id} thesis={thesis} reload={newReload} />
+              </Grid>
+            </Grid>
+          );
         })}
-      </Stack>
-      {location.pathname === homeRoute && (
-        <MyOutlinedButton
-          text={"See More Theses"}
-          colorBorder={"#003366"}
-          colorBorderHover={"#1976d2"}
-          style={{ fontSize: "large", marginLeft: "3rem" }}
-          onClick={() => {
-            navigate(generalRoutes.theses);
-          }}
-        />
-      )}
+        {location.pathname === homeRoute && (
+          <Grid container item justifyContent="center">
+            <MyOutlinedButton
+              text={"See More Theses"}
+              colorBorder={"#003366"}
+              colorBorderHover={"#1976d2"}
+              style={{ fontSize: "large", }}
+              onClick={() => {
+                navigate(generalRoutes.theses);
+              }}
+            />
+          </Grid>
+        )}
+      </Grid>
       <Box padding={3}></Box>
     </Box>
   );
 }
-

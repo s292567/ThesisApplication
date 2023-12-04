@@ -1,7 +1,7 @@
 // ProfessorDashboardPage.jsx
 import React, {useState, useEffect} from "react";
 import {Typography} from "@mui/material";
-import {ThesesList, SkeletonThesisList} from "../../components";
+import {ThesesList, SkeletonThesisList, SectionTitle} from "../../components";
 import {getAllProposals} from "../../api";
 
 export default function StudentDashboardPage() {
@@ -23,7 +23,7 @@ export default function StudentDashboardPage() {
 
 
   return (<>
-      <Typography variant="h3" color={"orange"} sx={{marginTop: '4rem', marginBottom: '2rem'}}>Theses preview:</Typography>
+      <SectionTitle text={'Theses Preview:'} />
       {proposals ? (
         <ThesesList thesesData={proposals.slice(0, 3)} view={'displayApply'}/>
       ) : (

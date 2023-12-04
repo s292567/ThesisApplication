@@ -20,6 +20,8 @@ import WithTooltip from "./Popups/WithTooltip.jsx"
 import EditForm from "./EditProposal/EditProposal.jsx";
 import MyTheses from "./ThesesList/MyTheses.jsx";
 
+import SectionTitle from "./GeneralComponents/SectionTitle.jsx";
+
 export {
     Navbar,
     LoggedInNavbar,
@@ -36,6 +38,7 @@ export {
     EditForm,
     MyTheses,
 
+    SectionTitle,
 
     SkeletonThesisList,
     SkeletonApplicants,

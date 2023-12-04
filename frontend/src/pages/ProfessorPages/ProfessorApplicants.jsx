@@ -144,7 +144,6 @@ export default function ProfessorApplicants({
           >
             {isStudentGrouping ? (
               <>
-                {item.title}
                 <WithTooltip
                   tooltipContent={
                     <ThesisRow
@@ -152,7 +151,7 @@ export default function ProfessorApplicants({
                       style={{ backgroundColor: "white" }}
                     />
                   }
-                  children={<InfoRounded sx={{ marginLeft: "1rem" }} />}
+                  children={<>{item.title} <InfoRounded sx={{ justifyContent:'center', marginLeft: "0.1rem" }} /> </>}
                 />
               </>
             ) : (
@@ -210,7 +209,7 @@ export default function ProfessorApplicants({
           display: "flex",
           flexDirection: "column",
           gap: "20px",
-          padding: isSmallScreen ? "0.5rem" : isMediumScreen ? "2rem" : "4rem",
+          padding: isSmallScreen ? "1rem" : isMediumScreen ? "2rem" : "4rem",
           height: "max-content",
         }}
       >
@@ -219,7 +218,6 @@ export default function ProfessorApplicants({
             key={groupedByStudentArray ? item.student.id : item.proposal.id}
             variant="outlined"
             sx={{
-              maxWidth: "1000px",
               borderRadius: "18px",
               padding: "1rem",
               display: "flex",
@@ -252,16 +250,6 @@ export default function ProfessorApplicants({
                   </>
                 ) : (
                   <>
-                    <Typography
-                      variant="h4"
-                      sx={{
-                        fontWeight: "bold",
-                        color: "#2f1c6a",
-                        marginRight: "1rem",
-                      }}
-                    >
-                      {item.proposal.title}
-                    </Typography>
                     <WithTooltip
                       tooltipContent={
                         <ThesisRow
@@ -269,7 +257,19 @@ export default function ProfessorApplicants({
                           style={{ backgroundColor: "white" }}
                         />
                       }
-                      children={<InfoRounded sx={{ marginLeft: "1rem" }} />}
+                      children={
+                        <Typography
+                          variant="h4"
+                          sx={{
+                            fontWeight: "bold",
+                            color: "#2f1c6a",
+                            marginRight: "1rem",
+                          }}
+                        >
+                          {item.proposal.title}
+                          <InfoRounded sx={{marginLeft: '0.5rem'}} />
+                        </Typography>
+                      }
                     />
                   </>
                 )

@@ -63,11 +63,7 @@ const getStatusText = (status) => {
 
 export default function MyTheses({thesesData, isMyThesesPage}) {
   const [mythesses, setMythesses] = useState(false);
-  const [status, setStatus] = useState("");
   const [selectedThesis, setSelectedThesis] = useState(null);
-
-  const location = useLocation();
-  const {homeRoute, generalRoutes, user} = useUserContext();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -81,11 +77,6 @@ export default function MyTheses({thesesData, isMyThesesPage}) {
   if (thesesData === undefined) {
     thesesData = [];
   }
-
-  const handleCloseThesisDetail = () => {
-    setSelectedThesis(null);
-  };
-
 
   return (
 
@@ -107,9 +98,6 @@ export default function MyTheses({thesesData, isMyThesesPage}) {
                     {!isMobile ? thesis.proposal.description : `${thesis.proposal.description}...`}
                   </Typography>
                   <Stack direction="row" spacing={2}>
-
-
-
                     <PastelComponent
                         text={'View'}
                         textColor={"white"}
@@ -118,7 +106,6 @@ export default function MyTheses({thesesData, isMyThesesPage}) {
                         onClick={(event) => {
                           event.stopPropagation();
                           handleOpenThesisDetail(thesis);
-
                         }}
                     />
                   </Stack>
@@ -132,7 +119,9 @@ export default function MyTheses({thesesData, isMyThesesPage}) {
                       background: getStatusColor(thesis.status),
                       borderRadius: '10px',
                       padding: '8px',
-                    }}>
+                    }}
+                    elevation={0}
+                    >
                     <Typography style={{color: 'white'}}>
                       {getStatusText(thesis.status)}
                     </Typography>

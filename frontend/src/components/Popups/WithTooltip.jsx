@@ -76,6 +76,7 @@ export default function WithTooltip({ tooltipContent, children }) {
         disableFocusListener
         disableHoverListener
         disableTouchListener
+        placement='bottom-start'
       >
         <div />
       </Tooltip>
