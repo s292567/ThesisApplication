@@ -14,7 +14,7 @@ import {
 
 import {applyToProposal} from "../../api/index.js";
 import {useUserContext} from "../../contexts/index.js";
-import WarningPopup from "../WarningPopup.jsx";
+import WarningPopup from "../Popups/WarningPopup.jsx";
 
 const TextWrap = styled(Box)({
   backgroundColor: "whitesmoke",

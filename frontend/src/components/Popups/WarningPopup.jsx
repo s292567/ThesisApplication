@@ -12,7 +12,7 @@ import {
 import WarningRounded from "@mui/icons-material/WarningRounded";
 import Close from "@mui/icons-material/Close"; // Make sure this is the correct import for the Close icon
 
-import { PastelComponent } from "./index.js";
+import { PastelComponent } from "../index.js";
 
 const MyDialog = styled(Dialog)(({ theme }) => ({
   ".MuiPaper-root": {
