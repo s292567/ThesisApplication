@@ -1,5 +1,5 @@
 import BottomNavbar from "./BottomNavbar/BottomNavbar"
-import LoginForm from "./LoginForm/LoginForm"
+import LoginForm from "../pages/LoginPage/LoginPage.jsx"
 import ProposalForm from "./ProposalForm/ProposalForm"
 import Navbar from "./Navbar/Navbar"
 import Sidebar from "./SideBar/Sidebar"
