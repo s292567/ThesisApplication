@@ -1,8 +1,3 @@
-import BottomNavbar from "./BottomNavbar/BottomNavbar"
-<<<<<<< Updated upstream
-import LoginForm from "../pages/LoginPage/LoginPage.jsx"
-=======
->>>>>>> Stashed changes
 import ProposalForm from "./ProposalForm/ProposalForm"
 import Navbar from "./Navbar/Navbar"
 
@@ -25,9 +20,7 @@ import WithTooltip from "./Popups/WithTooltip.jsx"
 import EditForm from "./EditProposal/EditProposal.jsx";
 import MyTheses from "./ThesesList/MyTheses.jsx";
 
-
 export {
-    BottomNavbar,
     Navbar,
     LoggedInNavbar,
     

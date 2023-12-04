@@ -165,8 +165,8 @@ export default function LoggedInNavbar() {
                   <Link to={frontendRoutes.studentTheses} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
                     Theses
                   </Link>
-                    <Link to={frontendRoutes.MyTheses} color="inherit" sx={{mx: 2}}>
-                      My Theses
+                    <Link to={frontendRoutes.studentApplications} color="inherit" sx={{mx: 2}}>
+                      Applications
                     </Link>
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>

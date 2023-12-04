@@ -1,10 +1,12 @@
+// StudentApplications.jsx is used to display the list of theses that the student has applied to.
+
 import React, {useEffect, useState} from "react";
 import {Typography} from "@mui/material";
 import {SkeletonThesisList} from "../../components";
 import MyTheses from "../../components/ThesesList/MyTheses.jsx";
 import {getAllApplicationsForLoggedInStudent} from "../../api/API_applications.js";
 
-export default function MyThesesPage() {
+export default function StudentApplicationsPage() {
     const [proposals, setProposals] = useState(null);
 
     useEffect(() => {
