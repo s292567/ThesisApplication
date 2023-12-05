@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from "react";
+// ThesisDetail.jsx
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -12,87 +13,34 @@ import {
   useMediaQuery,
 } from "@mui/material";
 
-import {applyToProposal} from "../../api/index.js";
-import {useUserContext} from "../../contexts/index.js";
-import WarningPopup from "../Popups/WarningPopup.jsx";
+import { applyToProposal } from "../../api/index.js";
+import { useUserContext } from "../../contexts/index.js";
+import { WarningPopup } from "../index.js";
 
-const TextWrap = styled(Box)({
-  backgroundColor: "whitesmoke",
-  borderRadius: "12px",
-  padding: "0.3rem 0.8rem",
-  marginBottom: "1rem",
-  width: "auto",
-});
-
-const MyDialog = styled(Dialog)(({theme}) => ({
-  ".MuiPaper-root": {
-    zIndex: 2000,
-    borderRadius: "20px",
-    padding: "2rem",
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
-const StyledButton = styled(Button)(({theme}) => ({
-  backgroundColor: theme.palette.primary.dark,
-  "&:hover": {
-    backgroundColor: theme.palette.primary.main,
-  },
-  color: theme.palette.common.white,
-  fontWeight: "600",
-  textTransform: "none",
-  borderRadius: "20px",
-  padding: theme.spacing(1, 3),
-}));
-
-const ApplyButton = ({isMobile, onCLick}) => {
-  return (
-    <StyledButton
-      size="large"
-      onClick={() => onCLick()}
-      sx={{display: isMobile ? "none" : "block", mt: 2}}
-    >
-      Apply
-    </StyledButton>
-  );
-};
-
-export default function ThesisDetail({open, handleClose, thesis, page}) {
-  const [mypage, setMypage] = useState(page);
-  const {userId, user} = useUserContext();
-
-  const isMobile = useMediaQuery("(max-width: 600px)");
-  const [warningOpen, setWarningOpen] = useState(false);
-  const [confirmedOpen, setConfirmedOpen] = useState(false);
-  const [msg, setMsg] = useState("");
-
+export default function ThesisDetail({ open, handleClose, thesis }) {
+  const { userId, user } = useUserContext();
   const formatFullName = (person) => `${person.name} ${person.surname}`;
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
-  const handleApply = () => {
-    setWarningOpen(true);
-  };
+  // HERE IN THEORY WE SHOULD CHECK IF THE STUDENT HAS ALREADY APPLIED TO THE THESIS OR NOT THROUGH AN API CALL
+  const [ alreadyApplied, setAlreadyApplied ] = useState(false);
 
-  const handleCloseWarning = () => {
-    setWarningOpen(false);
-  };
+  const [warningOpen, setWarningOpen] = useState(false);
+  const handleApplied = async () => {
+    try {
+      const response = await applyToProposal({
+        studentId: userId,
+        proposalId: thesis.id,
+      }); // This should be your API call
+      setAlreadyApplied(true);
+      // Return a success message
+      return "You have successfully applied to this thesis!";
+    } catch (error) {
+      console.error("Failed to apply:", error);
 
-  const handleApplyed = () => {
-    const applyProposal = async () => {
-      try {
-        const response = await applyToProposal({
-          studentId: userId,
-          proposalId: thesis.id,
-        }); // This should be your API call
-        setMsg("You have successfully applied to this thesis!");
-      } catch (error) {
-        console.error("Failed to fetch proposals:", error);
-        setMsg(error);
-      }
-    };
-
-    applyProposal().then(r => console.log(r));
-    handleCloseWarning();
-    setConfirmedOpen(true);
+      // Throw an error with a message to be caught and displayed by the Snackbar
+      throw new Error(error.message || "Failed to apply to the thesis.");
+    }
   };
 
   return (
@@ -138,50 +86,52 @@ export default function ThesisDetail({open, handleClose, thesis, page}) {
               <TextWrap
                 variant="subtitle1"
                 color="textPrimary"
-                sx={{fontSize: "1.2rem"}}
+                sx={{ fontSize: "1.2rem" }}
               >
                 {thesis.type}
               </TextWrap>
               <TextWrap
                 variant="subtitle1"
                 color="textPrimary"
-                sx={{fontSize: "1.2rem"}}
+                sx={{ fontSize: "1.2rem" }}
               >
                 {thesis.level}
               </TextWrap>
-              <TextWrap variant="body1" sx={{mt: 1}}>
+              <TextWrap variant="body1" sx={{ mt: 1 }}>
                 Keywords: {thesis.keywords.join(", ")}
               </TextWrap>
-              <TextWrap variant="body1" sx={{mt: 1}}>
+              <TextWrap variant="body1" sx={{ mt: 1 }}>
                 Required Knowledge: {thesis.requiredKnowledge}
               </TextWrap>
               <TextWrap variant="body1">
                 Expiration: {thesis.expiration}
               </TextWrap>
 
-              {user.role === "Student" && mypage === true && (
+              {user.role === "Student" && (
                 <ApplyButton
                   key="lateral"
                   isMobile={isMobile}
-                  onCLick={handleApply}
+                  disabled={alreadyApplied}
+                  onCLick={() => setWarningOpen(true)}
                 />
               )}
             </Box>
+
             {/* Right Section */}
             <Divider
               orientation="vertical"
               flexItem
-              sx={{display: isMobile ? "none" : "flex"}}
+              sx={{ display: isMobile ? "none" : "flex" }}
             />
-            <Box sx={{flex: "1 1 auto", marginLeft: isMobile ? 'none' : 2,}}>
-              <Box sx={{fontSize: "1.2rem", fontWeight: "500"}}>
+            <Box sx={{ flex: "1 1 auto", marginLeft: isMobile ? "none" : 2 }}>
+              <Box sx={{ fontSize: "1.2rem", fontWeight: "500" }}>
                 Supervisor:
-                <TextWrap sx={{maxWidth: "200px"}}>
+                <TextWrap sx={{ maxWidth: "200px" }}>
                   {formatFullName(thesis.supervisor)}
                 </TextWrap>
               </Box>
               {thesis.coSupervisors.length > 0 && (
-                <Box sx={{fontSize: "1.2rem", fontWeight: "500"}}>
+                <Box sx={{ fontSize: "1.2rem", fontWeight: "500" }}>
                   Co-Supervisors:
                   <TextWrap>{thesis.coSupervisors.join(", ")}</TextWrap>
                 </Box>
@@ -196,13 +146,13 @@ export default function ThesisDetail({open, handleClose, thesis, page}) {
                 >
                   Description:
                 </Typography>
-                <Typography sx={{fontSize: "1.1rem"}}>
+                <Typography sx={{ fontSize: "1.1rem" }}>
                   {" "}
                   {thesis.description}{" "}
                 </Typography>
               </TextWrap>
               {thesis.notes && (
-                <Typography variant="body2" sx={{mt: 6}}>
+                <Typography variant="body2" sx={{ mt: 6 }}>
                   <strong>Notes: </strong> {thesis.notes}
                 </Typography>
               )}
@@ -210,23 +160,21 @@ export default function ThesisDetail({open, handleClose, thesis, page}) {
           </Box>
         </DialogContent>
         <DialogActions
-          sx={{justifyContent: "space-between", alignItems: "flex-end"}}
+          sx={{ justifyContent: "space-between", alignItems: "flex-end" }}
         >
           {user.role === "Student" && (
             <>
               <ApplyButton
                 key="lateral"
                 isMobile={!isMobile}
-                onCLick={handleApply}
+                disabled={alreadyApplied}
+                onCLick={() => setWarningOpen(true)}
               />
               <WarningPopup
                 warningOpen={warningOpen}
-                confirmedOpen={confirmedOpen}
-                handleCloseWarning={handleCloseWarning}
-                handleClose={()=>{setConfirmedOpen(false)}}
-                handleApplyed={handleApplyed}
-                msgWarning={"Are you sure you want to apply to this thesis?"}
-                msgDone={msg}
+                setWarningOpen={setWarningOpen}
+                handleApplied={handleApplied}
+                warningMessage={"Are you sure you want to apply?"}
               />
             </>
           )}
@@ -239,3 +187,48 @@ export default function ThesisDetail({open, handleClose, thesis, page}) {
     </>
   );
 }
+
+const ApplyButton = ({ isMobile, onCLick, disabled=false }) => {
+  return (
+    <StyledButton
+      size="large"
+      onClick={() => onCLick()}
+      disabled={disabled}
+      sx={{ display: isMobile ? "none" : "block", mt: 2 }}
+    >
+      Apply
+    </StyledButton>
+  );
+};
+
+const TextWrap = styled(Box)({
+  backgroundColor: "whitesmoke",
+  borderRadius: "12px",
+  padding: "0.3rem 0.8rem",
+  marginBottom: "1rem",
+  width: "auto",
+});
+
+const MyDialog = styled(Dialog)(({ theme }) => ({
+  ".MuiPaper-root": {
+    zIndex: 2000,
+    borderRadius: "20px",
+    padding: "2rem",
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.dark,
+  color: "white",
+  "&:hover": {
+    backgroundColor: theme.palette.primary.main,
+  },
+  "&:disabled": {
+    backgroundColor: "grey",
+  },
+  fontWeight: "600",
+  textTransform: "none",
+  borderRadius: "20px",
+  padding: theme.spacing(1, 3),
+}));

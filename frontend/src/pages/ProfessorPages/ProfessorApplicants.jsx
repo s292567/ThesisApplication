@@ -34,57 +34,44 @@ import { useUserContext } from "../../contexts/index.js";
 export default function ProfessorApplicants({
   groupedByProposalArray,
   groupedByStudentArray,
-  refresh,
 }) {
   const [showApplicants, setShowApplicants] = useState({});
   const [action, setAction] = useState(""); // ["accept", "decline"]
-  const [studentId, setStudentId] = useState("");
-  const [proposalId, setProposalId] = useState("");
+  const [IDs, setIDs] = useState({
+    proposalId: "",
+    studentId: "",
+  }); // { proposalId, studentId }
+  const { userId } = useUserContext();
 
   /**
    * Warning Popup States and Handlers
    */
   const [warningOpen, setWarningOpen] = useState(false);
-  const [confirmedOpen, setConfirmedOpen] = useState(false);
   const [msgWarning, setMsgWarning] = useState("");
-  const [msgDone, setMsgDone] = useState("");
-  const { userId } = useUserContext();
-
-  useEffect(() => {}, []);
-
-  const handleCloseWarning = () => {
-    setWarningOpen(false);
-  };
-
-  const handleCloseConfirmed = () => {
-    setConfirmedOpen(false);
-  };
-
-  const handleApplyed = () => {
-    if (action === "accept") {
-      acceptApplication(proposalId, studentId, userId);
-    } else if (action === "decline") {
-      declineApplication(proposalId, studentId, userId);
+  // INSTEAD OF A FORCED REFRESH IS BETTER TO UPDATE THE STATIC DATA WITH THE NEW ONE
+  const handleApplied = async () => {
+    try {
+      if (action === "accept") {
+        await acceptApplication(IDs.proposalId, IDs.studentId, userId);
+        return "Application successfully ACCEPTED.";
+      } else if (action === "decline") {
+        await declineApplication(IDs.proposalId, IDs.studentId, userId);
+        return "Application successfully DECLINED.";
+      }
+    } catch (error) {
+      console.error("Error processing application:", error);
+      throw new Error("Failed to process the application.");
     }
-    setWarningOpen(false);
-    setConfirmedOpen(true);
-    setMsgDone("Application successfully processed.");
-    refresh();
   };
-
   const handleAccept = (proposalId, studentId) => {
     setAction("accept");
-    setProposalId(proposalId);
-    setStudentId(studentId);
+    setIDs({ proposalId, studentId });
     setMsgWarning("Are you sure you want to accept this application?");
     setWarningOpen(true);
   };
-
   const handleDecline = (proposalId, studentId) => {
     setAction("decline");
-    setProposalId(proposalId);
-    setStudentId(studentId);
-    console.log("ProposalId: " + proposalId + "StudentId: " + studentId);
+    setIDs({ proposalId, studentId });
     setMsgWarning("Are you sure you want to decline this application?");
     setWarningOpen(true);
   };
@@ -151,7 +138,14 @@ export default function ProfessorApplicants({
                       style={{ backgroundColor: "white" }}
                     />
                   }
-                  children={<>{item.title} <InfoRounded sx={{ justifyContent:'center', marginLeft: "0.1rem" }} /> </>}
+                  children={
+                    <>
+                      {item.title}{" "}
+                      <InfoRounded
+                        sx={{ justifyContent: "center", marginLeft: "0.1rem" }}
+                      />{" "}
+                    </>
+                  }
                 />
               </>
             ) : (
@@ -267,7 +261,7 @@ export default function ProfessorApplicants({
                           }}
                         >
                           {item.proposal.title}
-                          <InfoRounded sx={{marginLeft: '0.5rem'}} />
+                          <InfoRounded sx={{ marginLeft: "0.5rem" }} />
                         </Typography>
                       }
                     />
@@ -350,12 +344,9 @@ export default function ProfessorApplicants({
         ))}
         <WarningPopup
           warningOpen={warningOpen}
-          handleCloseWarning={handleCloseWarning}
-          confirmedOpen={confirmedOpen}
-          handleClose={handleCloseConfirmed}
-          msgWarning={msgWarning}
-          msgDone={msgDone}
-          handleApplyed={handleApplyed}
+          setWarningOpen={setWarningOpen}
+          handleApplied={handleApplied}
+          warningMessage={msgWarning}
         />
       </Box>
     </>

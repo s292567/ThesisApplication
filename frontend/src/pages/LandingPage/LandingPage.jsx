@@ -66,7 +66,7 @@ export default function LandingPage() {
         }}
       >
         {cardData.map((card, index) => (
-          <Box sx={{ position: "relative" }}>
+          <Box sx={{ position: "relative" }} key={index}>
             <Card
               sx={{ display: "flex", maxWidth: "800px", borderRadius: "18px" }}
               elevation={5}

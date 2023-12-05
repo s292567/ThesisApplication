@@ -1,5 +1,8 @@
-import React from "react";
+// WarningPopup.jsx
+import React, { useState, useCallback } from "react";
 import {
+  Snackbar,
+  Alert,
   styled,
   Dialog,
   DialogTitle,
@@ -7,73 +10,107 @@ import {
   DialogContent,
   Typography,
   Box,
-  IconButton,
 } from "@mui/material";
-import WarningRounded from "@mui/icons-material/WarningRounded";
-import Close from "@mui/icons-material/Close"; // Make sure this is the correct import for the Close icon
+import { WarningRounded } from "@mui/icons-material";
 
 import { PastelComponent } from "../index.js";
 
-const MyDialog = styled(Dialog)(({ theme }) => ({
-  ".MuiPaper-root": {
-    borderRadius: "20px",
-    padding: "2rem",
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
 export default function WarningPopup({
-  warningOpen /* This is the boolean that will open the warning popup */,
-  handleCloseWarning /* This is the function that closes the warning popup, and open the confirmed poupup */,
-  handleApplyed /* This is the function that will be called when the user clicks on the "yes" button in the warning popup */,
-  confirmedOpen /* This is the boolean that will open the confirmed popup */,
-  handleClose /* This is the function that closes the confirmed popup and so close definitively the popup modal*/,
-  msgWarning /* This is the message that will be displayed in the warning popup */,
-  msgDone /* This is the message that will be displayed in the confirmed popup */,
+  warningOpen, // useState to manage the open/close state of the popup
+  setWarningOpen, // useState to manage the open/close state of the popup
+  handleApplied, // function to be called when the user clicks on "yes" (returns a promise)
+  warningMessage, // message to be displayed in the popup
 }) {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
+  const handleCloseSnackbar = useCallback(() => {
+    setSnackbarOpen(false);
+  }, []);
+
+  const handleYesClick = useCallback(async () => {
+    try {
+      const message = await handleApplied();
+      setSnackbarMessage(message || "Success!");
+      setSnackbarSeverity("success");
+    } catch (error) {
+      setSnackbarMessage(error.message || "Error occurred!");
+      setSnackbarSeverity("error");
+    } finally {
+      setWarningOpen(false);
+      setSnackbarOpen(true);
+    }
+  }, [handleApplied, setWarningOpen]);
+
   return (
     <>
-      <MyDialog
-        key="childModal"
-        open={warningOpen}
-        onClose={handleCloseWarning}
-        aria-labelledby="warning-modal"
-        aria-describedby="warning-modal-description"
-        maxWidth="sm"
-        keepMounted={true}
-        justifycontent="center"
+      <Snackbar
+        open={snackbarOpen}
+        
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
       >
-        <DialogTitle
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            color: "#ED174F",
-            gap: "10px",
-            fontSize: "xx-large",
+            width: "100%",
+            borderRadius: "10px !important",
+            padding: "0.7rem 1rem !important",
+            backgroundColor:  snackbarSeverity === "success" ? "#a6ff96e8 !important" : "#ffb3b3ed !important" ,
+            fontWeight: "bold",
+            fontSize: "medium",
           }}
         >
-          <WarningRounded fontSize="large" /> Warning!
-        </DialogTitle>
-        <Divider />
-        <DialogContent>
-          <Typography variant="h6" sx={{fontWeight: 'bold'}}>{msgWarning}</Typography>
-          <Box
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
+      {warningOpen && (
+        <MyDialog
+          key="childModal"
+          open={warningOpen}
+          onClose={() => setWarningOpen(false)}
+          aria-labelledby="warning-modal"
+          aria-describedby="warning-modal-description"
+          maxWidth="sm"
+          keepMounted={true}
+          justifycontent="center"
+        >
+          <DialogTitle
             sx={{
               display: "flex",
-              flexDirection: "row",
-              gap: "40px",
               justifyContent: "center",
-              mt: 4,
+              alignItems: "center",
+              color: "#ED174F",
+              gap: "10px",
+              fontSize: "xx-large",
             }}
           >
-            <PastelComponent
+            <WarningRounded fontSize="large" /> Warning!
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              {warningMessage}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "40px",
+                justifyContent: "center",
+                mt: 4,
+              }}
+            >
+              <PastelComponent
                 bgColor="#00B090"
                 textColor="white"
                 text="yes"
                 fontSize="medium"
                 style={{ width: "100px" }}
-                onClick={handleApplyed}
+                onClick={handleYesClick}
               />
 
               <PastelComponent
@@ -82,38 +119,21 @@ export default function WarningPopup({
                 text="no"
                 fontSize="medium"
                 style={{ width: "100px" }}
-                onClick={() => {handleCloseWarning()}}
+                onClick={() => {
+                  setWarningOpen(false);
+                }}
               />
-          </Box>
-        </DialogContent>
-      </MyDialog>
-
-      {/* POPUP WHEN YOU CLICK YES ON THE WARNING POPUP */}
-      <MyDialog
-        key="child-child-Modal"
-        open={confirmedOpen}
-        onClose={handleClose}
-        aria-labelledby="done-modal"
-        maxWidth="sm"
-        keepMounted={true}
-        justifycontent="center"
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: "30px",
-          }}
-        >
-          <Typography variant="h5" color="primary.dark">
-            {msgDone}
-          </Typography>
-          <IconButton onClick={handleClose}>
-            <Close fontSize="xx-large" />
-          </IconButton>
-        </Box>
-      </MyDialog>
+            </Box>
+          </DialogContent>
+        </MyDialog>
+      )}
     </>
   );
 }
+
+const MyDialog = styled(Dialog)(({ theme }) => ({
+  ".MuiPaper-root": {
+    borderRadius: "20px",
+    padding: "2rem",
+  },
+}));

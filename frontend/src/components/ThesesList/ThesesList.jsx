@@ -28,7 +28,7 @@ export default function ThesesList({ thesesData, reload }) {
           return (
             <Grid key={thesis.id} container item justifyContent="center">
               <Grid item xs={10} sm={10} md={8} lg={6} xl={5}>
-                <ThesisRow key={thesis.id} thesis={thesis} reload={newReload} />
+                <ThesisRow key={thesis.id} thesis={thesis} reload={newReload} actions={location.pathname !== homeRoute ? true : false}/>
               </Grid>
             </Grid>
           );
