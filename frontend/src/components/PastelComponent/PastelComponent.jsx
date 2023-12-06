@@ -39,7 +39,7 @@ export default function PastelComponent({
         ...style,
       }}
     >
-      {icon && icon}
+      {icon !== null ? icon : null}
       {text}
     </Button>
   ) : (
