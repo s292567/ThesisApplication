@@ -5,13 +5,13 @@ import {
   SkeletonThesisList,
   SectionTitle,
   MyOutlinedButton,
+  SkeletonApplicants
 } from "../../components";
 import { getAllProposals, getAllApplicationsForLoggedInStudent } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../contexts";
 import { Box, Divider, Grid } from "@mui/material";
 import StudentApplications from "./StudentApplications";
-import { SkeletonApplicants } from "../../components";
 import { frontendRoutes } from "../../routes";
 
 export default function StudentDashboardPage() {

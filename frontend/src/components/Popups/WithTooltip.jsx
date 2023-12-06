@@ -50,7 +50,7 @@ export default function WithTooltip({ tooltipContent, children }) {
 
   return (
     <div>
-      <div onClick={() => handleTooltipOpen()}>
+      <div onMouseOver={() => handleTooltipOpen()}>
         {children /** This is the component on which you are displaying the popover */} 
       </div>
       <Tooltip
