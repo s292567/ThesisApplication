@@ -3,24 +3,30 @@ package se2g12.thesisapplication.proposal
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import se2g12.thesisapplication.archive.Archive
+import se2g12.thesisapplication.archive.ArchiveService
 import java.time.LocalDate
+import java.util.*
 
 @RestController
 @CrossOrigin
-class ProposalController(@Autowired private val proposalService: ProposalService) {
+class ProposalController(@Autowired private val proposalService: ProposalService,private val archiveService: ArchiveService) {
 
     //getAll
     @GetMapping("/API/thesis/proposals/all")
     @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun getAllProposals(): List<ProposalDTO> {
-        return proposalService.getAllProposals()
+        return proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
-
+    @GetMapping("/API/thesis/test/{proposalId}")
+    fun getTest(@PathVariable proposalId: String): List<Archive> {
+        return archiveService.findByPropId(UUID.fromString(proposalId))
+    }
     //getByCds
     @GetMapping("API/thesis/proposals/cds")
 //    @PreAuthorize("hasRole('Student')")
     fun getProposalsByCds(@RequestParam cds: String): List<ProposalDTO> {
-        return proposalService.getProposalsByCds(cds)
+        return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
 
     // search input string across all fields
@@ -31,11 +37,11 @@ class ProposalController(@Autowired private val proposalService: ProposalService
     ): List<ProposalDTO> {
         // if query null => return all proposals
         if (query.isNullOrBlank()) {
-            return proposalService.getAllProposals()
+            return proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}
         }
 
         // else, search across multiple fields
-        return proposalService.searchProposals(query)
+        return proposalService.searchProposals(query).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
 
     @GetMapping("/API/thesis/proposals/search/{studentId}")
@@ -44,7 +50,7 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         @RequestParam(required = false) query: String?,
         @PathVariable studentId: String
     ): List<ProposalDTO> {
-        return proposalService.searchProposalByStudentCds(studentId, query)
+        return proposalService.searchProposalByStudentCds(studentId, query).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
 
     //default filtered search
@@ -53,7 +59,7 @@ class ProposalController(@Autowired private val proposalService: ProposalService
     fun searchProposalsCustom(
         @RequestBody filterCriteria: ProposalFilterCriteria
     ): List<ProposalDTO> {
-        val list = proposalService.getAllProposals()
+        val list = proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}
         println("Received filter criteria: $filterCriteria")
         println("Original List Size: ${list.size}")
 
