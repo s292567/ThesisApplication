@@ -24,14 +24,6 @@ export default function ProfessorApplicantsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  function handleGroupBy() {
-    if (groupBy === "proposal") {
-      setGroupBy("student");
-    } else {
-      setGroupBy("proposal");
-    }
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -51,6 +43,72 @@ export default function ProfessorApplicantsPage() {
       setData(response);
     });
   }, []);
+
+  function handleGroupBy() {
+    if (groupBy === "proposal") {
+      setGroupBy("student");
+    } else {
+      setGroupBy("proposal");
+    }
+  }
+
+  const handleApplicationStatusChange = (proposalId, studentId, action) => {
+    setData((prevData) => {
+      let updatedGroupedByProposals = [...prevData.groupedByProposals];
+      let updatedGroupedByStudents = [...prevData.groupedByStudents];
+
+      if (action === "accept") {
+        updatedGroupedByProposals = updatedGroupedByProposals.filter(
+          (p) => p.proposal.id !== proposalId
+        );
+        updatedGroupedByStudents = updatedGroupedByStudents
+          .map((studentGroup) => ({
+            ...studentGroup,
+            proposals: studentGroup.proposals.filter(
+              (a) => a.id !== proposalId
+            ),
+          }))
+          .filter((studentGroup) => studentGroup.proposals.length > 0);
+      } else if (action === "decline") {
+        updatedGroupedByProposals = updatedGroupedByProposals
+          .map((proposalGroup) => {
+            if (proposalGroup.proposal.id === proposalId) {
+              return {
+                ...proposalGroup,
+                students: proposalGroup.students.filter(
+                  (s) => s.id !== studentId
+                ),
+              };
+            }
+            return proposalGroup;
+          })
+          .filter((proposalGroup) => proposalGroup.students.length > 0);
+
+        updatedGroupedByStudents = updatedGroupedByStudents
+          .map((studentGroup) => {
+            if (studentGroup.student.id === studentId) {
+              return {
+                ...studentGroup,
+                proposals: studentGroup.proposals.filter(
+                  (a) => a.id !== proposalId
+                ),
+              };
+            }
+            return studentGroup;
+          })
+          .filter((studentGroup) => studentGroup.proposals.length > 0);
+      }
+
+      console.log("ByProposal:\n", updatedGroupedByProposals);
+      console.log("ByStudent:\n", updatedGroupedByStudents);
+
+      return {
+        ...prevData,
+        groupedByProposals: updatedGroupedByProposals,
+        groupedByStudents: updatedGroupedByStudents,
+      };
+    });
+  };
 
   if (isLoading) {
     return <SkeletonApplicants count={4} />;
@@ -97,7 +155,11 @@ export default function ProfessorApplicantsPage() {
       </StyledToggleButtonGroup>
       <Divider
         orientation="horizontal"
-        sx={{ bgcolor: "#433F42", width: {xs: '90%',md: "50%"}, marginLeft: {xs: '5%',md: "25%"} }}
+        sx={{
+          bgcolor: "#433F42",
+          width: { xs: "90%", md: "50%" },
+          marginLeft: { xs: "5%", md: "25%" },
+        }}
       />
       <ProfessorApplicants
         groupedByProposalArray={
@@ -107,6 +169,7 @@ export default function ProfessorApplicantsPage() {
           groupBy === "student" ? data.groupedByStudents : null
         }
         actions={true}
+        onApplicationStatusChange={handleApplicationStatusChange}
       />
     </Box>
   );

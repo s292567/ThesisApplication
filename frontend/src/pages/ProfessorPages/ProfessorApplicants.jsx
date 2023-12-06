@@ -1,3 +1,4 @@
+// ProfessorApplicants.jsx is the component that renders the logic for the table of applicants
 import React, { useState } from "react";
 import {
   useTheme,
@@ -36,6 +37,7 @@ export default function ProfessorApplicants({
   groupedByProposalArray = null,
   groupedByStudentArray = null,
   actions = false,
+  onApplicationStatusChange = () => {},
 }) {
   const [showApplicants, setShowApplicants] = useState({});
   const [action, setAction] = useState(""); // ["accept", "decline"]
@@ -51,14 +53,23 @@ export default function ProfessorApplicants({
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
-  // INSTEAD OF A FORCED REFRESH IS BETTER TO UPDATE THE STATIC DATA WITH THE NEW ONE
   const handleApplied = async () => {
     try {
       if (action === "accept") {
         await acceptApplication(IDs.proposalId, IDs.studentId, userId);
+        onApplicationStatusChange(
+          IDs.proposalId,
+          IDs.studentId,
+          "accept"
+        );
         return "Application successfully ACCEPTED.";
       } else if (action === "decline") {
         await declineApplication(IDs.proposalId, IDs.studentId, userId);
+        onApplicationStatusChange(
+          IDs.proposalId,
+          IDs.studentId,
+          "decline"
+        );
         return "Application successfully DECLINED.";
       }
     } catch (error) {
@@ -66,6 +77,7 @@ export default function ProfessorApplicants({
       throw new Error("Failed to process the application.");
     }
   };
+
   const handleAccept = (proposalId, studentId) => {
     setAction("accept");
     setIDs({ proposalId, studentId });
@@ -211,12 +223,14 @@ export default function ProfessorApplicants({
       >
         <Grid container direction="column" justifyContent="center" spacing={3}>
           {(groupedByStudentArray || groupedByProposalArray).map((item) => (
-            <Grid container item justifyContent="center">
+            <Grid
+              container
+              item
+              justifyContent="center"
+              key={groupedByStudentArray ? item.student.id : item.proposal.id}
+            >
               <Grid item xs={10} sm={10} md={10} lg={8} xl={6}>
                 <Card
-                  key={
-                    groupedByStudentArray ? item.student.id : item.proposal.id
-                  }
                   variant="outlined"
                   sx={{
                     borderRadius: "18px",

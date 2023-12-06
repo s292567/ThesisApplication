@@ -1,6 +1,6 @@
 // ProfessorDashboardPage.jsx
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, Divider } from "@mui/material";
 import {
   ThesesList,
   SkeletonThesisList,
@@ -97,7 +97,8 @@ export default function ProfessorDashboardPage() {
           <SkeletonThesisList count={3} />
         )}
       </Box>
-
+      <Box padding={4} />
+      <Divider variant="middle"/>
       <Box>
         <SectionTitle
           text={"Applicants preview:"}
