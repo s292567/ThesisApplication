@@ -10,7 +10,8 @@ import {
 } from './API_proposals.js';
 
 import {
-    getAllApplicationsDataForProfessor
+    getAllApplicationsDataForProfessor,
+    getAllApplicationsForLoggedInStudent,
 } from './API_applications.js';
 
 import axiosInstance from './API_Config.js'; // Import axios instance
@@ -33,5 +34,6 @@ export {
     getProposalsByProfessorId,
     getAllApplicationsDataForProfessor,
     loginApi, 
+    getAllApplicationsForLoggedInStudent,
     getProfileApi
 };

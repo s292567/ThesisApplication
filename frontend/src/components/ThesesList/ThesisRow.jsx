@@ -10,12 +10,11 @@ import {
   useTheme,
 } from "@mui/material";
 import { Delete, EditNoteRounded } from "@mui/icons-material";
-import { PastelComponent, ThesisDetail } from "../index.js";
+import { PastelComponent, ThesisDetail, StyledPaper } from "../index.js";
 import { useUserContext } from "../../contexts";
 
 export default function ThesisRow({
   thesis,
-  reload,
   actions = false,
   style = { backgroundColor: "#F4F5FF" },
 }) {
@@ -25,10 +24,6 @@ export default function ThesisRow({
   const [detailOpen, setDetailOpen] = useState(false);
 
   const { user } = useUserContext();
-
-  const newReload = () => {
-    reload();
-  };
 
   const handleOpenDetail = () => {
     setDetailOpen(true);
@@ -122,20 +117,3 @@ export default function ThesisRow({
     </>
   );
 }
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  maxWidth: "100%",
-  backgroundColor: "#F4F5FF",
-  padding: "2rem",
-  borderRadius: "0.8rem",
-  ...theme.typography.body2,
-  transition: "box-shadow .3s", // Smooth transition for shadow
-  "& button": {
-    display: "none",
-  },
-  "&:hover": {
-    cursor: "pointer",
-    "& button": { display: "block" },
-    boxShadow: theme.shadows[24], // Elevated shadow on hover
-  },
-}));

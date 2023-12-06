@@ -1,33 +1,31 @@
 // StudentApplications.jsx is used to display the list of theses that the student has applied to.
-
 import React, { useEffect, useState } from "react";
-import { Typography } from "@mui/material";
 import { SectionTitle, SkeletonThesisList } from "../../components";
-import MyTheses from "../../components/ThesesList/MyTheses.jsx";
+import StudentApplications from "./StudentApplications.jsx";
 import { getAllApplicationsForLoggedInStudent } from "../../api/API_applications.js";
 
 export default function StudentApplicationsPage() {
-  const [proposals, setProposals] = useState(null);
+  const [applications, setApplications] = useState(null);
 
   useEffect(() => {
-    const fetchProposals = async () => {
+    const fetchApplications = async () => {
       let username = localStorage.getItem("username");
       try {
         // This should be your API call
         return await getAllApplicationsForLoggedInStudent(username);
       } catch (error) {
-        console.error("Failed to fetch proposals:", error);
+        console.error("Failed to fetch applications:", error);
       }
     };
 
-    fetchProposals().then((response) => setProposals(response));
+    fetchApplications().then((response) => setApplications(response));
   }, []);
 
   return (
     <>
       <SectionTitle text={'My applications:'} />
-      {proposals ? (
-        <MyTheses thesesData={proposals} view={"displayApply"} />
+      {applications ? (
+        <StudentApplications applications={applications}/>
       ) : (
         <SkeletonThesisList count={3} />
       )}

@@ -16,11 +16,14 @@ import {
 import { applyToProposal } from "../../api/index.js";
 import { useUserContext } from "../../contexts/index.js";
 import { WarningPopup } from "../index.js";
+import { frontendRoutes } from "../../routes/index.js";
+import { useLocation } from "react-router-dom";
 
 export default function ThesisDetail({ open, handleClose, thesis }) {
   const { userId, user } = useUserContext();
   const formatFullName = (person) => `${person.name} ${person.surname}`;
   const isMobile = useMediaQuery("(max-width: 600px)");
+  const location = useLocation();
 
   // HERE IN THEORY WE SHOULD CHECK IF THE STUDENT HAS ALREADY APPLIED TO THE THESIS OR NOT THROUGH AN API CALL
   const [ alreadyApplied, setAlreadyApplied ] = useState(false);
@@ -42,6 +45,8 @@ export default function ThesisDetail({ open, handleClose, thesis }) {
       throw new Error(error.message || "Failed to apply to the thesis.");
     }
   };
+
+  if (!thesis) return null;
 
   return (
     <>
@@ -107,7 +112,7 @@ export default function ThesisDetail({ open, handleClose, thesis }) {
                 Expiration: {thesis.expiration}
               </TextWrap>
 
-              {user.role === "Student" && (
+              {(user.role === "Student" && location.pathname !== frontendRoutes.studentApplications) && (
                 <ApplyButton
                   key="lateral"
                   isMobile={isMobile}
@@ -162,7 +167,7 @@ export default function ThesisDetail({ open, handleClose, thesis }) {
         <DialogActions
           sx={{ justifyContent: "space-between", alignItems: "flex-end" }}
         >
-          {user.role === "Student" && (
+          {(user.role === "Student" && location.pathname !== frontendRoutes.studentApplications) && (
             <>
               <ApplyButton
                 key="lateral"

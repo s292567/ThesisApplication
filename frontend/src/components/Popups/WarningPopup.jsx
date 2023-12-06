@@ -47,7 +47,7 @@ export default function WarningPopup({
     <>
       <Snackbar
         open={snackbarOpen}
-        
+        autoHideDuration={2500}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
       >

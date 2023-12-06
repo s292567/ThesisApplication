@@ -14,33 +14,6 @@ import ProfessorApplicants from "./ProfessorApplicants";
 import { SkeletonApplicants } from "../../components";
 import { getAllApplicationsDataForProfessor } from "../../api";
 
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
-  justifyContent: "center",
-  "& .MuiToggleButtonGroup-grouped": {
-    justifyContent: "space-between",
-    margin: "2rem",
-    fontSize: "large",
-    border: "none",
-    color: "white",
-    backgroundColor: "#B2B5E0",
-    "&:hover": {
-      backgroundColor: "#B2B5E0",
-    },
-    "&.Mui-selected": {
-      backgroundColor: "#2f1c6a",
-      fontWeight: "bold",
-      color: "white",
-    },
-    "&:not(:first-of-type)": {
-      borderRadius: "20px",
-      marginLeft: "2rem",
-    },
-    "&:first-of-type": {
-      borderRadius: "20px",
-    },
-  },
-});
-
 export default function ProfessorApplicantsPage() {
   const [groupBy, setGroupBy] = useState("proposal");
 
@@ -50,7 +23,14 @@ export default function ProfessorApplicantsPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [dirty, setDirty] = useState(false);
+
+  function handleGroupBy() {
+    if (groupBy === "proposal") {
+      setGroupBy("student");
+    } else {
+      setGroupBy("proposal");
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,10 +50,8 @@ export default function ProfessorApplicantsPage() {
     fetchData().then((response) => {
       setData(response);
     });
-  }, [dirty]);
-  const refresh = () => {
-    setDirty(!dirty);
-  };
+  }, []);
+
   if (isLoading) {
     return <SkeletonApplicants count={4} />;
   }
@@ -82,10 +60,7 @@ export default function ProfessorApplicantsPage() {
     return <p>Error: {error}</p>;
   }
 
-  if (
-    data.groupedByProposals.length === 0 &&
-    data.groupedByStudents.length === 0
-  ) {
+  if (data.groupedByProposals.length === 0) {
     return (
       <Box
         sx={{
@@ -102,50 +77,64 @@ export default function ProfessorApplicantsPage() {
       </Box>
     );
   }
-  function handleGroupBy() {
-    if (groupBy === "proposal") {
-      setGroupBy("student");
-    } else {
-      setGroupBy("proposal");
-    }
-  }
 
   return (
-    <Box sx={{ display: "flex", flexWrap: "wrap", alignContent: "center", flexDirection: "column", }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          padding: "1rem",
-          justifyContent: "center",
-          maxWidth: "1000px",
-        }}
+    <Box
+      sx={{
+        display: "flex",
+        alignContent: "center",
+        flexDirection: "column",
+      }}
+    >
+      <StyledToggleButtonGroup
+        value={groupBy}
+        exclusive
+        onChange={handleGroupBy}
+        aria-label="group by choice"
       >
-        <StyledToggleButtonGroup
-          value={groupBy}
-          exclusive
-          onChange={handleGroupBy}
-          aria-label="group by choice"
-        >
-          <ToggleButton value="proposal">View by Thesis</ToggleButton>
-          <ToggleButton value="student">View by student</ToggleButton>
-        </StyledToggleButtonGroup>
-        <Divider
-          orientation="horizontal"
-          variant="middle"
-          sx={{ bgcolor: "#433F42" }}
-        />
-
-        <ProfessorApplicants
-          groupedByProposalArray={
-            groupBy === "proposal" ? data.groupedByProposals : null
-          }
-          groupedByStudentArray={
-            groupBy === "student" ? data.groupedByStudents : null
-          }
-          refresh={refresh}
-        />
-      </Box>
+        <ToggleButton value="proposal">View by Thesis</ToggleButton>
+        <ToggleButton value="student">View by student</ToggleButton>
+      </StyledToggleButtonGroup>
+      <Divider
+        orientation="horizontal"
+        sx={{ bgcolor: "#433F42", width: {xs: '90%',md: "50%"}, marginLeft: {xs: '5%',md: "25%"} }}
+      />
+      <ProfessorApplicants
+        groupedByProposalArray={
+          groupBy === "proposal" ? data.groupedByProposals : null
+        }
+        groupedByStudentArray={
+          groupBy === "student" ? data.groupedByStudents : null
+        }
+        actions={true}
+      />
     </Box>
   );
 }
+
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
+  justifyContent: "center",
+  "& .MuiToggleButtonGroup-grouped": {
+    justifyContent: "space-between",
+    margin: "2rem",
+    fontSize: "large",
+    border: "none",
+    color: "white",
+    backgroundColor: "#B2B5E0",
+    "&:hover": {
+      backgroundColor: "#B2B5E0",
+    },
+    "&.Mui-selected": {
+      backgroundColor: "#2f1c6a",
+      fontWeight: "bold",
+      color: "white",
+    },
+    "&:not(:first-of-type)": {
+      borderRadius: "20px",
+      marginLeft: "1rem",
+    },
+    "&:first-of-type": {
+      borderRadius: "20px",
+    },
+  },
+});
