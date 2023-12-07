@@ -1,6 +1,4 @@
 package se2g12.thesisapplication.proposal
-
-import se2g12.thesisapplication.teacher.Teacher
 import java.util.*
 
 

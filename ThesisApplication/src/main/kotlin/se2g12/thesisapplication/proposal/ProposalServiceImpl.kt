@@ -22,7 +22,7 @@ class ProposalServiceImpl(
 )
     : ProposalService {
     override fun getProposalByProfessorId(supervisorId: String): List<ProposalDTO> {
-        var prop = proposalRepository.findAllBySupervisorId(supervisorId)
+        val prop = proposalRepository.findAllBySupervisorId(supervisorId)
         return prop.map{it.toDTO()}
     }
     override fun updateProposal(newProposal: NewProposalDTO, professorId: String,oldName:String,old: Proposal):ProposalDTO {
@@ -47,9 +47,8 @@ class ProposalServiceImpl(
         return old.toDTO()
     }
     private fun checkProposal(newProposal: NewProposalDTO):String{
-        var message:String=""
+        var message=""
         //date check
-        val simpleDate= SimpleDateFormat("yyyy-MM-dd")
         val currentDate=LocalDate.now()
         if(currentDate.isAfter(newProposal.expiration))
             message= "$message expire date is before now"
@@ -70,7 +69,6 @@ class ProposalServiceImpl(
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
         // username=email of the logged in professor
         val supervisor = teacherRepository.findByEmail(professorId).first()
-        val newPropGroups = newProposal.groups.map { it.uppercase(Locale.getDefault()) }
         val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
         if(! newProposal.coSupervisors.isNullOrEmpty()){
             for (coSup in newProposal.coSupervisors!!){
@@ -111,9 +109,6 @@ class ProposalServiceImpl(
     }
 
     override fun deleteProposalById(proposalId: UUID) {
-        // Get the proposal
-        val proposal = proposalRepository.findById(proposalId).orElse(null) ?: return
-
         // Delete associated applications
         val applications = applicationRepository.findByProposalId(proposalId)
         applications.forEach { applicationRepository.delete(it) }
