@@ -27,4 +27,5 @@ interface ApplicationRepository : JpaRepository<Application, UUID> {
     fun getAllApplicationsByProposalId(proposalId: UUID): List<Application>
 
     fun findByStudentId(studentId: String): List<Application>
+    fun findByProposalId(proposalId: UUID): List<Application>
 }
