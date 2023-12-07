@@ -1,6 +1,7 @@
 package se2g12.thesisapplication.proposal
 
 import se2g12.thesisapplication.teacher.Teacher
+import java.util.*
 
 
 interface ProposalService {
@@ -10,6 +11,8 @@ interface ProposalService {
     fun getAllProposals(): List<ProposalDTO>
     fun getProposalsByCds(cds: String): List<ProposalDTO>
     fun searchProposals(query: String): List<ProposalDTO>
+    fun deleteProposalById(proposalId: UUID)
+    fun copyProposal(proposalId: UUID): Proposal
     fun searchProposalByStudentCds(studentId: String, query: String? ): List<ProposalDTO>
 
     fun getDistinctSupervisors(): List<String>
@@ -30,5 +33,6 @@ interface ProposalService {
 
     // Retrieve distinct proposal cds
     fun getDistinctProposalCds(): List<String>
+
 }
 
