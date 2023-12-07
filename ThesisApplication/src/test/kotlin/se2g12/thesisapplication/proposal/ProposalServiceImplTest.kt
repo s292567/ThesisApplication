@@ -8,13 +8,10 @@ import org.junit.jupiter.api.extension.ExtendWith
 import se2g12.thesisapplication.GroupDep.GroupDep
 import se2g12.thesisapplication.GroupDep.GroupDepRepository
 import se2g12.thesisapplication.degree.Degree
-import se2g12.thesisapplication.degree.DegreeRepository
-import se2g12.thesisapplication.department.Department
 import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
