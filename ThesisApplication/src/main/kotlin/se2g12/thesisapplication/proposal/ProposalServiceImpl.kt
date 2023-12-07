@@ -3,28 +3,28 @@ package se2g12.thesisapplication.proposal
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import se2g12.thesisapplication.GroupDep.GroupDepRepository
+import se2g12.thesisapplication.application.ApplicationRepository
+import se2g12.thesisapplication.application.ProposalNotFoundError
 import se2g12.thesisapplication.student.StudentRepository
-import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.text.SimpleDateFormat
-import java.time.Instant
 import java.time.LocalDate
 import java.util.*
 
 
 @Service
-class ProposalServiceImpl (
+class ProposalServiceImpl(
     private val proposalRepository: ProposalRepository,
     private val teacherRepository: TeacherRepository,
     private val studentRepository: StudentRepository,
-    private val groupDepRepository: GroupDepRepository
+    private val groupDepRepository: GroupDepRepository,
+    private val applicationRepository: ApplicationRepository
 )
     : ProposalService {
     override fun getProposalByProfessorId(supervisorId: String): List<ProposalDTO> {
         var prop = proposalRepository.findAllBySupervisorId(supervisorId)
         return prop.map{it.toDTO()}
     }
-
     override fun updateProposal(newProposal: NewProposalDTO, professorId: String,oldName:String,old: Proposal):ProposalDTO {
         println(proposalRepository.findAll().filter{it.title==oldName})
         val message=checkProposal(newProposal)
@@ -109,6 +109,46 @@ class ProposalServiceImpl (
         proposalRepository.save(proposal)
 
     }
+
+    override fun deleteProposalById(proposalId: UUID) {
+        // Get the proposal
+        val proposal = proposalRepository.findById(proposalId).orElse(null) ?: return
+
+        // Delete associated applications
+        val applications = applicationRepository.findByProposalId(proposalId)
+        applications.forEach { applicationRepository.delete(it) }
+
+        // Delete the proposal itself
+        proposalRepository.deleteById(proposalId)
+    }
+
+    override fun copyProposal(proposalId: UUID): Proposal {
+        val originalProposal = proposalRepository.findById(proposalId).orElseThrow {
+            throw ProposalNotFoundError("Proposal not found!")
+        }
+
+        // Create a new proposal with the same attributes, excluding the ID
+        val copiedProposal = Proposal(
+            title = originalProposal.title,
+            supervisor = originalProposal.supervisor,
+            coSupervisors = originalProposal.coSupervisors,
+            keywords = originalProposal.keywords,
+            type = originalProposal.type,
+            groups = originalProposal.groups,
+            description = originalProposal.description,
+            requiredKnowledge = originalProposal.requiredKnowledge,
+            notes = originalProposal.notes,
+            expiration = originalProposal.expiration,
+            level = originalProposal.level,
+            cds = originalProposal.cds
+        )
+
+        // Save the copied proposal
+        val savedCopiedProposal = proposalRepository.save(copiedProposal)
+
+        return savedCopiedProposal
+    }
+
     //getAll
 
     override fun getAllProposals(): List<ProposalDTO> {
