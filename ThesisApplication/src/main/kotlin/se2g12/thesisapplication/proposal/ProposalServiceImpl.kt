@@ -7,7 +7,6 @@ import se2g12.thesisapplication.application.ApplicationRepository
 import se2g12.thesisapplication.application.ProposalNotFoundError
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.TeacherRepository
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
 
