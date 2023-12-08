@@ -10,7 +10,12 @@ import {
   useTheme,
 } from "@mui/material";
 import { Delete, EditNoteRounded } from "@mui/icons-material";
-import { PastelComponent, ThesisDetail, StyledPaper } from "../index.js";
+import {
+  PastelComponent,
+  ThesisDetail,
+  StyledPaper,
+  ThesisForm,
+} from "../index.js";
 import { useUserContext } from "../../contexts";
 
 export default function ThesisRow({
@@ -22,6 +27,7 @@ export default function ThesisRow({
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [detailOpen, setDetailOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false); // EDIT MODAL
 
   const { user } = useUserContext();
 
@@ -35,7 +41,7 @@ export default function ThesisRow({
 
   return (
     <>
-      <StyledPaper elevation={1} onClick={handleOpenDetail} sx={{ ...style }}>
+      <StyledPaper elevation={1} sx={{ ...style }}>
         {/** TITLE/DESCRIPTION SECTION */}
         <Typography
           variant="h4"
@@ -81,6 +87,7 @@ export default function ThesisRow({
                 onClick={(event) => {
                   event.stopPropagation();
                   /// EDIT FUNCTION
+                  setEditOpen(true);
                 }}
               />
               <PastelComponent
@@ -92,6 +99,12 @@ export default function ThesisRow({
                   event.stopPropagation();
                   /// DELETE FUNCTION
                 }}
+              />
+              <ThesisForm
+                open={editOpen}
+                onClose={() => setEditOpen(false)}
+                onSubmit={() => console.log("submitted")}
+                thesis={thesis}
               />
             </Box>
           )}

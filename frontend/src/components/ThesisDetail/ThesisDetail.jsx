@@ -1,46 +1,45 @@
 // ThesisDetail.jsx
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useUserContext } from "../../contexts";
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
-  DialogActions,
-  Button,
+  DialogTitle,
+  Divider,
+  Paper,
+  IconButton,
   Typography,
   Box,
-  Divider,
-  styled,
-  useMediaQuery,
+  Grid,
 } from "@mui/material";
-
-import { applyToProposal } from "../../api/index.js";
-import { useUserContext } from "../../contexts/index.js";
-import { WarningPopup } from "../index.js";
-import { frontendRoutes } from "../../routes/index.js";
 import { useLocation } from "react-router-dom";
+import { Close } from "@mui/icons-material";
+import { PastelComponent, WarningPopup } from "../index";
+import { frontendRoutes } from "../../routes";
+import { applyToProposal } from "../../api";
 
-export default function ThesisDetail({ open, handleClose, thesis }) {
+export default function ThesisDetail({ thesis, open, handleClose }) {
   const { userId, user } = useUserContext();
-  const formatFullName = (person) => `${person.name} ${person.surname}`;
-  const isMobile = useMediaQuery("(max-width: 600px)");
+
+	/// with the following state we can check if the student has already applied to the thesis or not
+	/// and show the correct button, and this information must be retrieved from the backend
+  const [alreadyApplied, setAlreadyApplied] = useState(false); // HERE INSTEAD OF FALSE THERE WILL BE THE THESIS.STATUS
+	const [warningOpen, setWarningOpen] = useState(false);
+
   const location = useLocation();
 
-  // HERE IN THEORY WE SHOULD CHECK IF THE STUDENT HAS ALREADY APPLIED TO THE THESIS OR NOT THROUGH AN API CALL
-  const [ alreadyApplied, setAlreadyApplied ] = useState(false);
+  const formatFullName = (person) => `${person.name} ${person.surname}`;
 
-  const [warningOpen, setWarningOpen] = useState(false);
   const handleApplied = async () => {
     try {
-      const response = await applyToProposal({
+      await applyToProposal({
         studentId: userId,
         proposalId: thesis.id,
-      }); // This should be your API call
-      setAlreadyApplied(true);
+      });
       // Return a success message
       return "You have successfully applied to this thesis!";
     } catch (error) {
       console.error("Failed to apply:", error);
-
       // Throw an error with a message to be caught and displayed by the Snackbar
       throw new Error(error.message || "Failed to apply to the thesis.");
     }
@@ -48,192 +47,198 @@ export default function ThesisDetail({ open, handleClose, thesis }) {
 
   if (!thesis) return null;
 
+  const textColor = "#27005D";
+  const subTitlesColor = "#40128B";
+
   return (
     <>
-      <MyDialog
+      <Dialog
         open={open}
         onClose={handleClose}
         scroll={"paper"}
-        aria-labelledby="thesis-dialog-title"
-        aria-describedby="thesis-dialog-description"
+        aria-labelledby="thesis-dialog-details"
+        aria-describedby="thesis-dialog-details"
         maxWidth="lg"
+        fullWidth={true}
         keepMounted={true}
+        PaperProps={{
+          sx: {
+            m: 0,
+            p: 1,
+            border: "none",
+            borderRadius: "20px",
+            backgroundColor: "#F4F5FF",
+            color: textColor,
+          },
+        }}
       >
-        <DialogTitle
-          id="thesis-dialog-title"
-          sx={{
-            fontSize: "1.9rem",
-            fontWeight: "600",
-            color: (theme) => theme.palette.primary.dark,
-          }}
-        >
-          {thesis.title}
-        </DialogTitle>
+        <DialogTitle>
+          <PastelComponent
+            bgColor={"white"}
+            textColor={textColor}
+            text={"valid until: " + thesis.expiration}
+            style={{
+              padding: "0.3rem 1rem",
+              borderRadius: "10px",
+              border: "1px solid whitesmoke",
+              boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
+              marginBottom: "0.5rem",
+            }}
+          />
+          <PastelComponent
+            bgColor={"white"}
+            textColor={textColor}
+            text={thesis.level}
+            style={{
+              padding: "0.3rem 1rem",
+              borderRadius: "10px",
+              border: "1px solid whitesmoke",
+              boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
+              marginBottom: "1rem",
+            }}
+          />
 
-        <DialogContent>
+          <Typography mb={2} sx={{fontSize: '3.2rem'}}>
+            <b>{thesis.title}</b>
+          </Typography>
+
           <Box
             sx={{
               display: "flex",
-              flexDirection: isMobile ? "column" : "row",
+              flexDirection: "row",
               justifyContent: "space-between",
             }}
           >
-            {/* Left Section */}
-            <Box
-              sx={{
-                flex: "1 1 auto",
-                flexDirection: isMobile ? "row" : "column",
-                marginRight: 2,
-                backgroundColor: (theme) => theme.palette.primary.lighter,
-                borderRadius: "12px",
-              }}
-            >
-              <TextWrap
-                variant="subtitle1"
-                color="textPrimary"
-                sx={{ fontSize: "1.2rem" }}
-              >
-                {thesis.type}
-              </TextWrap>
-              <TextWrap
-                variant="subtitle1"
-                color="textPrimary"
-                sx={{ fontSize: "1.2rem" }}
-              >
-                {thesis.level}
-              </TextWrap>
-              <TextWrap variant="body1" sx={{ mt: 1 }}>
-                Keywords: {thesis.keywords.join(", ")}
-              </TextWrap>
-              <TextWrap variant="body1" sx={{ mt: 1 }}>
-                Required Knowledge: {thesis.requiredKnowledge}
-              </TextWrap>
-              <TextWrap variant="body1">
-                Expiration: {thesis.expiration}
-              </TextWrap>
-
-              {(user.role === "Student" && location.pathname !== frontendRoutes.studentApplications) && (
-                <ApplyButton
-                  key="lateral"
-                  isMobile={isMobile}
-                  disabled={alreadyApplied}
-                  onCLick={() => setWarningOpen(true)}
-                />
-              )}
+            <Box>
+              <Typography variant="body1">
+                <b>keywords:</b>
+              </Typography>
+              <Typography variant="body2" mb={2} color={textColor}>
+                {thesis.keywords}
+              </Typography>
             </Box>
-
-            {/* Right Section */}
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{ display: isMobile ? "none" : "flex" }}
-            />
-            <Box sx={{ flex: "1 1 auto", marginLeft: isMobile ? "none" : 2 }}>
-              <Box sx={{ fontSize: "1.2rem", fontWeight: "500" }}>
-                Supervisor:
-                <TextWrap sx={{ maxWidth: "200px" }}>
-                  {formatFullName(thesis.supervisor)}
-                </TextWrap>
-              </Box>
-              {thesis.coSupervisors.length > 0 && (
-                <Box sx={{ fontSize: "1.2rem", fontWeight: "500" }}>
-                  Co-Supervisors:
-                  <TextWrap>{thesis.coSupervisors.join(", ")}</TextWrap>
-                </Box>
-              )}
-              <TextWrap mt={4}>
-                <Typography
-                  gutterBottom
-                  sx={{
-                    fontSize: "1.8rem",
-                    color: (theme) => theme.palette.primary.dark,
+            {/**
+             * APPLY BUTTON SECTION
+             */}
+            {user.role === "Student" &&
+            location.pathname !== frontendRoutes.studentApplications ? (
+              !alreadyApplied ? (
+                <>
+                  <PastelComponent
+                    text={"apply"}
+                    textColor={"white"}
+                    bgColor={"#2192FF"}
+                    onClick={() => setWarningOpen(true)}
+                    style={{
+                      borderRadius: "12px",
+                      padding: "0.4rem 1.2rem",
+                      fontSize: "1.2rem",
+                    }}
+                  />
+                  <WarningPopup
+                    warningOpen={warningOpen}
+                    setWarningOpen={setWarningOpen}
+                    handleApplied={handleApplied}
+                    warningMessage={"Are you sure you want to apply?"}
+                  />
+                </>
+              ) : (
+                <PastelComponent
+                  text={"applied"}
+                  textColor={"white"}
+                  bgColor={"#63CE78"}
+                  style={{
+                    borderRadius: "12px",
+                    padding: "0.4rem 1.2rem",
+                    fontSize: "1.2rem",
                   }}
-                >
-                  Description:
-                </Typography>
-                <Typography sx={{ fontSize: "1.1rem" }}>
-                  {" "}
-                  {thesis.description}{" "}
-                </Typography>
-              </TextWrap>
-              {thesis.notes && (
-                <Typography variant="body2" sx={{ mt: 6 }}>
-                  <strong>Notes: </strong> {thesis.notes}
-                </Typography>
-              )}
-            </Box>
+                />
+              )
+            ) : null}
           </Box>
-        </DialogContent>
-        <DialogActions
-          sx={{ justifyContent: "space-between", alignItems: "flex-end" }}
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: "absolute",
+            right: 24,
+            top: 24,
+            backgroundColor: "#E90064",
+            color: "white",
+          }}
         >
-          {(user.role === "Student" && location.pathname !== frontendRoutes.studentApplications) && (
-            <>
-              <ApplyButton
-                key="lateral"
-                isMobile={!isMobile}
-                disabled={alreadyApplied}
-                onCLick={() => setWarningOpen(true)}
-              />
-              <WarningPopup
-                warningOpen={warningOpen}
-                setWarningOpen={setWarningOpen}
-                handleApplied={handleApplied}
-                warningMessage={"Are you sure you want to apply?"}
-              />
-            </>
-          )}
+          <Close />
+        </IconButton>
+        <Divider variant="middle" sx={{ marginTop: "-1rem" }} />
+        <DialogContent>
+          <Paper
+            elevation={0}
+            sx={{
+              padding: "1.5rem",
+              borderRadius: "20px",
+              border: "1px solid whitesmoke",
+              backgroundColor: "white",
+              color: textColor,
+            }}
+          >
+            <Grid container spacing={2} mb={2}>
+              <Grid item xs={12} container spacing={0}>
+                <Grid item xs={12}>
+                  <Typography variant="body1">Type:</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body1" color={subTitlesColor}>
+                    <b>{thesis.type}</b>
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} container spacing={0}>
+                <Grid item xs={12}>
+                  <Typography variant="body1">Professor:</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body1" color={subTitlesColor}>
+                    <b>{formatFullName(thesis.supervisor)}</b>
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} container spacing={0}>
+                <Grid item xs={12}>
+                  <Typography variant="body1">CoSupervisor:</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body1" color={subTitlesColor}>
+                    <b>{thesis.coSupervisors.join(", ")}</b>
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
 
-          <Button onClick={handleClose} color="error" size="large">
-            Close
-          </Button>
-        </DialogActions>
-      </MyDialog>
+            <Divider sx={{ width: "60%", marginBottom: "2rem" }} />
+
+            <Typography variant="h4" mb={1} color={subTitlesColor}>
+              <b>Description</b>
+            </Typography>
+            <Typography variant="body1" ml={1} mb={5}>
+              {thesis.description}
+            </Typography>
+
+            <Typography variant="h6" color={subTitlesColor}>
+              <b>Required Knowledge</b>
+            </Typography>
+            <Typography variant="body1" ml={1} mb={6}>
+              {thesis.requiredKnowledge}
+            </Typography>
+
+            {thesis.notes ? (
+              <Typography variant="body2">
+                <strong>Notes: </strong> {thesis.notes}
+              </Typography>
+            ) : null}
+          </Paper>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
-
-const ApplyButton = ({ isMobile, onCLick, disabled=false }) => {
-  return (
-    <StyledButton
-      size="large"
-      onClick={() => onCLick()}
-      disabled={disabled}
-      sx={{ display: isMobile ? "none" : "block", mt: 2 }}
-    >
-      Apply
-    </StyledButton>
-  );
-};
-
-const TextWrap = styled(Box)({
-  backgroundColor: "whitesmoke",
-  borderRadius: "12px",
-  padding: "0.3rem 0.8rem",
-  marginBottom: "1rem",
-  width: "auto",
-});
-
-const MyDialog = styled(Dialog)(({ theme }) => ({
-  ".MuiPaper-root": {
-    zIndex: 2000,
-    borderRadius: "20px",
-    padding: "2rem",
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.dark,
-  color: "white",
-  "&:hover": {
-    backgroundColor: theme.palette.primary.main,
-  },
-  "&:disabled": {
-    backgroundColor: "grey",
-  },
-  fontWeight: "600",
-  textTransform: "none",
-  borderRadius: "20px",
-  padding: theme.spacing(1, 3),
-}));

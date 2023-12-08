@@ -1,4 +1,3 @@
-import ProposalForm from "./ProposalForm/ProposalForm"
 import Navbar from "./Navbar/Navbar"
 
 import LoggedInNavbar from "./Navbar/LoggedInNavbar"
@@ -17,29 +16,32 @@ import WarningPopup from "./Popups/WarningPopup.jsx"
 import SkeletonApplicants from "./Skeletons/SkeletonApplicants.jsx";
 
 import WithTooltip from "./Popups/WithTooltip.jsx"
-import EditForm from "./EditProposal/EditProposal.jsx";
 
 import SectionTitle from "./GeneralComponents/SectionTitle.jsx";
 
 import StyledPaper from "./GeneralComponents/StyledPaper.jsx";
 
+import ThesisForm from "./ThesisForm/ThesisForm.jsx";
+
+import AsynchronousAutocomplete from "./GeneralComponents/AsynchronousAutocomplete.jsx";
+
 export {
     Navbar,
     LoggedInNavbar,
-    
-    ProposalForm, 
+     
     ThesisDetail,
     ThesesList,
     ThesisRow,
+    ThesisForm,
 
     MyOutlinedButton,
     PastelComponent,
     WarningPopup,
     WithTooltip,
-    EditForm,
 
     SectionTitle,
     StyledPaper,
+    AsynchronousAutocomplete,
 
     SkeletonThesisList,
     SkeletonApplicants,

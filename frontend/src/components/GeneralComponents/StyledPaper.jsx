@@ -12,7 +12,6 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
     display: "none",
   },
   "&:hover": {
-    cursor: "pointer",
     "& button": { display: "block" },
     boxShadow: theme.shadows[24],
   },
