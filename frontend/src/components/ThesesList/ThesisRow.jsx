@@ -1,6 +1,13 @@
 // ThesisRow.jsx
 import React, { useState } from "react";
-import { Stack, Typography, Box, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Button,
+  Stack,
+  Typography,
+  Box,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import {
   Delete,
   EditNoteRounded,
@@ -29,7 +36,22 @@ export default function ThesisRow({
   const [editOpen, setEditOpen] = useState(false); // EDIT MODAL
   const [warningOpen, setWarningOpen] = useState(false); // DELETE MODAL
 
+  const [actionType, setActionType] = useState(""); // New state to track the action type
+
   const { user } = useUserContext();
+
+  const handleAction = (type) => {
+    setActionType(type);
+    setWarningOpen(true);
+  };
+
+  const handleApplied = () => {
+    if (actionType === "delete") {
+      onDelete(thesis.id);
+    } else if (actionType === "copy") {
+      onCopy(thesis.id);
+    }
+  };
 
   const handleOpenDetail = () => {
     setDetailOpen(true);
@@ -46,12 +68,12 @@ export default function ThesisRow({
 
   return (
     <>
-      <StyledPaper elevation={1} sx={{ ...style }}>
+      <StyledPaper elevation={1} sx={{ ...style, position: "relative" }}>
         {/** TITLE/DESCRIPTION SECTION */}
         <Typography
           variant="h4"
           mb={2}
-          sx={{ color: "#2f1c6a", fontWeight: "bold" }}
+          sx={{ color: "#2f1c6a", fontWeight: "bold", width: "70%" }}
         >
           {thesis.title}
         </Typography>
@@ -80,13 +102,26 @@ export default function ThesisRow({
           {abilitateActions() ? (
             <>
               <PastelComponent
-                bgColor={"#63ce78"} // Color for the copy button
-                icon={<ContentCopyOutlined />} // Replace with your actual copy icon
                 textColor={"white"}
-                style={{ width: "55px", height: "55px", borderRadius: "8px", top: "0px", right: "0px" }}
+                icon={
+                  <ContentCopyOutlined
+                    fontSize={"medium"}
+                    sx={{ marginTop: "8px" }}
+                  />
+                }
+                bgColor={"#2192FF"}
+                style={{
+                  width: "55px",
+                  height: "55px",
+                  borderRadius: "8px",
+                  position: "absolute",
+                  right: "2rem",
+                  top: "2rem",
+                }}
                 onClick={(event) => {
                   event.stopPropagation();
-                  /// COPY FUNCTION  
+                  /// COPY FUNCTION
+                  handleAction("copy");
                 }}
               />
               <Box sx={{ display: "flex", flexDirection: "row", gap: "15px" }}>
@@ -114,7 +149,7 @@ export default function ThesisRow({
                   onClick={(event) => {
                     event.stopPropagation();
                     /// DELETE FUNCTION
-                    setWarningOpen(true);
+                    handleAction("delete");
                   }}
                 />
                 <ThesisForm
@@ -124,7 +159,6 @@ export default function ThesisRow({
                   thesis={thesis}
                 />
               </Box>
-
             </>
           ) : null}
         </Stack>
@@ -148,10 +182,14 @@ export default function ThesisRow({
        */}
       {user.role === "Professor" && actions ? (
         <WarningPopup
-          warningMessage={"Are you sure you want to delete this thesis?"}
+          warningMessage={
+            actionType === "delete"
+              ? "Are you sure you want to delete this thesis?"
+              : "Are you sure you want to copy this thesis?"
+          }
           warningOpen={warningOpen}
           setWarningOpen={setWarningOpen}
-          handleApplied={() => onDelete(thesis.id)}
+          handleApplied={handleApplied}
         />
       ) : null}
     </>

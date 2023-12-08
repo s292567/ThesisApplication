@@ -178,9 +178,8 @@ export const deleteProposalById = async (proposalId) => {
   jwt = jwt.substring(1, jwt.length - 1);
 
   return axiosInstance
-    .post(
+    .delete(
       routes.deleteProposalById + proposalId,
-      {},
       {
         headers: {
           "Content-Type": "application/json",
@@ -189,8 +188,7 @@ export const deleteProposalById = async (proposalId) => {
       }
     )
     .then((response) => {
-      if (response.status === 200) {
-        console.log("API deleteProposalById: ", response);
+      if (response.status === 204) {
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);

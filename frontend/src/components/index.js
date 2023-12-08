@@ -26,6 +26,7 @@ import ThesisForm from "./ThesisForm/ThesisForm.jsx";
 import AsynchronousAutocomplete from "./GeneralComponents/AsynchronousAutocomplete.jsx";
 
 import SortingToolbar from "./GeneralComponents/SortingToolbar.jsx";
+import { sortThesisData } from "./GeneralComponents/SortingToolbar.jsx";
 
 export {
     Navbar,
@@ -45,6 +46,7 @@ export {
     StyledPaper,
     AsynchronousAutocomplete,
     SortingToolbar,
+    sortThesisData,
 
     SkeletonThesisList,
     SkeletonApplicants,

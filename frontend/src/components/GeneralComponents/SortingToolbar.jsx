@@ -17,31 +17,6 @@ export default function SortingToolbar({ proposals, onSortedData }) {
   const buttonTextColor = "white";
   const buttonBgColor = "#94B3FD";
 
-  const sortThesisData = (thesisData, sortCriteria, sortOrder) => {
-    return [...thesisData].sort((a, b) => {
-      let valueA, valueB;
-
-      if (sortCriteria === "expiration") {
-        valueA = new Date(a[sortCriteria]);
-        valueB = new Date(b[sortCriteria]);
-      } else if (sortCriteria === "keywords") {
-        valueA = a[sortCriteria].join(", ");
-        valueB = b[sortCriteria].join(", ");
-      } else {
-        valueA = a[sortCriteria];
-        valueB = b[sortCriteria];
-      }
-
-      if (valueA < valueB) {
-        return sortOrder === "ascending" ? -1 : 1;
-      }
-      if (valueA > valueB) {
-        return sortOrder === "ascending" ? 1 : -1;
-      }
-      return 0;
-    });
-  };
-
   const handleSort = (criteria) => {
     const newSortOrder =
       sortState[criteria] === "ascending"
@@ -56,7 +31,7 @@ export default function SortingToolbar({ proposals, onSortedData }) {
       ? sortThesisData(proposals, criteria, newSortOrder)
       : proposals;
     
-    onSortedData(sortedData);
+      onSortedData(sortedData, criteria, newSortOrder); // Pass additional parameters
   };
 
   const renderSortIcon = (criteria) => {
@@ -114,3 +89,28 @@ export default function SortingToolbar({ proposals, onSortedData }) {
     </AppBar>
   );
 }
+
+export const sortThesisData = (thesisData, sortCriteria, sortOrder) => {
+  return [...thesisData].sort((a, b) => {
+    let valueA, valueB;
+
+    if (sortCriteria === "expiration") {
+      valueA = new Date(a[sortCriteria]);
+      valueB = new Date(b[sortCriteria]);
+    } else if (sortCriteria === "keywords") {
+      valueA = a[sortCriteria].join(", ");
+      valueB = b[sortCriteria].join(", ");
+    } else {
+      valueA = a[sortCriteria];
+      valueB = b[sortCriteria];
+    }
+
+    if (valueA < valueB) {
+      return sortOrder === "ascending" ? -1 : 1;
+    }
+    if (valueA > valueB) {
+      return sortOrder === "ascending" ? 1 : -1;
+    }
+    return 0;
+  });
+};

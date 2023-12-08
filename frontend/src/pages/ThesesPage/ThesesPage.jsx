@@ -6,6 +6,7 @@ import {
   SkeletonThesisList,
   SectionTitle,
   SortingToolbar,
+  sortThesisData,
 } from "../../components";
 import { getAllProposals, getProposalsByProfessorId } from "../../api";
 import { useUserContext } from "../../contexts/index.js";
@@ -16,6 +17,11 @@ export default function ThesesPage() {
 
   const [proposals, setProposals] = useState(null);
   const [sortedThesisData, setSortedThesisData] = useState([]);
+  const [sortingCriteria, setSortingCriteria] = useState({
+    field: null,
+    order: null,
+  });
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchProposals = async () => {
@@ -37,16 +43,32 @@ export default function ThesesPage() {
     });
   }, []);
 
-  const handleSortedData = (sortedData) => {
+  const handleSortedData = (sortedData, criteria, order) => {
     setSortedThesisData(sortedData);
+    setSortingCriteria({ field: criteria, order }); // Capture current sorting criteria and order
+  };
+
+  const reapplySorting = (newThesesData) => {
+    if (sortingCriteria.field && sortingCriteria.order) {
+      const sortedData = sortThesisData(
+        newThesesData,
+        sortingCriteria.field,
+        sortingCriteria.order
+      );
+      setSortedThesisData(sortedData);
+    } else {
+      // If no sorting is applied, just update with the current newThesesData
+      setSortedThesisData(newThesesData);
+    }
+    // setReload(!reload); // Without the reload the sortedThesisData state is not updated or reloads too late
   };
 
   const handleDelete = async (id) => {
     try {
       await deleteProposalById(id);
       const newThesesData = proposals.filter((proposal) => proposal.id !== id);
+      reapplySorting(newThesesData); // Reapply sorting to the updated list
       setProposals(newThesesData);
-      setSortedThesisData(newThesesData);
     } catch (error) {
       console.error("Failed to delete proposal:", error);
     }
@@ -60,8 +82,8 @@ export default function ThesesPage() {
       if (copiedProposal) {
         // Add the new copied proposal to the proposals list
         const newThesesData = [...proposals, copiedProposal];
+        reapplySorting(newThesesData); // Reapply sorting to the updated list
         setProposals(newThesesData);
-        setSortedThesisData(newThesesData);
       } else {
         console.error("No response for the copied proposal");
       }
