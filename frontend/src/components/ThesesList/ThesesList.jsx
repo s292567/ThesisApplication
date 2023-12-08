@@ -3,9 +3,9 @@ import { Box, Grid } from "@mui/material";
 import { ThesisRow } from "../index.js";
 import { useLocation } from "react-router-dom";
 import { useUserContext } from "../../contexts";
-import { deleteProposalById } from "../../api";
 
-export default function ThesesList({ thesesData, handleDelete = () => {} }) {
+
+export default function ThesesList({ thesesData, handleDelete = () => {}, handleCopy = () => {} }) {
   const location = useLocation();
   const { homeRoute } = useUserContext();
 
@@ -31,6 +31,7 @@ export default function ThesesList({ thesesData, handleDelete = () => {} }) {
                   thesis={thesis}
                   actions={location.pathname !== homeRoute ? true : false}
                   onDelete={handleDelete}
+                  onCopy={handleCopy}
                 />
               </Grid>
             </Grid>

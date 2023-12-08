@@ -9,8 +9,7 @@ import {
 } from "../../components";
 import { getAllProposals, getProposalsByProfessorId } from "../../api";
 import { useUserContext } from "../../contexts/index.js";
-// import { deleteProposalById } from "../../api";
-import { copyProposalById } from "../../api";
+import { copyProposalById, deleteProposalById } from "../../api";
 
 export default function ThesesPage() {
   const { user } = useUserContext();
@@ -44,7 +43,7 @@ export default function ThesesPage() {
 
   const handleDelete = async (id) => {
     try {
-      // await deleteProposalById(id);
+      await deleteProposalById(id);
       const newThesesData = proposals.filter((proposal) => proposal.id !== id);
       setProposals(newThesesData);
       setSortedThesisData(newThesesData);
@@ -84,6 +83,7 @@ export default function ThesesPage() {
           <ThesesList
             thesesData={sortedThesisData}
             handleDelete={handleDelete}
+            handleCopy={handleCopy}
           />
         </>
       ) : (

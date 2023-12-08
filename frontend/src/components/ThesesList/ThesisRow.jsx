@@ -1,7 +1,11 @@
 // ThesisRow.jsx
 import React, { useState } from "react";
 import { Stack, Typography, Box, useMediaQuery, useTheme } from "@mui/material";
-import { Delete, EditNoteRounded } from "@mui/icons-material";
+import {
+  Delete,
+  EditNoteRounded,
+  ContentCopyOutlined,
+} from "@mui/icons-material";
 import {
   PastelComponent,
   ThesisDetail,
@@ -16,6 +20,7 @@ export default function ThesisRow({
   actions = false,
   style = { backgroundColor: "#F4F5FF" },
   onDelete = () => {},
+  onCopy = () => {},
 }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -32,6 +37,11 @@ export default function ThesisRow({
 
   const handleCloseDetail = () => {
     setDetailOpen(false);
+  };
+
+  const abilitateActions = () => {
+    if (user.role === "Professor" && actions) return true;
+    else return false;
   };
 
   return (
@@ -67,43 +77,56 @@ export default function ThesisRow({
               handleOpenDetail();
             }}
           />
-          {user.role === "Professor" && actions && (
-            <Box sx={{ display: "flex", flexDirection: "row", gap: "15px" }}>
+          {abilitateActions() ? (
+            <>
               <PastelComponent
-                bgColor={"#63ce78"}
-                icon={
-                  <EditNoteRounded
-                    fontSize={"large"}
-                    sx={{ marginTop: "2px" }}
-                  />
-                }
+                bgColor={"#63ce78"} // Color for the copy button
+                icon={<ContentCopyOutlined />} // Replace with your actual copy icon
                 textColor={"white"}
-                style={{ width: "55px", height: "55px", borderRadius: "8px" }}
+                style={{ width: "55px", height: "55px", borderRadius: "8px", top: "0px", right: "0px" }}
                 onClick={(event) => {
                   event.stopPropagation();
-                  /// EDIT FUNCTION
-                  setEditOpen(true);
+                  /// COPY FUNCTION  
                 }}
               />
-              <PastelComponent
-                bgColor={"#ff7d36"}
-                icon={<Delete fontSize={"large"} sx={{ marginTop: "2px" }} />}
-                textColor={"white"}
-                style={{ width: "55px", height: "55px", borderRadius: "8px" }}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  /// DELETE FUNCTION
-                  setWarningOpen(true);
-                }}
-              />
-              <ThesisForm
-                open={editOpen}
-                onClose={() => setEditOpen(false)}
-                onSubmit={() => console.log("submitted")}
-                thesis={thesis}
-              />
-            </Box>
-          )}
+              <Box sx={{ display: "flex", flexDirection: "row", gap: "15px" }}>
+                <PastelComponent
+                  bgColor={"#63ce78"}
+                  icon={
+                    <EditNoteRounded
+                      fontSize={"large"}
+                      sx={{ marginTop: "2px" }}
+                    />
+                  }
+                  textColor={"white"}
+                  style={{ width: "55px", height: "55px", borderRadius: "8px" }}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    /// EDIT FUNCTION
+                    setEditOpen(true);
+                  }}
+                />
+                <PastelComponent
+                  bgColor={"#ff7d36"}
+                  icon={<Delete fontSize={"large"} sx={{ marginTop: "2px" }} />}
+                  textColor={"white"}
+                  style={{ width: "55px", height: "55px", borderRadius: "8px" }}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    /// DELETE FUNCTION
+                    setWarningOpen(true);
+                  }}
+                />
+                <ThesisForm
+                  open={editOpen}
+                  onClose={() => setEditOpen(false)}
+                  onSubmit={() => console.log("submitted")}
+                  thesis={thesis}
+                />
+              </Box>
+
+            </>
+          ) : null}
         </Stack>
       </StyledPaper>
 

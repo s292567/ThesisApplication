@@ -174,8 +174,20 @@ export const getProposalsByProfessorId = async (professorId) => {
 };
 
 export const deleteProposalById = async (proposalId) => {
+  let jwt = localStorage.getItem("ROCP_token");
+  jwt = jwt.substring(1, jwt.length - 1);
+
   return axiosInstance
-    .post(routes.deleteProposalById + proposalId)
+    .post(
+      routes.deleteProposalById + proposalId,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + jwt,
+        },
+      }
+    )
     .then((response) => {
       if (response.status === 200) {
         console.log("API deleteProposalById: ", response);
@@ -194,14 +206,18 @@ export const copyProposalById = async (proposalId) => {
   jwt = jwt.substring(1, jwt.length - 1);
 
   return axiosInstance
-    .post(routes.copyProposalById + proposalId, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + jwt,
-      },
-    })
+    .post(
+      routes.copyProposalById + proposalId,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + jwt,
+        },
+      }
+    )
     .then((response) => {
-      if (response.status === 200) {
+      if (response.status === 201) {
         // console.log("API getProposalsByProfessorId: ", response);
         return response.data;
       } else {
