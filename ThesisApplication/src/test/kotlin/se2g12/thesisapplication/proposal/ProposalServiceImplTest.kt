@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import se2g12.thesisapplication.GroupDep.GroupDep
 import se2g12.thesisapplication.GroupDep.GroupDepRepository
+import se2g12.thesisapplication.application.Application
 import se2g12.thesisapplication.application.ApplicationRepository
 import se2g12.thesisapplication.degree.Degree
 import se2g12.thesisapplication.student.Student
@@ -34,6 +35,7 @@ class ProposalServiceImplTest {
         teacherRepository = mockk()
         studentRepository = mockk()
         groupDepRepository = mockk()
+        applicationRepository = mockk()
         proposalService = ProposalServiceImpl(proposalRepository, teacherRepository, studentRepository, groupDepRepository, applicationRepository)
     }
 
@@ -266,5 +268,95 @@ class ProposalServiceImplTest {
         verify (exactly = 1) { proposalRepository.findByCds(cdsName) }
         // Assert
         assertEquals(proposalList.map { it.toDTO() }, result)
+    }
+
+    @Test
+    fun testDeleteProposalById() {
+        // Mock data
+        val proposalId = UUID.randomUUID()
+
+        val application = Application(
+            student = Student(name = "John", surname = "Doe", email = "john.doe@example.com"),
+            proposal = Proposal(
+                title = "Test Proposal",
+                supervisor = mockk(),
+                coSupervisors = "CoSupervisor1, CoSupervisor2",
+                keywords = "Keyword1, Keyword2",
+                type = "Type1",
+                groups = "Group1, Group2",
+                description = "Test Description",
+                requiredKnowledge = "Required Knowledge",
+                notes = "Test Notes",
+                expiration = LocalDate.now(),
+                level = "Level1",
+                cds = "CDS1"
+            ),
+            status = "pending"
+        )
+
+        // Mock behavior
+        every { applicationRepository.findByProposalId(proposalId) } returns listOf(application)
+        every { applicationRepository.delete(application) } just Runs
+        every { proposalRepository.deleteById(proposalId) } just Runs
+
+        // Call the method
+        proposalService.deleteProposalById(proposalId)
+
+        // Verify that findByProposalId method was called
+        verify(exactly = 1) { applicationRepository.findByProposalId(proposalId) }
+
+        // Verify that delete method was called for each application
+        verify(exactly = 1) { applicationRepository.delete(application) }
+
+        // Verify that deleteById method was called for the proposal
+        verify(exactly = 1) { proposalRepository.deleteById(proposalId) }
+    }
+    @Test
+    fun testCopyProposal() {
+        // Mock data
+        val proposalId = UUID.randomUUID()
+        val originalProposal = Proposal(
+            title = "Test Proposal",
+            supervisor = mockk(),
+            coSupervisors = "CoSupervisor1, CoSupervisor2",
+            keywords = "Keyword1, Keyword2",
+            type = "Type1",
+            groups = "Group1, Group2",
+            description = "Test Description",
+            requiredKnowledge = "Required Knowledge",
+            notes = "Test Notes",
+            expiration = LocalDate.now(),
+            level = "Level1",
+            cds = "CDS1"
+        )
+
+        // Mock behavior
+        every { proposalRepository.findById(proposalId) } returns Optional.of(originalProposal)
+        // Capture the argument passed to the save function
+        val savedProposalSlot = slot<Proposal>()
+        every { proposalRepository.save(capture(savedProposalSlot)) } answers { savedProposalSlot.captured }
+        // Call the method
+        val copiedProposal = proposalService.copyProposal(proposalId)
+
+        // Verify that findById method was called for the original proposal
+        verify(exactly = 1) { proposalRepository.findById(proposalId) }
+
+        // Verify that save method was called for the copied proposal
+        verify(exactly = 1) { proposalRepository.save(any()) }
+
+        // Assertions
+        // Compare fields of the original and copied proposals
+        assertEquals(originalProposal.title, copiedProposal.title)
+        assertEquals(originalProposal.supervisor, copiedProposal.supervisor)
+        assertEquals(originalProposal.coSupervisors, copiedProposal.coSupervisors)
+        assertEquals(originalProposal.keywords, copiedProposal.keywords)
+        assertEquals(originalProposal.type, copiedProposal.type)
+        assertEquals(originalProposal.groups, copiedProposal.groups)
+        assertEquals(originalProposal.description, copiedProposal.description)
+        assertEquals(originalProposal.requiredKnowledge, copiedProposal.requiredKnowledge)
+        assertEquals(originalProposal.notes, copiedProposal.notes)
+        assertEquals(originalProposal.expiration, copiedProposal.expiration)
+        assertEquals(originalProposal.level, copiedProposal.level)
+        assertEquals(originalProposal.cds, copiedProposal.cds)
     }
 }
