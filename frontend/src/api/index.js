@@ -8,6 +8,7 @@ import {
     applyToProposal,
     getProposalsByProfessorId, 
     deleteProposalById,
+    copyProposalById,
 } from './API_proposals.js';
 
 import {
@@ -33,6 +34,7 @@ export {
     applyToProposal,
 
     deleteProposalById,
+    copyProposalById,
 
     axiosInstance,
     getProposalsByProfessorId,

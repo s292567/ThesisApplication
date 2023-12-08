@@ -12,5 +12,6 @@
     "browseAllApplyingStudents": "applications/students?proposalId=",
     "browseAllApplications": "applications/by?proposalId=",
     "getProposalByProfessorId": "proposals/getProfessorProposals/",
-    "deleteProposalById": "proposals/delete/"
+    "deleteProposalById": "proposals/delete/",
+    "copyProposalById": "proposals/copy/"
 }

@@ -188,3 +188,27 @@ export const deleteProposalById = async (proposalId) => {
       console.error("Error while deleting proposal by proposalId: ", error);
     });
 };
+
+export const copyProposalById = async (proposalId) => {
+  let jwt = localStorage.getItem("ROCP_token");
+  jwt = jwt.substring(1, jwt.length - 1);
+
+  return axiosInstance
+    .post(routes.copyProposalById + proposalId, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + jwt,
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        // console.log("API getProposalsByProfessorId: ", response);
+        return response.data;
+      } else {
+        console.error("Request failed with status: ", response.status);
+      }
+    })
+    .catch((error) => {
+      console.error("Error while copying proposal by id: ", error);
+    });
+};

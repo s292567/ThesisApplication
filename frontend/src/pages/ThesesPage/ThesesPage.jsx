@@ -10,6 +10,7 @@ import {
 import { getAllProposals, getProposalsByProfessorId } from "../../api";
 import { useUserContext } from "../../contexts/index.js";
 // import { deleteProposalById } from "../../api";
+import { copyProposalById } from "../../api";
 
 export default function ThesesPage() {
   const { user } = useUserContext();
@@ -44,11 +45,29 @@ export default function ThesesPage() {
   const handleDelete = async (id) => {
     try {
       // await deleteProposalById(id);
-      const newThesesData = proposals.filter(proposal => proposal.id !== id);
+      const newThesesData = proposals.filter((proposal) => proposal.id !== id);
       setProposals(newThesesData);
       setSortedThesisData(newThesesData);
     } catch (error) {
       console.error("Failed to delete proposal:", error);
+    }
+  };
+
+  const handleCopy = async (id) => {
+    try {
+      // Call the API function to copy the proposal
+      const copiedProposal = await copyProposalById(id);
+
+      if (copiedProposal) {
+        // Add the new copied proposal to the proposals list
+        const newThesesData = [...proposals, copiedProposal];
+        setProposals(newThesesData);
+        setSortedThesisData(newThesesData);
+      } else {
+        console.error("No response for the copied proposal");
+      }
+    } catch (error) {
+      console.error("Failed to copy proposal:", error);
     }
   };
 
