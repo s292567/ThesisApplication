@@ -9,6 +9,7 @@ import {
 } from "../../components";
 import { getAllProposals, getProposalsByProfessorId } from "../../api";
 import { useUserContext } from "../../contexts/index.js";
+// import { deleteProposalById } from "../../api";
 
 export default function ThesesPage() {
   const { user } = useUserContext();
@@ -40,6 +41,17 @@ export default function ThesesPage() {
     setSortedThesisData(sortedData);
   };
 
+  const handleDelete = async (id) => {
+    try {
+      // await deleteProposalById(id);
+      const newThesesData = proposals.filter(proposal => proposal.id !== id);
+      setProposals(newThesesData);
+      setSortedThesisData(newThesesData);
+    } catch (error) {
+      console.error("Failed to delete proposal:", error);
+    }
+  };
+
   return (
     <>
       <SectionTitle text={"Theses: "} />
@@ -50,7 +62,10 @@ export default function ThesesPage() {
             proposals={proposals}
             onSortedData={handleSortedData}
           />
-          <ThesesList thesesData={sortedThesisData} />
+          <ThesesList
+            thesesData={sortedThesisData}
+            handleDelete={handleDelete}
+          />
         </>
       ) : (
         <SkeletonThesisList count={3} />

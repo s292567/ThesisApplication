@@ -7,6 +7,7 @@ import {
     insertProposal, 
     applyToProposal,
     getProposalsByProfessorId, 
+    deleteProposalById,
 } from './API_proposals.js';
 
 import {
@@ -30,9 +31,13 @@ export {
     searchProposals, 
     insertProposal, 
     applyToProposal,
+
+    deleteProposalById,
+
     axiosInstance,
     getProposalsByProfessorId,
     getAllApplicationsDataForProfessor,
+
     loginApi, 
     getAllApplicationsForLoggedInStudent,
     getProfileApi

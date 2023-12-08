@@ -3,15 +3,16 @@ import { Box, Grid } from "@mui/material";
 import { ThesisRow } from "../index.js";
 import { useLocation } from "react-router-dom";
 import { useUserContext } from "../../contexts";
+import { deleteProposalById } from "../../api";
 
-export default function ThesesList({ thesesData }) {
+export default function ThesesList({ thesesData, handleDelete = () => {} }) {
   const location = useLocation();
   const { homeRoute } = useUserContext();
 
   if (thesesData === undefined) {
     thesesData = [];
   }
-  
+
   return (
     <Box
       sx={{
@@ -25,7 +26,12 @@ export default function ThesesList({ thesesData }) {
           return (
             <Grid key={thesis.id} container item justifyContent="center">
               <Grid item xs={10} sm={10} md={8} lg={6} xl={5}>
-                <ThesisRow key={thesis.id} thesis={thesis} actions={location.pathname !== homeRoute ? true : false}/>
+                <ThesisRow
+                  key={thesis.id}
+                  thesis={thesis}
+                  actions={location.pathname !== homeRoute ? true : false}
+                  onDelete={handleDelete}
+                />
               </Grid>
             </Grid>
           );

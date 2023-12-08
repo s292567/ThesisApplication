@@ -1,20 +1,13 @@
 // ThesisRow.jsx
 import React, { useState } from "react";
-import {
-  Paper,
-  Stack,
-  Typography,
-  styled,
-  Box,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Stack, Typography, Box, useMediaQuery, useTheme } from "@mui/material";
 import { Delete, EditNoteRounded } from "@mui/icons-material";
 import {
   PastelComponent,
   ThesisDetail,
   StyledPaper,
   ThesisForm,
+  WarningPopup,
 } from "../index.js";
 import { useUserContext } from "../../contexts";
 
@@ -22,12 +15,14 @@ export default function ThesisRow({
   thesis,
   actions = false,
   style = { backgroundColor: "#F4F5FF" },
+  onDelete = () => {},
 }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [detailOpen, setDetailOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false); // EDIT MODAL
+  const [warningOpen, setWarningOpen] = useState(false); // DELETE MODAL
 
   const { user } = useUserContext();
 
@@ -98,6 +93,7 @@ export default function ThesisRow({
                 onClick={(event) => {
                   event.stopPropagation();
                   /// DELETE FUNCTION
+                  setWarningOpen(true);
                 }}
               />
               <ThesisForm
@@ -125,8 +121,16 @@ export default function ThesisRow({
        */}
 
       {/**
-       * MUST BE REFORMATTED SO THAT AFTER THE WARNING POPUP IS DISPLAYING ONLY AN ALERT
+       * DELETE SHOULD BE ACCESSIBLE ONLY IF PROFESSOR
        */}
+      {user.role === "Professor" && actions ? (
+        <WarningPopup
+          warningMessage={"Are you sure you want to delete this thesis?"}
+          warningOpen={warningOpen}
+          setWarningOpen={setWarningOpen}
+          handleApplied={() => onDelete(thesis.id)}
+        />
+      ) : null}
     </>
   );
 }
