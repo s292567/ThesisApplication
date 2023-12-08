@@ -7,14 +7,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import se2g12.thesisapplication.GroupDep.GroupDep
 import se2g12.thesisapplication.GroupDep.GroupDepRepository
+import se2g12.thesisapplication.application.ApplicationRepository
 import se2g12.thesisapplication.degree.Degree
-import se2g12.thesisapplication.degree.DegreeRepository
-import se2g12.thesisapplication.department.Department
 import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -26,6 +24,7 @@ class ProposalServiceImplTest {
     private lateinit var teacherRepository: TeacherRepository
     private lateinit var studentRepository: StudentRepository
     private lateinit var groupDepRepository: GroupDepRepository
+    private lateinit var applicationRepository: ApplicationRepository
     private lateinit var proposalService: ProposalServiceImpl
 
 
@@ -35,7 +34,7 @@ class ProposalServiceImplTest {
         teacherRepository = mockk()
         studentRepository = mockk()
         groupDepRepository = mockk()
-        proposalService = ProposalServiceImpl(proposalRepository, teacherRepository, studentRepository, groupDepRepository)
+        proposalService = ProposalServiceImpl(proposalRepository, teacherRepository, studentRepository, groupDepRepository, applicationRepository)
     }
 
     @Test

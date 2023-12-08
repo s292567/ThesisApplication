@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
-import se2g12.thesisapplication.student.Student
 import java.util.*
 
 
@@ -27,4 +26,5 @@ interface ApplicationRepository : JpaRepository<Application, UUID> {
     fun getAllApplicationsByProposalId(proposalId: UUID): List<Application>
 
     fun findByStudentId(studentId: String): List<Application>
+    fun findByProposalId(proposalId: UUID): List<Application>
 }
