@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { PastelComponent, StyledPaper } from "../../components";
 import { Box, Grid, Typography } from "@mui/material";
-import {ThesisDetail} from "../../components";
+import { ThesisDetail } from "../../components";
 
 const getStatusProperties = (status) => {
   const properties = {

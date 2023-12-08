@@ -4,7 +4,7 @@ import { ThesisRow } from "../index.js";
 import { useLocation } from "react-router-dom";
 import { useUserContext } from "../../contexts";
 
-export default function ThesesList({ thesesData, reload }) {
+export default function ThesesList({ thesesData }) {
   const location = useLocation();
   const { homeRoute } = useUserContext();
 

@@ -1,7 +1,12 @@
 // ProfessorDashboardPage.jsx
 import React, { useState, useEffect } from "react";
 
-import { ThesesList, SkeletonThesisList, SectionTitle } from "../../components";
+import {
+  ThesesList,
+  SkeletonThesisList,
+  SectionTitle,
+  SortingToolbar,
+} from "../../components";
 import { getAllProposals, getProposalsByProfessorId } from "../../api";
 import { useUserContext } from "../../contexts/index.js";
 
@@ -9,7 +14,8 @@ export default function ThesesPage() {
   const { user } = useUserContext();
 
   const [proposals, setProposals] = useState(null);
-  const [dummy, reload] = useState(false);
+  const [sortedThesisData, setSortedThesisData] = useState([]);
+
   useEffect(() => {
     const fetchProposals = async () => {
       try {
@@ -26,14 +32,26 @@ export default function ThesesPage() {
     };
     fetchProposals().then((response) => {
       setProposals(response);
+      setSortedThesisData(response);
     });
-  }, [dummy]);
+  }, []);
+
+  const handleSortedData = (sortedData) => {
+    setSortedThesisData(sortedData);
+  };
 
   return (
     <>
-      <SectionTitle text={'Theses: '} />
+      <SectionTitle text={"Theses: "} />
+
       {proposals ? (
-        <ThesesList thesesData={proposals} reload={() => reload(!dummy)} />
+        <>
+          <SortingToolbar
+            proposals={proposals}
+            onSortedData={handleSortedData}
+          />
+          <ThesesList thesesData={sortedThesisData} />
+        </>
       ) : (
         <SkeletonThesisList count={3} />
       )}
