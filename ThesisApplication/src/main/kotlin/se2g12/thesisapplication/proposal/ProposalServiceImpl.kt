@@ -39,7 +39,7 @@ class ProposalServiceImpl(
             old.notes=newProposal.notes
             old.expiration=newProposal.expiration
             old.level=newProposal.level!!
-            old.cds= newProposal.CdS!!.joinToString(separator = ",")
+            old.cds= newProposal.cds!!.joinToString(separator = ",")
             return proposalRepository.save(old).toDTO()
         }
         //add custom exception
@@ -102,7 +102,7 @@ class ProposalServiceImpl(
             newProposal.description,
             newProposal.requiredKnowledge, newProposal.notes,
             expirationDate, newProposal.level,
-            newProposal.CdS.joinToString(", ") { it })
+            newProposal.cds.joinToString(", ") { it })
         proposalRepository.save(proposal)
 
     }
