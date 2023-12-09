@@ -4,9 +4,12 @@ import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { PastelComponent } from "../index"; // Import PastelComponent
+import { useUserContext } from "../../contexts";
 
 export default function SortingToolbar({ proposals, onSortedData }) {
   
+  const { user } = useUserContext();
+
   const [sortState, setSortState] = useState({
     title: "",
     expiration: "",
@@ -16,6 +19,11 @@ export default function SortingToolbar({ proposals, onSortedData }) {
 
   const buttonTextColor = "white";
   const buttonBgColor = "#94B3FD";
+
+  const orderButtons = ["title", "expiration", "keywords"];
+  if (user.role === "Professor") {
+    orderButtons.push("cds");
+  }
 
   const handleSort = (criteria) => {
     const newSortOrder =
@@ -70,7 +78,7 @@ export default function SortingToolbar({ proposals, onSortedData }) {
           }}
         >
           {/* Sorting Buttons */}
-          {["title", "expiration", "cds", "keywords"].map((criteria) => (
+          {orderButtons.map((criteria) => (
             <PastelComponent
               key={criteria}
               bgColor={buttonBgColor}

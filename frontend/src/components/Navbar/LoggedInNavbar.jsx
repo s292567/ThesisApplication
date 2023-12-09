@@ -13,13 +13,9 @@ import {
   Avatar,
   ListItemIcon,
   Divider, Tooltip,
-  Badge,
 } from '@mui/material';
 import {
   Logout,
-  Settings,
-  MailOutline,
-  NotificationsOutlined,
   DragHandleRounded,
   CancelRounded,
 } from '@mui/icons-material';
@@ -181,12 +177,6 @@ export default function LoggedInNavbar() {
             </IconButton>
           )}
           <Icons>
-            <Badges>
-              
-              <Badge badgeContent={2} color="error">
-                <NotificationsOutlined/>
-              </Badge>
-            </Badges>
             {/** Text inside the avatar will be the name and surname initials */}
             {!mobileOpen && (
               <Tooltip title="Account menu">
@@ -248,12 +238,6 @@ export default function LoggedInNavbar() {
             <Avatar/> Profile
           </MenuItem>
           <Divider/>
-          <MenuItem>
-            <ListItemIcon>
-              <Settings fontSize="small"/>
-            </ListItemIcon>
-            Settings
-          </MenuItem>
           <MenuItem onClick={() => {
             logout()
           }}>

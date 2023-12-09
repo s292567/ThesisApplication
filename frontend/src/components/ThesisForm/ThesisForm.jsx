@@ -160,7 +160,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
           },
         }}
       >
-        <DialogTitle>
+        
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="expiration"
@@ -227,7 +227,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             multiple
             allowNewValues={true}
           />
-        </DialogTitle>
+        
         <IconButton
           aria-label="close"
           onClick={() => onClose()}
@@ -242,7 +242,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
           <Close />
         </IconButton>
         <Divider variant="middle" sx={{ marginTop: "-1rem" }} />
-        <DialogContent>
+        
           <Paper
             elevation={0}
             sx={{
@@ -361,7 +361,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
               onClick={handleSubmit}
             />
           </div>
-        </DialogContent>
+        
       </Dialog>
 
       <Snackbar

@@ -126,7 +126,6 @@ export default function ThesesPage() {
 
   const handleEdit = async (editedThesis) => {
     try {
-      console.log("editedThesis:\n", editedThesis);
       // Call API to update the thesis
       await updateProposal(editedThesis);
 
