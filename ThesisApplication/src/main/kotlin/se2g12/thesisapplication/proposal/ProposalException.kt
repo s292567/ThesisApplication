@@ -12,8 +12,8 @@ class ProposalException : ResponseEntityExceptionHandler(){
     @ExceptionHandler(ProposalBodyError::class)
     fun proposalBodyError(e : ProposalBodyError) = ProblemDetail
         .forStatusAndDetail(HttpStatus.BAD_REQUEST, e.message!!)
-    @ExceptionHandler(ProfessorNotFound::class)
-    fun professorNotFound(e : ProfessorNotFound) = ProblemDetail
+    @ExceptionHandler(NotFound::class)
+    fun notFound(e : NotFound) = ProblemDetail
         .forStatusAndDetail(HttpStatus.NOT_FOUND, e.message!!)
     @ExceptionHandler(ForbiddenError::class)
     fun forbiddenError(e : ForbiddenError) = ProblemDetail
@@ -21,5 +21,5 @@ class ProposalException : ResponseEntityExceptionHandler(){
 }
 
 class ProposalBodyError(message: String?) : Throwable(message)
-class ProfessorNotFound(id:String) : Throwable("Professor $id not found")
+class NotFound(message: String) : Throwable(message)
 class ForbiddenError(message: String?) : Throwable(message)

@@ -114,14 +114,14 @@ class ProposalServiceImplTest {
         // Mock behavior
         every { teacherRepository.findById(professorId) } returns Optional.empty()
 
-        assertThrows<ProfessorNotFound> {
+        assertThrows<NotFound> {
             proposalService.addNewProposal(newProposalDTO, professorId)
         }
 
         verify(exactly = 0) { proposalRepository.save(any()) }
     }
     @Test
-    fun testGetAllProposals() {
+    fun `test getAllProposals`() {
         val teacher = Teacher("Ferrari", "Luca")
         val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         // Mock data
@@ -269,6 +269,8 @@ class ProposalServiceImplTest {
 
         // Assert
         assertEquals(proposalList.map { it.toDTO() }, result)
+        verify (exactly = 1) { proposalRepository.searchProposals(query) }
+        verify (exactly = 0) { proposalRepository.findByCds(any()) }
     }
     @Test
     fun `test searchProposalByStudentCds without query`() {
@@ -316,7 +318,20 @@ class ProposalServiceImplTest {
         // Assert
         assertEquals(proposalList.map { it.toDTO() }, result)
     }
+    @Test
+    fun `searchProposalByStudentCds throws error if student not found`() {
+        val studentId = "s000000"
+        val query = "something"
 
+        every { studentRepository.findById(studentId) } returns Optional.empty()
+
+        assertThrows<NotFound> {
+            proposalService.searchProposalByStudentCds(studentId, query)
+        }
+
+        verify (exactly = 0) { proposalRepository.findByCds(any()) }
+        verify (exactly = 0) { proposalRepository.searchProposals(any()) }
+    }
     @Test
     fun testDeleteProposalById() {
         // Mock data

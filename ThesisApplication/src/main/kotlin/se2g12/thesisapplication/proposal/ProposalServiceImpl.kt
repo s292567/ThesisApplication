@@ -66,7 +66,7 @@ class ProposalServiceImpl(
     }
     @Transactional
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
-        val supervisor = teacherRepository.findById(professorId).orElseThrow { ProfessorNotFound(professorId) }
+        val supervisor = teacherRepository.findById(professorId).orElseThrow { NotFound("Professor $professorId not found") }
         val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
         if(! newProposal.coSupervisors.isNullOrEmpty()){
             for (coSup in newProposal.coSupervisors!!){
@@ -159,7 +159,8 @@ class ProposalServiceImpl(
         return proposalRepository.searchProposals(query).map { it.toDTO() }
     }
     override fun searchProposalByStudentCds(studentId: String, query: String? ): List<ProposalDTO> {
-        val cdsName = studentRepository.findById(studentId).get().degree!!.titleDegree!!
+        val cdsName = studentRepository.findById(studentId).orElseThrow { NotFound("Student $studentId not found") }
+            .degree!!.titleDegree!!
         if (query.isNullOrBlank())
             return getProposalsByCds(cdsName)
         return proposalRepository.searchProposals(query)

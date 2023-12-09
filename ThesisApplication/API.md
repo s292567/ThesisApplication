@@ -207,6 +207,7 @@ Display proposals that contain query string (caps-insensitive) in any of their f
 - response status:
   - `200 OK`: All filtered proposals are being displayed
   - `401 Unauthorized`: The user is not logged in
+  - `404 Not Found`: The student was not found
   - `500 Internal Server Error`: Generic server error
 
 ## Insert Proposal
