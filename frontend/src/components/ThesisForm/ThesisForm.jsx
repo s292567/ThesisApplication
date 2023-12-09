@@ -14,6 +14,7 @@ import {
   Alert,
   Grid,
   Typography,
+  createFilterOptions,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
@@ -34,12 +35,11 @@ import dayjs from "dayjs";
 import PastelComponent from "../PastelComponent/PastelComponent";
 
 export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
-  const supervisor = thesis.supervisor || { name: "name", surname: "surname" }; // ISNTEAD OF EMPTY OBJECT THERE WILL BE THE SUPERVISOR OBJECT RETRIEVED FROM THE BACKEND
   const defaultFormData = {
     title: thesis.title || "",
     coSupervisors: Array.isArray(thesis.coSupervisors)
       ? [...thesis.coSupervisors]
-      : [], // Ensure it's an array before spreading
+      : [], // Ensure it's an array before spreading // Optional
     keywords: Array.isArray(thesis.keywords) ? [...thesis.keywords] : [],
     type: Array.isArray(thesis.type) ? [...thesis.type] : [],
     groups: Array.isArray(thesis.groups) ? [...thesis.groups] : [],
@@ -47,7 +47,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
     requiredKnowledge: thesis.requiredKnowledge || "", // Optional
     notes: thesis.notes || "", // Optional
     expiration: thesis.expiration ? dayjs(thesis.expiration) : dayjs(),
-    level: thesis.level || "",
+    level: thesis.level || null,
     cds: Array.isArray(thesis.cds) ? [...thesis.cds] : [],
   };
 
@@ -123,7 +123,6 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
     const updatedThesis = {
       id: thesis.id, // Keep the existing ID for editing, will be undefined for new thesis
       expiration: dayjs(formData.expiration).format("YYYY-MM-DD"),
-      supervisor: supervisor,
       ...formData,
     };
 
@@ -152,7 +151,8 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
         PaperProps={{
           sx: {
             m: 0,
-            p: 1,
+            padding: "1rem",
+            paddingTop: "2rem",
             border: "none",
             borderRadius: "20px",
             backgroundColor: "#F4F5FF",
@@ -163,7 +163,8 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
         <DialogTitle>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              label="End Date"
+              label="expiration"
+              name="expiration"
               value={formData.expiration}
               onChange={handleDateChange}
               slotProps={{ textField: { variant: "outlined" } }}
@@ -189,7 +190,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             value={formData.level}
             options={apiData.Levels}
             onChange={handleAutocompleteChange}
-            name="levels"
+            name="level"
             multiple={false} // Single selection for Level
             style={{ width: { xs: "50%", md: "25%" } }}
           />
@@ -254,14 +255,17 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             }}
           >
             {/**
+             *
              * ORDER OF THE FORM FIELDS:
              * 1. Type (autocomplete)
              * 2. Supervisor (autocomplete that accept only one value)
              * 3. Co-Supervisor (autocomplete)
-             * 4. Groups (autocomplete)
+             * 4. Cds (autocomplete)
              * 5. Description (text field multiline)
-             * 6. Required Knowledge (text field multiline)
-             * 7. Notes (text field multiline)
+             * 6. Groups (autocomplete)
+             * 7. Required Knowledge (text field multiline)
+             * 8. Notes (text field multiline)
+             *
              */}
 
             <CustomAutocomplete
@@ -274,23 +278,6 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
               allowNewValues={true}
             />
 
-            <Grid
-              item
-              xs={12}
-              container
-              spacing={0}
-              sx={{ marginLeft: "1rem", marginBottom: "2rem" }}
-            >
-              <Grid item xs={12}>
-                <Typography variant="body1">Professor:</Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body1" color={textColor}>
-                  <b>{supervisor.name + " " + supervisor.surname}</b>
-                </Typography>
-              </Grid>
-            </Grid>
-
             <CustomAutocomplete
               label="Co-Supervisor"
               value={formData.coSupervisors}
@@ -301,11 +288,11 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             />
 
             <CustomAutocomplete
-              label="Groups"
-              value={formData.groups}
-              options={apiData.Groups}
+              label="cds"
+              value={formData.cds}
+              options={apiData.Cds}
               onChange={handleAutocompleteChange}
-              name="groups"
+              name="cds"
               multiple
             />
 
@@ -320,6 +307,15 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
               margin="normal"
               multiline
               rows={4}
+            />
+
+            <CustomAutocomplete
+              label="Groups"
+              value={formData.groups}
+              options={apiData.Groups}
+              onChange={handleAutocompleteChange}
+              name="groups"
+              multiple
             />
 
             <StyledTextField
@@ -392,6 +388,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
   );
 }
 
+const filter = createFilterOptions();
 function CustomAutocomplete({
   label,
   value,
@@ -402,18 +399,25 @@ function CustomAutocomplete({
   allowNewValues = false,
   style = {},
 }) {
+  const [inputValue, setInputValue] = useState("");
+
   // Function to determine whether the selected option matches the value
   const isOptionEqualToValue = (option, value) => {
-    return allowNewValues ? option.id === value.id : option === value ;
+    return option === value || value === "";
   };
 
   // Function to handle when new value is added
-  const handleInputChange = (event, newInputValue, reason) => {
-    if (reason === "input") {
-      // Allow adding new values only if allowNewValues is true
-      if (allowNewValues && newInputValue && !options.includes(newInputValue)) {
-        onChange(event, [...value, newInputValue], name);
-      }
+  const handleInputChange = (event, newInputValue) => {
+    setInputValue(newInputValue);
+  };
+
+  // Function to handle when the value is changed (selected from dropdown or entered)
+  const handleChange = (event, newValue, role) => {
+    if ((role === "input" || role === "selectOptions") && allowNewValues) {
+      onChange(event, [...value, inputValue], name);
+      setInputValue("");
+    } else {
+      onChange(event, newValue, name);
     }
   };
 
@@ -422,12 +426,25 @@ function CustomAutocomplete({
       multiple={multiple}
       options={options || []}
       value={value}
-      onChange={(event, newValue) => onChange(event, newValue, name)}
+      onChange={handleChange}
       isOptionEqualToValue={isOptionEqualToValue}
+      onInputChange={handleInputChange}
       fullWidth
+      filterOptions={(options, params) => {
+        const filtered = filter(options, params);
+
+        const { inputValue } = params;
+
+        const isExisting = options.some((option) => inputValue === option);
+        if (inputValue !== "" && !isExisting && allowNewValues) {
+          filtered.push(inputValue);
+        }
+
+        return filtered;
+      }}
       filterSelectedOptions
-      freeSolo={allowNewValues} // Allow entering values not in the list
-      onInputChange={allowNewValues ? handleInputChange : null}
+      freeSolo={allowNewValues}
+      inputValue={inputValue}
       renderInput={(params) => (
         <TextField
           {...params}

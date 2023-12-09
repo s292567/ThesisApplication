@@ -213,6 +213,16 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
                   </Typography>
                 </Grid>
               </Grid>
+              <Grid item xs={12} container spacing={0}>
+                <Grid item xs={12}>
+                  <Typography variant="body1">Cds:</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body1" color={subTitlesColor}>
+                    <b>{thesis.cds.join(", ")}</b>
+                  </Typography>
+                </Grid>
+              </Grid>
             </Grid>
 
             <Divider sx={{ width: "60%", marginBottom: "2rem" }} />
@@ -223,6 +233,14 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             <Typography variant="body1" ml={1} mb={5}>
               {thesis.description}
             </Typography>
+
+            <Typography variant="h6" color={subTitlesColor}>
+              <b>Departments groups</b>
+            </Typography>
+            <Typography variant="body1" ml={1} mb={2}>
+              {thesis.groups.join(", ")}
+            </Typography>
+
 
             <Typography variant="h6" color={subTitlesColor}>
               <b>Required Knowledge</b>
