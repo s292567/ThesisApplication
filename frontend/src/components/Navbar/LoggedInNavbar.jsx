@@ -185,9 +185,7 @@ export default function LoggedInNavbar() {
           )}
           <Icons>
             <Badges>
-              <Badge badgeContent={4} color="error">
-                <MailOutline/>
-              </Badge>
+              
               <Badge badgeContent={2} color="error">
                 <NotificationsOutlined/>
               </Badge>

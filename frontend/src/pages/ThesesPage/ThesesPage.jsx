@@ -8,6 +8,7 @@ import {
   SortingToolbar,
   sortThesisData,
   Searchbar,
+  NoDataDisplayed,
 } from "../../components";
 import { getAllProposals, getProposalsByProfessorId } from "../../api";
 import { useUserContext } from "../../contexts/index.js";
@@ -16,6 +17,7 @@ import { copyProposalById, deleteProposalById } from "../../api";
 export default function ThesesPage() {
   const { user } = useUserContext();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [sortedThesisData, setSortedThesisData] = useState([]);
   const [sortingCriteria, setSortingCriteria] = useState({
     field: null,
@@ -24,6 +26,7 @@ export default function ThesesPage() {
 
   const fetchProposals = async () => {
     try {
+      setIsLoading(true);
       let response;
       const userId = localStorage.getItem("username");
       /* API CALL BASED ON ROLE */
@@ -33,6 +36,8 @@ export default function ThesesPage() {
       return response;
     } catch (error) {
       console.error("Failed to fetch proposals:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -116,7 +121,11 @@ export default function ThesesPage() {
     <>
       <SectionTitle text={"Theses: "} />
 
-      {sortedThesisData ? (
+      {isLoading ? (
+        <SkeletonThesisList count={3} />
+      ) : sortedThesisData && sortedThesisData.length === 0 ? (
+        <NoDataDisplayed textNoDataDisplayed={"No theses found."} />
+      ) : (
         <>
           <Searchbar
             handleResearch={handleResearch}
@@ -132,8 +141,6 @@ export default function ThesesPage() {
             handleCopy={handleCopy}
           />
         </>
-      ) : (
-        <SkeletonThesisList count={3} />
       )}
     </>
   );

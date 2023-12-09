@@ -30,6 +30,8 @@ import { sortThesisData } from "./GeneralComponents/SortingToolbar.jsx";
 
 import Searchbar from "./Searchbar/Searchbar.jsx";
 
+import NoDataDisplayed from "./GeneralComponents/NoDataDisplayed.jsx";
+
 export {
     Navbar,
     LoggedInNavbar,
@@ -43,7 +45,8 @@ export {
     PastelComponent,
     WarningPopup,
     WithTooltip,
-
+    NoDataDisplayed,
+    
     Searchbar,
 
     SectionTitle,
