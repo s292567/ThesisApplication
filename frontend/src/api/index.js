@@ -23,6 +23,17 @@ import {
     getProfileApi 
 } from './API_User.js';
 
+import {
+    getDistinctCds,
+    getDistinctCoSupervisors,
+    getDistinctSupervisors,
+    getDistinctGroups,
+    getDistinctKeywords,
+    getDistinctTypes,
+    getDistinctLevels,
+
+} from './API_search.js';
+
 
 // Export all the API functions and the axios instance
 export {
@@ -39,6 +50,14 @@ export {
     axiosInstance,
     getProposalsByProfessorId,
     getAllApplicationsDataForProfessor,
+
+    getDistinctCds,
+    getDistinctCoSupervisors,
+    getDistinctSupervisors,
+    getDistinctGroups,
+    getDistinctKeywords,
+    getDistinctTypes,
+    getDistinctLevels,
 
     loginApi, 
     getAllApplicationsForLoggedInStudent,

@@ -28,6 +28,8 @@ import AsynchronousAutocomplete from "./GeneralComponents/AsynchronousAutocomple
 import SortingToolbar from "./GeneralComponents/SortingToolbar.jsx";
 import { sortThesisData } from "./GeneralComponents/SortingToolbar.jsx";
 
+import Searchbar from "./Searchbar/Searchbar.jsx";
+
 export {
     Navbar,
     LoggedInNavbar,
@@ -41,6 +43,8 @@ export {
     PastelComponent,
     WarningPopup,
     WithTooltip,
+
+    Searchbar,
 
     SectionTitle,
     StyledPaper,

@@ -8,7 +8,6 @@ export const getDistinctSupervisors = async () => {
     .get(routes.getDistinctSupervisors)
     .then((response) => {
       if (response.status === 200) {
-        console.log("getAllProposals: ", response.data);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);
@@ -19,13 +18,12 @@ export const getDistinctSupervisors = async () => {
     });
 };
 
-// getDistinctCds
+// getDistinctCds V
 export const getDistinctCds = async () => {
   return axiosInstance
     .get(routes.getDistinctCds)
     .then((response) => {
       if (response.status === 200) {
-        console.log("getAllProposals: ", response.data);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);
@@ -36,13 +34,12 @@ export const getDistinctCds = async () => {
     });
 };
 
-// getDistinctCoSupervisors
+// getDistinctCoSupervisors V
 export const getDistinctCoSupervisors = async () => {
   return axiosInstance
     .get(routes.getDistinctCoSupervisors)
     .then((response) => {
       if (response.status === 200) {
-        console.log("getAllProposals: ", response.data);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);
@@ -59,7 +56,6 @@ export const getDistinctKeywords = async () => {
     .get(routes.getDistinctKeywords)
     .then((response) => {
       if (response.status === 200) {
-        console.log("getAllProposals: ", response.data);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);
@@ -76,7 +72,6 @@ export const getDistinctTypes = async () => {
     .get(routes.getDistinctTypes)
     .then((response) => {
       if (response.status === 200) {
-        console.log("getAllProposals: ", response.data);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);
@@ -93,7 +88,6 @@ export const getDistinctGroups = async () => {
     .get(routes.getDistinctGroups)
     .then((response) => {
       if (response.status === 200) {
-        console.log("getAllProposals: ", response.data);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);
@@ -110,7 +104,6 @@ export const getDistinctLevels = async () => {
     .get(routes.getDistinctLevels)
     .then((response) => {
       if (response.status === 200) {
-        console.log("getAllProposals: ", response.data);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);

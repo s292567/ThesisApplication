@@ -7,6 +7,7 @@ import {
   SectionTitle,
   SortingToolbar,
   sortThesisData,
+  Searchbar,
 } from "../../components";
 import { getAllProposals, getProposalsByProfessorId } from "../../api";
 import { useUserContext } from "../../contexts/index.js";
@@ -21,7 +22,6 @@ export default function ThesesPage() {
     field: null,
     order: null,
   });
-  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchProposals = async () => {
@@ -67,8 +67,8 @@ export default function ThesesPage() {
     try {
       await deleteProposalById(id);
       const newThesesData = proposals.filter((proposal) => proposal.id !== id);
-      reapplySorting(newThesesData); // Reapply sorting to the updated list
       setProposals(newThesesData);
+      reapplySorting(newThesesData); // Reapply sorting to the updated list
     } catch (error) {
       console.error("Failed to delete proposal:", error);
     }
@@ -98,6 +98,7 @@ export default function ThesesPage() {
 
       {proposals ? (
         <>
+          <Searchbar />
           <SortingToolbar
             proposals={proposals}
             onSortedData={handleSortedData}

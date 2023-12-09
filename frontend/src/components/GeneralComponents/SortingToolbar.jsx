@@ -44,7 +44,7 @@ export default function SortingToolbar({ proposals, onSortedData }) {
 
   return (
     <AppBar
-      position="sticky"
+      position="static"
       sx={{
         backgroundColor: "#FFFFFFFA",
         boxShadow: "none",
