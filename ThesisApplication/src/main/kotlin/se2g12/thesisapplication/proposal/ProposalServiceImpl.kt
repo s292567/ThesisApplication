@@ -29,7 +29,7 @@ class ProposalServiceImpl(
         val message=checkProposal(newProposal)
         if(message=="") {
             old.title=newProposal.title!!
-            old.supervisor=teacherRepository.findByEmail("$professorId@example.com").first()
+            old.supervisor=teacherRepository.findById(professorId).get()
             old.coSupervisors=newProposal.coSupervisors!!.joinToString(separator = ",")
             old.keywords=newProposal.keywords!!.joinToString(separator = ",")
             old.type=newProposal.type!!.joinToString(separator = ",")
@@ -67,7 +67,7 @@ class ProposalServiceImpl(
     @Transactional
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
         // username=email of the logged in professor
-        val supervisor = teacherRepository.findByEmail("$professorId@example.com").first()
+        val supervisor = teacherRepository.findById(professorId).get()
         val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
         if(! newProposal.coSupervisors.isNullOrEmpty()){
             for (coSup in newProposal.coSupervisors!!){
