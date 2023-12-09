@@ -57,7 +57,6 @@ export default function FilterComponent({
 
   const clearFilters = () => {
     setTempFilters({ endDate: null }); // Clear local temporary filters
-    setSearchQuery(""); // Clear searchbar
   };
 
   const filterComponents = Object.keys(apiData).map((filterName) => (

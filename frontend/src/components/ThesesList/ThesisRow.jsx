@@ -156,12 +156,14 @@ export default function ThesisRow({
                 {/**
                  * EDIT MODAL WITH THE FORM
                  */}
-                <ThesisForm
-                  open={editOpen}
-                  onClose={() => setEditOpen(false)}
-                  onSubmit={onEdit}
-                  thesis={thesis}
-                />
+                {editOpen ? (
+                  <ThesisForm
+                    open={editOpen}
+                    onClose={() => setEditOpen(false)}
+                    onSubmit={onEdit}
+                    thesis={thesis}
+                  />
+                ) : null}
               </Box>
             </>
           ) : null}
@@ -171,11 +173,13 @@ export default function ThesisRow({
       {/**
        * MODAL THAT DO THE POPUP WHICH IS DISPLAYING THE DETAILS ABOUT THE THESIS
        */}
-      <ThesisDetail
-        open={detailOpen}
-        handleClose={handleCloseDetail}
-        thesis={thesis}
-      />
+      {detailOpen ? (
+        <ThesisDetail
+          open={detailOpen}
+          handleClose={handleCloseDetail}
+          thesis={thesis}
+        />
+      ) : null}
 
       {/**
        * DELETE SHOULD BE ACCESSIBLE ONLY IF PROFESSOR

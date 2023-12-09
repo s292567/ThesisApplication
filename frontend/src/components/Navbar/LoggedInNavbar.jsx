@@ -151,9 +151,6 @@ export default function LoggedInNavbar() {
                   <Link to={frontendRoutes.professorTheses} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
                     Theses
                   </Link>
-                  <Link to={frontendRoutes.professorNewThesis} color="inherit" sx={{mx: 2, }} onClick={()=>setMobileOpen(false)}>
-                    New Thesis
-                  </Link>
                   <Link to={frontendRoutes.professorApplicants} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
                     Applicants
                   </Link>

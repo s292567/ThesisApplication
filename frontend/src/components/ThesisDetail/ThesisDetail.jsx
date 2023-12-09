@@ -114,7 +114,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
                 <b>keywords:</b>
               </Typography>
               <Typography variant="body2" mb={2} color={textColor}>
-                {thesis.keywords}
+                {thesis.keywords.join(", ")}
               </Typography>
             </Box>
             {/**
@@ -189,7 +189,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body1" color={subTitlesColor}>
-                    <b>{thesis.type}</b>
+                    <b>{thesis.type.join(", ")}</b>
                   </Typography>
                 </Grid>
               </Grid>

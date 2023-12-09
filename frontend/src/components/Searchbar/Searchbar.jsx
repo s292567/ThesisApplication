@@ -53,13 +53,10 @@ export default function Searchbar({ clearSearch, handleResearch }) {
   };
 
   const removeFilter = (filterName) => {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// IN THEORY EVERY TIME A FILTER IS REMOVED, THE API MUST BE CALLED AGAIN SO THAT THE RESULTS ARE UPDATED
-    /// WITH THE NEW FILTERS AND IT MUST BE DONE HERE I THINK
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const newFilters = { ...filters };
     delete newFilters[filterName];
     setFilters(newFilters);
+    handleResearch(newFilters, searchQuery);
   };
 
   // This is the selected filter tags that will be displayed
@@ -103,7 +100,7 @@ export default function Searchbar({ clearSearch, handleResearch }) {
           <SearchBarComponent
             value={searchQuery}
             onClick={() => setOpen(true)}
-            onSearch={() => {}}
+            onSearch={setSearchQuery}
             style={{ width: { xs: "70%", md: "40%" } }}
           />
           <FilterComponent

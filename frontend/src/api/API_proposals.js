@@ -91,7 +91,7 @@ export const searchProposals = async (studentId, query) => {
  */
 export const insertProposal = async (professorId, proposalData) => {
   return axiosInstance
-    .post(routes.insertProposal + `${professorId}`, proposalData)
+    .post(routes.insertProposal + professorId, proposalData)
     .then((response) => {
       if (response.status === 201) {
         console.log("insertProposal: ", response.data);
@@ -150,7 +150,7 @@ export const updateProposal = async (proposalData) => {
       }
     })
     .catch((error) => {
-      console.error("Error while inserting a new proposal: ", error);
+      console.error("Error while updating a proposal: ", error);
     });
 };
 

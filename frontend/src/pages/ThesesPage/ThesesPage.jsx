@@ -9,16 +9,19 @@ import {
   sortThesisData,
   Searchbar,
   NoDataDisplayed,
+  PastelComponent,
+  ThesisForm,
 } from "../../components";
 import { getAllProposals, getProposalsByProfessorId } from "../../api";
 import { useUserContext } from "../../contexts/index.js";
-import { copyProposalById, deleteProposalById } from "../../api";
-import { updateProposal } from "../../api/API_proposals.js";
+import { copyProposalById, deleteProposalById, updateProposal, insertProposal } from "../../api";
+import { Add } from "@mui/icons-material";
 
 export default function ThesesPage() {
   const { user } = useUserContext();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [newThesisOpen, setNewThesisOpen] = useState(false);
   const [sortedThesisData, setSortedThesisData] = useState([]);
   const [sortingCriteria, setSortingCriteria] = useState({
     field: null,
@@ -73,7 +76,6 @@ export default function ThesesPage() {
 
       // const thesisData = await yourSearchApiFunction(filters, searchQuery); // Replace with your actual API call
 
-      const thesisData = await fetchProposals(); // Retrieve the initial data just now so that it's doing something
       setSortedThesisData(thesisData);
     } catch (error) {
       console.error("Error while fetching filtered data:", error);
@@ -135,9 +137,25 @@ export default function ThesesPage() {
     }
   };
 
+  const handleNewThesis = async (newThesis) => {
+    try {
+      // Call API to create the thesis
+      await insertProposal(newThesis);
+
+      // Add the new thesis to the sortedThesisData array
+      const updatedThesisData = [...sortedThesisData, newThesis];
+      reapplySorting(updatedThesisData); // Reapply sorting to the updated list
+    } catch (error) {
+      console.error("Failed to create proposal:", error);
+    }
+  };
+
   return (
     <>
-      <SectionTitle text={"Theses: "} />
+      <SectionTitle
+        text={"Theses: "}
+        style={{ marginTop: "7rem", marginBottom: 0 }}
+      />
 
       {isLoading ? (
         <SkeletonThesisList count={3} />
@@ -145,6 +163,32 @@ export default function ThesesPage() {
         <NoDataDisplayed textNoDataDisplayed={"No theses found."} />
       ) : (
         <>
+          {user.role === "Professor" ? (
+            <>
+              <PastelComponent
+                bgColor={"#687EFF"}
+                textColor={"white"}
+                text={"Thesis"}
+                icon={<Add sx={{ marginTop: "-2px" }} />}
+                onClick={() => setNewThesisOpen(true)}
+                style={{
+                  zIndex: "10",
+                  position: "absolute",
+                  top: { xs: "14%", sm: "18rem" },
+                  right: "5%",
+                  fontSize: "x-large",
+                  paddingRight: "1.5rem",
+                }}
+              />
+              {newThesisOpen ? (
+                <ThesisForm
+                  open={newThesisOpen}
+                  onClose={() => setNewThesisOpen(false)}
+                  onSubmit={handleNewThesis}
+                />
+              ) : null}
+            </>
+          ) : null}
           <Searchbar
             handleResearch={handleResearch}
             clearSearch={clearSearch}
