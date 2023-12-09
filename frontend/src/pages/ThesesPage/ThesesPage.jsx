@@ -1,5 +1,5 @@
 // ThesesPage.jsx
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 
 import {
   ThesesList,
@@ -12,7 +12,7 @@ import {
   PastelComponent,
   ThesisForm,
 } from "../../components";
-import { getAllProposals, getProposalsByProfessorId } from "../../api";
+import { getProposalsByProfessorId, getProposalsByStudentId} from "../../api";
 import { useUserContext } from "../../contexts/index.js";
 import {
   copyProposalById,
@@ -41,7 +41,7 @@ export default function ThesesPage() {
       /* API CALL BASED ON ROLE */
       user.role === "Professor"
         ? (response = await getProposalsByProfessorId(userId))
-        : (response = await getAllProposals());
+        : (response = await getProposalsByStudentId(userId));
       return response;
     } catch (error) {
       console.error("Failed to fetch proposals:", error);
