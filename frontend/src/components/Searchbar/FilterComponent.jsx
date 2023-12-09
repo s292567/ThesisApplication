@@ -28,6 +28,7 @@ export default function FilterComponent({
   apiData,
   searchQuery,
   setSearchQuery,
+  handleResearch,
 }) {
   const [tempFilters, setTempFilters] = useState({ endDate: null });
 
@@ -38,15 +39,9 @@ export default function FilterComponent({
 
   const applyFilters = () => {
     // if there are some null values or empty arrays, remove them before setting the filters
-    if (tempFilters.endDate === null) {
-      delete tempFilters.endDate;
-    }
+    if (tempFilters.endDate === null) delete tempFilters.endDate;
     setFilters(tempFilters);
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// HERE MUST BE IMPLEMENTED THE BACKEND CALL TO THE API WITH THE SEARCH QUERY AND THE FILTERS
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    handleResearch(tempFilters, searchQuery);
     clearFilters();
     handleClose();
   };
@@ -61,7 +56,7 @@ export default function FilterComponent({
 
   const clearFilters = () => {
     setTempFilters({ endDate: null }); // Clear local temporary filters
-    handleClose(); // Close the modal
+    setSearchQuery(""); // Clear searchbar
   };
 
   const filterComponents = Object.keys(apiData).map((filterName) => (

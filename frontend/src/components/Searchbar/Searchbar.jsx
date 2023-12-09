@@ -16,7 +16,7 @@ import {
 } from "../../api";
 import PastelComponent from "../PastelComponent/PastelComponent";
 
-export default function Searchbar() {
+export default function Searchbar({ clearSearch, handleResearch }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [filters, setFilters] = useState([]);
@@ -49,6 +49,7 @@ export default function Searchbar() {
   // Clear all filters
   const clearAllFilters = () => {
     setFilters([]);
+    clearSearch();
   };
 
   const removeFilter = (filterName) => {
@@ -103,6 +104,7 @@ export default function Searchbar() {
             value={searchQuery}
             onClick={() => setOpen(true)}
             onSearch={() => {}}
+            style={{ width: { xs: "70%", md: "40%" } }}
           />
           <FilterComponent
             open={open}
@@ -111,6 +113,7 @@ export default function Searchbar() {
             apiData={apiData}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
+            handleResearch={handleResearch}
           />
         </Box>
 

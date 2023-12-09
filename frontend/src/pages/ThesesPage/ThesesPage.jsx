@@ -1,4 +1,4 @@
-// ProfessorDashboardPage.jsx
+// ThesesPage.jsx
 import React, { useState, useEffect } from "react";
 
 import {
@@ -16,29 +16,28 @@ import { copyProposalById, deleteProposalById } from "../../api";
 export default function ThesesPage() {
   const { user } = useUserContext();
 
-  const [proposals, setProposals] = useState(null);
   const [sortedThesisData, setSortedThesisData] = useState([]);
   const [sortingCriteria, setSortingCriteria] = useState({
     field: null,
     order: null,
   });
 
+  const fetchProposals = async () => {
+    try {
+      let response;
+      const userId = localStorage.getItem("username");
+      /* API CALL BASED ON ROLE */
+      user.role === "Professor"
+        ? (response = await getProposalsByProfessorId(userId))
+        : (response = await getAllProposals());
+      return response;
+    } catch (error) {
+      console.error("Failed to fetch proposals:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchProposals = async () => {
-      try {
-        let response;
-        const userId = localStorage.getItem("username");
-        /* API CALL BASED ON ROLE */
-        user.role === "Professor"
-          ? (response = await getProposalsByProfessorId(userId))
-          : (response = await getAllProposals());
-        return response;
-      } catch (error) {
-        console.error("Failed to fetch proposals:", error);
-      }
-    };
     fetchProposals().then((response) => {
-      setProposals(response);
       setSortedThesisData(response);
     });
   }, []);
@@ -60,14 +59,36 @@ export default function ThesesPage() {
       // If no sorting is applied, just update with the current newThesesData
       setSortedThesisData(newThesesData);
     }
-    // setReload(!reload); // Without the reload the sortedThesisData state is not updated or reloads too late
+  };
+
+  const handleResearch = async (filters, searchQuery) => {
+    try {
+      // Call the API with filters and search query
+
+      // const thesisData = await yourSearchApiFunction(filters, searchQuery); // Replace with your actual API call
+
+      const thesisData = await fetchProposals(); // Retrieve the initial data just now so that it's doing something
+      setSortedThesisData(thesisData);
+    } catch (error) {
+      console.error("Error while fetching filtered data:", error);
+    }
+  };
+
+  const clearSearch = async () => {
+    try {
+      const freshData = await fetchProposals(); // Retrieve the initial data
+      setSortedThesisData(freshData); // Set the retrieved data
+    } catch (error) {
+      console.error("Failed to clear filters:", error);
+    }
   };
 
   const handleDelete = async (id) => {
     try {
       await deleteProposalById(id);
-      const newThesesData = proposals.filter((proposal) => proposal.id !== id);
-      setProposals(newThesesData);
+      const newThesesData = sortedThesisData.filter(
+        (proposal) => proposal.id !== id
+      );
       reapplySorting(newThesesData); // Reapply sorting to the updated list
     } catch (error) {
       console.error("Failed to delete proposal:", error);
@@ -81,9 +102,8 @@ export default function ThesesPage() {
 
       if (copiedProposal) {
         // Add the new copied proposal to the proposals list
-        const newThesesData = [...proposals, copiedProposal];
+        const newThesesData = [...sortedThesisData, copiedProposal];
         reapplySorting(newThesesData); // Reapply sorting to the updated list
-        setProposals(newThesesData);
       } else {
         console.error("No response for the copied proposal");
       }
@@ -96,11 +116,14 @@ export default function ThesesPage() {
     <>
       <SectionTitle text={"Theses: "} />
 
-      {proposals ? (
+      {sortedThesisData ? (
         <>
-          <Searchbar />
+          <Searchbar
+            handleResearch={handleResearch}
+            clearSearch={clearSearch}
+          />
           <SortingToolbar
-            proposals={proposals}
+            proposals={sortedThesisData}
             onSortedData={handleSortedData}
           />
           <ThesesList
