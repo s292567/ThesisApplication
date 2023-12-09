@@ -4,72 +4,131 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  Button,
   TextField,
   Snackbar,
   IconButton,
   Divider,
+  Autocomplete,
+  styled,
+  Paper,
+  Alert,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
-import { AsynchronousAutocomplete } from "../index";
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+import {
+  getDistinctCds,
+  getDistinctCoSupervisors,
+  getDistinctGroups,
+  getDistinctKeywords,
+  getDistinctLevels,
+  getDistinctSupervisors,
+  getDistinctTypes,
+} from "../../api";
+
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import PastelComponent from "../PastelComponent/PastelComponent";
 
 export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
-  
+  const supervisorFullName =
+    thesis.supervisor.name + " " + thesis.supervisor.surname;
   const defaultFormData = {
     title: thesis.title || "",
-    coSupervisors: thesis.coSupervisors || [],
-    keywords: thesis.keywords || [],
-    type: thesis.type || [],
-    groups: thesis.groups || "",
+    supervisor: supervisorFullName || "",
+    coSupervisors: [...thesis.coSupervisors] || [], // Optional
+    keywords: [...thesis.keywords] || [],
+    type: [...thesis.type] || [],
+    groups: [...thesis.groups] || [],
     description: thesis.description || "",
-    requiredKnowledge: thesis.requiredKnowledge || "",
-    notes: thesis.notes || "",
-    expiration: thesis.expiration ? new Date(thesis.expiration) : new Date(),
-    level: thesis.level || "",
-    cds: thesis.cds || [],
+    requiredKnowledge: thesis.requiredKnowledge || "", // Optional
+    notes: thesis.notes || "", // Optional
+    expiration: thesis.expiration ? dayjs(thesis.expiration) : dayjs(),
+    level: thesis.level || [],
+    cds: [...thesis.cds] || [],
   };
 
   const [formData, setFormData] = useState(defaultFormData);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [missingFields, setMissingFields] = useState([]);
+
+  const [apiData, setApiData] = useState([]); // Initialized as an empty object
+
+  // Fetch data from APIs
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = {
+          Cds: await getDistinctCds(),
+          CoSupervisors: await getDistinctCoSupervisors(),
+          Supervisors: await getDistinctSupervisors(),
+          Groups: await getDistinctGroups(),
+          Keywords: await getDistinctKeywords(),
+          Types: await getDistinctTypes(),
+          Levels: await getDistinctLevels(),
+        };
+
+        setApiData(data); // Setting the state with the fetched data
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleDateChange = (newValue) => {
+    // Format the date to "YYYY-MM-DD" or set to null if no date is selected
+    const formattedDate = newValue
+      ? dayjs(newValue).format("YYYY-MM-DD")
+      : null;
+    setFormData({ ...formData, expiration: formattedDate });
+  };
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const handleAutocompleteChange = (field, isMultiple) => (event, newValue) => {
-    console.log("newValue", newValue);
-		const newFieldValue = isMultiple
-      ? newValue
-      : newValue !== null
-      ? newValue.title
-      : "";
-    console.log(field, newFieldValue);
-    setFormData({ ...formData, [field]: newFieldValue });
+  const handleAutocompleteChange = (event, newValue, name) => {
+    setFormData({ ...formData, [name]: newValue });
   };
 
   const handleSubmit = () => {
-    if (!formData.title || !formData.type) {
+    const requiredFields = [
+      { name: "title", label: "Title" },
+      { name: "supervisor", label: "Supervisor" },
+      { name: "keywords", label: "Keywords" },
+      { name: "groups", label: "Groups" },
+      { name: "expiration", label: "Expiration Date" },
+      { name: "type", label: "Type" },
+      { name: "description", label: "Description" },
+      { name: "level", label: "Level" },
+      { name: "cds", label: "CDS" },
+    ];
+
+    const missing = requiredFields.filter(
+      (field) =>
+        !formData[field.name] ||
+        formData[field.name].length === 0 ||
+        formData[field.name] === "" ||
+        formData[field.name] === null
+    );
+    if (missing.length > 0) {
+      setMissingFields(missing.map((field) => field.label));
       setSnackbarOpen(true);
       return;
     }
-    onSubmit(formData);
+    onSubmit({...formData, expiration: dayjs(formData.expiration).format("YYYY-MM-DD"), id: thesis.id});
+    onClose();
   };
 
-  // Example fetch functions - replace these with actual API calls
-  const fetchLevels = [ "BSc", "MSc" ];
-  const fetchCds = [
-    { title: "Computer Science" },
-    { title: "Engineering" },
-  ];
-  const fetchKeywords = async () => [
-    { title: "AI" },
-    { title: "Machine Learning" },
-  ];
-  const fetchTypes = async () => [{ title: "Research" }, { title: "Project" }];
+  const handleDiscard = () => {
+    setFormData(defaultFormData);
+    onClose();
+  };
 
   const textColor = "#27005D";
-  const subTitlesColor = "#40128B";
 
   return (
     <>
@@ -94,7 +153,40 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
         }}
       >
         <DialogTitle>
-          <TextField
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="End Date"
+              value={formData.expiration}
+              onChange={handleDateChange}
+              slotProps={{ textField: { variant: "outlined" } }}
+              minDate={dayjs()} // Restricting past dates
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "white",
+                  borderRadius: "12px",
+                  width: "90%",
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#2192FF",
+                  },
+                },
+              }}
+            />
+          </LocalizationProvider>
+
+          {/**
+           * LEVEL (AUTOCOMPLETE)
+           */}
+          <CustomAutocomplete
+            label="Level"
+            value={formData.level}
+            options={apiData.Levels}
+            onChange={handleAutocompleteChange}
+            name="levels"
+            multiple={false} // Single selection for Level
+            style={{ width: { xs: "50%", md: "25%" } }}
+          />
+
+          <StyledTextField
             fullWidth
             name="title"
             label="Thesis Title"
@@ -107,15 +199,23 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             sx={{ border: "none" }}
             InputProps={{
               style: {
-                width: "80%",
-                fontSize: "xx-large",
+                width: "100%",
+                fontSize: "2.8rem",
                 fontWeight: "bold",
                 backgroundColor: "white",
               }, // Style for text inside the TextField
             }}
-            InputLabelProps={{
-              style: { fontSize: "large", fontWeight: "bold" }, // Style for the label of the TextField
-            }}
+          />
+          {/**
+           * AUTOCOMPLETE FOR KEYWORDS
+           */}
+          <CustomAutocomplete
+            label="Keywords"
+            value={formData.keywords}
+            options={apiData.Keywords}
+            onChange={handleAutocompleteChange}
+            name="keywords"
+            multiple
           />
         </DialogTitle>
         <IconButton
@@ -133,68 +233,99 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
         </IconButton>
         <Divider variant="middle" sx={{ marginTop: "-1rem" }} />
         <DialogContent>
-          {/* Other Dropdowns */}
+          <Paper
+            elevation={0}
+            sx={{
+              padding: "1.5rem",
+              paddingLeft: "2rem",
+              borderRadius: "20px",
+              border: "1px solid whitesmoke",
+              backgroundColor: "white",
+              color: textColor,
+            }}
+          >
+            {/**
+             * ORDER OF THE FORM FIELDS:
+             * 1. Type (autocomplete)
+             * 2. Supervisor (autocomplete that accept only one value)
+             * 3. Co-Supervisor (autocomplete)
+             * 4. Groups (autocomplete)
+             * 5. Description (text field multiline)
+             * 6. Required Knowledge (text field multiline)
+             * 7. Notes (text field multiline)
+             */}
 
-          <AsynchronousAutocomplete
-            label="Level"
-            options={fetchLevels}
-            value={formData.level}
-            onChange={handleAutocompleteChange("level", false)}
-            multiple={false}
-          />
-          <AsynchronousAutocomplete
-            label="Course of Study"
-            options={fetchCds}
-            value={formData.cds}
-            onChange={handleAutocompleteChange("cds", true)}
-            multiple={true}
-            createValue={true}
-          />
-          {/* Additional fields for other thesis attributes */}
-          <TextField
-            fullWidth
-            label="Description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            margin="normal"
-            multiline
-            rows={4}
-          />
+            <CustomAutocomplete
+              label="Type"
+              value={formData.type}
+              options={apiData.Types}
+              onChange={handleAutocompleteChange}
+              name="type"
+              multiple
+            />
 
-          <TextField
-            fullWidth
-            label="Required Knowledge"
-            name="requiredKnowledge"
-            value={formData.requiredKnowledge}
-            onChange={handleChange}
-            margin="normal"
-            multiline
-            rows={4}
-          />
+            <CustomAutocomplete
+              label="Supervisor"
+              value={formData.supervisor}
+              options={apiData.Supervisors}
+              onChange={handleAutocompleteChange}
+              name="supervisor"
+              multiple={false} // Single selection for Supervisor
+            />
 
-          <TextField
-            fullWidth
-            label="Notes (optional)"
-            name="notes"
-            value={formData.notes}
-            onChange={handleChange}
-            margin="normal"
-            multiline
-            rows={3}
-          />
+            <CustomAutocomplete
+              label="Co-Supervisor"
+              value={formData.coSupervisors}
+              options={apiData.CoSupervisors}
+              onChange={handleAutocompleteChange}
+              name="coSupervisors"
+              multiple
+            />
 
-          {/* Date Picker for expiration 
-        
-        <DatePicker
-          label="Expiration"
-          value={formData.expiration}
-          onChange={(newValue) => {
-            setFormData({ ...formData, expiration: newValue });
-          }}
-          renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
-        />
-          */}
+            <CustomAutocomplete
+              label="Groups"
+              value={formData.groups}
+              options={apiData.Groups}
+              onChange={handleAutocompleteChange}
+              name="groups"
+              multiple
+            />
+
+            <Divider sx={{ marginBottom: "2rem" }} />
+
+            <StyledTextField
+              fullWidth
+              label="Description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              margin="normal"
+              multiline
+              rows={4}
+            />
+
+            <StyledTextField
+              fullWidth
+              label="Required Knowledge"
+              name="requiredKnowledge"
+              value={formData.requiredKnowledge}
+              onChange={handleChange}
+              margin="normal"
+              multiline
+              rows={4}
+            />
+
+            <StyledTextField
+              fullWidth
+              label="Notes (optional)"
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+              margin="normal"
+              multiline
+              rows={3}
+            />
+          </Paper>
           {/* Buttons to submit or discard */}
           <div
             style={{
@@ -203,26 +334,118 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
               justifyContent: "space-between",
             }}
           >
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Submit
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                onClose();
-              }}
-            >
-              Discard
-            </Button>
+            <PastelComponent
+              bgColor="#ff7d36"
+              textColor="white"
+              text="Discard"
+              onClick={handleDiscard}
+            />
+            <PastelComponent
+              bgColor="#63ce78"
+              textColor="white"
+              text="Submit"
+              onClick={handleSubmit}
+            />
           </div>
         </DialogContent>
       </Dialog>
+
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={() => setSnackbarOpen(false)}
-        message="Missing required fields"
-      />
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity={"error"}
+          sx={{
+            width: "100%",
+            borderRadius: "10px !important",
+            padding: "0.7rem 1rem !important",
+            backgroundColor: "#ffb3b3ed !important",
+            fontSize: "medium",
+          }}
+        >
+          Missing fields: <b>{missingFields.join(", ")}</b>
+        </Alert>
+      </Snackbar>
     </>
   );
 }
+
+function CustomAutocomplete({
+  label,
+  value,
+  options,
+  onChange,
+  name,
+  multiple = true,
+  style = {},
+}) {
+  return (
+    <Autocomplete
+      multiple={multiple}
+      options={options || []}
+      value={value}
+      onChange={(event, newValue) => onChange(event, newValue, name)}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label={label}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              // Target the outline input root
+              borderRadius: "18px", // Set the border radius
+              backgroundColor: "white",
+              fontSize: "1.2rem",
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                // Target the border when focused
+                borderColor: "#2192FF", // Change to your desired color
+              },
+            },
+            "& .MuiFormLabel-root": {
+              color: "#40128B",
+            },
+            width: "90%",
+            fonrWeight: "bold",
+            ...style,
+          }}
+        />
+      )}
+      fullWidth
+      filterSelectedOptions
+      sx={{
+        marginBottom: "1rem",
+        marginTop: "1rem",
+        "& .MuiChip-root": {
+          fontSize: "1.1rem",
+          backgroundColor: "#40128B",
+          color: "white",
+          fonrWeight: "bold",
+        },
+        "& .MuiChip-deleteIcon": {
+          color: "white !important",
+        },
+      }}
+    />
+  );
+}
+
+const StyledTextField = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    // Target the outline input root
+    borderRadius: "25px", // Set the border radius
+    backgroundColor: "white",
+    color: "#27005D",
+    fontSize: "1.2rem",
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      // Target the border when focused
+      borderColor: "#2192FF", // Change to your desired color
+    },
+  },
+  "& .MuiFormLabel-root": {
+    color: "#40128B",
+  },
+  width: "90%",
+});

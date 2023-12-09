@@ -28,6 +28,7 @@ export default function ThesisRow({
   style = { backgroundColor: "#F4F5FF" },
   onDelete = () => {},
   onCopy = () => {},
+  onEdit = () => {},
 }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -152,10 +153,13 @@ export default function ThesisRow({
                     handleAction("delete");
                   }}
                 />
+                {/**
+                 * EDIT MODAL WITH THE FORM
+                 */}
                 <ThesisForm
                   open={editOpen}
                   onClose={() => setEditOpen(false)}
-                  onSubmit={() => console.log("submitted")}
+                  onSubmit={onEdit}
                   thesis={thesis}
                 />
               </Box>
@@ -172,10 +176,6 @@ export default function ThesisRow({
         handleClose={handleCloseDetail}
         thesis={thesis}
       />
-
-      {/**
-       * EDIT SHOULD BE ACCESSIBLE ONLY IF PROFESSOR
-       */}
 
       {/**
        * DELETE SHOULD BE ACCESSIBLE ONLY IF PROFESSOR

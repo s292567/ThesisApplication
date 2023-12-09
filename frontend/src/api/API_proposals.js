@@ -123,14 +123,19 @@ export const applyToProposal = async (applicationData) => {
       console.error("Error while applying to a proposal: ", error);
     });
 };
-//export const updateProposal = async (professorId,oldName, proposalData) => {
-// let path=professorId+","+oldName
-export const updateProposal = async (proposalId, proposalData) => {
-  let path = proposalId;
+
+
+/**
+ * EDIT PROPOSAL
+ * @param {*} proposalId 
+ * @param {*} proposalData 
+ * @returns 
+ */
+export const updateProposal = async (proposalData) => {
   let jwt = localStorage.getItem("ROCP_token");
   jwt = jwt.substring(1, jwt.length - 1);
   return axiosInstance
-    .put(routes.updateProposal + `${path}`, proposalData, {
+    .put(routes.updateProposal + proposalData.id, proposalData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + jwt,

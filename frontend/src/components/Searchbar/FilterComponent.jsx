@@ -1,5 +1,6 @@
 // FilterComponent.jsx is a component that renders the filter dialog for the searchbar
-import { Close, TuneOutlined } from "@mui/icons-material";
+import { useState } from "react";
+import { Close } from "@mui/icons-material";
 import {
   Dialog,
   DialogTitle,
@@ -15,9 +16,9 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useEffect, useState } from "react";
-import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+
 import PastelComponent from "../PastelComponent/PastelComponent";
 import SearchBarComponent from "./SearchBarComponent";
 
@@ -75,7 +76,8 @@ export default function FilterComponent({
             sx={{
               "& .MuiOutlinedInput-root": {
                 // Target the outline input root
-                borderRadius: "12px", // Set the border radius
+                borderRadius: "18px", // Set the border radius
+                backgroundColor: "white",
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                   // Target the border when focused
                   borderColor: "#2192FF", // Change to your desired color
@@ -103,14 +105,6 @@ export default function FilterComponent({
             />
           ))
         }
-        sx={{
-          "& .MuiAutocomplete-paper": {
-            borderRadius: "25px",
-          },
-          "& .MuiOutlinedInput-root": {
-            backgroundColor: "white",
-          },
-        }}
       />
     </Grid>
   ));

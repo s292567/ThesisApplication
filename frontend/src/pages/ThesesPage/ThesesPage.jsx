@@ -13,6 +13,7 @@ import {
 import { getAllProposals, getProposalsByProfessorId } from "../../api";
 import { useUserContext } from "../../contexts/index.js";
 import { copyProposalById, deleteProposalById } from "../../api";
+import { updateProposal } from "../../api/API_proposals.js";
 
 export default function ThesesPage() {
   const { user } = useUserContext();
@@ -117,6 +118,23 @@ export default function ThesesPage() {
     }
   };
 
+  const handleEdit = async (editedThesis) => {
+    try {
+      console.log("editedThesis:\n", editedThesis);
+      // Call API to update the thesis
+      await updateProposal(editedThesis);
+
+      // Update the thesis in the sortedThesisData array
+      const updatedThesisData = sortedThesisData.map((thesis) =>
+        thesis.id === editedThesis.id ? editedThesis : thesis
+      );
+
+      reapplySorting(updatedThesisData); // Reapply sorting to the updated list
+    } catch (error) {
+      console.error("Failed to edit proposal:", error);
+    }
+  };
+
   return (
     <>
       <SectionTitle text={"Theses: "} />
@@ -139,6 +157,7 @@ export default function ThesesPage() {
             thesesData={sortedThesisData}
             handleDelete={handleDelete}
             handleCopy={handleCopy}
+            handleEdit={handleEdit}
           />
         </>
       )}
