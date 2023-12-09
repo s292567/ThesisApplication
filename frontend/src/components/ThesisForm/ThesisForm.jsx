@@ -121,7 +121,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
       return;
     }
     const updatedThesis = {
-      id: thesis.id, // Keep the existing ID for editing, will be undefined for new thesis
+      id: thesis.id || "", // Keep the existing ID for editing, will be undefined for new thesis
       expiration: dayjs(formData.expiration).format("YYYY-MM-DD"),
       ...formData,
     };
