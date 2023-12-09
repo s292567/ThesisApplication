@@ -1,8 +1,4 @@
-import BottomNavbar from "./BottomNavbar/BottomNavbar"
-import LoginForm from "./LoginForm/LoginForm"
-import ProposalForm from "./ProposalForm/ProposalForm"
 import Navbar from "./Navbar/Navbar"
-import Sidebar from "./SideBar/Sidebar"
 
 import LoggedInNavbar from "./Navbar/LoggedInNavbar"
 
@@ -15,34 +11,49 @@ import SkeletonThesisList from "./Skeletons/SkeletonThesisList.jsx";
 import MyOutlinedButton from "./MyOutlinedButton/MyOutlinedButton.jsx";
 import PastelComponent from "./PastelComponent/PastelComponent.jsx";
 
-import WarningPopup from "./WarningPopup.jsx"
+import WarningPopup from "./Popups/WarningPopup.jsx"
 
 import SkeletonApplicants from "./Skeletons/SkeletonApplicants.jsx";
 
-import WithTooltip from "./WithTooltip.jsx"
-import EditForm from "./EditProposal/EditProposal.jsx";
-import MyTheses from "./ThesesList/MyTheses.jsx";
+import WithTooltip from "./Popups/WithTooltip.jsx"
 
+import SectionTitle from "./GeneralComponents/SectionTitle.jsx";
+
+import StyledPaper from "./GeneralComponents/StyledPaper.jsx";
+
+import ThesisForm from "./ThesisForm/ThesisForm.jsx";
+
+import AsynchronousAutocomplete from "./GeneralComponents/AsynchronousAutocomplete.jsx";
+
+import SortingToolbar from "./GeneralComponents/SortingToolbar.jsx";
+import { sortThesisData } from "./GeneralComponents/SortingToolbar.jsx";
+
+import Searchbar from "./Searchbar/Searchbar.jsx";
+
+import NoDataDisplayed from "./GeneralComponents/NoDataDisplayed.jsx";
 
 export {
-    BottomNavbar,
-    LoginForm, 
     Navbar,
-    Sidebar,
     LoggedInNavbar,
-    
-    ProposalForm, 
+     
     ThesisDetail,
     ThesesList,
     ThesisRow,
+    ThesisForm,
 
     MyOutlinedButton,
     PastelComponent,
     WarningPopup,
     WithTooltip,
-    EditForm,
-    MyTheses,
+    NoDataDisplayed,
+    
+    Searchbar,
 
+    SectionTitle,
+    StyledPaper,
+    AsynchronousAutocomplete,
+    SortingToolbar,
+    sortThesisData,
 
     SkeletonThesisList,
     SkeletonApplicants,

@@ -13,32 +13,22 @@ const MyMain = styled(Box)({
 
 function DefaultLayoutPage() {
 
-    const { loggedIn } = useUserContext();
+  // it will be possible to implement here the redirection to the specific dashboard
 
-    return (
-        <Box>
-            <header>
-                <Navbar/>
-            </header>
-            <main>
-              <MyMain>
-              { loggedIn ?
-                <>
-                <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}} flex={5} ml={3} mr={3} >
-                  <Outlet/>
-                </Box>
-                <Box flex={1} p={2} sx={{ display: { xs: "none", md: "block" } }} />
-                </>
-               :
-                <Outlet />
-              }
-              </MyMain>
-
-            </main>
-            <footer>
-            </footer>
-        </Box>
-    );
+  return (
+    <Box>
+      <header>
+        <Navbar/>
+      </header>
+      <main>
+        <MyMain>
+          <Outlet/>
+        </MyMain>
+      </main>
+      <footer>
+      </footer>
+    </Box>
+  );
 }
 
 export default DefaultLayoutPage;

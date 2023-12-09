@@ -1,173 +1,201 @@
 // ThesisRow.jsx
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
-  Paper,
+  Button,
   Stack,
   Typography,
-  styled,
   Box,
-  Alert,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import {Delete, EditNoteRounded} from "@mui/icons-material";
-import { PastelComponent, ThesisDetail, WarningPopup} from "../index.js";
-import {useUserContext} from "../../contexts";
+import {
+  Delete,
+  EditNoteRounded,
+  ContentCopyOutlined,
+} from "@mui/icons-material";
+import {
+  PastelComponent,
+  ThesisDetail,
+  StyledPaper,
+  ThesisForm,
+  WarningPopup,
+} from "../index.js";
+import { useUserContext } from "../../contexts";
 
-import EditModal from "../EditProposal/Modal.jsx";
-import Snackbar from '@mui/material/Snackbar';
-
-
-const StyledPaper = styled(Paper)(({theme}) => ({
-  width: "800px",
-  [theme.breakpoints.down("md")]: {
-    width: "600px",
-  },
-  [theme.breakpoints.down(700)]: {
-    width: "500px",
-  },
-  [theme.breakpoints.down("sm")]: {
-    width: "auto",
-  },
-  backgroundColor: '#F4F5FF',
-  padding: "2rem",
-  borderRadius: "0.8rem",
-  ...theme.typography.body2,
-  transition: "box-shadow .3s", // Smooth transition for shadow
-  "& button": {
-    display: "none",
-  },
-  "&:hover": {
-    cursor: "pointer",
-    "& button": {display: "block"},
-    boxShadow: theme.shadows[24], // Elevated shadow on hover
-  },
-}));
-
-export default function ThesisRow({thesis,reload, style = {backgroundColor: '#F4F5FF'}}) {
-  const [thessespage, setThessepage] = useState(true);
+export default function ThesisRow({
+  thesis,
+  actions = false,
+  style = { backgroundColor: "#F4F5FF" },
+  onDelete = () => {},
+  onCopy = () => {},
+  onEdit = () => {},
+}) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const [detailOpen, setDetailOpen] = useState(false);
-  const [edit, setEdit] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const {user} = useUserContext();
 
-  const [popupProps, setPopupProps] = useState({
-    warningOpen: false,
-    handleCloseWarning: () =>
-      setPopupProps({ ...popupProps, warningOpen: false }),
-    handleApplyed: () =>
-      setPopupProps({
-        ...popupProps,
-        warningOpen: false,
-        confirmedOpen: true,
-      }),
-    confirmedOpen: false,
-    handleClose: () =>
-      setPopupProps({ ...popupProps, confirmedOpen: false }),
-    msgWarning: "Are you sure you want to delete THIS thesis?",
-    msgDone: "Deleted successfully!",
-  });
-  const newReload=()=>{
-    reload()
-  }
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false); // EDIT MODAL
+  const [warningOpen, setWarningOpen] = useState(false); // DELETE MODAL
+
+  const [actionType, setActionType] = useState(""); // New state to track the action type
+
+  const { user } = useUserContext();
+
+  const handleAction = (type) => {
+    setActionType(type);
+    setWarningOpen(true);
+  };
+
+  const handleApplied = () => {
+    if (actionType === "delete") {
+      onDelete(thesis.id);
+    } else if (actionType === "copy") {
+      onCopy(thesis.id);
+    }
+  };
 
   const handleOpenDetail = () => {
     setDetailOpen(true);
   };
 
-  setTimeout(() => {
-    setSnackbarOpen(false);
-  }, 5000)
   const handleCloseDetail = () => {
     setDetailOpen(false);
   };
+
+  const abilitateActions = () => {
+    if (user.role === "Professor" && actions) return true;
+    else return false;
+  };
+
   return (
     <>
-      <Box flex={1} sx={{display: "flex"}}>
-        <StyledPaper elevation={1} onClick={handleOpenDetail} sx={{...style}}>
-          <Typography variant="h4" mb={2} sx={{color: '#2f1c6a', fontWeight: 'bold'}}>
-            {thesis.title}
-          </Typography>
-          <Typography fontSize="large" mb={2}>
-            {!isMobile
-              ? thesis.description
-              : `${thesis.description.substring(0, 90)}...`}
-          </Typography>
-          <Stack direction="row" spacing={2} sx={{display: 'flex', justifyContent: 'space-between'}}>
-            <PastelComponent
-              text={'View'}
-              textColor={"white"}
-              bgColor={'#9c8ffc'}
-              style={{width: '75px', height: '55px', borderRadius: '8px',}}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleOpenDetail();
-              }}
-            />
-            {user.role === 'Professor' && (
-              <Box sx={{display: 'flex', flexDirection: 'row', gap: '15px'}}>
+      <StyledPaper elevation={1} sx={{ ...style, position: "relative" }}>
+        {/** TITLE/DESCRIPTION SECTION */}
+        <Typography
+          variant="h4"
+          mb={2}
+          sx={{ color: "#2f1c6a", fontWeight: "bold", width: "70%" }}
+        >
+          {thesis.title}
+        </Typography>
+        <Typography fontSize="large" mb={2}>
+          {!isMobile
+            ? thesis.description
+            : `${thesis.description.substring(0, 90)}...`}
+        </Typography>
+
+        {/** Buttons: VIEW, EDIT, DELETE, under the description inside the row */}
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <PastelComponent
+            text={"View"}
+            textColor={"white"}
+            bgColor={"#94B3FD"}
+            style={{ width: "75px", height: "55px", borderRadius: "8px" }}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleOpenDetail();
+            }}
+          />
+          {abilitateActions() ? (
+            <>
+              <PastelComponent
+                textColor={"white"}
+                icon={
+                  <ContentCopyOutlined
+                    fontSize={"medium"}
+                    sx={{ marginTop: "8px" }}
+                  />
+                }
+                bgColor={"#2192FF"}
+                style={{
+                  width: "55px",
+                  height: "55px",
+                  borderRadius: "8px",
+                  position: "absolute",
+                  right: "2rem",
+                  top: "2rem",
+                }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  /// COPY FUNCTION
+                  handleAction("copy");
+                }}
+              />
+              <Box sx={{ display: "flex", flexDirection: "row", gap: "15px" }}>
                 <PastelComponent
                   bgColor={"#63ce78"}
-                  icon={<EditNoteRounded fontSize={'large'} sx={{marginTop: '2px'}}/>}
+                  icon={
+                    <EditNoteRounded
+                      fontSize={"large"}
+                      sx={{ marginTop: "2px" }}
+                    />
+                  }
                   textColor={"white"}
-                  style={{width: '55px', height: '55px', borderRadius: '8px',}}
+                  style={{ width: "55px", height: "55px", borderRadius: "8px" }}
                   onClick={(event) => {
                     event.stopPropagation();
-                    setEdit(true);
+                    /// EDIT FUNCTION
+                    setEditOpen(true);
                   }}
                 />
-
                 <PastelComponent
                   bgColor={"#ff7d36"}
-                  icon={<Delete fontSize={'large'} sx={{marginTop: '2px'}}/>}
+                  icon={<Delete fontSize={"large"} sx={{ marginTop: "2px" }} />}
                   textColor={"white"}
-                  style={{width: '55px', height: '55px', borderRadius: '8px',}}
+                  style={{ width: "55px", height: "55px", borderRadius: "8px" }}
                   onClick={(event) => {
                     event.stopPropagation();
-                    setPopupProps({ ...popupProps, warningOpen: true });
+                    /// DELETE FUNCTION
+                    handleAction("delete");
                   }}
                 />
+                {/**
+                 * EDIT MODAL WITH THE FORM
+                 */}
+                {editOpen ? (
+                  <ThesisForm
+                    open={editOpen}
+                    onClose={() => setEditOpen(false)}
+                    onSubmit={onEdit}
+                    thesis={thesis}
+                  />
+                ) : null}
               </Box>
-            )}
-          </Stack>
-        </StyledPaper>
-      </Box>
+            </>
+          ) : null}
+        </Stack>
+      </StyledPaper>
 
-      <ThesisDetail
-        open={detailOpen}
-        handleClose={handleCloseDetail}
-        thesis={thesis}
-        page={thessespage}
-      />
+      {/**
+       * MODAL THAT DO THE POPUP WHICH IS DISPLAYING THE DETAILS ABOUT THE THESIS
+       */}
+      {detailOpen ? (
+        <ThesisDetail
+          open={detailOpen}
+          handleClose={handleCloseDetail}
+          thesis={thesis}
+        />
+      ) : null}
 
-      <EditModal
-        open={edit}
-        setEdit={setEdit}
-        setSnackbarOpen={setSnackbarOpen}
-        thesis={thesis}
-        reload={newReload}
-      />
-
-      <WarningPopup
-        warningOpen={popupProps.warningOpen}
-        handleCloseWarning={popupProps.handleCloseWarning}
-        handleApplyed={popupProps.handleApplyed}
-        confirmedOpen={popupProps.confirmedOpen}
-        handleClose={popupProps.handleClose}
-        msgWarning={popupProps.msgWarning}
-        msgDone={popupProps.msgDone}
-      />
-
-      <Snackbar
-        open={snackbarOpen}
-        sx={{width: '400px', height: '200px'}}
-      >
-        <Alert severity="success" sx={{width: '100%'}}>
-          Update successfully!
-        </Alert>
-      </Snackbar>
+      {/**
+       * DELETE SHOULD BE ACCESSIBLE ONLY IF PROFESSOR
+       */}
+      {user.role === "Professor" && actions ? (
+        <WarningPopup
+          warningMessage={
+            actionType === "delete"
+              ? "Are you sure you want to delete this thesis?"
+              : "Are you sure you want to copy this thesis?"
+          }
+          warningOpen={warningOpen}
+          setWarningOpen={setWarningOpen}
+          handleApplied={handleApplied}
+        />
+      ) : null}
     </>
   );
 }

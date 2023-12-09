@@ -1,59 +1,49 @@
 // ThesesList.jsx
-import {
-  Stack,
-  Box,
-} from "@mui/material";
-import { MyOutlinedButton, ThesisRow } from "../index.js";
-import {useLocation, useNavigate} from "react-router-dom";
+import { Box, Grid } from "@mui/material";
+import { ThesisRow } from "../index.js";
+import { useLocation } from "react-router-dom";
 import { useUserContext } from "../../contexts";
 
-export default function ThesesList({ thesesData, reload }) {
+export default function ThesesList({
+  thesesData,
+  handleDelete = () => {},
+  handleCopy = () => {},
+  handleEdit = () => {},
+}) {
   const location = useLocation();
-  const { homeRoute, generalRoutes } = useUserContext();
-  const navigate = useNavigate();
+  const { homeRoute } = useUserContext();
 
   if (thesesData === undefined) {
     thesesData = [];
   }
-    const newReload=()=>{
-        reload()
-    }
+
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-start",
+        flexGrow: 1,
       }}
     >
-      <Stack
-        direction="column"
-        flexWrap="wrap"
-        spacing={2}
-        mb={3}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-start",
-        }}
-      >
+      <Grid container direction="column" justifyContent="center" spacing={3}>
         {thesesData.map((thesis) => {
-          return <ThesisRow key={thesis.id} thesis={thesis} reload={newReload}/>
+          return (
+            <Grid key={thesis.id} container item justifyContent="center">
+              <Grid item xs={10} sm={10} md={8} lg={6} xl={5}>
+                <ThesisRow
+                  key={thesis.id}
+                  thesis={thesis}
+                  actions={location.pathname !== homeRoute ? true : false}
+                  onDelete={handleDelete}
+                  onCopy={handleCopy}
+                  onEdit={handleEdit}
+                />
+              </Grid>
+            </Grid>
+          );
         })}
-      </Stack>
-      {location.pathname === homeRoute && (
-        <MyOutlinedButton
-          text={"See More Theses"}
-          colorBorder={"#003366"}
-          colorBorderHover={"#1976d2"}
-          style={{ fontSize: "large", marginLeft: "3rem" }}
-          onClick={() => {
-            navigate(generalRoutes.theses);
-          }}
-        />
-      )}
+      </Grid>
       <Box padding={3}></Box>
     </Box>
   );
 }
-

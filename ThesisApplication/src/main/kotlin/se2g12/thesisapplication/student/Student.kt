@@ -13,7 +13,7 @@ data class Student (
     @ManyToOne
     @JoinColumn(name = "codDegree", referencedColumnName = "codDegree")
     val degree: Degree? = null,
-    val enrollmentYear:String?=null
+    val enrollmentYear:Int?=null
 ){
     @Id
     val id: String?=null

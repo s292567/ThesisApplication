@@ -2,7 +2,7 @@ import {Box, Paper, Skeleton, Stack, styled } from "@mui/material";
 
 
 // Helper component to render Skeletons
-const SkeletonDemoPaper = styled(Paper)(({theme}) => ({
+const SkeletonPaper = styled(Paper)(({theme}) => ({
   height: 180, // Adjust the height to match the content of your DemoPaper
   margin: theme.spacing(2), // Provide some space around each skeleton
   padding: theme.spacing(2),
@@ -24,9 +24,9 @@ const SkeletonDemoPaper = styled(Paper)(({theme}) => ({
 export default function SkeletonThesisList({count}) {
   return (
     <Box sx={{display: 'flex', marginBottom: '2rem'}}>
-      <Stack direction="column" flexWrap="wrap" justifyContent="center" alignItems="flex-start" spacing={2} sx={{flexGrow: 1}}>
+      <Stack direction="column" flexWrap="wrap" justifyContent="center" alignItems="center" spacing={2} sx={{flexGrow: 1}}>
         {Array.from({length: count}, (_, index) => (
-          <SkeletonDemoPaper key={index} variant="rectangular" animation="wave">
+          <SkeletonPaper key={index} variant="rectangular" animation="wave">
             {/* Title Skeleton */}
             <Skeleton variant="text"
                       sx={{borderRadius: '4px', fontSize: '1.5rem', height: 40, width: '60%',}} mb={2}/>
@@ -37,7 +37,7 @@ export default function SkeletonThesisList({count}) {
             {/* Button Skeleton */}
             <Skeleton variant="rectangular"
                       sx={{borderRadius: '12px', height: 40, width: '15%', marginTop: 2}}/>
-          </SkeletonDemoPaper>
+          </SkeletonPaper>
         ))}
       </Stack>
     </Box>

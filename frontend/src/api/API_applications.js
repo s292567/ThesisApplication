@@ -169,8 +169,6 @@ export const getAllApplicationsDataForProfessor = async (professorId) => {
             proposals: proposals
         }));
 
-        console.log('API GROUPED BY PROPOSALS: \n', groupedByProposals);
-        console.log('API GROUPED BY STUDENTS: \n', groupedByStudents);
         return { groupedByProposals, groupedByStudents };
     } catch (error) {
         console.error("Error fetching data:", error);

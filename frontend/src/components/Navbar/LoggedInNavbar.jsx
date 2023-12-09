@@ -151,9 +151,6 @@ export default function LoggedInNavbar() {
                   <Link to={frontendRoutes.professorTheses} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
                     Theses
                   </Link>
-                  <Link to={frontendRoutes.professorNewThesis} color="inherit" sx={{mx: 2, }} onClick={()=>setMobileOpen(false)}>
-                    New Thesis
-                  </Link>
                   <Link to={frontendRoutes.professorApplicants} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
                     Applicants
                   </Link>
@@ -165,8 +162,8 @@ export default function LoggedInNavbar() {
                   <Link to={frontendRoutes.studentTheses} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
                     Theses
                   </Link>
-                    <Link to={frontendRoutes.MyTheses} color="inherit" sx={{mx: 2}}>
-                      My Theses
+                    <Link to={frontendRoutes.studentApplications} color="inherit" sx={{mx: 2}}>
+                      Applications
                     </Link>
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
@@ -185,9 +182,7 @@ export default function LoggedInNavbar() {
           )}
           <Icons>
             <Badges>
-              <Badge badgeContent={4} color="error">
-                <MailOutline/>
-              </Badge>
+              
               <Badge badgeContent={2} color="error">
                 <NotificationsOutlined/>
               </Badge>

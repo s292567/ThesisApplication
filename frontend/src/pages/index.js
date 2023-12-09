@@ -12,6 +12,8 @@ import DefaultLayoutPage from "./DefaultLayoutPage/DefaultLayoutPage";
 
 import ThesesPage from "./ThesesPage/ThesesPage.jsx";
 
+import StudentApplicationsPage from "./studentPages/StudentApplicationsPage.jsx";
+
 export {
     DefaultLayoutPage,
     LandingPage,
@@ -25,5 +27,5 @@ export {
     ProfessorApplicantsPage,
 
     ThesesPage,
-
+    StudentApplicationsPage,
 }

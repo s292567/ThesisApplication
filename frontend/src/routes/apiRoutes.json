@@ -11,5 +11,15 @@
     "acceptApplication": "applications", 
     "browseAllApplyingStudents": "applications/students?proposalId=",
     "browseAllApplications": "applications/by?proposalId=",
-    "getProposalByProfessorId": "proposals/getProfessorProposals/"
+    "getProposalByProfessorId": "proposals/getProfessorProposals/",
+    "deleteProposalById": "proposals/delete/",
+    "copyProposalById": "proposals/copy/",
+    
+    "getDistinctSupervisors": "proposals/supervisors",
+    "getDistinctCoSupervisors": "proposals/coSupervisors",
+    "getDistinctTypes": "proposals/types",
+    "getDistinctLevels": "proposals/levels",
+    "getDistinctKeywords": "proposals/keywords",
+    "getDistinctGroups": "proposals/groups",
+    "getDistinctCds": "proposals/degrees"
 }

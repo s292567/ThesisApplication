@@ -7,10 +7,14 @@ import {
     insertProposal, 
     applyToProposal,
     getProposalsByProfessorId, 
+    deleteProposalById,
+    copyProposalById,
+    updateProposal,
 } from './API_proposals.js';
 
 import {
-    getAllApplicationsDataForProfessor
+    getAllApplicationsDataForProfessor,
+    getAllApplicationsForLoggedInStudent,
 } from './API_applications.js';
 
 import axiosInstance from './API_Config.js'; // Import axios instance
@@ -19,6 +23,17 @@ import {
     loginApi, 
     getProfileApi 
 } from './API_User.js';
+
+import {
+    getDistinctCds,
+    getDistinctCoSupervisors,
+    getDistinctSupervisors,
+    getDistinctGroups,
+    getDistinctKeywords,
+    getDistinctTypes,
+    getDistinctLevels,
+
+} from './API_search.js';
 
 
 // Export all the API functions and the axios instance
@@ -29,9 +44,24 @@ export {
     searchProposals, 
     insertProposal, 
     applyToProposal,
+    updateProposal,
+
+    deleteProposalById,
+    copyProposalById,
+
     axiosInstance,
     getProposalsByProfessorId,
     getAllApplicationsDataForProfessor,
+
+    getDistinctCds,
+    getDistinctCoSupervisors,
+    getDistinctSupervisors,
+    getDistinctGroups,
+    getDistinctKeywords,
+    getDistinctTypes,
+    getDistinctLevels,
+
     loginApi, 
+    getAllApplicationsForLoggedInStudent,
     getProfileApi
 };

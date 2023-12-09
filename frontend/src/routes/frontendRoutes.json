@@ -12,5 +12,5 @@
     "professorDashboard": "/professorDashboard",
 
     "pageNotFound": "/pageNotFound",
-    "MyTheses": "/myTheses"
+    "studentApplications": "/myApplications"
 }
