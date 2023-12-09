@@ -83,7 +83,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
   const handleDateChange = (newValue) => {
     // Format the date to "YYYY-MM-DD" or set to null if no date is selected
     const formattedDate = newValue
-      ? dayjs(newValue).format("YYYY-MM-DD")
+      ? dayjs(newValue)
       : null;
     setFormData({ ...formData, expiration: formattedDate });
   };
