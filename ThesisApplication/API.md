@@ -237,6 +237,7 @@ Display proposals that contain query string (caps-insensitive) in any of their f
   - `201 Created`: The proposal has been inserted in the DB
   - `400 Bad Request`: Error in the request body
   - `401 Unauthorized`: The user is not logged in
+  - `404 Not Found`: The professor was not found
   - `500 Internal Server Error`: Generic server error
 
 ## Apply to Proposal

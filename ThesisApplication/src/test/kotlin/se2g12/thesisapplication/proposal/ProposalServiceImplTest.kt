@@ -2,6 +2,7 @@ package se2g12.thesisapplication.proposal
 import io.mockk.*
 import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
@@ -60,7 +61,7 @@ class ProposalServiceImplTest {
         val gr13 = GroupDep("G13")
         val gr21 = GroupDep("G21")
         // Mock behavior
-        every { teacherRepository.findByEmail(professorId) } returns listOf(Teacher("Ferrari", "Luca", "p101@example.com", gr13))
+        every { teacherRepository.findById(professorId) } returns Optional.of(Teacher("Ferrari", "Luca", "p101@example.com", gr13))
         every { teacherRepository.findByNameSurname("Paolo", "Ricci") } returns listOf(Teacher("Ricci", "Paolo", "paolo.ricci@example.com", gr21))
         every { teacherRepository.findByNameSurname("Mario", "Rossi") } returns emptyList()
         every { proposalRepository.save(any()) } returns mockk()
@@ -72,7 +73,53 @@ class ProposalServiceImplTest {
         // For example, you can verify that save method was called on proposalRepository
         verify(exactly = 1) { proposalRepository.save(any()) }
     }
+    @Test
+    fun `addNewProposal throws error if invalid group present`() {
+        // Mock data
+        val professorId = "p101"
+        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val newProposalDTO = NewProposalDTO("Advanced algorithms for image processing",
+            listOf( "Paolo Ricci", "Mario Rossi" ),
+            listOf("image processing"),
+            listOf("in external company"),
+            listOf("G13","G21", "G1"),
+            "Work in a company to develop new algorithms for image processing",
+            "Basics of machine learning and image processing",
+            "Collaboration with company equipe. Reimbursement of expenses",
+            localDate,
+            "MSc",
+            listOf("ENG1", "ENG3")
+        )
 
+        val gr13 = GroupDep("G13")
+        val gr21 = GroupDep("G21")
+        // Mock behavior
+        every { teacherRepository.findById(professorId) } returns Optional.of(Teacher("Ferrari", "Luca", "p101@example.com", gr13))
+        every { teacherRepository.findByNameSurname("Paolo", "Ricci") } returns listOf(Teacher("Ricci", "Paolo", "paolo.ricci@example.com", gr21))
+        every { teacherRepository.findByNameSurname("Mario", "Rossi") } returns emptyList()
+        every { proposalRepository.save(any()) } returns mockk()
+
+        assertThrows<ProposalBodyError> {
+            proposalService.addNewProposal(newProposalDTO, professorId)
+        }
+
+        verify(exactly = 0) { proposalRepository.save(any()) }
+    }
+    @Test
+    fun `addNewProposal throws error if professor is not found`() {
+        // Mock data
+        val professorId = "p202"
+        val newProposalDTO = mockk<NewProposalDTO>()
+
+        // Mock behavior
+        every { teacherRepository.findById(professorId) } returns Optional.empty()
+
+        assertThrows<ProfessorNotFound> {
+            proposalService.addNewProposal(newProposalDTO, professorId)
+        }
+
+        verify(exactly = 0) { proposalRepository.save(any()) }
+    }
     @Test
     fun testGetAllProposals() {
         val teacher = Teacher("Ferrari", "Luca")

@@ -66,8 +66,7 @@ class ProposalServiceImpl(
     }
     @Transactional
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
-        // username=email of the logged in professor
-        val supervisor = teacherRepository.findByEmail(professorId).first()
+        val supervisor = teacherRepository.findById(professorId).orElseThrow { ProfessorNotFound(professorId) }
         val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
         if(! newProposal.coSupervisors.isNullOrEmpty()){
             for (coSup in newProposal.coSupervisors!!){
@@ -108,6 +107,8 @@ class ProposalServiceImpl(
     }
 
     override fun deleteProposalById(proposalId: UUID) {
+        // Proposal is deletable only if active (not archived)
+        // associated applications not deleted but with status 'cancelled'
         // Delete associated applications
         val applications = applicationRepository.findByProposalId(proposalId)
         applications.forEach { applicationRepository.delete(it) }
