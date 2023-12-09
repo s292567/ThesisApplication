@@ -22,14 +22,20 @@ class ApplicationServiceImpl (
     : ApplicationService {
 
     override fun addNewApplication(newApplication: NewApplicationDTO) {
-        val student=studentRepository.findById(newApplication.studentId).get()
+        checkApplicationConflicts(newApplication.studentId, newApplication.proposalId)
+        val student=studentRepository.findById(newApplication.studentId)
+            .orElseThrow { StudentNotFoundError("Student ${newApplication.studentId} not found") }
         val proposal=proposalRepository.findById(newApplication.proposalId)
-        if (proposal.isEmpty)
-            throw ProposalNotFoundError("Proposal ${newApplication.proposalId} not found")
-        val application=Application(student, proposal.get(), "pending")
+            .orElseThrow { ProposalNotFoundError("Proposal ${newApplication.proposalId} not found") }
+        val application=Application(student, proposal, "pending")
         applicationRepository.save(application)
     }
-
+    private fun checkApplicationConflicts(studentId: String, proposalId: UUID){
+        if (applicationRepository.findByStudentIdAndStatus(studentId, "accepted").isNotEmpty())
+            throw ApplicationConflictError("You ($studentId) already have an accepted application.")
+        if (applicationRepository.findByStudentIdAndProposalIdAndStatus(studentId, proposalId, "pending").isNotEmpty())
+            throw ApplicationConflictError("You ($studentId) already have a pending application for this proposal." )
+    }
     override fun declineApplication(applicationId: UUID) {
         getModifiableApplication(applicationId)
         applicationRepository.updateStatusById(applicationId, "declined")

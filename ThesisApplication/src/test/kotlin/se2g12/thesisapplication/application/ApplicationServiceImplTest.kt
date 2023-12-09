@@ -35,6 +35,8 @@ class ApplicationServiceImplTest {
         val newApplication = NewApplicationDTO(studentId, uuid)
         val student = Student(surname = "Rossi", name =  "Mario")
 
+        every { applicationRepository.findByStudentIdAndStatus(studentId, "accepted") } returns emptyList()
+        every { applicationRepository.findByStudentIdAndProposalIdAndStatus(studentId,uuid, "pending") } returns emptyList()
         every { studentRepository.findById(newApplication.studentId) } returns Optional.of(student)
         every { proposalRepository.findById(newApplication.proposalId) } returns Optional.of(mockProposal)
         every { applicationRepository.save(any()) } returns mockk()
@@ -44,17 +46,17 @@ class ApplicationServiceImplTest {
         applicationService.addNewApplication(newApplication)
 
         verify (exactly = 1) { applicationRepository.save(application) }
-        // Assert
-        // You can add assertions for the expected behavior after a successful application
     }
 
     @Test
-    fun `test addNewApplication proposalNotFound`() {
+    fun `test addNewApplication throws proposalNotFound`() {
 
         val uuid=UUID.randomUUID()
         val studentId="s123456"
         val newApplication = NewApplicationDTO(studentId, uuid)
 
+        every { applicationRepository.findByStudentIdAndStatus(studentId, "accepted") } returns emptyList()
+        every { applicationRepository.findByStudentIdAndProposalIdAndStatus(studentId,uuid, "pending") } returns emptyList()
         every { studentRepository.findById(newApplication.studentId) } returns Optional.of(Student())
         every { proposalRepository.findById(newApplication.proposalId) } returns Optional.empty()
 
@@ -64,6 +66,59 @@ class ApplicationServiceImplTest {
         }
         verify (exactly = 0) { applicationRepository.save(any()) }
     }
+    @Test
+    fun `test addNewApplication throws studentNotFound`() {
+
+        val uuid=UUID.randomUUID()
+        val studentId="s123456"
+        val newApplication = NewApplicationDTO(studentId, uuid)
+
+        every { applicationRepository.findByStudentIdAndStatus(studentId, "accepted") } returns emptyList()
+        every { applicationRepository.findByStudentIdAndProposalIdAndStatus(studentId,uuid, "pending") } returns emptyList()
+        every { studentRepository.findById(newApplication.studentId) } returns Optional.empty()
+
+        // Act and Assert
+        assertThrows<StudentNotFoundError> {
+            applicationService.addNewApplication(newApplication)
+        }
+        verify (exactly = 0) { applicationRepository.save(any()) }
+    }
+    @Test
+    fun `test addNewApplication throws error when student already accepted`() {
+        val uuid=UUID.randomUUID()
+        val studentId="s123456"
+        // Arrange
+        val newApplication = NewApplicationDTO(studentId, uuid)
+        val student = Student(surname = "Rossi", name =  "Mario")
+        val presentApplication= Application(student, mockProposal, "accepted")
+
+        every { applicationRepository.findByStudentIdAndStatus(studentId, "accepted") } returns listOf(presentApplication)
+
+        assertThrows<ApplicationConflictError> {
+            applicationService.addNewApplication(newApplication)
+        }
+
+        verify (exactly = 0) { applicationRepository.save(any()) }
+    }
+    @Test
+    fun `test addNewApplication throws error when application already pending`() {
+        val uuid=UUID.randomUUID()
+        val studentId="s123456"
+        // Arrange
+        val newApplication = NewApplicationDTO(studentId, uuid)
+        val student = Student(surname = "Rossi", name =  "Mario")
+        val presentApplication= Application(student, mockProposal, "pending")
+
+        every { applicationRepository.findByStudentIdAndStatus(studentId, "accepted") } returns emptyList()
+        every { applicationRepository.findByStudentIdAndProposalIdAndStatus(studentId,uuid, "pending") } returns listOf(presentApplication)
+
+        assertThrows<ApplicationConflictError> {
+            applicationService.addNewApplication(newApplication)
+        }
+
+        verify (exactly = 0) { applicationRepository.save(any()) }
+    }
+
 
     @Test
     fun `accept application with success`(){

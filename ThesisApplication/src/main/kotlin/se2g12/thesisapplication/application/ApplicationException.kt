@@ -14,6 +14,12 @@ class ApplicationException : ResponseEntityExceptionHandler(){
     @ExceptionHandler(ProposalNotFoundError::class)
     fun proposalNotFound(e : ProposalNotFoundError) = ProblemDetail
         .forStatusAndDetail(HttpStatus.NOT_FOUND, e.message!!)
+    @ExceptionHandler(StudentNotFoundError::class)
+    fun studentNotFound(e : StudentNotFoundError) = ProblemDetail
+        .forStatusAndDetail(HttpStatus.NOT_FOUND, e.message!!)
+    @ExceptionHandler(ApplicationConflictError::class)
+    fun applicationConflict(e : ApplicationConflictError) = ProblemDetail
+        .forStatusAndDetail(HttpStatus.CONFLICT, e.message!!)
     @ExceptionHandler(ApplicationNotFoundError::class)
     fun applicationNotFound(e : ApplicationNotFoundError) = ProblemDetail
         .forStatusAndDetail(HttpStatus.NOT_FOUND, e.message!!)
@@ -27,6 +33,8 @@ class ApplicationException : ResponseEntityExceptionHandler(){
 
 
 class ProposalNotFoundError(message: String?) : Throwable(message)
+class StudentNotFoundError(message: String?) : Throwable(message)
+class ApplicationConflictError(message: String) : Throwable(message)
 class ApplicationNotFoundError(applicationId: UUID) : Throwable("Application $applicationId not found")
 class UnauthorizedProfessorError(message: String?) : Throwable(message)
 class NotModifiableApplicationError(applicationId: UUID, status: String) : Throwable("Application $applicationId already $status")
