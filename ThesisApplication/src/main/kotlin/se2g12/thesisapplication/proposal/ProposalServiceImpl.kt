@@ -67,7 +67,7 @@ class ProposalServiceImpl(
     @Transactional
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
         // username=email of the logged in professor
-        val supervisor = teacherRepository.findByEmail(professorId).first()
+        val supervisor = teacherRepository.findByEmail("$professorId@example.com").first()
         val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
         if(! newProposal.coSupervisors.isNullOrEmpty()){
             for (coSup in newProposal.coSupervisors!!){
