@@ -77,7 +77,7 @@ export default function ThesesPage() {
   const clearSearch = async () => {
     try {
       const freshData = await fetchProposals(); // Retrieve the initial data
-      setSortedThesisData(freshData); // Set the retrieved data
+      reapplySorting(freshData); // Reapply sorting to the updated list
     } catch (error) {
       console.error("Failed to clear filters:", error);
     }
