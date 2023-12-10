@@ -32,10 +32,13 @@ import Searchbar from "./Searchbar/Searchbar.jsx";
 
 import NoDataDisplayed from "./GeneralComponents/NoDataDisplayed.jsx";
 
+import VirtualClock from "./GeneralComponents/VirtualClock.jsx";
+
 export {
     Navbar,
     LoggedInNavbar,
-     
+    VirtualClock,
+
     ThesisDetail,
     ThesesList,
     ThesisRow,

@@ -1,7 +1,5 @@
 // userContext.jsx
 import React, { useState, createContext, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { getProfileApi, loginApi } from "../api";
 import { frontendRoutes as routes } from "../routes";
 import {AuthContext} from "react-oauth2-code-pkce";
 
@@ -19,8 +17,7 @@ const UserProvider = ({ children }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [homeRoute, setHomeRoute] = useState("/");
   const [generalRoutes, setGeneralRoutes] = useState({
-    theses: "/",
-
+    theses: "/", // default value
   });
 
   useEffect(() => {
@@ -39,6 +36,7 @@ const UserProvider = ({ children }) => {
         setHomeRoute(routes.professorDashboard);
         setGeneralRoutes(prev => ({...prev, theses: routes.professorTheses}));
       }
+      console.log("generalRouteCONTEXT", generalRoutes);
       setJwtToken(token);
       setUserId(tokenData.preferred_username.split("@")[0]);
       localStorage.setItem("username", tokenData.preferred_username.split("@")[0]);
