@@ -334,7 +334,9 @@ export default function ThesisForm({open, onClose, thesis = {}, onSubmit}) {
           style={{
             marginTop: "20px",
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "flex-start",
+            gap: "30px",
+            marginLeft: "1.5rem",
           }}
         >
           <PastelComponent
