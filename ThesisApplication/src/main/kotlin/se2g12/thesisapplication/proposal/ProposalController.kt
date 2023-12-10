@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import se2g12.thesisapplication.student.StudentRepository
 import java.time.LocalDate
 import java.util.*
 
 @RestController
 @CrossOrigin
-class ProposalController(@Autowired private val proposalService: ProposalService) {
+class ProposalController(@Autowired private val proposalService: ProposalService,private val studentRepository: StudentRepository) {
 
     //getAll
     @GetMapping("/API/thesis/proposals/all")
@@ -24,7 +25,11 @@ class ProposalController(@Autowired private val proposalService: ProposalService
     fun getProposalsByCds(@RequestParam cds: String): List<ProposalDTO> {
         return proposalService.getProposalsByCds(cds)
     }
-
+    @GetMapping("API/thesis/proposals/getProposalsBySId/{studentId}")
+    fun getProposalsStudentId(@PathVariable studentId: String): List<ProposalDTO> {
+        val studentId=studentRepository.findById(studentId).get()
+        return proposalService.getProposalsByCds(studentId.degree!!.titleDegree!!)
+    }
     // search input string across all fields
     @GetMapping("API/thesis/proposals/search")
 //    @PreAuthorize("hasRole('Student') or hasRole('Professor')")

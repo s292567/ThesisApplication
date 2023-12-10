@@ -29,7 +29,7 @@ class ProposalServiceImpl(
         val message=checkProposal(newProposal)
         if(message=="") {
             old.title=newProposal.title!!
-            old.supervisor=teacherRepository.findByEmail("$professorId@example.com").first()
+            old.supervisor=teacherRepository.findById(professorId).get()
             old.coSupervisors=newProposal.coSupervisors!!.joinToString(separator = ",")
             old.keywords=newProposal.keywords!!.joinToString(separator = ",")
             old.type=newProposal.type!!.joinToString(separator = ",")
@@ -39,7 +39,7 @@ class ProposalServiceImpl(
             old.notes=newProposal.notes
             old.expiration=newProposal.expiration
             old.level=newProposal.level!!
-            old.cds= newProposal.CdS!!.joinToString(separator = ",")
+            old.cds= newProposal.cds!!.joinToString(separator = ",")
             return proposalRepository.save(old).toDTO()
         }
         //add custom exception
@@ -67,7 +67,7 @@ class ProposalServiceImpl(
     @Transactional
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
         // username=email of the logged in professor
-        val supervisor = teacherRepository.findByEmail(professorId).first()
+        val supervisor = teacherRepository.findById(professorId).get()
         val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
         if(! newProposal.coSupervisors.isNullOrEmpty()){
             for (coSup in newProposal.coSupervisors!!){
@@ -102,7 +102,7 @@ class ProposalServiceImpl(
             newProposal.description,
             newProposal.requiredKnowledge, newProposal.notes,
             expirationDate, newProposal.level,
-            newProposal.CdS.joinToString(", ") { it })
+            newProposal.cds.joinToString(", ") { it })
         proposalRepository.save(proposal)
 
     }

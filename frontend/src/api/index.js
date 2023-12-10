@@ -10,6 +10,7 @@ import {
     deleteProposalById,
     copyProposalById,
     updateProposal,
+    getProposalsByStudentId,
 } from './API_proposals.js';
 
 import {
@@ -45,7 +46,7 @@ export {
     insertProposal, 
     applyToProposal,
     updateProposal,
-
+    getProposalsByStudentId,
     deleteProposalById,
     copyProposalById,
 

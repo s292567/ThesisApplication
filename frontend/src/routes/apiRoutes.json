@@ -12,6 +12,7 @@
     "browseAllApplyingStudents": "applications/students?proposalId=",
     "browseAllApplications": "applications/by?proposalId=",
     "getProposalByProfessorId": "proposals/getProfessorProposals/",
+    "getProposalByStudentId": "proposals/getProposalsBySId/",
     "deleteProposalById": "proposals/delete/",
     "copyProposalById": "proposals/copy/",
     

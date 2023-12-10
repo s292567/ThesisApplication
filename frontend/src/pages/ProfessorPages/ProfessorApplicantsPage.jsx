@@ -103,9 +103,6 @@ export default function ProfessorApplicantsPage() {
           .filter((studentGroup) => studentGroup.proposals.length > 0);
       }
 
-      console.log("ByProposal:\n", updatedGroupedByProposals);
-      console.log("ByStudent:\n", updatedGroupedByStudents);
-
       return {
         ...prevData,
         groupedByProposals: updatedGroupedByProposals,

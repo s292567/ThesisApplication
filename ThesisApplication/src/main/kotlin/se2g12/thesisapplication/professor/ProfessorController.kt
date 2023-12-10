@@ -14,6 +14,7 @@ class ProfessorController(private val proposalService: ProposalService,private v
     @PostMapping("/API/thesis/proposals/{professorId}")
     @ResponseStatus(HttpStatus.CREATED)
     fun addNewProposal(@RequestBody obj: NewProposalDTO, @PathVariable professorId:String){
+        println(obj)
         proposalService.addNewProposal(obj, professorId)
     }
     @PutMapping("/API/thesis/proposals/update/{path}")

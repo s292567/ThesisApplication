@@ -1,5 +1,5 @@
 // ThesesPage.jsx
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 
 import {
   ThesesList,
@@ -12,13 +12,19 @@ import {
   PastelComponent,
   ThesisForm,
 } from "../../components";
-import { getAllProposals, getProposalsByProfessorId } from "../../api";
+import { getProposalsByProfessorId, getProposalsByStudentId} from "../../api";
 import { useUserContext } from "../../contexts/index.js";
-import { copyProposalById, deleteProposalById, updateProposal, insertProposal } from "../../api";
+import {
+  copyProposalById,
+  deleteProposalById,
+  updateProposal,
+  insertProposal,
+} from "../../api";
 import { Add } from "@mui/icons-material";
 
 export default function ThesesPage() {
   const { user } = useUserContext();
+  const userId = localStorage.getItem("username");
 
   const [isLoading, setIsLoading] = useState(false);
   const [newThesisOpen, setNewThesisOpen] = useState(false);
@@ -32,11 +38,10 @@ export default function ThesesPage() {
     try {
       setIsLoading(true);
       let response;
-      const userId = localStorage.getItem("username");
       /* API CALL BASED ON ROLE */
       user.role === "Professor"
         ? (response = await getProposalsByProfessorId(userId))
-        : (response = await getAllProposals());
+        : (response = await getProposalsByStudentId(userId));
       return response;
     } catch (error) {
       console.error("Failed to fetch proposals:", error);
@@ -75,7 +80,6 @@ export default function ThesesPage() {
       // Call the API with filters and search query
 
       // const thesisData = await yourSearchApiFunction(filters, searchQuery); // Replace with your actual API call
-
       setSortedThesisData(thesisData);
     } catch (error) {
       console.error("Error while fetching filtered data:", error);
@@ -122,7 +126,6 @@ export default function ThesesPage() {
 
   const handleEdit = async (editedThesis) => {
     try {
-      console.log("editedThesis:\n", editedThesis);
       // Call API to update the thesis
       await updateProposal(editedThesis);
 
@@ -140,7 +143,7 @@ export default function ThesesPage() {
   const handleNewThesis = async (newThesis) => {
     try {
       // Call API to create the thesis
-      await insertProposal(newThesis);
+      await insertProposal(userId, newThesis);
 
       // Add the new thesis to the sortedThesisData array
       const updatedThesisData = [...sortedThesisData, newThesis];
@@ -156,39 +159,38 @@ export default function ThesesPage() {
         text={"Theses: "}
         style={{ marginTop: "7rem", marginBottom: 0 }}
       />
-
+      {user.role === "Professor" ? (
+        <>
+          <PastelComponent
+            bgColor={"#687EFF"}
+            textColor={"white"}
+            text={"Thesis"}
+            icon={<Add sx={{ marginTop: "-2px" }} />}
+            onClick={() => setNewThesisOpen(true)}
+            style={{
+              zIndex: "10",
+              position: "absolute",
+              top: { xs: "14%", sm: "18rem" },
+              right: "5%",
+              fontSize: "x-large",
+              paddingRight: "1.5rem",
+            }}
+          />
+          {newThesisOpen ? (
+            <ThesisForm
+              open={newThesisOpen}
+              onClose={() => setNewThesisOpen(false)}
+              onSubmit={handleNewThesis}
+            />
+          ) : null}
+        </>
+      ) : null}
       {isLoading ? (
         <SkeletonThesisList count={3} />
       ) : sortedThesisData && sortedThesisData.length === 0 ? (
         <NoDataDisplayed textNoDataDisplayed={"No theses found."} />
       ) : (
         <>
-          {user.role === "Professor" ? (
-            <>
-              <PastelComponent
-                bgColor={"#687EFF"}
-                textColor={"white"}
-                text={"Thesis"}
-                icon={<Add sx={{ marginTop: "-2px" }} />}
-                onClick={() => setNewThesisOpen(true)}
-                style={{
-                  zIndex: "10",
-                  position: "absolute",
-                  top: { xs: "14%", sm: "18rem" },
-                  right: "5%",
-                  fontSize: "x-large",
-                  paddingRight: "1.5rem",
-                }}
-              />
-              {newThesisOpen ? (
-                <ThesisForm
-                  open={newThesisOpen}
-                  onClose={() => setNewThesisOpen(false)}
-                  onSubmit={handleNewThesis}
-                />
-              ) : null}
-            </>
-          ) : null}
           <Searchbar
             handleResearch={handleResearch}
             clearSearch={clearSearch}
