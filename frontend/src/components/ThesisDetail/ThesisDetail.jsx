@@ -1,6 +1,6 @@
 // ThesisDetail.jsx
-import React, { useState } from "react";
-import { useUserContext } from "../../contexts";
+import React, {useState} from "react";
+import {useUserContext} from "../../contexts";
 import {
   Dialog,
   DialogContent,
@@ -12,14 +12,14 @@ import {
   Box,
   Grid,
 } from "@mui/material";
-import { useLocation } from "react-router-dom";
-import { Close } from "@mui/icons-material";
-import { PastelComponent, WarningPopup } from "../index";
-import { frontendRoutes } from "../../routes";
-import { applyToProposal } from "../../api";
+import {useLocation} from "react-router-dom";
+import {Close} from "@mui/icons-material";
+import {PastelComponent, WarningPopup} from "../index";
+import {frontendRoutes} from "../../routes";
+import {applyToProposal} from "../../api";
 
-export default function ThesisDetail({ thesis, open, handleClose }) {
-  const { userId, user } = useUserContext();
+export default function ThesisDetail({thesis, open, handleClose}) {
+  const {userId, user} = useUserContext();
 
   /// with the following state we can check if the student has already applied to the thesis or not
   /// and show the correct button, and this information must be retrieved from the backend
@@ -36,6 +36,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
         studentId: userId,
         proposalId: thesis.id,
       });
+      setAlreadyApplied(true);
       // Return a success message
       return "You have successfully applied to this thesis!";
     } catch (error) {
@@ -71,15 +72,6 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             color: textColor,
           },
         }}
-        sx={{
-          "&::-webkit-scrollbar": {
-            height: "6px",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,0.2)",
-            borderRadius: "20px",
-          },
-        }}
       >
         <DialogTitle>
           <PastelComponent
@@ -107,7 +99,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             }}
           />
 
-          <Typography mb={2} sx={{ fontSize: "3.2rem" }}>
+          <Typography mb={2} sx={{fontSize: "3.2rem"}}>
             <b>{thesis.title}</b>
           </Typography>
 
@@ -177,9 +169,9 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             color: "white",
           }}
         >
-          <Close />
+          <Close/>
         </IconButton>
-        <Divider variant="middle" sx={{ marginTop: "-1rem" }} />
+        <Divider variant="middle" sx={{marginTop: "-1rem"}}/>
         <DialogContent>
           <Paper
             elevation={0}
@@ -234,7 +226,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
               </Grid>
             </Grid>
 
-            <Divider sx={{ width: "60%", marginBottom: "2rem" }} />
+            <Divider sx={{width: "60%", marginBottom: "2rem"}}/>
 
             <Typography variant="h4" mb={1} color={subTitlesColor}>
               <b>Description</b>
@@ -250,12 +242,16 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
               {thesis.groups.join(", ")}
             </Typography>
 
-            <Typography variant="h6" color={subTitlesColor}>
-              <b>Required Knowledge</b>
-            </Typography>
-            <Typography variant="body1" ml={1} mb={6}>
-              {thesis.requiredKnowledge}
-            </Typography>
+            {thesis.requiredKnowledge ? (
+              <>
+                <Typography variant="h6" color={subTitlesColor}>
+                  <b>Required Knowledge</b>
+                </Typography>
+                <Typography variant="body1" ml={1} mb={6}>
+                  {thesis.requiredKnowledge}
+                </Typography>
+              </>
+            ) : null}
 
             {thesis.notes ? (
               <Typography variant="body2">

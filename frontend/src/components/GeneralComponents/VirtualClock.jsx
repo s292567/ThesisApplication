@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
-  Button,
   DialogActions,
   DialogContent,
   IconButton,
@@ -59,7 +58,7 @@ export default function VirtualClock() {
         scroll={"paper"}
         aria-labelledby="virtual-clock-dialog"
         aria-describedby="virtual-clock-dialog-description"
-        maxWidth="lg"
+        maxWidth="sm"
         fullWidth={true}
         keepMounted={true}
         PaperProps={{
@@ -133,7 +132,7 @@ export default function VirtualClock() {
             onClick={handleSubmit}
             style={{
               position: "absolute",
-              right: "35%",
+              right: "20%",
             }}
           />
         </DialogActions>

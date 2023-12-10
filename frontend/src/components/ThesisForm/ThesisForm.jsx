@@ -1,22 +1,18 @@
-// ThesiForm.jsx (continued)
-import React, { useState, useEffect } from "react";
+// ThesisForm.jsx (continued)
+import React, {useEffect, useState} from "react";
 import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  TextField,
-  Snackbar,
-  IconButton,
-  Divider,
-  Autocomplete,
-  styled,
-  Paper,
   Alert,
-  Grid,
-  Typography,
+  Autocomplete,
   createFilterOptions,
+  Dialog,
+  Divider,
+  IconButton,
+  Paper,
+  Snackbar,
+  styled,
+  TextField,
 } from "@mui/material";
-import { Close } from "@mui/icons-material";
+import {Close} from "@mui/icons-material";
 
 import {
   getDistinctCds,
@@ -28,13 +24,13 @@ import {
   getDistinctTypes,
 } from "../../api";
 
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers";
+import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {LocalizationProvider} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import PastelComponent from "../PastelComponent/PastelComponent";
 
-export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
+export default function ThesisForm({open, onClose, thesis = {}, onSubmit}) {
   const defaultFormData = {
     title: thesis.title || "",
     coSupervisors: Array.isArray(thesis.coSupervisors)
@@ -55,55 +51,51 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [missingFields, setMissingFields] = useState([]);
 
-  const [apiData, setApiData] = useState([]); // Initialized as an empty object
+  const [apiData, setApiData] = useState({}); // Initialized as an empty object
 
+  const fetchData = async () => {
+    try {
+      return {
+        Cds: await getDistinctCds(),
+        CoSupervisors: await getDistinctCoSupervisors(),
+        Supervisors: await getDistinctSupervisors(),
+        Groups: await getDistinctGroups(),
+        Keywords: await getDistinctKeywords(),
+        Types: await getDistinctTypes(),
+        Levels: await getDistinctLevels(),
+      };
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+  };
   // Fetch data from APIs
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = {
-          Cds: await getDistinctCds(),
-          CoSupervisors: await getDistinctCoSupervisors(),
-          Supervisors: await getDistinctSupervisors(),
-          Groups: await getDistinctGroups(),
-          Keywords: await getDistinctKeywords(),
-          Types: await getDistinctTypes(),
-          Levels: await getDistinctLevels(),
-        };
-
-        setApiData(data); // Setting the state with the fetched data
-      } catch (error) {
-        console.error("Error fetching data", error);
-      }
-    };
-
-    fetchData();
+    fetchData().then((response) => setApiData(response));
   }, []);
 
   const handleDateChange = (newValue) => {
-    // Format the date to "YYYY-MM-DD" or set to null if no date is selected
     const formattedDate = newValue ? dayjs(newValue) : null;
-    setFormData({ ...formData, expiration: formattedDate });
+    setFormData({...formData, expiration: formattedDate});
   };
 
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+    setFormData({...formData, [event.target.name]: event.target.value});
   };
 
   const handleAutocompleteChange = (event, newValue, name) => {
-    setFormData({ ...formData, [name]: newValue });
+    setFormData({...formData, [name]: newValue});
   };
 
   const handleSubmit = () => {
     const requiredFields = [
-      { name: "title", label: "Title" },
-      { name: "keywords", label: "Keywords" },
-      { name: "groups", label: "Groups" },
-      { name: "expiration", label: "Expiration Date" },
-      { name: "type", label: "Type" },
-      { name: "description", label: "Description" },
-      { name: "level", label: "Level" },
-      { name: "cds", label: "CDS" },
+      {name: "title", label: "Title"},
+      {name: "keywords", label: "Keywords"},
+      {name: "groups", label: "Groups"},
+      {name: "expiration", label: "Expiration Date"},
+      {name: "type", label: "Type"},
+      {name: "description", label: "Description"},
+      {name: "level", label: "Level"},
+      {name: "cds", label: "CDS"},
     ];
 
     const missing = requiredFields.filter(
@@ -118,10 +110,11 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
       setSnackbarOpen(true);
       return;
     }
+
     const updatedThesis = {
+      ...formData,
       id: thesis.id || "", // Keep the existing ID for editing, will be undefined for new thesis
       expiration: dayjs(formData.expiration).format("YYYY-MM-DD"),
-      ...formData,
     };
 
     onSubmit(updatedThesis);
@@ -164,13 +157,13 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             name="expiration"
             value={formData.expiration}
             onChange={handleDateChange}
-            slotProps={{ textField: { variant: "outlined" } }}
+            slotProps={{textField: {variant: "outlined"}}}
             minDate={dayjs()} // Restricting past dates
             sx={{
               "& .MuiOutlinedInput-root": {
                 backgroundColor: "white",
                 borderRadius: "12px",
-                width: "90%",
+                width: {xs: "50%", md: "25%"},
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                   borderColor: "#2192FF",
                 },
@@ -189,7 +182,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
           onChange={handleAutocompleteChange}
           name="level"
           multiple={false} // Single selection for Level
-          style={{ width: { xs: "50%", md: "25%" } }}
+          style={{width: {xs: "50%", md: "25%"}}}
         />
 
         <StyledTextField
@@ -202,7 +195,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
           variant="outlined"
           margin="normal"
           size="medium"
-          sx={{ border: "none" }}
+          sx={{border: "none"}}
           InputProps={{
             style: {
               width: "100%",
@@ -221,7 +214,6 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
           options={apiData.Keywords}
           onChange={handleAutocompleteChange}
           name="keywords"
-          multiple
           allowNewValues={true}
         />
 
@@ -236,11 +228,11 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             color: "white",
           }}
         >
-          <Close />
+          <Close/>
         </IconButton>
         <Divider
           variant="middle"
-          sx={{ marginTop: "1rem", marginBottom: "2rem" }}
+          sx={{marginTop: "1rem", marginBottom: "2rem"}}
         />
 
         <Paper
@@ -275,7 +267,6 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             options={apiData.Types}
             onChange={handleAutocompleteChange}
             name="type"
-            multiple
             allowNewValues={true}
           />
 
@@ -285,7 +276,6 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             options={apiData.CoSupervisors}
             onChange={handleAutocompleteChange}
             name="coSupervisors"
-            multiple
           />
 
           <CustomAutocomplete
@@ -294,10 +284,9 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             options={apiData.Cds}
             onChange={handleAutocompleteChange}
             name="cds"
-            multiple
           />
 
-          <Divider sx={{ marginBottom: "2rem" }} />
+          <Divider sx={{marginBottom: "2rem"}}/>
 
           <StyledTextField
             fullWidth
@@ -316,7 +305,6 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             options={apiData.Groups}
             onChange={handleAutocompleteChange}
             name="groups"
-            multiple
           />
 
           <StyledTextField
@@ -368,7 +356,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
         open={snackbarOpen}
         autoHideDuration={4000}
         onClose={() => setSnackbarOpen(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        anchorOrigin={{vertical: "top", horizontal: "left"}}
       >
         <Alert
           onClose={() => setSnackbarOpen(false)}
@@ -389,16 +377,17 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
 }
 
 const filter = createFilterOptions();
+
 function CustomAutocomplete({
-  label,
-  value,
-  options,
-  onChange,
-  name,
-  multiple = true,
-  allowNewValues = false,
-  style = {},
-}) {
+                              label,
+                              value,
+                              options,
+                              onChange,
+                              name,
+                              multiple = true,
+                              allowNewValues = false,
+                              style = {},
+                            }) {
   const [inputValue, setInputValue] = useState("");
 
   // Function to determine whether the selected option matches the value
@@ -433,7 +422,7 @@ function CustomAutocomplete({
       filterOptions={(options, params) => {
         const filtered = filter(options, params);
 
-        const { inputValue } = params;
+        const {inputValue} = params;
 
         const isExisting = options.some((option) => inputValue === option);
         if (inputValue !== "" && !isExisting && allowNewValues) {
@@ -464,7 +453,7 @@ function CustomAutocomplete({
               color: "#40128B",
             },
             width: "90%",
-            fonrWeight: "bold",
+            fontWeight: "bold",
             ...style,
           }}
         />
@@ -476,7 +465,7 @@ function CustomAutocomplete({
           fontSize: "1.1rem",
           backgroundColor: "#40128B",
           color: "white",
-          fonrWeight: "bold",
+          fontWeight: "bold",
         },
         "& .MuiChip-deleteIcon": {
           color: "white !important",
