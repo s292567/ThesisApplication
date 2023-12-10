@@ -21,10 +21,10 @@ import { applyToProposal } from "../../api";
 export default function ThesisDetail({ thesis, open, handleClose }) {
   const { userId, user } = useUserContext();
 
-	/// with the following state we can check if the student has already applied to the thesis or not
-	/// and show the correct button, and this information must be retrieved from the backend
+  /// with the following state we can check if the student has already applied to the thesis or not
+  /// and show the correct button, and this information must be retrieved from the backend
   const [alreadyApplied, setAlreadyApplied] = useState(false); // HERE INSTEAD OF FALSE THERE WILL BE THE THESIS.STATUS
-	const [warningOpen, setWarningOpen] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
 
   const location = useLocation();
 
@@ -71,6 +71,15 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             color: textColor,
           },
         }}
+        sx={{
+          "&::-webkit-scrollbar": {
+            height: "6px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,0.2)",
+            borderRadius: "20px",
+          },
+        }}
       >
         <DialogTitle>
           <PastelComponent
@@ -98,7 +107,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             }}
           />
 
-          <Typography mb={2} sx={{fontSize: '3.2rem'}}>
+          <Typography mb={2} sx={{ fontSize: "3.2rem" }}>
             <b>{thesis.title}</b>
           </Typography>
 
@@ -240,7 +249,6 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             <Typography variant="body1" ml={1} mb={2}>
               {thesis.groups.join(", ")}
             </Typography>
-
 
             <Typography variant="h6" color={subTitlesColor}>
               <b>Required Knowledge</b>

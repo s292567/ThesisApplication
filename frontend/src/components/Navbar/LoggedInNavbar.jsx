@@ -87,6 +87,9 @@ export default function LoggedInNavbar() {
   // noinspection JSValidateTypes
   return (
     <>
+      {/**
+       * TOP SECTION OF THE NAVBAR THAT SHOWS ONLY WHEN NOT IN MOBILE
+       */}
       {!isMobile && (
         <AppBar position="static" color="default" elevation={0}>
           <Divider sx={{backgroundColor: "#003366", padding: "0.5rem"}}/>
@@ -100,6 +103,9 @@ export default function LoggedInNavbar() {
           </Toolbar>
         </AppBar>
       )}
+      {/**
+       * TOP SECTION OF THE NAVBAR
+       */}
       <AppBar position="sticky" sx={{height: mobileOpen ? "100vh" : "auto", backgroundColor: '#003366'}}>
         <MyToolbar
           sx={{
@@ -248,6 +254,7 @@ export default function LoggedInNavbar() {
           </MenuItem>
         </Menu>
       </AppBar>
+      
     </>
   );
 }
