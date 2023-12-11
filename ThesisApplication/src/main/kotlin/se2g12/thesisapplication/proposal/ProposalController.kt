@@ -3,14 +3,17 @@ package se2g12.thesisapplication.proposal
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import se2g12.thesisapplication.application.ApplicationRepository
+import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
 import java.time.LocalDate
 import java.util.*
 
 @RestController
 @CrossOrigin
-class ProposalController(@Autowired private val proposalService: ProposalService,private val studentRepository: StudentRepository) {
+class ProposalController(private val proposalService: ProposalService,private val studentRepository: StudentRepository,private val proposalRepository:ProposalRepository,private val applicationRepository: ApplicationRepository) {
 
     //getAll
     @GetMapping("/API/thesis/proposals/all")
@@ -18,7 +21,21 @@ class ProposalController(@Autowired private val proposalService: ProposalService
     fun getAllProposals(): List<ProposalDTO> {
         return proposalService.getAllProposals()
     }
+    @GetMapping("/API/thesis/proposals/statusById/{proposalId}")
+    @PreAuthorize("hasRole('Student')")
+    fun getThesisStatusById(@PathVariable proposalId: String): Boolean {
+        val securityContext = SecurityContextHolder.getContext()
+// Get the authentication object from the security context
+        val authentication = securityContext.authentication
 
+// Check if the user is authenticated
+        if (authentication != null && authentication.isAuthenticated) {
+            // Get the username
+            var application=applicationRepository.findByProposalIdAndStudentId(UUID.fromString(proposalId),authentication.name)
+            return application.isEmpty()
+        }
+        return false
+    }
     //getByCds
     @GetMapping("API/thesis/proposals/cds")
 //    @PreAuthorize("hasRole('Student')")
