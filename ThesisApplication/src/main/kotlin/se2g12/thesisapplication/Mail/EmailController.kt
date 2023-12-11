@@ -9,7 +9,7 @@ import se2g12.thesisapplication.proposal.ProposalDTO
 @CrossOrigin
 class EmailController (private val emailService: EmailService){
     @GetMapping("/test")
-    fun getProposalByProfessorId() {
+    fun sendEmail() {
         return emailService.sendHtmlEmail("mfontana413@gmail.com", status = "accepted")
     }
 }

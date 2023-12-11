@@ -24,8 +24,8 @@ class EmailService {
     @Throws(MessagingException::class)
     fun sendHtmlEmail(to: String?, status: String) {
         val message: MimeMessage = mailSender!!.createMimeMessage()
-        message.setFrom(InternetAddress("noreply.se2g12@gmai.com"))
-        if (to!!.split("@")[1].contains("example.com"))
+        message.setFrom(InternetAddress("noreply.se2g12@gmail.com"))
+        if (to!!.contains("example.com"))
             message.setRecipients(MimeMessage.RecipientType.TO, "mfontana413@gmail.com")
         else
             message.setRecipients(MimeMessage.RecipientType.TO, to)
