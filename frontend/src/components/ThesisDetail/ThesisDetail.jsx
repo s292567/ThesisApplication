@@ -1,5 +1,5 @@
 // ThesisDetail.jsx
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useUserContext } from "../../contexts";
 import {
   Dialog,
@@ -43,8 +43,6 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
     }
   };
 
-  if (!thesis) return null;
-
   const getThesisStatus = async (proposalId) => {
     try {
       return await getThesisStatusById(proposalId);
@@ -55,12 +53,16 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
     }
   };
 
-  useState(() => {
-    thesis.id &&
+  useEffect(() => {
+    console.log("thesis.id", thesis?.id);
+    thesis?.id &&
       getThesisStatus(thesis.id).then((status) => {
+        console.log("status", status);
         setAlreadyApplied(status);
       });
   }, []);
+
+  if (!thesis) return null;
 
   const textColor = "#27005D";
   const subTitlesColor = "#40128B";

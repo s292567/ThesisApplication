@@ -259,7 +259,7 @@ export const getThesisStatusById = async (proposalId) => {
   const jwt = getJwt(); // Fetch JWT here
 
   return axiosInstance
-    .get(routes.getThesisStatusByProposalId + proposalId, {
+    .get(routes.getThesisStatusByProposalId + proposalId,{
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + jwt,
