@@ -2,6 +2,7 @@ package se2g12.thesisapplication.application
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import se2g12.thesisapplication.Mail.EmailService
 import se2g12.thesisapplication.archive.Archive
 import se2g12.thesisapplication.archive.ArchiveRepository
 import se2g12.thesisapplication.proposal.ProposalRepository
@@ -17,7 +18,8 @@ class ApplicationServiceImpl (
     private val applicationRepository: ApplicationRepository,
     private val proposalRepository: ProposalRepository,
     private val studentRepository: StudentRepository,
-    private val archiveRepository: ArchiveRepository
+    private val archiveRepository: ArchiveRepository,
+    private val emailService: EmailService
 )
     : ApplicationService {
 
@@ -31,14 +33,24 @@ class ApplicationServiceImpl (
     }
 
     override fun declineApplication(applicationId: UUID) {
-        getModifiableApplication(applicationId)
+        val app=getModifiableApplication(applicationId)
+        //notify declined student
+        emailService.sendHtmlEmail(app.student.email,"accepted")
         applicationRepository.updateStatusById(applicationId, "declined")
     }
 
     override fun acceptApplication(applicationId: UUID) {
         val app= getModifiableApplication(applicationId)
         applicationRepository.updateStatusById(applicationId ,"accepted")
-        // decline all student applications
+        //notify accepted Student
+        emailService.sendHtmlEmail(app.student.email,"accepted")
+        // decline all student applications and notify them
+        val app2=applicationRepository.getAllApplicationsByProposalId(app.proposal.id!!)
+        app2.forEach {
+            if(it.status?.compareTo("pending")==0)
+                emailService.sendHtmlEmail(app.student.email,"declined")
+
+        }
         applicationRepository.updateStatusByStudentId(app.student.id!!, "declined")
         // decline all proposal applications
         applicationRepository.updateStatusByProposalId(app.proposal.id!!, "declined")
@@ -47,6 +59,7 @@ class ApplicationServiceImpl (
     }
 
     override fun declineApplicationByProposalAndStudent(proposalId: UUID, studentId: String) {
+
         var appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id
         declineApplication(appId!!)
     }
