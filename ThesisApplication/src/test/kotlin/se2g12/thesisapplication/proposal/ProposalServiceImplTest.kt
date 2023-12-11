@@ -410,8 +410,6 @@ class ProposalServiceImplTest {
         assertEquals(listCdS.last(), cds.last())
     }
 
-
-
     @Test
     fun testDeleteProposalById() {
         // Mock data
@@ -501,4 +499,31 @@ class ProposalServiceImplTest {
         assertEquals(originalProposal.level, copiedProposal.level)
         assertEquals(originalProposal.cds, copiedProposal.cds)
     }
+
+    @Test
+    fun `test getting the proposals of a professor`(){
+        val professorId = "p101"
+        val teacher = Teacher("Ferrari", "Luca")
+        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val proposalsList = listOf(Proposal("Advanced algorithms for image processing",
+            teacher,
+            "Paolo Ricci, Mario Rossi" ,
+            "image processing",
+            "in external company",
+            "G13,G21",
+            "Work in a company to develop new algorithms for image processing",
+            "Basics of machine learning and image processing",
+            "Collaboration with company equipe. Reimbursement of expenses",
+            localDate,
+            "MSc",
+            "Computer Engineering, Civil Engineering"))
+
+        every { proposalRepository.findAllBySupervisorId(any()) } returns proposalsList
+
+        val proposals = proposalService.getProposalByProfessorId(professorId)
+
+        assertEquals(proposalsList.size, proposals.size)
+        assertEquals(proposalsList.first().title, proposals.first().title)
+    }
+
 }
