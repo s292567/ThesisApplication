@@ -18,6 +18,7 @@ class ProposalController(@Autowired private val proposalService: ProposalService
     fun getAllProposals(): List<ProposalDTO> {
         return proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
+    //getArchivedPropId Test Endpoint
     @GetMapping("/API/thesis/test/{proposalId}")
     fun getTest(@PathVariable proposalId: String): List<Archive> {
         return archiveService.findByPropId(UUID.fromString(proposalId))
