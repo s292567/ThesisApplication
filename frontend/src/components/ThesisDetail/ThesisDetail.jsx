@@ -1,6 +1,6 @@
 // ThesisDetail.jsx
-import React, {useState} from "react";
-import {useUserContext} from "../../contexts";
+import React, { useState } from "react";
+import { useUserContext } from "../../contexts";
 import {
   Dialog,
   DialogContent,
@@ -12,21 +12,18 @@ import {
   Box,
   Grid,
 } from "@mui/material";
-import {useLocation} from "react-router-dom";
-import {Close} from "@mui/icons-material";
-import {PastelComponent, WarningPopup} from "../index";
-import {frontendRoutes} from "../../routes";
-import {applyToProposal} from "../../api";
+import { useLocation } from "react-router-dom";
+import { Close } from "@mui/icons-material";
+import { PastelComponent, WarningPopup } from "../index";
+import { frontendRoutes } from "../../routes";
+import { applyToProposal, getThesisStatusById } from "../../api";
 
-export default function ThesisDetail({thesis, open, handleClose}) {
-  const {userId, user} = useUserContext();
-
-  /// with the following state we can check if the student has already applied to the thesis or not
-  /// and show the correct button, and this information must be retrieved from the backend
-  const [alreadyApplied, setAlreadyApplied] = useState(false); // HERE INSTEAD OF FALSE THERE WILL BE THE THESIS.STATUS
-  const [warningOpen, setWarningOpen] = useState(false);
-
+export default function ThesisDetail({ thesis, open, handleClose }) {
+  const { userId, user } = useUserContext();
   const location = useLocation();
+
+  const [alreadyApplied, setAlreadyApplied] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
 
   const formatFullName = (person) => `${person.name} ${person.surname}`;
 
@@ -47,6 +44,23 @@ export default function ThesisDetail({thesis, open, handleClose}) {
   };
 
   if (!thesis) return null;
+
+  const getThesisStatus = async (proposalId) => {
+    try {
+      return await getThesisStatusById(proposalId);
+    } catch (error) {
+      console.error("Failed to retrieve proposal status:", error);
+      // Throw an error with a message to be caught and displayed by the Snackbar
+      throw new Error(error.message || "Failed to retrieve proposal status.");
+    }
+  };
+
+  useState(() => {
+    thesis.id &&
+      getThesisStatus(thesis.id).then((status) => {
+        setAlreadyApplied(status);
+      });
+  }, []);
 
   const textColor = "#27005D";
   const subTitlesColor = "#40128B";
@@ -99,7 +113,7 @@ export default function ThesisDetail({thesis, open, handleClose}) {
             }}
           />
 
-          <Typography mb={2} sx={{fontSize: "3.2rem"}}>
+          <Typography mb={2} sx={{ fontSize: "3.2rem" }}>
             <b>{thesis.title}</b>
           </Typography>
 
@@ -169,9 +183,9 @@ export default function ThesisDetail({thesis, open, handleClose}) {
             color: "white",
           }}
         >
-          <Close/>
+          <Close />
         </IconButton>
-        <Divider variant="middle" sx={{marginTop: "-1rem"}}/>
+        <Divider variant="middle" sx={{ marginTop: "-1rem" }} />
         <DialogContent>
           <Paper
             elevation={0}
@@ -226,7 +240,7 @@ export default function ThesisDetail({thesis, open, handleClose}) {
               </Grid>
             </Grid>
 
-            <Divider sx={{width: "60%", marginBottom: "2rem"}}/>
+            <Divider sx={{ width: "60%", marginBottom: "2rem" }} />
 
             <Typography variant="h4" mb={1} color={subTitlesColor}>
               <b>Description</b>

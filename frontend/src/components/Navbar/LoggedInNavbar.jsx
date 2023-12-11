@@ -236,7 +236,6 @@ export default function LoggedInNavbar() {
 }
 
 function LinkStyled({linkTo, linkText, onClick}) {
-  console.log("into the link", linkTo, linkText, onClick);
   return (
     <Link to={linkTo} color="inherit" sx={{mx: 2}} onClick={onClick}>
       {linkText}

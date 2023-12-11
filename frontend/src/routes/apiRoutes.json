@@ -22,5 +22,6 @@
     "getDistinctLevels": "proposals/levels",
     "getDistinctKeywords": "proposals/keywords",
     "getDistinctGroups": "proposals/groups",
-    "getDistinctCds": "proposals/degrees"
+    "getDistinctCds": "proposals/degrees",
+    "getThesisStatusByProposalId": "proposals/statusById/"
 }
