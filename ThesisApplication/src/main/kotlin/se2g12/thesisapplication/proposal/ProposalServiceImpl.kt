@@ -19,7 +19,7 @@ class ProposalServiceImpl(
     private val groupDepRepository: GroupDepRepository,
     private val applicationRepository: ApplicationRepository
 )
-    : ProposalService {
+    :ProposalService {
     override fun getProposalByProfessorId(supervisorId: String): List<ProposalDTO> {
         val prop = proposalRepository.findAllBySupervisorId(supervisorId)
         return prop.map{it.toDTO()}

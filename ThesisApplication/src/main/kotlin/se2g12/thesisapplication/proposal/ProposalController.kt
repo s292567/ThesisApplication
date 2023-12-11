@@ -13,7 +13,7 @@ import java.util.*
 
 @RestController
 @CrossOrigin
-class ProposalController(private val proposalService: ProposalService,private val studentRepository: StudentRepository,private val proposalRepository:ProposalRepository,private val applicationRepository: ApplicationRepository) {
+class ProposalController(private val proposalService:ProposalService,private val studentRepository: StudentRepository,private val proposalRepository:ProposalRepository,private val applicationRepository: ApplicationRepository) {
 
     //getAll
     @GetMapping("/API/thesis/proposals/all")
