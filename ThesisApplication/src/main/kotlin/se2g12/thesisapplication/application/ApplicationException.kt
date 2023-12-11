@@ -35,6 +35,6 @@ class ApplicationException : ResponseEntityExceptionHandler(){
 class ProposalNotFoundError(message: String?) : Throwable(message)
 class StudentNotFoundError(message: String?) : Throwable(message)
 class ApplicationConflictError(message: String) : Throwable(message)
-class ApplicationNotFoundError(applicationId: UUID) : Throwable("Application $applicationId not found")
+class ApplicationNotFoundError(message: String) : Throwable(message)
 class UnauthorizedProfessorError(message: String?) : Throwable(message)
 class NotModifiableApplicationError(applicationId: UUID, status: String) : Throwable("Application $applicationId already $status")

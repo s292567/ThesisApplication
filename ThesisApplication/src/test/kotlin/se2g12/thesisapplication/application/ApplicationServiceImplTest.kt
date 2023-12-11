@@ -268,4 +268,80 @@ class ApplicationServiceImplTest {
         }
     }
 
+    @Test
+    fun `accept application by proposal and student`(){
+        // same as accepting application by id, but first gets the id
+        val applicationUUID = UUID.randomUUID()
+        val studentId="s123456"
+        val proposalId = UUID.randomUUID()
+        val student = mockk<Student>()
+        val mockApp = Application(student, mockProposal, "pending")
+        val mockAppId = mockk<Application>()
+
+        every { mockAppId.id } returns applicationUUID
+        every { applicationRepository.findByProposalIdAndStudentId(any(), any()) } returns listOf(mockAppId)
+        every { applicationRepository.findById(applicationUUID) } returns Optional.of(mockApp)
+        every { applicationRepository.updateStatusById(any(), any()) } returns mockk()
+        every { applicationRepository.updateStatusByStudentId(any(), any()) } returns mockk()
+        every { applicationRepository.updateStatusByProposalId(any(), any()) } returns mockk()
+        every { archiveRepository.save(any()) } returns mockk()
+        every { student.id } returns studentId
+        every { mockProposal.id } returns proposalId
+
+        applicationService.acceptApplicationByProposalAndStudent(proposalId, studentId)
+
+        verify { applicationRepository.updateStatusById(applicationUUID, "accepted") }
+        verify { applicationRepository.updateStatusByStudentId(studentId, "declined") }
+        verify { applicationRepository.updateStatusByProposalId(proposalId, "declined") }
+    }
+    @Test
+    fun `accept application by student and proposal with Not Found exception`(){
+        val studentId="s123456"
+        val proposalId = UUID.randomUUID()
+
+        every { applicationRepository.findByProposalIdAndStudentId(any(), any()) } returns emptyList()
+
+        assertThrows<ApplicationNotFoundError> {
+            applicationService.acceptApplicationByProposalAndStudent(proposalId, studentId)
+        }
+
+        verify (exactly = 0) { applicationRepository.findById(any()) }
+        verify (exactly = 0){ applicationRepository.updateStatusById(any(), "accepted") }
+
+    }
+    @Test
+    fun `decline application by proposal and student with success`() {
+        val applicationUUID = UUID.randomUUID()
+        val studentId = "s123456"
+        val proposalId = UUID.randomUUID()
+        val student = mockk<Student>()
+        val mockApp = Application(student, mockProposal, "pending")
+        val mockAppId = mockk<Application>()
+
+        every { mockAppId.id } returns applicationUUID
+        every { applicationRepository.findByProposalIdAndStudentId(any(), any()) } returns listOf(mockAppId)
+        every { applicationRepository.findById(applicationUUID) } returns Optional.of(mockApp)
+        every { applicationRepository.updateStatusById(any(), any()) } returns mockk()
+
+        applicationService.declineApplicationByProposalAndStudent(proposalId, studentId)
+
+        verify { applicationRepository.updateStatusById(applicationUUID, "declined") }
+        verify(exactly = 0) { applicationRepository.updateStatusByStudentId(studentId, "declined") }
+        verify(exactly = 0) { applicationRepository.updateStatusByProposalId(proposalId, "declined") }
+    }
+    @Test
+    fun `decline application by proposal and student with Not Found exception`(){
+        val studentId="s123456"
+        val proposalId = UUID.randomUUID()
+
+        every { applicationRepository.findByProposalIdAndStudentId(any(), any()) } returns emptyList()
+
+        assertThrows<ApplicationNotFoundError> {
+            applicationService.declineApplicationByProposalAndStudent(proposalId, studentId)
+        }
+
+        verify (exactly = 0) { applicationRepository.findById(any()) }
+        verify (exactly = 0){ applicationRepository.updateStatusById(any(), "accepted") }
+    }
+
 }

@@ -53,23 +53,34 @@ class ApplicationServiceImpl (
     }
 
     override fun declineApplicationByProposalAndStudent(proposalId: UUID, studentId: String) {
-        var appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id
-        declineApplication(appId!!)
+        try {
+            val appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id
+            declineApplication(appId!!)
+        }
+        catch (e: NoSuchElementException){
+            throw ApplicationNotFoundError("Application by student $studentId for proposal $proposalId not found")
+        }
     }
 
     override fun acceptApplicationByProposalAndStudent(proposalId: UUID, studentId: String) {
-        var appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id
-        acceptApplication(appId!!)
+        try {
+            val appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id!!
+            acceptApplication(appId)
+        }
+        catch (e: NoSuchElementException){
+            throw ApplicationNotFoundError("Application by student $studentId for proposal $proposalId not found")
+        }
+
     }
 
     private fun getModifiableApplication(applicationId: UUID): Application{
-        val app= applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError(applicationId) }
+        val app= applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError("Application $applicationId not found") }
         if (app.status != "pending")
             throw NotModifiableApplicationError(applicationId, app.status!!)
         return app
     }
     override fun getApplicationProposalSupervisorId(applicationId: UUID): String {
-        val app = applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError(applicationId) }
+        val app = applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError("Application $applicationId not found") }
         return app.proposal.supervisor.id!!
     }
 
