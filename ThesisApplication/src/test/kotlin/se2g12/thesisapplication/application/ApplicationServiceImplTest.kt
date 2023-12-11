@@ -8,14 +8,11 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.assertThrows
 import se2g12.thesisapplication.archive.ArchiveRepository
+import se2g12.thesisapplication.degree.Degree
 import se2g12.thesisapplication.proposal.Proposal
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
-import se2g12.thesisapplication.teacher.Teacher
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ApplicationServiceImplTest {
@@ -217,4 +214,58 @@ class ApplicationServiceImplTest {
         verify (exactly = 0){ applicationRepository.updateStatusByStudentId(studentId, "declined") }
         verify (exactly = 0){ applicationRepository.updateStatusByProposalId(proposalId, "declined") }
     }
+    @Test
+    fun `test getting the applying student for a proposal`(){
+        val proposalId=UUID.randomUUID()
+        val degree = Degree("ENG1", "Computer Engineering")
+        val studentList = listOf(Student(surname = "Davis", name = "John", degree = degree), Student(surname = "Rossi", name = "Alice", degree = degree))
+        every { studentRepository.getApplyingStudentsByProposalId(any()) } returns studentList
+
+        val applying = applicationService.getAllApplyingStudentsForProposalById(proposalId)
+
+        assertEquals(studentList.size, applying.size)
+        assertEquals(studentList.first().name, applying.first().name)
+        assertEquals(studentList.last().surname, applying.last().surname)
+
+        verify (exactly = 1) { studentRepository.getApplyingStudentsByProposalId(proposalId, "pending") }
+
+    }
+    @Test
+    fun `test getting the applications of a student`(){
+        val studentId= "s123456"
+        val mockStudent = mockk<Student>()
+        val mockProposal = mockk<Proposal>()
+        val applicationsList = listOf(Application(mockStudent, mockProposal), Application(mockStudent, mockProposal, "declined"))
+
+        every { mockStudent.id } returns studentId
+        every { mockProposal.id } returns UUID.randomUUID()
+        every { applicationRepository.findByStudentId(any()) } returns applicationsList
+
+        val applications = applicationService.getApplicationsForStudent(studentId)
+
+        assertEquals(2, applications.size)
+        assertEquals("pending", applications.first().status)
+        assertEquals("declined", applications.last().status)
+
+        verify (exactly = 1) { applicationRepository.findByStudentId(studentId) }
+
+    }
+    @Test
+    fun `test getting all applications for a proposal`(){
+        val proposalId= UUID.randomUUID()
+        val mockStudent = mockk<Student>()
+        val mockProposal = mockk<Proposal>()
+        val applicationsList = listOf(Application(mockStudent, mockProposal), Application(mockStudent, mockProposal, "accepted"))
+
+        every { mockStudent.id } returns "s123456"
+        every { mockProposal.id } returns UUID.randomUUID()
+        every { applicationRepository.getAllApplicationsByProposalId(any()) } returns applicationsList
+        val applications = applicationService.getAllApplicationsForProposalById(proposalId)
+
+        assertEquals(1, applications.size)
+        for (app in applications){
+            assertEquals("pending", app.status)
+        }
+    }
+
 }
