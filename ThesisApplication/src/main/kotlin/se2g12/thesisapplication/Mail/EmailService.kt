@@ -7,6 +7,7 @@ import jdk.jshell.Snippet.Status
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 
 @Service
@@ -23,6 +24,7 @@ class EmailService {
     }
 
     @Throws(MessagingException::class)
+    @Async
     fun sendHtmlEmail(to: String?, status: String) {
         val message: MimeMessage = mailSender!!.createMimeMessage()
         message.setFrom(InternetAddress("noreply.se2g12@gmail.com"))
