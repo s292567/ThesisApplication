@@ -2,19 +2,24 @@ describe('Insert Proposal', () => {
 
     beforeEach(() => {
         cy.visit('http://localhost:5173');
-
         cy.get('button').contains('Login').click();
         cy.intercept('POST', 'https://dev-59214398.okta.com/**').as('oktaLogin');
-        cy.wait(6000);
-        cy.get('#email',{ timeout: 10000 }).type('p101@example.com');
-        cy.get('#password').type('Test.101');
-        cy.get('button').contains('sign in').click();
+        cy.wait(10000);
 
-        // Wait for the Okta login request to complete
+        cy.request({
+            method: 'POST',
+            url: 'https://dev-59214398.okta.com/api/v1/authn', // Adjust the URL based on Okta's authentication API
+            body: {
+                username: 'p101@example.com',
+                password: 'Test.101',
+            },
+        });
         cy.wait('@oktaLogin');
+        cy.wait(6000);
 
         // visit the proposal creation page
-        cy.visit('http://localhost:5173/professorDashboard/addNewThesis/')
+        cy.visit('http://localhost:5173/professorDashboard')
+        cy.get('button').contains('+Thesis').click()
     })
 
     it('create a new proposal', () => {
@@ -34,6 +39,7 @@ describe('Insert Proposal', () => {
         cy.get('button').contains('Submit').click()
 
         cy.get('.MuiAlert-message').should('not.be.visible')
+
     })
 
     it('submit proposal form without title', () => {
