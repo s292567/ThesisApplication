@@ -19,7 +19,7 @@ import PastelComponent from "../PastelComponent/PastelComponent";
 export default function Searchbar({ clearSearch, handleResearch }) {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [filters, setFilters] = useState([]);
+  const [filters, setFilters] = useState({});
   const [apiData, setApiData] = useState({}); // Initialized as an empty object
   const [open, setOpen] = useState(false);
 
@@ -49,6 +49,7 @@ export default function Searchbar({ clearSearch, handleResearch }) {
   // Clear all filters
   const clearAllFilters = () => {
     setFilters([]);
+    setSearchQuery("");
     clearSearch();
   };
 
@@ -128,7 +129,7 @@ export default function Searchbar({ clearSearch, handleResearch }) {
             alignItems: "middle",
           }}
         >
-          {filterTags.length > 0 && (
+          {filterTags.length > 0 || searchQuery !== "" ? (
             <PastelComponent
               bgColor="#BC7AF9"
               textColor="white"
@@ -136,7 +137,7 @@ export default function Searchbar({ clearSearch, handleResearch }) {
               onClick={clearAllFilters}
               style={{ marginTop: "3px" }}
             />
-          )}
+          ) : null}
           <Box
             sx={{
               display: "flex",

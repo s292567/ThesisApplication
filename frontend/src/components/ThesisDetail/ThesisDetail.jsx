@@ -43,23 +43,21 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
     }
   };
 
-  const getThesisStatus = async (proposalId) => {
-    try {
-      return await getThesisStatusById(proposalId);
-    } catch (error) {
-      console.error("Failed to retrieve proposal status:", error);
-      // Throw an error with a message to be caught and displayed by the Snackbar
-      throw new Error(error.message || "Failed to retrieve proposal status.");
-    }
-  };
-
   useEffect(() => {
-    thesis?.id &&
-      userId.role === "Student" &&
-      getThesisStatus(thesis.id).then((status) => {
+    const getThesisStatus = async (proposalId) => {
+      try {
+        const status =  await getThesisStatusById(proposalId);
         console.log("status", status);
+        console.log("thesis", thesis.id);
         setAlreadyApplied(status);
-      });
+      } catch (error) {
+        console.error("Failed to retrieve proposal status:", error);
+        // Throw an error with a message to be caught and displayed by the Snackbar
+        throw new Error(error.message || "Failed to retrieve proposal status.");
+      }
+    };
+
+    thesis?.id && user.role === "Student" ? getThesisStatus(thesis.id) : null;
   }, []);
 
   if (!thesis) return null;
