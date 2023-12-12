@@ -1,6 +1,6 @@
 // ThesisDetail.jsx
-import React, { useEffect, useState } from "react";
-import { useUserContext } from "../../contexts";
+import React, {useEffect, useState} from "react";
+import {useUserContext} from "../../contexts";
 import {
   Dialog,
   DialogContent,
@@ -12,14 +12,14 @@ import {
   Box,
   Grid,
 } from "@mui/material";
-import { useLocation } from "react-router-dom";
-import { Close } from "@mui/icons-material";
-import { PastelComponent, WarningPopup } from "../index";
-import { frontendRoutes } from "../../routes";
-import { applyToProposal, getThesisStatusById } from "../../api";
+import {useLocation} from "react-router-dom";
+import {Close} from "@mui/icons-material";
+import {PastelComponent, WarningPopup} from "../index";
+import {frontendRoutes} from "../../routes";
+import {applyToProposal, getThesisStatusById} from "../../api";
 
-export default function ThesisDetail({ thesis, open, handleClose }) {
-  const { userId, user } = useUserContext();
+export default function ThesisDetail({thesis, open, handleClose}) {
+  const {userId, user} = useUserContext();
   const location = useLocation();
 
   const [alreadyApplied, setAlreadyApplied] = useState(false);
@@ -46,7 +46,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
   useEffect(() => {
     const getThesisStatus = async (proposalId) => {
       try {
-        const status =  await getThesisStatusById(proposalId);
+        const status = await getThesisStatusById(proposalId);
         console.log("status", status);
         console.log("thesis", thesis.id);
         setAlreadyApplied(status);
@@ -57,7 +57,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
       }
     };
 
-    thesis?.id && user.role === "Student" ? getThesisStatus(thesis.id) : null;
+    thesis?.id && user.role === "Student" && getThesisStatus(thesis.id);
   }, []);
 
   if (!thesis) return null;
@@ -113,7 +113,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             }}
           />
 
-          <Typography mb={2} sx={{ fontSize: "3.2rem" }}>
+          <Typography mb={2} sx={{fontSize: "3.2rem"}}>
             <b>{thesis.title}</b>
           </Typography>
 
@@ -183,9 +183,9 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             color: "white",
           }}
         >
-          <Close />
+          <Close/>
         </IconButton>
-        <Divider variant="middle" sx={{ marginTop: "-1rem" }} />
+        <Divider variant="middle" sx={{marginTop: "-1rem"}}/>
         <DialogContent>
           <Paper
             elevation={0}
@@ -240,7 +240,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
               </Grid>
             </Grid>
 
-            <Divider sx={{ width: "60%", marginBottom: "2rem" }} />
+            <Divider sx={{width: "60%", marginBottom: "2rem"}}/>
 
             <Typography variant="h4" mb={1} color={subTitlesColor}>
               <b>Description</b>
