@@ -28,13 +28,13 @@ export default function Searchbar({ clearSearch, handleResearch }) {
     const fetchData = async () => {
       try {
         const data = {
-          Cds: await getDistinctCds(),
-          CoSupervisors: await getDistinctCoSupervisors(),
-          Supervisors: await getDistinctSupervisors(),
-          Groups: await getDistinctGroups(),
-          Keywords: await getDistinctKeywords(),
-          Types: await getDistinctTypes(),
-          Levels: await getDistinctLevels(),
+          cds: await getDistinctCds(),
+          coSupervisors: await getDistinctCoSupervisors(),
+          supervisors: await getDistinctSupervisors(),
+          groups: await getDistinctGroups(),
+          keywords: await getDistinctKeywords(),
+          types: await getDistinctTypes(),
+          levels: await getDistinctLevels(),
         };
 
         setApiData(data); // Setting the state with the fetched data
