@@ -15,6 +15,7 @@ import {
 import {getProposalsByProfessorId, getProposalsByStudentId} from "../../api";
 import {useUserContext} from "../../contexts/index.js";
 import {
+  searchProposals,
   copyProposalById,
   deleteProposalById,
   updateProposal,
@@ -78,9 +79,9 @@ export default function ThesesPage() {
   const handleResearch = useCallback(async (filters, searchQuery) => {
     try {
       // Call the API with filters and search query
-
-      // const thesisData = await yourSearchApiFunction(filters, searchQuery); // Replace with your actual API call
-      // setSortedThesisData(thesisData);
+      console.log("Filters before search:", filters, searchQuery);
+      const thesisData = await searchProposals(filters, searchQuery);
+      setSortedThesisData(thesisData);
       console.log("Filters:", filters, searchQuery);
     } catch (error) {
       console.error("Error while fetching filtered data:", error);

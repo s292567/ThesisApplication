@@ -4,6 +4,7 @@ import { ThesisRow } from "../index.js";
 import { useLocation } from "react-router-dom";
 import { useUserContext } from "../../contexts";
 
+
 export default function ThesesList({
   thesesData,
   handleDelete = () => {},
