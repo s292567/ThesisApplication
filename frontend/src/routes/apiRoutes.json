@@ -11,5 +11,7 @@
     "acceptApplication": "applications", 
     "browseAllApplyingStudents": "applications/students?proposalId=",
     "browseAllApplications": "applications/by?proposalId=",
-    "getProposalByProfessorId": "proposals/getProfessorProposals/"
+    "getProposalByProfessorId": "proposals/getProfessorProposals/",
+    "setVirtualDate": "date/set/",
+    "getVirtualDate": "date/get/"
 }

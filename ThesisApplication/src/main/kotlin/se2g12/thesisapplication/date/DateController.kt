@@ -9,7 +9,7 @@ import java.time.LocalDate
 @RestController
 @CrossOrigin
 class DateController (private val date: Date,private val proposalDateCheck: ProposalDateCheck){
-    @PostMapping("/API/date/set/{dateString}")
+    @PostMapping("/API/thesis/date/set/{dateString}")
     @ResponseStatus(HttpStatus.CREATED)
     fun virtualDateAdd( @PathVariable dateString: String){
 
@@ -17,7 +17,7 @@ class DateController (private val date: Date,private val proposalDateCheck: Prop
         date.getDate()?.let { proposalDateCheck.checkForMyDateChanges(it) }
 
     }
-    @GetMapping("/API/date/get")
+    @GetMapping("/API/thesis/date/get/")
     fun virtualDateGet():LocalDate?{
         return date.getDate()
     }
