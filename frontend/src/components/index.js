@@ -23,8 +23,6 @@ import StyledPaper from "./GeneralComponents/StyledPaper.jsx";
 
 import ThesisForm from "./ThesisForm/ThesisForm.jsx";
 
-import AsynchronousAutocomplete from "./GeneralComponents/AsynchronousAutocomplete.jsx";
-
 import SortingToolbar from "./GeneralComponents/SortingToolbar.jsx";
 import { sortThesisData } from "./GeneralComponents/SortingToolbar.jsx";
 
@@ -33,6 +31,8 @@ import Searchbar from "./Searchbar/Searchbar.jsx";
 import NoDataDisplayed from "./GeneralComponents/NoDataDisplayed.jsx";
 
 import VirtualClock from "./GeneralComponents/VirtualClock.jsx";
+
+import CustomAutocomplete from "./GeneralComponents/CustomAutocomplete.jsx";
 
 export {
     Navbar,
@@ -43,6 +43,7 @@ export {
     ThesesList,
     ThesisRow,
     ThesisForm,
+    CustomAutocomplete,
 
     MyOutlinedButton,
     PastelComponent,
@@ -54,7 +55,6 @@ export {
 
     SectionTitle,
     StyledPaper,
-    AsynchronousAutocomplete,
     SortingToolbar,
     sortThesisData,
 

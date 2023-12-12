@@ -21,6 +21,7 @@ import dayjs from "dayjs";
 
 import PastelComponent from "../PastelComponent/PastelComponent";
 import SearchBarComponent from "./SearchBarComponent";
+import CustomAutocomplete from "../GeneralComponents/CustomAutocomplete";
 
 export default function FilterComponent({
   open,
@@ -31,7 +32,17 @@ export default function FilterComponent({
   setSearchQuery,
   handleResearch,
 }) {
-  const [tempFilters, setTempFilters] = useState({ endDate: null });
+  const defaultFilters = {
+    endDate: null,
+    cds: [],
+    coSupervisors: [],
+    supervisor: null,
+    groups: [],
+    keywords: [],
+    types: [],
+    levels: [],
+  };
+  const [tempFilters, setTempFilters] = useState(defaultFilters);
 
   const handleFilterChange = (filterName, value) => {
     // Update the filter value
@@ -39,11 +50,18 @@ export default function FilterComponent({
   };
 
   const applyFilters = () => {
+    const searchFilters = { ...tempFilters };
     // if there are some null values or empty arrays, remove them before setting the filters
-    if (tempFilters.endDate === null) delete tempFilters.endDate;
-    setFilters(tempFilters);
-    handleResearch(tempFilters, searchQuery);
-    clearFilters();
+    Object.keys(searchFilters).forEach(
+      (key) =>
+        (searchFilters[key] === null ||
+          (Array.isArray(searchFilters[key]) &&
+            searchFilters[key].length === 0)) &&
+        delete searchFilters[key]
+    );
+    setFilters(searchFilters);
+    handleResearch(searchFilters, searchQuery);
+    // clearFilters();
     handleClose();
   };
 
@@ -56,70 +74,26 @@ export default function FilterComponent({
   };
 
   const clearFilters = () => {
-    setTempFilters({ endDate: null }); // Clear local temporary filters
+    setTempFilters(defaultFilters); // Clear local temporary filters
   };
 
   const filterComponents = Object.keys(apiData).map((filterName) => (
     <Grid item xs={12} sm={6} key={filterName}>
       {/* Each filter in a grid item */}
-      <Autocomplete
-        multiple={filterName !== "Supervisors"}
-        options={apiData[filterName] || []}
-        value={
-          tempFilters[filterName] || (filterName !== "Supervisors" ? [] : null)
-        }
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label={filterName}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                // Target the outline input root
-                borderRadius: "18px", // Set the border radius
-                backgroundColor: "white",
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  // Target the border when focused
-                  borderColor: "#2192FF", // Change to your desired color
-                },
-              },
-              width: "90%",
-            }}
-          />
-        )}
-        onChange={(event, value) => handleFilterChange(filterName, value)}
-        fullWidth
-        filterSelectedOptions
-        renderTags={(value, getTagProps) =>
-          value.map((option, index) => (
-            <Chip
-              label={option}
-              {...getTagProps({ index })}
-              sx={{
-                backgroundColor: "#2192FF", // Custom background color
-                color: "white", // Custom text color
-                "& .MuiChip-deleteIcon": {
-                  color: "white", // Custom delete icon color
-                },
-              }}
-            />
-          ))
-        }
+      <CustomAutocomplete
+        label={filterName}
+        value={tempFilters[filterName]}
+        options={apiData[filterName]}
+        onChange={(event, newValue) => handleFilterChange(filterName, newValue)}
+        name={filterName}
+        multiple={filterName !== "supervisor"}
+        style={{ marginBottom: 0, marginTop: 0 }}
       />
     </Grid>
   ));
 
   return (
     <>
-      {/*
-        <PastelComponent
-          bgColor="#0766AD"
-          textColor="white"
-          text="Filter"
-          icon={<TuneOutlined sx={{marginTop: "-4px", marginRight: "4px"}} />}
-          onClick={() => setOpen(true)}
-          style={{ marginRight: {sm: "2rem", xs: 0} }}
-        />
-    */}
       <Dialog
         open={open}
         onClose={handleClose}

@@ -20,7 +20,7 @@ export default function Searchbar({ clearSearch, handleResearch }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [filters, setFilters] = useState([]);
-  const [apiData, setApiData] = useState([]); // Initialized as an empty object
+  const [apiData, setApiData] = useState({}); // Initialized as an empty object
   const [open, setOpen] = useState(false);
 
   // Fetch data from APIs
@@ -103,15 +103,17 @@ export default function Searchbar({ clearSearch, handleResearch }) {
             onSearch={setSearchQuery}
             style={{ width: { xs: "70%", md: "40%" } }}
           />
-          <FilterComponent
-            open={open}
-            handleClose={() => setOpen(false)}
-            setFilters={setFilters}
-            apiData={apiData}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            handleResearch={handleResearch}
-          />
+          {open ? (
+            <FilterComponent
+              open={open}
+              handleClose={() => setOpen(false)}
+              setFilters={setFilters}
+              apiData={apiData}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              handleResearch={handleResearch}
+            />
+          ) : null}
         </Box>
 
         <Box
