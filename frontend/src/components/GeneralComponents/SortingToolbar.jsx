@@ -87,7 +87,7 @@ export default function SortingToolbar({ proposals, onSortedData }) {
               icon={renderSortIcon(criteria)}
               style={{
                 marginRight: { xs: "5px", md: "1rem" },
-                fontSize: { xs: "small", md: "x-large" },
+                fontSize: { xs: "small",sm:"x-large"},
               }}
               onClick={() => handleSort(criteria)}
             />

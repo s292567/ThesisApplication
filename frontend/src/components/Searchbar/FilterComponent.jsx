@@ -23,13 +23,14 @@ import CustomAutocomplete from "../GeneralComponents/CustomAutocomplete";
 export default function FilterComponent({
   open,
   handleClose,
+  filters,
   setFilters,
   apiData,
   searchQuery,
   setSearchQuery,
   handleResearch,
 }) {
-  const defaultFilters = {
+  const cleanFilters = {
     endDate: null,
     cds: [],
     coSupervisors: [],
@@ -38,6 +39,10 @@ export default function FilterComponent({
     keywords: [],
     types: [],
     levels: [],
+  }
+  const defaultFilters = {
+    ...cleanFilters,
+    ...filters
   };
   const [tempFilters, setTempFilters] = useState(defaultFilters);
 
@@ -58,7 +63,6 @@ export default function FilterComponent({
     );
     setFilters(searchFilters);
     handleResearch(searchFilters, searchQuery);
-    // clearFilters();
     handleClose();
   };
 
@@ -71,7 +75,7 @@ export default function FilterComponent({
   };
 
   const clearFilters = () => {
-    setTempFilters(defaultFilters); // Clear local temporary filters
+    setTempFilters(cleanFilters); // Clear local temporary filters
   };
 
   const filterComponents = Object.keys(apiData).map((filterName) => (

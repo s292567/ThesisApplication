@@ -106,6 +106,7 @@ export default function Searchbar({ clearSearch, handleResearch }) {
           {open ? (
             <FilterComponent
               open={open}
+              filters={filters}
               handleClose={() => setOpen(false)}
               setFilters={setFilters}
               apiData={apiData}

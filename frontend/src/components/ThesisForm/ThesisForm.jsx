@@ -85,7 +85,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
   };
 
   const handleAutocompleteChange = (event, newValue, name) => {
-    setFormData({ ...formData, [name]: newValue });
+    setFormData({ ...formData, [name]: Array.isArray(newValue) ? [...newValue] : newValue });
   };
 
   const handleSubmit = () => {

@@ -143,11 +143,10 @@ export default function ThesesPage() {
           thesis.id === editedThesis.id
             ? {
                 ...editedThesis,
-                supervisor: { name: "name", surname: "surname" },
+                supervisor: { name: "Luca", surname: "Ferrari" }, // This must be changed when there will be the API to retrieve the profile infos
               }
             : thesis
         );
-
         reapplySorting(updatedThesisData); // Reapply sorting to the updated list
       } catch (error) {
         console.error("Failed to edit proposal:", error);
@@ -165,7 +164,7 @@ export default function ThesesPage() {
         // Add the new thesis to the sortedThesisData array
         const updatedThesisData = [
           ...sortedThesisData,
-          { ...newThesis, supervisor: { name: "name", surname: "surname" } },
+          { ...newThesis, supervisor: { name: "Luca", surname: "Ferrari" } }, // This must be changed when there will be the API to retrieve the profile infos
         ];
         reapplySorting(updatedThesisData); // Reapply sorting to the updated list
       } catch (error) {
