@@ -36,7 +36,6 @@ const UserProvider = ({ children }) => {
         setHomeRoute(routes.professorDashboard);
         setGeneralRoutes(prev => ({...prev, theses: routes.professorTheses}));
       }
-      console.log("generalRouteCONTEXT", generalRoutes);
       setJwtToken(token);
       setUserId(tokenData.preferred_username.split("@")[0]);
       localStorage.setItem("username", tokenData.preferred_username.split("@")[0]);
@@ -45,36 +44,6 @@ const UserProvider = ({ children }) => {
 
 
   }, [tokenData]);
-
-
-  // Funzione di login
-  /*const login = async (username, password) => {
-    try {
-      const token = await loginApi(username, password);
-      setJwtToken(token);
-      setLoggedIn(true);
-      setUserId(username.split("@")[0]);
-      localStorage.setItem("jwt", token);
-
-      const loggedUser = await getProfileApi(username);
-      setUser(loggedUser);
-      localStorage.setItem("username", loggedUser.username);
-
-      if (loggedUser.role === "Student") {
-        setHomeRoute(routes.studentDashboard);
-        setGeneralRoutes(prev => ({...prev, theses: routes.studentTheses}));
-        navigate(routes.studentDashboard);
-      } else if (loggedUser.role === "Professor") {
-        setHomeRoute(routes.professorDashboard);
-        setGeneralRoutes(prev => ({...prev, theses: routes.professorTheses}));
-        navigate(routes.professorDashboard);
-      }
-    } catch (error) {
-      setErrorMsg(error.detail);
-      navigate(routes.login);
-      console.log("in the error catch", error.detail);
-    }
-  }*/
 
   // Funzione di logout
   const logout = () => {
