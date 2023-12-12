@@ -15,8 +15,8 @@ describe('Login Page', () => {
         });
         cy.wait('@oktaLogin');
         cy.wait(6000);
-     //   cy.visit('http://localhost:5173/myApplications')
-      //  cy.wait(1000);
+       cy.visit('http://localhost:5173/myApplications')
+       cy.wait(1000);
 
     });
 
@@ -38,7 +38,8 @@ describe('Login Page', () => {
         });
 
         cy.wait('@oktaLogin');
-        cy.visit('http://localhost:5173/professorDashboard');
+        cy.wait(10000);
+
     });
 
     it('should show an error message with invalid credentials', () => {
