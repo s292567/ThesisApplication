@@ -28,6 +28,9 @@ class ProposalServiceImplTest {
     private lateinit var groupDepRepository: GroupDepRepository
     private lateinit var applicationRepository: ApplicationRepository
     private lateinit var proposalService: ProposalServiceImpl
+    private lateinit var mockProposal: Proposal
+    private lateinit var mockTeacher: Teacher
+    private lateinit var date: LocalDate
 
 
     @BeforeEach
@@ -38,6 +41,20 @@ class ProposalServiceImplTest {
         groupDepRepository = mockk()
         applicationRepository = mockk()
         proposalService = ProposalServiceImpl(proposalRepository, teacherRepository, studentRepository, groupDepRepository, applicationRepository)
+        mockTeacher = mockk<Teacher>()
+        date = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        mockProposal = Proposal("Advanced algorithms for image processing",
+            mockTeacher,
+            "Paolo Ricci, Mario Rossi" ,
+            "image processing",
+            "Company",
+            "G13,G21",
+            "Work in a company to develop new algorithms for image processing",
+            "Basics of machine learning and image processing",
+            "Collaboration with company equipe. Reimbursement of expenses",
+            date,
+            "MSc",
+            "Computer Engineering, Civil Engineering")
     }
 
     @Test
@@ -123,20 +140,8 @@ class ProposalServiceImplTest {
     @Test
     fun `test getAllProposals`() {
         val teacher = Teacher("Ferrari", "Luca")
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         // Mock data
-        val proposals = listOf(Proposal("Advanced algorithms for image processing",
-            teacher,
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "in external company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering"))
+        val proposals = listOf(mockProposal)
         val proposalsDTO = listOf(ProposalDTO(
             UUID.randomUUID(),
             "Advanced algorithms for image processing",
@@ -148,7 +153,7 @@ class ProposalServiceImplTest {
             "Work in a company to develop new algorithms for image processing",
             "Basics of machine learning and image processing",
             "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
+            date,
             "MSc",
             listOf("Computer Engineering", "Electrical Engineering")
         ))
@@ -161,26 +166,13 @@ class ProposalServiceImplTest {
         // Add assertions as needed
         assertEquals(proposals.size, result.size)
         assertEquals(proposalsDTO.first().expiration, result.first().expiration)
-        // Add more specific assertions based on your application's logic
     }
     @Test
     fun `test getProposalsByCds`() {
-        val localDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val localDate2 = LocalDate.parse("2026-07-21", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val date2 = LocalDate.parse("2026-07-21", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         // Arrange
         val cds = "Computer Engineering"
-        val proposalList = listOf(Proposal("Advanced algorithms for image processing",
-            Teacher("Luca", "Ferrari"),
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "in external company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering"),
+        val proposalList = listOf(mockProposal,
             Proposal("Proposal 2",
                 Teacher("Paolo", "Ricci"),
                 "" ,
@@ -190,12 +182,11 @@ class ProposalServiceImplTest {
                 "The description of the proposal",
                 "Basics knowledge",
                 "Collaboration with company equipe. Reimbursement of expenses",
-                localDate2,
+                date2,
                 "MSc",
                 "Computer Engineering"))
         every { proposalRepository.findByCds(cds) } returns proposalList
 
-        // Act
         val result = proposalService.getProposalsByCds(cds)
 
         // Assert
@@ -204,21 +195,8 @@ class ProposalServiceImplTest {
 
     @Test
     fun `test searchProposals`() {
-        val localDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        // Arrange
         val query = "image"
-        val proposalList = listOf(Proposal("Advanced algorithms for image processing",
-            Teacher("Luca", "Ferrari"),
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "in external company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering"))
+        val proposalList = listOf(mockProposal)
         every { proposalRepository.searchProposals(query) } returns proposalList
 
         // Act
@@ -235,20 +213,8 @@ class ProposalServiceImplTest {
         val query = "something"
         val cdsName = "Computer Engineering"
         val student = Student(degree = Degree(titleDegree = cdsName))
-        val localDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val localDate2 = LocalDate.parse("2026-07-21", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val proposalList = listOf(Proposal("Advanced algorithms for image processing",
-            Teacher("Luca", "Ferrari"),
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "in external company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering"),
+        val date2 = LocalDate.parse("2026-07-21", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val proposalList = listOf(mockProposal,
             Proposal("Proposal 2",
                 Teacher("Paolo", "Ricci"),
                 "" ,
@@ -258,7 +224,7 @@ class ProposalServiceImplTest {
                 "The description of the proposal",
                 "Basics knowledge",
                 "Collaboration with company equipe. Reimbursement of expenses",
-                localDate2,
+                date2,
                 "MSc",
                 "Computer Engineering"))
         every { studentRepository.findById(studentId) } returns Optional.of(student)
@@ -279,20 +245,8 @@ class ProposalServiceImplTest {
         val query = ""
         val cdsName = "Computer Engineering"
         val student = Student(degree = Degree(titleDegree = cdsName))
-        val localDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val localDate2 = LocalDate.parse("2026-07-21", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val proposalList = listOf(Proposal("Advanced algorithms for image processing",
-            Teacher("Luca", "Ferrari"),
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "in external company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering"),
+        val date2 = LocalDate.parse("2026-07-21", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val proposalList = listOf(mockProposal,
             Proposal("Proposal 2",
                 Teacher("Paolo", "Ricci"),
                 "" ,
@@ -302,16 +256,14 @@ class ProposalServiceImplTest {
                 "The description of the proposal",
                 "Basics knowledge",
                 "Collaboration with company equipe. Reimbursement of expenses",
-                localDate2,
+                date2,
                 "MSc",
                 "Computer Engineering"))
         every { studentRepository.findById(studentId) } returns Optional.of(student)
         every { proposalRepository.searchProposals(query) } returns proposalList
         every { proposalRepository.findByCds(cdsName) } returns proposalList
 
-        // Act
         val result = proposalService.searchProposalByStudentCds(studentId, query)
-
 
         verify (exactly = 0) { proposalRepository.searchProposals(query) }
         verify (exactly = 1) { proposalRepository.findByCds(cdsName) }
@@ -530,9 +482,7 @@ class ProposalServiceImplTest {
     fun `test successfully update proposal`(){
         val professorId = "p101"
         val teacher = Teacher("Ferrari", "Luca")
-        val mockTeacher = mockk<Teacher>()
         val group = mockk<GroupDep>()
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         // changing title, type, description, notes, cds
         val newProposal = NewProposalDTO("New title for the proposal",
             listOf("Paolo Ricci", "Mario Rossi"),
@@ -542,23 +492,11 @@ class ProposalServiceImplTest {
             "New description",
             "Basics of machine learning and image processing",
             "",
-            localDate,
+            date,
             "MSc",
             listOf("Computer Engineering")
             )
-        val oldProposal = Proposal("Advanced algorithms for image processing",
-            mockTeacher,
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "Company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering")
-        val oldName = oldProposal.title
+        val oldName = mockProposal.title
         val updatedProposal = Proposal("New title for the proposal",
             teacher,
             "Paolo Ricci, Mario Rossi",
@@ -568,13 +506,13 @@ class ProposalServiceImplTest {
             "New description",
             "Basics of machine learning and image processing",
             "",
-            localDate,
+            date,
             "MSc",
             "Computer Engineering"
         )
 
         // only to pass the println()
-        every { proposalRepository.findAll() } returns listOf(oldProposal)
+        every { proposalRepository.findAll() } returns listOf(mockProposal)
         every { mockTeacher.id } returns professorId
         /* --mocking checkProposal--*/
         every { groupDepRepository.findById(any()) } returns Optional.of(group)
@@ -583,18 +521,15 @@ class ProposalServiceImplTest {
         every { teacherRepository.findById(any()) } returns Optional.of(teacher)
         every { proposalRepository.save(any()) } returns updatedProposal
 
-        val updated = proposalService.updateProposal(newProposal, professorId, oldName, oldProposal)
+        val updated = proposalService.updateProposal(newProposal, professorId, oldName, mockProposal)
 
         assertEquals("New title for the proposal", updated.title)
         verify (exactly = 1) { proposalRepository.save(any()) }
-        //verify { println(oldProposal) }
     }
     @Test
     fun `test update proposal with wrong date`(){
         val professorId = "p101"
-        val mockTeacher = mockk<Teacher>()
         val group = mockk<GroupDep>()
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         val wrongDate = LocalDate.parse("2023-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         val newProposal = NewProposalDTO("New title for the proposal",
             listOf("Paolo Ricci", "Mario Rossi"),
@@ -608,28 +543,16 @@ class ProposalServiceImplTest {
             "MSc",
             listOf("Computer Engineering")
         )
-        val oldProposal = Proposal("Advanced algorithms for image processing",
-            mockTeacher,
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "Company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering")
-        val oldName = oldProposal.title
+        val oldName = mockProposal.title
 
         // only to pass the println()
-        every { proposalRepository.findAll() } returns listOf(oldProposal)
+        every { proposalRepository.findAll() } returns listOf(mockProposal)
         every { mockTeacher.id } returns professorId
         /* --mocking checkProposal--*/
         every { groupDepRepository.findById(any()) } returns Optional.of(group)
 
         val error = assertThrows<ProposalBodyError> {
-            proposalService.updateProposal(newProposal, professorId, oldName, oldProposal)
+            proposalService.updateProposal(newProposal, professorId, oldName, mockProposal)
         }
 
         assert(error.message!!.contains("expire date is before now"))
@@ -639,10 +562,7 @@ class ProposalServiceImplTest {
     @Test
     fun `test update proposal without supervisors`(){
         val professorId = "p101"
-        val mockTeacher = mockk<Teacher>()
         val group = mockk<GroupDep>()
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        // changing title, type, description, notes, cds
         val newProposal = NewProposalDTO("New title for the proposal",
             null,
             listOf("key1"),
@@ -651,32 +571,20 @@ class ProposalServiceImplTest {
             "New description",
             "Basics of machine learning and image processing",
             "",
-            localDate,
+            date,
             "MSc",
             listOf("Computer Engineering")
         )
-        val oldProposal = Proposal("Advanced algorithms for image processing",
-            mockTeacher,
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "Company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering")
-        val oldName = oldProposal.title
+        val oldName = mockProposal.title
 
         // only to pass the println()
-        every { proposalRepository.findAll() } returns listOf(oldProposal)
+        every { proposalRepository.findAll() } returns listOf(mockProposal)
         every { mockTeacher.id } returns professorId
         /* --mocking checkProposal--*/
         every { groupDepRepository.findById(any()) } returns Optional.of(group)
 
         val error = assertThrows<ProposalBodyError> {
-            proposalService.updateProposal(newProposal, professorId, oldName, oldProposal)
+            proposalService.updateProposal(newProposal, professorId, oldName, mockProposal)
         }
 
         assert(error.message!!.contains("coSupervisors or keyword is empty"))
@@ -686,10 +594,7 @@ class ProposalServiceImplTest {
     @Test
     fun `test update proposal without keywords`(){
         val professorId = "p101"
-        val mockTeacher = mockk<Teacher>()
         val group = mockk<GroupDep>()
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        // changing title, type, description, notes, cds
         val newProposal = NewProposalDTO("New title for the proposal",
             listOf("Paolo Ricci", "Mario Rossi"),
             emptyList(),
@@ -698,32 +603,20 @@ class ProposalServiceImplTest {
             "New description",
             "Basics of machine learning and image processing",
             "",
-            localDate,
+            date,
             "MSc",
             listOf("Computer Engineering")
         )
-        val oldProposal = Proposal("Advanced algorithms for image processing",
-            mockTeacher,
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "Company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering")
-        val oldName = oldProposal.title
+        val oldName = mockProposal.title
 
         // only to pass the println()
-        every { proposalRepository.findAll() } returns listOf(oldProposal)
+        every { proposalRepository.findAll() } returns listOf(mockProposal)
         every { mockTeacher.id } returns professorId
         /* --mocking checkProposal--*/
         every { groupDepRepository.findById(any()) } returns Optional.of(group)
 
         val error = assertThrows<ProposalBodyError> {
-            proposalService.updateProposal(newProposal, professorId, oldName, oldProposal)
+            proposalService.updateProposal(newProposal, professorId, oldName, mockProposal)
         }
 
         assert(error.message!!.contains("coSupervisors or keyword is empty"))
@@ -733,9 +626,6 @@ class ProposalServiceImplTest {
     @Test
     fun `test update proposal with wrong groups`(){
         val professorId = "p101"
-        val mockTeacher = mockk<Teacher>()
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        // changing title, type, description, notes, cds
         val newProposal = NewProposalDTO("New title for the proposal",
             listOf("Paolo Ricci", "Mario Rossi"),
             emptyList(),
@@ -744,32 +634,20 @@ class ProposalServiceImplTest {
             "New description",
             "Basics of machine learning and image processing",
             "",
-            localDate,
+            date,
             "MSc",
             listOf("Computer Engineering")
         )
-        val oldProposal = Proposal("Advanced algorithms for image processing",
-            mockTeacher,
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "Company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering")
-        val oldName = oldProposal.title
+        val oldName = mockProposal.title
 
         // only to pass the println()
-        every { proposalRepository.findAll() } returns listOf(oldProposal)
+        every { proposalRepository.findAll() } returns listOf(mockProposal)
         every { mockTeacher.id } returns professorId
         /* --mocking checkProposal--*/
         every { groupDepRepository.findById("G16") } returns Optional.empty()
 
         val error = assertThrows<ProposalBodyError> {
-            proposalService.updateProposal(newProposal, professorId, oldName, oldProposal)
+            proposalService.updateProposal(newProposal, professorId, oldName, mockProposal)
         }
 
         assert(error.message!!.contains("Group G16 not present"))
@@ -779,10 +657,7 @@ class ProposalServiceImplTest {
     @Test
     fun `test update proposal with empty description`(){
         val professorId = "p101"
-        val mockTeacher = mockk<Teacher>()
         val group = mockk<GroupDep>()
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        // changing title, type, description, notes, cds
         val newProposal = NewProposalDTO("New title for the proposal",
             listOf("Paolo Ricci", "Mario Rossi"),
             emptyList(),
@@ -791,32 +666,20 @@ class ProposalServiceImplTest {
             "",
             "Basics of machine learning and image processing",
             "",
-            localDate,
+            date,
             "MSc",
             listOf("Computer Engineering")
         )
-        val oldProposal = Proposal("Advanced algorithms for image processing",
-            mockTeacher,
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "Company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering")
-        val oldName = oldProposal.title
+        val oldName = mockProposal.title
 
         // only to pass the println()
-        every { proposalRepository.findAll() } returns listOf(oldProposal)
+        every { proposalRepository.findAll() } returns listOf(mockProposal)
         every { mockTeacher.id } returns professorId
         /* --mocking checkProposal--*/
         every { groupDepRepository.findById(any()) } returns Optional.of(group)
 
         val error = assertThrows<ProposalBodyError> {
-            proposalService.updateProposal(newProposal, professorId, oldName, oldProposal)
+            proposalService.updateProposal(newProposal, professorId, oldName, mockProposal)
         }
 
         assert(error.message!!.contains("description is empty"))
@@ -827,10 +690,7 @@ class ProposalServiceImplTest {
     fun `test update proposal with more than 1 error`(){
         // empty description and no keywords
         val professorId = "p101"
-        val mockTeacher = mockk<Teacher>()
         val group = mockk<GroupDep>()
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        // changing title, type, description, notes, cds
         val newProposal = NewProposalDTO("New title for the proposal",
             listOf("Paolo Ricci", "Mario Rossi"),
             emptyList(),
@@ -839,32 +699,20 @@ class ProposalServiceImplTest {
             "",
             "Basics of machine learning and image processing",
             "",
-            localDate,
+            date,
             "MSc",
             listOf("Computer Engineering")
         )
-        val oldProposal = Proposal("Advanced algorithms for image processing",
-            mockTeacher,
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "Company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering")
-        val oldName = oldProposal.title
+        val oldName = mockProposal.title
 
         // only to pass the println()
-        every { proposalRepository.findAll() } returns listOf(oldProposal)
+        every { proposalRepository.findAll() } returns listOf(mockProposal)
         every { mockTeacher.id } returns professorId
         /* --mocking checkProposal--*/
         every { groupDepRepository.findById(any()) } returns Optional.of(group)
 
         val error = assertThrows<ProposalBodyError> {
-            proposalService.updateProposal(newProposal, professorId, oldName, oldProposal)
+            proposalService.updateProposal(newProposal, professorId, oldName, mockProposal)
         }
 
         assert(error.message!!.contains("coSupervisors or keyword is empty"))
@@ -875,11 +723,7 @@ class ProposalServiceImplTest {
     @Test
     fun `test update proposal wrong professor`(){
         val professorId = "p101"
-        val teacher = Teacher("Ferrari", "Luca")
-        val mockTeacher = mockk<Teacher>()
         val group = mockk<GroupDep>()
-        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        // changing title, type, description, notes, cds
         val newProposal = NewProposalDTO("New title for the proposal",
             listOf("Paolo Ricci", "Mario Rossi"),
             emptyList(),
@@ -888,32 +732,20 @@ class ProposalServiceImplTest {
             "",
             "Basics of machine learning and image processing",
             "",
-            localDate,
+            date,
             "MSc",
             listOf("Computer Engineering")
         )
-        val oldProposal = Proposal("Advanced algorithms for image processing",
-            mockTeacher,
-            "Paolo Ricci, Mario Rossi" ,
-            "image processing",
-            "Company",
-            "G13,G21",
-            "Work in a company to develop new algorithms for image processing",
-            "Basics of machine learning and image processing",
-            "Collaboration with company equipe. Reimbursement of expenses",
-            localDate,
-            "MSc",
-            "Computer Engineering, Civil Engineering")
-        val oldName = oldProposal.title
+        val oldName = mockProposal.title
 
         // only to pass the println()
-        every { proposalRepository.findAll() } returns listOf(oldProposal)
+        every { proposalRepository.findAll() } returns listOf(mockProposal)
         every { mockTeacher.id } returns professorId
         /* --mocking checkProposal--*/
         every { groupDepRepository.findById(any()) } returns Optional.of(group)
 
         val error = assertThrows<ForbiddenError> {
-            proposalService.updateProposal(newProposal, "p202", oldName, oldProposal)
+            proposalService.updateProposal(newProposal, "p202", oldName, mockProposal)
         }
 
         assertEquals("You (p202) cannot update a proposal of which you are not the supervisor (p101)", error.message)

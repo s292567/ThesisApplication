@@ -61,7 +61,7 @@ class ProposalServiceImpl(
         //check type and level and cds
         //if(newProposal.type)
         newProposal.groups!!.forEach{if(groupDepRepository.findById(it).isEmpty)
-            message +=" Group"+it+"not present"
+            message += " Group $it not present"
         }
         if(newProposal.description.isNullOrBlank())
             message +=" description is empty"
