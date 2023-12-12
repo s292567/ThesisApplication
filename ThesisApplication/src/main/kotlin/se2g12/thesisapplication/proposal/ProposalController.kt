@@ -48,7 +48,7 @@ class ProposalController(private val proposalService:ProposalService,private val
         return proposalService.getProposalsByCds(studentId.degree!!.titleDegree!!)
     }
     // search input string across all fields
-    @GetMapping("API/thesis/proposals/search")
+    @GetMapping("API/thesis/proposals/search-text")
 //    @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun searchProposals(
         @RequestParam(required = false) query: String?,
@@ -72,7 +72,7 @@ class ProposalController(private val proposalService:ProposalService,private val
     }
 
     //default filtered search
-    @PostMapping("/API/thesis/proposals/search-filtered")
+    @PostMapping("/API/thesis/proposals/search/")
     @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun searchProposalsCustom(
         @RequestBody filterCriteria: ProposalFilterCriteria
