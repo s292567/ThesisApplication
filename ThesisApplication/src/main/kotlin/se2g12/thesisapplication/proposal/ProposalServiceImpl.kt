@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import se2g12.thesisapplication.GroupDep.GroupDepRepository
 import se2g12.thesisapplication.application.ApplicationRepository
 import se2g12.thesisapplication.application.ProposalNotFoundError
+import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.time.LocalDate
@@ -17,13 +18,15 @@ class ProposalServiceImpl(
     private val teacherRepository: TeacherRepository,
     private val studentRepository: StudentRepository,
     private val groupDepRepository: GroupDepRepository,
-    private val applicationRepository: ApplicationRepository
+    private val applicationRepository: ApplicationRepository,
+    private val degreeRepository: DegreeRepository
 )
     :ProposalService {
     override fun getProposalByProfessorId(supervisorId: String): List<ProposalDTO> {
         val prop = proposalRepository.findAllBySupervisorId(supervisorId)
         return prop.map{it.toDTO()}
     }
+
     override fun updateProposal(newProposal: NewProposalDTO, professorId: String,oldName:String,old: Proposal):ProposalDTO {
         println(proposalRepository.findAll().filter{it.title==oldName})
         val message=checkProposal(newProposal)
@@ -151,7 +154,8 @@ class ProposalServiceImpl(
 
     //getByCds
     override fun getProposalsByCds(cds: String): List<ProposalDTO> {
-        return proposalRepository.findByCds(cds).map { it.toDTO() }
+        return proposalRepository.findByCdsContaining(cds)
+            .map { it.toDTO() }
     }
 
     override fun searchProposals(query: String): List<ProposalDTO> {
