@@ -32,7 +32,7 @@ class ProposalController(private val proposalService:ProposalService,private val
         if (authentication != null && authentication.isAuthenticated) {
             // Get the username
             var application=applicationRepository.findByProposalIdAndStudentId(UUID.fromString(proposalId),authentication.name.split("@")[0])
-            return application.isEmpty()
+            return application.isNotEmpty()
         }
         return false
     }
