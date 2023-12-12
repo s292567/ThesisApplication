@@ -31,7 +31,7 @@ class ProposalController(private val proposalService:ProposalService,private val
 // Check if the user is authenticated
         if (authentication != null && authentication.isAuthenticated) {
             // Get the username
-            var application=applicationRepository.findByProposalIdAndStudentId(UUID.fromString(proposalId),authentication.name)
+            var application=applicationRepository.findByProposalIdAndStudentId(UUID.fromString(proposalId),authentication.name.split("@")[0])
             return application.isEmpty()
         }
         return false
