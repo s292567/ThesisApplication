@@ -152,7 +152,7 @@ export default function Searchbar({ clearSearch, handleResearch }) {
               width: "80%", // Ensure the Box takes full width of the parent
             }}
           >
-            {filterTags}
+            filterTags
           </Box>
         </Box>
         <Divider variant="middle" sx={{ marginTop: "1rem", width: "100%" }} />
