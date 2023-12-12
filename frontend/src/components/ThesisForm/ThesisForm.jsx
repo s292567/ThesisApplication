@@ -58,7 +58,7 @@ export default function ThesisForm({open, onClose, thesis = {}, onSubmit}) {
       return {
         cds: await getDistinctCds(),
         coSupervisors: await getDistinctCoSupervisors(),
-        supervisors: await getDistinctSupervisors(),
+        supervisor: await getDistinctSupervisors(),
         groups: await getDistinctGroups(),
         keywords: await getDistinctKeywords(),
         types: await getDistinctTypes(),
