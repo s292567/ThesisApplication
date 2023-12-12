@@ -3,6 +3,7 @@ package se2g12.thesisapplication.Mail
 import jakarta.mail.MessagingException
 import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
+import jdk.jshell.Snippet.Status
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
@@ -29,9 +30,19 @@ class EmailService {
             message.setRecipients(MimeMessage.RecipientType.TO, "mfontana413@gmail.com")
         else
             message.setRecipients(MimeMessage.RecipientType.TO, to)
-        message.subject = "Test email from Spring $status"
-        val htmlContent = "<h1>This is a test Spring Boot email ${to!!.split("@")[0]}</h1>" +
-                "<p>It can contain <strong>HTML</strong> content.</p>"
+        val bool=status.contains("added new application")
+        var htmlContent:String
+        if(bool)
+        {
+            message.subject=status
+            htmlContent =  "<h1>This is a test Spring Boot email ${to!!.split("@")[0]}</h1>" +"<p>It can contain <strong>HTML</strong> content.</p>"
+        }
+        else {
+            message.subject = "Your application has been $status"
+            htmlContent =  "<h1>This is a test Spring Boot email ${to!!.split("@")[0]}</h1>" +"<p>It can contain <strong>HTML</strong> content.</p>"
+        }
+
+
         message.setContent(htmlContent, "text/html; charset=utf-8")
         mailSender.send(message)
     }

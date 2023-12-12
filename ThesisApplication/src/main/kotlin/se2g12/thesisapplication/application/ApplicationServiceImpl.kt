@@ -30,6 +30,7 @@ class ApplicationServiceImpl (
             throw ProposalNotFoundError("Proposal ${newApplication.proposalId} not found")
         val application=Application(student, proposal.get(), "pending")
         applicationRepository.save(application)
+        emailService.sendHtmlEmail(proposal.get().supervisor.email,"added new application for proposal ${proposal.get().title}")
     }
 
     override fun declineApplication(applicationId: UUID) {
