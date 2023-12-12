@@ -1,6 +1,6 @@
 // FilterComponent.jsx is a component that renders the filter dialog for the searchbar
-import {useState} from "react";
-import {Close} from "@mui/icons-material";
+import { useState } from "react";
+import { Close } from "@mui/icons-material";
 import {
   Dialog,
   DialogTitle,
@@ -11,9 +11,9 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import {DatePicker} from "@mui/x-date-pickers/DatePicker";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {LocalizationProvider} from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
 import PastelComponent from "../PastelComponent/PastelComponent";
@@ -21,14 +21,14 @@ import SearchBarComponent from "./SearchBarComponent";
 import CustomAutocomplete from "../GeneralComponents/CustomAutocomplete";
 
 export default function FilterComponent({
-                                          open,
-                                          handleClose,
-                                          setFilters,
-                                          apiData,
-                                          searchQuery,
-                                          setSearchQuery,
-                                          handleResearch,
-                                        }) {
+  open,
+  handleClose,
+  setFilters,
+  apiData,
+  searchQuery,
+  setSearchQuery,
+  handleResearch,
+}) {
   const defaultFilters = {
     endDate: null,
     cds: [],
@@ -43,11 +43,11 @@ export default function FilterComponent({
 
   const handleFilterChange = (filterName, value) => {
     // Update the filter value
-    setTempFilters({...tempFilters, [filterName]: value});
+    setTempFilters({ ...tempFilters, [filterName]: value });
   };
 
   const applyFilters = () => {
-    const searchFilters = {...tempFilters};
+    const searchFilters = { ...tempFilters };
     // if there are some null values or empty arrays, remove them before setting the filters
     Object.keys(searchFilters).forEach(
       (key) =>
@@ -67,7 +67,7 @@ export default function FilterComponent({
     const formattedDate = newValue
       ? dayjs(newValue).format("YYYY-MM-DD")
       : null;
-    setTempFilters({...tempFilters, endDate: formattedDate});
+    setTempFilters({ ...tempFilters, endDate: formattedDate });
   };
 
   const clearFilters = () => {
@@ -84,7 +84,7 @@ export default function FilterComponent({
         onChange={(event, newValue) => handleFilterChange(filterName, newValue)}
         name={filterName}
         multiple={filterName !== "supervisor"}
-        style={{marginBottom: 0, marginTop: 0}}
+        style={{ marginBottom: 0, marginTop: 0 }}
       />
     </Grid>
   ));
@@ -111,13 +111,12 @@ export default function FilterComponent({
           },
         }}
       >
-        <DialogTitle sx={{fontSize: "2.8rem"}}>
+        <DialogTitle sx={{ fontSize: "2.8rem" }}>
           {/** ACTUAL SEARCHBAR */}
           <SearchBarComponent
             value={searchQuery}
             onSearch={setSearchQuery}
-            onClick={() => {
-            }}
+            onClick={() => {}}
           />
         </DialogTitle>
         <IconButton
@@ -131,22 +130,22 @@ export default function FilterComponent({
             color: "white",
           }}
         >
-          <Close/>
+          <Close />
         </IconButton>
-        <Divider variant="middle" sx={{marginTop: "-1rem"}}/>
+        <Divider variant="middle" sx={{ marginTop: "-1rem" }} />
         <DialogContent>
           <Typography variant="h3" mb={2}>
             Filters
           </Typography>
           <Grid container spacing={2}>
-            filterComponents
+            {filterComponents}
             <Grid item xs={12} sm={6}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="End Date"
                   value={tempFilters.endDate}
                   onChange={handleDateChange}
-                  slotProps={{textField: {variant: "outlined"}}}
+                  slotProps={{ textField: { variant: "outlined" } }}
                   minDate={dayjs()} // Restricting past dates
                   sx={{
                     "& .MuiOutlinedInput-root": {
@@ -179,7 +178,7 @@ export default function FilterComponent({
             textColor="white"
             text="filter"
             onClick={applyFilters}
-            style={{marginRight: {sm: "2rem", xs: 0}}}
+            style={{ marginRight: { sm: "2rem", xs: 0 } }}
           />
         </DialogActions>
       </Dialog>
