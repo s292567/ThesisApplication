@@ -1,12 +1,12 @@
 
 const cardData = [
     {
-        image: 'path/to/politoBiblio.jpg',
+        image: '/src/assets/images/politoBiblio.jpeg',
         title: 'Discover the New Biblio',
         description: 'Explore the vast resources and modern spaces of our newly opened library at Politecnico di Torino. A hub of knowledge and innovation.',
     },
     {
-        image: 'path/to/politoView.jpg',
+        image: '/src/assets/images/politoView.jpg',
         title: 'Experience the Campus Life',
         description: 'Immerse yourself in the vibrant campus life at Politecnico di Torino. Engage with diverse cultures and cutting-edge technology.',
     },
