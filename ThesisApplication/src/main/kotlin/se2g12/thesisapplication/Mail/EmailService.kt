@@ -35,11 +35,11 @@ class EmailService {
         if(bool)
         {
             message.subject=status
-            htmlContent =  "<h1>This is a test Spring Boot email ${to!!.split("@")[0]}</h1>" +"<p>It can contain <strong>HTML</strong> content.</p>"
+            htmlContent =  "<h1>Dear ${to!!.split("@")[0]}</h1>" +"<p>One of your thesis proposal has received an application</p>"
         }
         else {
             message.subject = "Your application has been $status"
-            htmlContent =  "<h1>This is a test Spring Boot email ${to!!.split("@")[0]}</h1>" +"<p>It can contain <strong>HTML</strong> content.</p>"
+            htmlContent =  "<h1> ${to!!.split("@")[0]}</h1>" +"<p>One of your application status has been updated check the web page for more information</p>"
         }
 
 
