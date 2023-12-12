@@ -88,7 +88,7 @@ export default function StudentApplications({ applications }) {
                       <Typography
                         variant="h4"
                         mb={2}
-                        sx={{ color: "#2f1c6a", fontWeight: "bold" }}
+                        sx={{ color: "#2f1c6a", fontWeight: "bold", marginRight: "1rem" }}
                       >
                         {application.proposal.title}
                       </Typography>

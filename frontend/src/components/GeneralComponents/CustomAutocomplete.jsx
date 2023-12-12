@@ -17,6 +17,14 @@ export default function CustomAutocomplete({
   // State to store the input value
   const [inputValue, setInputValue] = useState("");
 
+  // Sort options alphabetically
+  const sortedOptions = Array.isArray(options)
+    ? options.sort((a, b) => {
+      // Assuming 'a' and 'b' are strings. If they are objects, use a.name.localeCompare(b.name)
+      return a.localeCompare(b);
+    })
+    : [];
+
   // Function to determine whether the selected option matches the value
   const isOptionEqualToValue = (option, value) => {
     return option === value || value === "";
@@ -40,7 +48,7 @@ export default function CustomAutocomplete({
   return (
     <Autocomplete
       multiple={multiple}
-      options={options || []}
+      options={sortedOptions}
       value={value}
       onChange={handleChange}
       isOptionEqualToValue={isOptionEqualToValue}

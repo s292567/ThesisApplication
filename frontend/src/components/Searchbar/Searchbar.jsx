@@ -15,8 +15,10 @@ import {
   getDistinctLevels,
 } from "../../api";
 import PastelComponent from "../PastelComponent/PastelComponent";
+import {useUserContext} from "../../contexts/index.js";
 
 export default function Searchbar({ clearSearch, handleResearch }) {
+  const {user} = useUserContext();
   const [searchQuery, setSearchQuery] = useState("");
 
   const [filters, setFilters] = useState({});
@@ -36,7 +38,9 @@ export default function Searchbar({ clearSearch, handleResearch }) {
           types: await getDistinctTypes(),
           levels: await getDistinctLevels(),
         };
-
+        if(user.role === "Student") {
+          delete data.cds;
+        }
         setApiData(data); // Setting the state with the fetched data
       } catch (error) {
         console.error("Error fetching data", error);
