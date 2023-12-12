@@ -2,8 +2,7 @@
 import { 
     getAllProposals, 
     GetProposalsByCds, 
-    getProposalsByCds, 
-    searchProposals, 
+    getProposalsByCds,
     insertProposal, 
     applyToProposal,
     getProposalsByProfessorId, 
@@ -34,7 +33,7 @@ import {
     getDistinctKeywords,
     getDistinctTypes,
     getDistinctLevels,
-
+    searchProposals,
 } from './API_search.js';
 
 

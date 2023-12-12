@@ -79,10 +79,8 @@ export default function ThesesPage() {
   const handleResearch = useCallback(async (filters, searchQuery) => {
     try {
       // Call the API with filters and search query
-      console.log("Filters before search:", filters, searchQuery);
-      const thesisData = await searchProposals(filters, searchQuery);
+      const thesisData = await searchProposals({...filters, queryString: searchQuery});
       setSortedThesisData(thesisData);
-      console.log("Filters:", filters, searchQuery);
     } catch (error) {
       console.error("Error while fetching filtered data:", error);
     }
