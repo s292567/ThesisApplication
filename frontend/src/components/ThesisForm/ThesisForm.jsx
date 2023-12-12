@@ -1,9 +1,8 @@
 // ThesisForm.jsx (continued)
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
-  Autocomplete,
-  createFilterOptions,
+  CircularProgress,
   Dialog,
   Divider,
   IconButton,
@@ -12,7 +11,7 @@ import {
   styled,
   TextField,
 } from "@mui/material";
-import {Close} from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 
 import {
   getDistinctCds,
@@ -24,13 +23,13 @@ import {
   getDistinctTypes,
 } from "../../api";
 
-import {DatePicker} from "@mui/x-date-pickers/DatePicker";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {LocalizationProvider} from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import PastelComponent from "../PastelComponent/PastelComponent";
+import { PastelComponent, CustomAutocomplete } from "../index";
 
-export default function ThesisForm({open, onClose, thesis = {}, onSubmit}) {
+export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
   const defaultFormData = {
     title: thesis.title || "",
     coSupervisors: Array.isArray(thesis.coSupervisors)
@@ -50,52 +49,55 @@ export default function ThesisForm({open, onClose, thesis = {}, onSubmit}) {
   const [formData, setFormData] = useState(defaultFormData);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [missingFields, setMissingFields] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [apiData, setApiData] = useState({}); // Initialized as an empty object
-
-  const fetchData = async () => {
-    try {
-      return {
-        cds: await getDistinctCds(),
-        coSupervisors: await getDistinctCoSupervisors(),
-        supervisor: await getDistinctSupervisors(),
-        groups: await getDistinctGroups(),
-        keywords: await getDistinctKeywords(),
-        types: await getDistinctTypes(),
-        levels: await getDistinctLevels(),
-      };
-    } catch (error) {
-      console.error("Error fetching data", error);
-    }
-  };
   // Fetch data from APIs
   useEffect(() => {
-    fetchData().then((response) => setApiData(response));
+    const fetchData = async () => {
+      try {
+        const data = {
+          cds: await getDistinctCds(),
+          coSupervisors: await getDistinctCoSupervisors(),
+          supervisor: await getDistinctSupervisors(),
+          groups: await getDistinctGroups(),
+          keywords: await getDistinctKeywords(),
+          types: await getDistinctTypes(),
+          levels: await getDistinctLevels(),
+        };
+
+        setApiData(data); // Setting the state with the fetched data
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+
+    fetchData().then(() => setLoading(false));
   }, []);
 
   const handleDateChange = (newValue) => {
     const formattedDate = newValue ? dayjs(newValue) : null;
-    setFormData({...formData, expiration: formattedDate});
+    setFormData({ ...formData, expiration: formattedDate });
   };
 
   const handleChange = (event) => {
-    setFormData({...formData, [event.target.name]: event.target.value});
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const handleAutocompleteChange = (event, newValue, name) => {
-    setFormData({...formData, [name]: newValue});
+    setFormData({ ...formData, [name]: Array.isArray(newValue) ? [...newValue] : newValue });
   };
 
   const handleSubmit = () => {
     const requiredFields = [
-      {name: "title", label: "Title"},
-      {name: "keywords", label: "Keywords"},
-      {name: "groups", label: "Groups"},
-      {name: "expiration", label: "Expiration Date"},
-      {name: "type", label: "Type"},
-      {name: "description", label: "Description"},
-      {name: "level", label: "Level"},
-      {name: "cds", label: "CDS"},
+      { name: "title", label: "Title" },
+      { name: "keywords", label: "Keywords" },
+      { name: "groups", label: "Groups" },
+      { name: "expiration", label: "Expiration Date" },
+      { name: "type", label: "Type" },
+      { name: "description", label: "Description" },
+      { name: "level", label: "Level" },
+      { name: "cds", label: "CDS" },
     ];
 
     const missing = requiredFields.filter(
@@ -151,214 +153,222 @@ export default function ThesisForm({open, onClose, thesis = {}, onSubmit}) {
           },
         }}
       >
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="expiration"
-            name="expiration"
-            value={formData.expiration}
-            onChange={handleDateChange}
-            slotProps={{textField: {variant: "outlined"}}}
-            minDate={dayjs()} // Restricting past dates
-            sx={{
-              "& .MuiOutlinedInput-root": {
+        {loading ? (
+          <>
+            <CircularProgress sx={{marginBottom: "1rem"}}/> Loading...
+          </>
+        ) : (
+          <>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="expiration"
+                name="expiration"
+                value={formData.expiration}
+                onChange={handleDateChange}
+                slotProps={{ textField: { variant: "outlined" } }}
+                minDate={dayjs()} // Restricting past dates
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "white",
+                    borderRadius: "12px",
+                    width: { xs: "50%", md: "25%" },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#2192FF",
+                    },
+                  },
+                }}
+              />
+            </LocalizationProvider>
+
+            {/**
+             * LEVEL (AUTOCOMPLETE)
+             */}
+            <CustomAutocomplete
+              label="Level"
+              value={formData.level}
+              options={apiData.levels}
+              onChange={handleAutocompleteChange}
+              name="level"
+              multiple={false} // Single selection for Level
+              style={{ width: { xs: "50%", md: "25%" } }}
+            />
+
+            <StyledTextField
+              fullWidth
+              name="title"
+              label="Thesis Title"
+              placeholder="Thesis Title"
+              value={formData.title}
+              onChange={handleChange}
+              variant="outlined"
+              margin="normal"
+              size="medium"
+              sx={{ border: "none" }}
+              InputProps={{
+                style: {
+                  width: "100%",
+                  fontSize: "2.8rem",
+                  fontWeight: "bold",
+                  backgroundColor: "white",
+                }, // Style for text inside the TextField
+              }}
+            />
+            {/**
+             * AUTOCOMPLETE FOR KEYWORDS
+             */}
+            <CustomAutocomplete
+              label="Keywords"
+              value={formData.keywords}
+              options={apiData.keywords}
+              onChange={handleAutocompleteChange}
+              name="keywords"
+              allowNewValues={true}
+            />
+
+            <IconButton
+              aria-label="close"
+              onClick={() => onClose()}
+              sx={{
+                position: "absolute",
+                right: 24,
+                top: 24,
+                backgroundColor: "#E90064",
+                color: "white",
+              }}
+            >
+              <Close />
+            </IconButton>
+            <Divider
+              variant="middle"
+              sx={{ marginTop: "1rem", marginBottom: "2rem" }}
+            />
+
+            <Paper
+              elevation={0}
+              sx={{
+                padding: "1.5rem",
+                borderRadius: "20px",
+                border: "1px solid whitesmoke",
                 backgroundColor: "white",
-                borderRadius: "12px",
-                width: {xs: "50%", md: "25%"},
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#2192FF",
-                },
-              },
-            }}
-          />
-        </LocalizationProvider>
+                color: textColor,
+                marginRight: "2rem",
+                marginLeft: "1rem",
+              }}
+            >
+              {/**
+               *
+               * ORDER OF THE FORM FIELDS:
+               * 1. Type (autocomplete)
+               * 2. Supervisor (autocomplete that accept only one value)
+               * 3. Co-Supervisor (autocomplete)
+               * 4. Cds (autocomplete)
+               * 5. Description (text field multiline)
+               * 6. Groups (autocomplete)
+               * 7. Required Knowledge (text field multiline)
+               * 8. Notes (text field multiline)
+               *
+               */}
 
-        {/**
-         * LEVEL (AUTOCOMPLETE)
-         */}
-        <CustomAutocomplete
-          label="Level"
-          value={formData.level}
-          options={apiData.Levels}
-          onChange={handleAutocompleteChange}
-          name="level"
-          multiple={false} // Single selection for Level
-          style={{width: {xs: "50%", md: "25%"}}}
-        />
+              <CustomAutocomplete
+                label="Type"
+                value={formData.type}
+                options={apiData.types}
+                onChange={handleAutocompleteChange}
+                name="type"
+                allowNewValues={true}
+              />
 
-        <StyledTextField
-          fullWidth
-          name="title"
-          label="Thesis Title"
-          placeholder="Thesis Title"
-          value={formData.title}
-          onChange={handleChange}
-          variant="outlined"
-          margin="normal"
-          size="medium"
-          sx={{border: "none"}}
-          InputProps={{
-            style: {
-              width: "100%",
-              fontSize: "2.8rem",
-              fontWeight: "bold",
-              backgroundColor: "white",
-            }, // Style for text inside the TextField
-          }}
-        />
-        {/**
-         * AUTOCOMPLETE FOR KEYWORDS
-         */}
-        <CustomAutocomplete
-          label="Keywords"
-          value={formData.keywords}
-          options={apiData.Keywords}
-          onChange={handleAutocompleteChange}
-          name="keywords"
-          allowNewValues={true}
-        />
+              <CustomAutocomplete
+                label="Co-Supervisor"
+                value={formData.coSupervisors}
+                options={apiData.coSupervisors}
+                onChange={handleAutocompleteChange}
+                name="coSupervisors"
+              />
 
-        <IconButton
-          aria-label="close"
-          onClick={() => onClose()}
-          sx={{
-            position: "absolute",
-            right: 24,
-            top: 24,
-            backgroundColor: "#E90064",
-            color: "white",
-          }}
-        >
-          <Close/>
-        </IconButton>
-        <Divider
-          variant="middle"
-          sx={{marginTop: "1rem", marginBottom: "2rem"}}
-        />
+              <CustomAutocomplete
+                label="cds"
+                value={formData.cds}
+                options={apiData.cds}
+                onChange={handleAutocompleteChange}
+                name="cds"
+              />
 
-        <Paper
-          elevation={0}
-          sx={{
-            padding: "1.5rem",
-            borderRadius: "20px",
-            border: "1px solid whitesmoke",
-            backgroundColor: "white",
-            color: textColor,
-            marginRight: "2rem",
-            marginLeft: "1rem",
-          }}
-        >
-          {/**
-           *
-           * ORDER OF THE FORM FIELDS:
-           * 1. Type (autocomplete)
-           * 2. Supervisor (autocomplete that accept only one value)
-           * 3. Co-Supervisor (autocomplete)
-           * 4. Cds (autocomplete)
-           * 5. Description (text field multiline)
-           * 6. Groups (autocomplete)
-           * 7. Required Knowledge (text field multiline)
-           * 8. Notes (text field multiline)
-           *
-           */}
+              <Divider sx={{ marginBottom: "2rem" }} />
 
-          <CustomAutocomplete
-            label="Type"
-            value={formData.type}
-            options={apiData.Types}
-            onChange={handleAutocompleteChange}
-            name="type"
-            allowNewValues={true}
-          />
+              <StyledTextField
+                fullWidth
+                label="Description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                margin="normal"
+                multiline
+                rows={4}
+              />
 
-          <CustomAutocomplete
-            label="Co-Supervisor"
-            value={formData.coSupervisors}
-            options={apiData.CoSupervisors}
-            onChange={handleAutocompleteChange}
-            name="coSupervisors"
-          />
+              <CustomAutocomplete
+                label="Groups"
+                value={formData.groups}
+                options={apiData.groups}
+                onChange={handleAutocompleteChange}
+                name="groups"
+              />
 
-          <CustomAutocomplete
-            label="cds"
-            value={formData.cds}
-            options={apiData.Cds}
-            onChange={handleAutocompleteChange}
-            name="cds"
-          />
+              <StyledTextField
+                fullWidth
+                label="Required Knowledge"
+                name="requiredKnowledge"
+                value={formData.requiredKnowledge}
+                onChange={handleChange}
+                margin="normal"
+                multiline
+                rows={4}
+              />
 
-          <Divider sx={{marginBottom: "2rem"}}/>
-
-          <StyledTextField
-            fullWidth
-            label="Description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            margin="normal"
-            multiline
-            rows={4}
-          />
-
-          <CustomAutocomplete
-            label="Groups"
-            value={formData.groups}
-            options={apiData.Groups}
-            onChange={handleAutocompleteChange}
-            name="groups"
-          />
-
-          <StyledTextField
-            fullWidth
-            label="Required Knowledge"
-            name="requiredKnowledge"
-            value={formData.requiredKnowledge}
-            onChange={handleChange}
-            margin="normal"
-            multiline
-            rows={4}
-          />
-
-          <StyledTextField
-            fullWidth
-            label="Notes (optional)"
-            name="notes"
-            value={formData.notes}
-            onChange={handleChange}
-            margin="normal"
-            multiline
-            rows={3}
-          />
-        </Paper>
-        {/* Buttons to submit or discard */}
-        <div
-          style={{
-            marginTop: "20px",
-            display: "flex",
-            justifyContent: "flex-start",
-            gap: "30px",
-            marginLeft: "1.5rem",
-          }}
-        >
-          <PastelComponent
-            bgColor="#ff7d36"
-            textColor="white"
-            text="Discard"
-            onClick={handleDiscard}
-          />
-          <PastelComponent
-            bgColor="#63ce78"
-            textColor="white"
-            text="Submit"
-            onClick={handleSubmit}
-          />
-        </div>
+              <StyledTextField
+                fullWidth
+                label="Notes (optional)"
+                name="notes"
+                value={formData.notes}
+                onChange={handleChange}
+                margin="normal"
+                multiline
+                rows={3}
+              />
+            </Paper>
+            {/* Buttons to submit or discard */}
+            <div
+              style={{
+                marginTop: "20px",
+                display: "flex",
+                justifyContent: "flex-start",
+                gap: "30px",
+                marginLeft: "1.5rem",
+              }}
+            >
+              <PastelComponent
+                bgColor="#ff7d36"
+                textColor="white"
+                text="Discard"
+                onClick={handleDiscard}
+              />
+              <PastelComponent
+                bgColor="#63ce78"
+                textColor="white"
+                text="Submit"
+                onClick={handleSubmit}
+              />
+            </div>
+          </>
+        )}
       </Dialog>
 
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={4000}
         onClose={() => setSnackbarOpen(false)}
-        anchorOrigin={{vertical: "top", horizontal: "left"}}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
       >
         <Alert
           onClose={() => setSnackbarOpen(false)}
@@ -375,105 +385,6 @@ export default function ThesisForm({open, onClose, thesis = {}, onSubmit}) {
         </Alert>
       </Snackbar>
     </>
-  );
-}
-
-const filter = createFilterOptions();
-
-function CustomAutocomplete({
-                              label,
-                              value,
-                              options,
-                              onChange,
-                              name,
-                              multiple = true,
-                              allowNewValues = false,
-                              style = {},
-                            }) {
-  const [inputValue, setInputValue] = useState("");
-
-  // Function to determine whether the selected option matches the value
-  const isOptionEqualToValue = (option, value) => {
-    return option === value || value === "";
-  };
-
-  // Function to handle when new value is added
-  const handleInputChange = (event, newInputValue) => {
-    setInputValue(newInputValue);
-  };
-
-  // Function to handle when the value is changed (selected from dropdown or entered)
-  const handleChange = (event, newValue, role) => {
-    if ((role === "input" || role === "selectOptions") && allowNewValues) {
-      onChange(event, [...value, inputValue], name);
-      setInputValue("");
-    } else {
-      onChange(event, newValue, name);
-    }
-  };
-
-  return (
-    <Autocomplete
-      multiple={multiple}
-      options={options || []}
-      value={value}
-      onChange={handleChange}
-      isOptionEqualToValue={isOptionEqualToValue}
-      onInputChange={handleInputChange}
-      fullWidth
-      filterOptions={(options, params) => {
-        const filtered = filter(options, params);
-
-        const {inputValue} = params;
-
-        const isExisting = options.some((option) => inputValue === option);
-        if (inputValue !== "" && !isExisting && allowNewValues) {
-          filtered.push(inputValue);
-        }
-
-        return filtered;
-      }}
-      filterSelectedOptions
-      freeSolo={allowNewValues}
-      inputValue={inputValue}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label={label}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              // Target the outline input root
-              borderRadius: "18px", // Set the border radius
-              backgroundColor: "white",
-              fontSize: "1.2rem",
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                // Target the border when focused
-                borderColor: "#2192FF", // Change to your desired color
-              },
-            },
-            "& .MuiFormLabel-root": {
-              color: "#40128B",
-            },
-            width: "90%",
-            fontWeight: "bold",
-            ...style,
-          }}
-        />
-      )}
-      sx={{
-        marginBottom: "1rem",
-        marginTop: "1rem",
-        "& .MuiChip-root": {
-          fontSize: "1.1rem",
-          backgroundColor: "#40128B",
-          color: "white",
-          fontWeight: "bold",
-        },
-        "& .MuiChip-deleteIcon": {
-          color: "white !important",
-        },
-      }}
-    />
   );
 }
 

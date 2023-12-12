@@ -1,5 +1,5 @@
 // ThesisDetail.jsx
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useUserContext } from "../../contexts";
 import {
   Dialog,
@@ -54,8 +54,8 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
   };
 
   useEffect(() => {
-    console.log("thesis.id", thesis?.id);
     thesis?.id &&
+      userId.role === "Student" &&
       getThesisStatus(thesis.id).then((status) => {
         console.log("status", status);
         setAlreadyApplied(status);
