@@ -1,3 +1,4 @@
+import {insertProposal, getAllProposals} from "../../../src/api/API_proposals.js";
 describe('ThesesPage API Tests', () => {
     beforeEach(() => {
         // Visit the login page and log in
