@@ -1,7 +1,6 @@
 package se2g12.thesisapplication.professor
 
 import org.springframework.http.HttpStatus
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import se2g12.thesisapplication.proposal.*
 import se2g12.thesisapplication.teacher.TeacherRepository

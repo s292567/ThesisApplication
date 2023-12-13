@@ -51,7 +51,6 @@ export const getAllApplyingStudentsForProposal = async (proposalUUID) => {
         }
     }).then(response => {
         if (response.status === 200) {
-            // console.log(response.data);
             return response.data; 
         } else {
             console.error('Request failed with status: ', response.status);
@@ -74,7 +73,6 @@ export const getAllApplicationsForProposal = async (proposalUUID) => {
         }
     }).then(response => {
         if (response.status === 200) {
-            // console.log(response.data);
             return response.data;
         } else {
             console.error('Request failed with status: ', response.status);

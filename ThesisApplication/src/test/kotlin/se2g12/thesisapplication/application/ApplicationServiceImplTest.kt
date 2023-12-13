@@ -25,7 +25,7 @@ class ApplicationServiceImplTest {
     private val applicationService = ApplicationServiceImpl(applicationRepository, proposalRepository, studentRepository, archiveRepository)
     private val mockProposal = mockk<Proposal>()
     @Test
-    fun `test addNewApplication successful`() {
+    fun `addNewApplicationSuccessful`() {
         val uuid=UUID.randomUUID()
         val studentId="s123456"
         // Arrange
@@ -46,7 +46,7 @@ class ApplicationServiceImplTest {
     }
 
     @Test
-    fun `test addNewApplication throws proposalNotFound`() {
+    fun `addNewApplicationThrowsProposalNotFound`() {
 
         val uuid=UUID.randomUUID()
         val studentId="s123456"
@@ -64,7 +64,7 @@ class ApplicationServiceImplTest {
         verify (exactly = 0) { applicationRepository.save(any()) }
     }
     @Test
-    fun `test addNewApplication throws studentNotFound`() {
+    fun `addNewApplicationThrowsStudentNotFound`() {
 
         val uuid=UUID.randomUUID()
         val studentId="s123456"
@@ -81,7 +81,7 @@ class ApplicationServiceImplTest {
         verify (exactly = 0) { applicationRepository.save(any()) }
     }
     @Test
-    fun `test addNewApplication throws error when student already accepted`() {
+    fun `addNewApplicationThrowsErrorWhenStudentAlreadyAccepted`() {
         val uuid=UUID.randomUUID()
         val studentId="s123456"
         // Arrange
@@ -98,7 +98,7 @@ class ApplicationServiceImplTest {
         verify (exactly = 0) { applicationRepository.save(any()) }
     }
     @Test
-    fun `test addNewApplication throws error when application already pending`() {
+    fun `addNewApplicationThrowsErrorWhenApplicationAlreadyPending`() {
         val uuid=UUID.randomUUID()
         val studentId="s123456"
         // Arrange
@@ -118,7 +118,7 @@ class ApplicationServiceImplTest {
 
 
     @Test
-    fun `accept application with success`(){
+    fun `acceptApplicationWithSuccess`(){
         val applicationUUID = UUID.randomUUID()
         val studentId="s123456"
         val proposalId = UUID.randomUUID()
@@ -140,7 +140,7 @@ class ApplicationServiceImplTest {
         verify { applicationRepository.updateStatusByProposalId(proposalId, "declined") }
     }
     @Test
-    fun `accept application with Not Found exception`(){
+    fun `acceptApplicationWithNotFoundException`(){
         val applicationUUID = UUID.randomUUID()
         val studentId="s123456"
         val proposalId = UUID.randomUUID()
@@ -158,7 +158,7 @@ class ApplicationServiceImplTest {
         verify (exactly = 0){ applicationRepository.updateStatusByProposalId(proposalId, "declined") }
     }
     @Test
-    fun `accept not modifiable application`(){
+    fun `acceptNotModifiableApplication`(){
         val applicationUUID = UUID.randomUUID()
         val studentId="s123456"
         val proposalId = UUID.randomUUID()
@@ -182,7 +182,7 @@ class ApplicationServiceImplTest {
         verify (exactly = 0) { applicationRepository.updateStatusByProposalId(proposalId, "declined") }
     }
     @Test
-    fun `decline application with success`() {
+    fun `declineApplicationWithSuccess`() {
         val applicationUUID = UUID.randomUUID()
         val studentId = "s123456"
         val proposalId = UUID.randomUUID()
@@ -199,7 +199,7 @@ class ApplicationServiceImplTest {
         verify(exactly = 0) { applicationRepository.updateStatusByProposalId(proposalId, "declined") }
     }
     @Test
-    fun `decline application with Not Found exception`(){
+    fun `declineApplicationWithNotFoundException`(){
         val applicationUUID = UUID.randomUUID()
         val studentId="s123456"
         val proposalId = UUID.randomUUID()
@@ -215,7 +215,7 @@ class ApplicationServiceImplTest {
         verify (exactly = 0){ applicationRepository.updateStatusByProposalId(proposalId, "declined") }
     }
     @Test
-    fun `test getting the applying student for a proposal`(){
+    fun `gettingTheApplyingStudentForAProposal`(){
         val proposalId=UUID.randomUUID()
         val degree = Degree("ENG1", "Computer Engineering")
         val studentList = listOf(Student(surname = "Davis", name = "John", degree = degree), Student(surname = "Rossi", name = "Alice", degree = degree))
@@ -231,7 +231,7 @@ class ApplicationServiceImplTest {
 
     }
     @Test
-    fun `test getting the applications of a student`(){
+    fun `gettingTheApplicationsOfAStudent`(){
         val studentId= "s123456"
         val mockStudent = mockk<Student>()
         val mockProposal = mockk<Proposal>()
@@ -251,7 +251,7 @@ class ApplicationServiceImplTest {
 
     }
     @Test
-    fun `test getting all applications for a proposal`(){
+    fun `gettingAllApplicationsForAProposal`(){
         val proposalId= UUID.randomUUID()
         val mockStudent = mockk<Student>()
         val mockProposal = mockk<Proposal>()
@@ -269,7 +269,7 @@ class ApplicationServiceImplTest {
     }
 
     @Test
-    fun `accept application by proposal and student`(){
+    fun `acceptApplicationByProposalAndStudent`(){
         // same as accepting application by id, but first gets the id
         val applicationUUID = UUID.randomUUID()
         val studentId="s123456"
@@ -295,7 +295,7 @@ class ApplicationServiceImplTest {
         verify { applicationRepository.updateStatusByProposalId(proposalId, "declined") }
     }
     @Test
-    fun `accept application by student and proposal with Not Found exception`(){
+    fun `acceptApplicationByStudentAndProposalWithNotFoundException`(){
         val studentId="s123456"
         val proposalId = UUID.randomUUID()
 
@@ -310,7 +310,7 @@ class ApplicationServiceImplTest {
 
     }
     @Test
-    fun `decline application by proposal and student with success`() {
+    fun `declineApplicationByProposalAndStudentWithSuccess`() {
         val applicationUUID = UUID.randomUUID()
         val studentId = "s123456"
         val proposalId = UUID.randomUUID()
@@ -330,7 +330,7 @@ class ApplicationServiceImplTest {
         verify(exactly = 0) { applicationRepository.updateStatusByProposalId(proposalId, "declined") }
     }
     @Test
-    fun `decline application by proposal and student with Not Found exception`(){
+    fun `declineApplicationByProposalAndStudentWithNotFoundException`(){
         val studentId="s123456"
         val proposalId = UUID.randomUUID()
 
