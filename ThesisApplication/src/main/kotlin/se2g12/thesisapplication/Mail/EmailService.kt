@@ -3,7 +3,6 @@ package se2g12.thesisapplication.Mail
 import jakarta.mail.MessagingException
 import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
-import jdk.jshell.Snippet.Status
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
