@@ -1,5 +1,5 @@
 // ThesesPage.jsx
-import {useState, useEffect, useCallback} from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import {
   ThesesList,
@@ -12,18 +12,19 @@ import {
   PastelComponent,
   ThesisForm,
 } from "../../components";
-import {getProposalsByProfessorId, getProposalsByStudentId} from "../../api";
-import {useUserContext} from "../../contexts/index.js";
+import { getProposalsByProfessorId, getProposalsByStudentId } from "../../api";
+import { useUserContext } from "../../contexts/index.js";
 import {
+  searchProposals,
   copyProposalById,
   deleteProposalById,
   updateProposal,
   insertProposal,
 } from "../../api";
-import {Add} from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 
 export default function ThesesPage() {
-  const {user} = useUserContext();
+  const { user } = useUserContext();
   const userId = localStorage.getItem("username");
 
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +59,7 @@ export default function ThesesPage() {
 
   const handleSortedData = (sortedData, criteria, order) => {
     setSortedThesisData(sortedData);
-    setSortingCriteria({field: criteria, order}); // Capture current sorting criteria and order
+    setSortingCriteria({ field: criteria, order }); // Capture current sorting criteria and order
   };
 
   const reapplySorting = (newThesesData) => {
@@ -78,10 +79,8 @@ export default function ThesesPage() {
   const handleResearch = useCallback(async (filters, searchQuery) => {
     try {
       // Call the API with filters and search query
-
-      // const thesisData = await yourSearchApiFunction(filters, searchQuery); // Replace with your actual API call
-      // setSortedThesisData(thesisData);
-      console.log("Filters:", filters, searchQuery);
+      const thesisData = await searchProposals({...filters, queryString: searchQuery});
+      setSortedThesisData(thesisData);
     } catch (error) {
       console.error("Error while fetching filtered data:", error);
     }
@@ -96,82 +95,102 @@ export default function ThesesPage() {
     }
   };
 
-  const handleDelete = useCallback(async (id) => {
-    try {
-      await deleteProposalById(id);
-      const newThesesData = sortedThesisData.filter(
-        (proposal) => proposal.id !== id
-      );
-      reapplySorting(newThesesData); // Reapply sorting to the updated list
-    } catch (error) {
-      console.error("Failed to delete proposal:", error);
-    }
-  }, [sortedThesisData]);
-
-  const handleCopy = useCallback(async (id) => {
-    try {
-      // Call the API function to copy the proposal
-      const copiedProposal = await copyProposalById(id);
-
-      if (copiedProposal) {
-        // Add the new copied proposal to the proposals list
-        const newThesesData = [...sortedThesisData, copiedProposal];
+  const handleDelete = useCallback(
+    async (id) => {
+      try {
+        await deleteProposalById(id);
+        const newThesesData = sortedThesisData.filter(
+          (proposal) => proposal.id !== id
+        );
         reapplySorting(newThesesData); // Reapply sorting to the updated list
-      } else {
-        console.error("No response for the copied proposal");
+      } catch (error) {
+        console.error("Failed to delete proposal:", error);
       }
-    } catch (error) {
-      console.error("Failed to copy proposal:", error);
-    }
-  }, [sortedThesisData]);
+    },
+    [sortedThesisData]
+  );
 
-  const handleEdit = useCallback(async (editedThesis) => {
-    try {
-      // Call API to update the thesis
-      await updateProposal(editedThesis);
+  const handleCopy = useCallback(
+    async (id) => {
+      try {
+        // Call the API function to copy the proposal
+        const copiedProposal = await copyProposalById(id);
 
-      // Update the thesis in the sortedThesisData array
-      const updatedThesisData = sortedThesisData.map((thesis) =>
-        thesis.id === editedThesis.id ? {...editedThesis, supervisor: {name: "name", surname: "surname"} } : thesis
-      );
+        if (copiedProposal) {
+          // Add the new copied proposal to the proposals list
+          const newThesesData = [...sortedThesisData, copiedProposal];
+          reapplySorting(newThesesData); // Reapply sorting to the updated list
+        } else {
+          console.error("No response for the copied proposal");
+        }
+      } catch (error) {
+        console.error("Failed to copy proposal:", error);
+      }
+    },
+    [sortedThesisData]
+  );
 
-      reapplySorting(updatedThesisData); // Reapply sorting to the updated list
-    } catch (error) {
-      console.error("Failed to edit proposal:", error);
-    }
-  }, [sortedThesisData]);
+  const handleEdit = useCallback(
+    async (editedThesis) => {
+      try {
+        // Call API to update the thesis
+        await updateProposal(editedThesis);
 
-  const handleNewThesis = useCallback(async (newThesis) => {
-    try {
-      // Call API to create the thesis
-      await insertProposal(userId, newThesis);
+        // Update the thesis in the sortedThesisData array
+        const updatedThesisData = sortedThesisData.map((thesis) =>
+          thesis.id === editedThesis.id
+            ? {
+                ...editedThesis,
+                supervisor: { name: "Luca", surname: "Ferrari" }, // This must be changed when there will be the API to retrieve the profile infos
+              }
+            : thesis
+        );
+        reapplySorting(updatedThesisData); // Reapply sorting to the updated list
+      } catch (error) {
+        console.error("Failed to edit proposal:", error);
+      }
+    },
+    [sortedThesisData]
+  );
 
-      // Add the new thesis to the sortedThesisData array
-      const updatedThesisData = [...sortedThesisData, {...newThesis, supervisor: {name: "name", surname: "surname"} }];
-      reapplySorting(updatedThesisData); // Reapply sorting to the updated list
-    } catch (error) {
-      console.error("Failed to create proposal:", error);
-    }
-  }, [userId, sortedThesisData]);
+  const handleNewThesis = useCallback(
+    async (newThesis) => {
+      try {
+        // Call API to create the thesis
+        await insertProposal(userId, newThesis);
+
+        // Add the new thesis to the sortedThesisData array
+        const updatedThesisData = [
+          ...sortedThesisData,
+          { ...newThesis, supervisor: { name: "Luca", surname: "Ferrari" } }, // This must be changed when there will be the API to retrieve the profile infos
+        ];
+        reapplySorting(updatedThesisData); // Reapply sorting to the updated list
+      } catch (error) {
+        console.error("Failed to create proposal:", error);
+      }
+    },
+    [userId, sortedThesisData]
+  );
 
   return (
     <>
       <SectionTitle
         text={"Theses: "}
-        style={{marginTop: "7rem", marginBottom: 0}}
+        style={{ marginTop: "7rem", marginBottom: 0 }}
       />
+      <Searchbar handleResearch={handleResearch} clearSearch={clearSearch} />
       {user.role === "Professor" ? (
         <>
           <PastelComponent
             bgColor={"#687EFF"}
             textColor={"white"}
             text={"Thesis"}
-            icon={<Add sx={{marginTop: "-2px"}}/>}
+            icon={<Add sx={{ marginTop: "-2px" }} />}
             onClick={() => setNewThesisOpen(true)}
             style={{
               zIndex: "10",
               position: "absolute",
-              top: {xs: "14%", sm: "18rem"},
+              top: { xs: "14%", sm: "18rem" },
               right: "5%",
               fontSize: "x-large",
               paddingRight: "1.5rem",
@@ -187,15 +206,11 @@ export default function ThesesPage() {
         </>
       ) : null}
       {isLoading ? (
-        <SkeletonThesisList count={3}/>
+        <SkeletonThesisList count={3} />
       ) : sortedThesisData && sortedThesisData.length === 0 ? (
-        <NoDataDisplayed textNoDataDisplayed={"No theses found."}/>
+        <NoDataDisplayed textNoDataDisplayed={"No theses found."} />
       ) : (
         <>
-          <Searchbar
-            handleResearch={handleResearch}
-            clearSearch={clearSearch}
-          />
           <SortingToolbar
             proposals={sortedThesisData}
             onSortedData={handleSortedData}

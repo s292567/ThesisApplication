@@ -16,7 +16,8 @@ data class Teacher(
     @ManyToOne
     @JoinColumn(name = "codDepartment", referencedColumnName = "codDepartment")
     val department: Department? = null,
-){
     @Id
     val id: String? = null
+){
+
 }

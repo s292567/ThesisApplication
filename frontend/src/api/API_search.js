@@ -2,6 +2,33 @@
 import axiosInstance from "./API_Config.js"; // Import your axios instance
 import { apiRoutes as routes } from "../routes";
 
+/**
+ * Search thesis proposals based on selected filters.
+ */
+export const searchProposals = async (filterCriteria) => {
+  try {
+    let jwt = localStorage.getItem("ROCP_token");
+    jwt = jwt.substring(1, jwt.length - 1);
+    const response = await axiosInstance.post(routes.searchProposals, filterCriteria, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + jwt,
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("searchProposals: ", response.data);
+      return response.data;
+    } else {
+      console.error("Request failed with status: ", response.status);
+      return [];
+    }
+  } catch (error) {
+    console.error("Error while searching for proposals: ", error);
+    return [];
+  }
+};
+
 // getDistinctSupervisors
 export const getDistinctSupervisors = async () => {
   return axiosInstance
@@ -113,3 +140,4 @@ export const getDistinctLevels = async () => {
       console.error("Error while retrieving all distinct levels: ", error);
     });
 };
+

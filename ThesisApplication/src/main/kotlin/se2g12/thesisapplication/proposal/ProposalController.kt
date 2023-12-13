@@ -3,27 +3,53 @@ package se2g12.thesisapplication.proposal
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import se2g12.thesisapplication.archive.Archive
+import se2g12.thesisapplication.archive.ArchiveService
+import se2g12.thesisapplication.application.ApplicationRepository
+import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
 import java.time.LocalDate
 import java.util.*
 
 @RestController
 @CrossOrigin
-class ProposalController(@Autowired private val proposalService: ProposalService,private val studentRepository: StudentRepository) {
+
+class ProposalController(private val proposalService:ProposalService,private val archiveService: ArchiveService,private val studentRepository: StudentRepository,private val proposalRepository:ProposalRepository,private val applicationRepository: ApplicationRepository) {
 
     //getAll
     @GetMapping("/API/thesis/proposals/all")
     @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun getAllProposals(): List<ProposalDTO> {
-        return proposalService.getAllProposals()
+        return proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}
+    }
+    //getArchivedPropId Test Endpoint
+    @GetMapping("/API/thesis/test/{proposalId}")
+    fun getTest(@PathVariable proposalId: String): List<Archive> {
+        return archiveService.findByPropId(UUID.fromString(proposalId))
     }
 
+    @GetMapping("/API/thesis/proposals/statusById/{proposalId}")
+    @PreAuthorize("hasRole('Student')")
+    fun getThesisStatusById(@PathVariable proposalId: String): Boolean {
+        val securityContext = SecurityContextHolder.getContext()
+// Get the authentication object from the security context
+        val authentication = securityContext.authentication
+
+// Check if the user is authenticated
+        if (authentication != null && authentication.isAuthenticated) {
+            // Get the username
+            var application=applicationRepository.findByProposalIdAndStudentId(UUID.fromString(proposalId),authentication.name.split("@")[0])
+            return application.isNotEmpty()
+        }
+        return false
+    }
     //getByCds
     @GetMapping("API/thesis/proposals/cds")
 //    @PreAuthorize("hasRole('Student')")
     fun getProposalsByCds(@RequestParam cds: String): List<ProposalDTO> {
-        return proposalService.getProposalsByCds(cds)
+        return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
     @GetMapping("API/thesis/proposals/getProposalsBySId/{studentId}")
     fun getProposalsStudentId(@PathVariable studentId: String): List<ProposalDTO> {
@@ -31,18 +57,18 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         return proposalService.getProposalsByCds(studentId.degree!!.titleDegree!!)
     }
     // search input string across all fields
-    @GetMapping("API/thesis/proposals/search")
+    @GetMapping("API/thesis/proposals/search-text")
 //    @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun searchProposals(
         @RequestParam(required = false) query: String?,
     ): List<ProposalDTO> {
         // if query null => return all proposals
         if (query.isNullOrBlank()) {
-            return proposalService.getAllProposals()
+            return proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}
         }
 
         // else, search across multiple fields
-        return proposalService.searchProposals(query)
+        return proposalService.searchProposals(query).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
 
     @GetMapping("/API/thesis/proposals/search/{studentId}")
@@ -51,16 +77,16 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         @RequestParam(required = false) query: String?,
         @PathVariable studentId: String
     ): List<ProposalDTO> {
-        return proposalService.searchProposalByStudentCds(studentId, query)
+        return proposalService.searchProposalByStudentCds(studentId, query).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
 
     //default filtered search
-    @PostMapping("/API/thesis/proposals/search-filtered")
+    @PostMapping("/API/thesis/proposals/search/")
     @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun searchProposalsCustom(
         @RequestBody filterCriteria: ProposalFilterCriteria
     ): List<ProposalDTO> {
-        val list = proposalService.getAllProposals()
+        val list = proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}
         println("Received filter criteria: $filterCriteria")
         println("Original List Size: ${list.size}")
 
