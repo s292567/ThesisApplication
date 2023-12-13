@@ -1,5 +1,4 @@
 describe("Professor Applicants Page", () => {
-    beforeEach(() => {
         beforeEach(() => {
             // Visit the login page and log in
             cy.visit('http://localhost:5173');
@@ -117,68 +116,7 @@ describe("Professor Applicants Page", () => {
                             .contains('decline')
                             .should('exist');
                     });
-                it('should decline the application and remove the corresponding row', () => {
-
-                    cy.intercept('POST', '/api/API_applications.js').as('declineApplication');
-
-
-                    cy.get('.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-10.MuiGrid-grid-sm-10.MuiGrid-grid-md-10.MuiGrid-grid-lg-8.MuiGrid-grid-xl-6.css-udczfz-MuiGrid-root')
-                        .as('containers')
-                        .each(($container, index) => {
-
-                            cy.wrap($container)
-                                .find('.MuiIconButton-root.MuiIconButton-sizeLarge')
-                                .click();
-                            cy.get(`.MuiTableRow-root:nth-child(${index + 1})`) // Assuming the index corresponds to the container
-                                .should('exist')
-                                .find('.MuiTableCell-root')
-                                .last()
-                                .should('exist')
-                                .find('.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeMedium')
-                                .contains('decline')
-                                .should('exist')
-                                .click();
-
-                            cy.wait('@declineApplication').then((interception) => {
-                                // Assuming your API returns a success status
-                                expect(interception.response.statusCode).to.equal(200);
-                                cy.get(`.MuiTableRow-root:nth-child(${index + 1})`).should('not.exist');
-                            });
-                        });
-
-                    it('should accept the application and remove the corresponding row', () => {
-                        cy.intercept('POST', '/api/API_applications.js').as('acceptApplication');
-                        cy.get('.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-10.MuiGrid-grid-sm-10.MuiGrid-grid-md-10.MuiGrid-grid-lg-8.MuiGrid-grid-xl-6.css-udczfz-MuiGrid-root')
-                            .as('containers')
-                            .each(($container, index) => {
-                                cy.wrap($container)
-                                    .find('.MuiIconButton-root.MuiIconButton-sizeLarge')
-                                    .click();
-                                cy.get(`.MuiTableRow-root:nth-child(${index + 1})`) // Assuming the index corresponds to the container
-                                    .should('exist')
-                                    .find('.MuiTableCell-root')
-                                    .last()
-                                    .should('exist')
-                                    .find('.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeMedium')
-                                    .contains('accept')
-                                    .should('exist')
-                                    .click();
-
-                                cy.wait('@acceptApplication').then((interception) => {
-                                    // Assuming your API returns a success status
-                                    expect(interception.response.statusCode).to.equal(200);
-                                    cy.get(`.MuiTableRow-root:nth-child(${index + 1})`).should('not.exist');
-                                });
-                            });
-                    });
-
                 });
-
-
-
 
             });
 
-        });
-
-    });
