@@ -1,0 +1,21 @@
+
+
+[
+  {
+    "proposal": {
+      "title": "Advancements in Additive Manufacturing"
+    },
+    "cds": "Mechanical Engineering",
+    "Expiration": "2026-07-31",
+    "keywords": "Additive Manufacturing, Materials Science",
+    "level": "MSc",
+    "type": "Development",
+    "supervisor": "Maryam Heydari",
+    "description": "Explore new materials and techniques in additive manufacturing.",
+    "groups": "G22",
+    "requiredKnowledge": "Materials science and engineering knowledge",
+    "notes": "This thesis explores new materials and techniques in additive manufacturing. The student should have knowledge in materials science and engineering."
+  }
+
+
+]
