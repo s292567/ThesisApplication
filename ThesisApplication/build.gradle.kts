@@ -4,6 +4,7 @@ plugins {
 	id("org.springframework.boot") version "3.1.5"
 	id("io.spring.dependency-management") version "1.1.3"
 	id ("com.google.cloud.tools.jib") version "3.3.1"
+	jacoco
 
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
@@ -69,4 +70,10 @@ jib{
 		ports= mutableListOf("8081")
 	}
 	to{image="s292567/g12-final"}
+}
+jacoco {
+	toolVersion="0.8.7"
+}
+tasks.test{
+	finalizedBy("jacocoTestReport")
 }
