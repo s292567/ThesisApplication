@@ -52,9 +52,17 @@ class ProposalController(private val proposalService:ProposalService,private val
         return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
     @GetMapping("API/thesis/proposals/getProposalsBySId/{studentId}")
+    @PreAuthorize("hasRole('Student')")
     fun getProposalsStudentId(@PathVariable studentId: String): List<ProposalDTO> {
-        val studentId=studentRepository.findById(studentId).get()
-        return proposalService.getProposalsByCds(studentId.degree!!.titleDegree!!)
+        val securityContext = SecurityContextHolder.getContext()
+// Get the authentication object from the security context
+        val authentication = securityContext.authentication
+        if (authentication != null && authentication.isAuthenticated) {
+            // Get the username
+            val student=studentRepository.findById(authentication.name.split("@")[0]).get()
+            return proposalService.getProposalsByCds(student.degree!!.titleDegree!!)
+        }
+       else throw error("no student id found")
     }
     // search input string across all fields
     @GetMapping("API/thesis/proposals/search-text")
@@ -86,6 +94,7 @@ class ProposalController(private val proposalService:ProposalService,private val
     fun searchProposalsCustom(
         @RequestBody filterCriteria: ProposalFilterCriteria
     ): List<ProposalDTO> {
+
         val list = proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}
         println("Received filter criteria: $filterCriteria")
         println("Original List Size: ${list.size}")
@@ -170,8 +179,17 @@ class ProposalController(private val proposalService:ProposalService,private val
             .toList()
 
         println("Final List Size: ${filteredList.size}")
+        val securityContext = SecurityContextHolder.getContext()
+// Get the authentication object from the security context
+        val authentication = securityContext.authentication
+        if (authentication != null && authentication.isAuthenticated) {
+            // Get the username
+            
+            val student=studentRepository.findById(authentication.name.split("@")[0]).get()
+            return filteredList.filter{it.cds.contains(student.degree!!.titleDegree)}
+        }
+        else throw error("no student id found")
 
-        return filteredList
     }
 
     @PostMapping("/API/thesis/proposals/copy/{proposalId}")
