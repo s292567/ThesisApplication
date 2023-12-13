@@ -57,7 +57,7 @@ export default function WithTooltip({ tooltipContent, children }) {
 
   return (
     <div>
-      <div onClick={handleTooltipOpen} onKeyDown={handleKeyDown} tabIndex={0}>
+      <div onClick={handleTooltipOpen} onKeyDown={handleKeyDown} role="button" tabIndex={0}>
         {
           children /** This is the component on which you are displaying the popover */
         }
