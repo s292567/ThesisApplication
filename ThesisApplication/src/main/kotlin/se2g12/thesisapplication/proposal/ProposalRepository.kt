@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import java.time.LocalDate
 import java.util.*
 
 @Repository
@@ -61,5 +62,7 @@ interface ProposalRepository : JpaRepository<Proposal, UUID> {
 
     @Query("SELECT * FROM proposal WHERE supervisor_id = :supervisorId", nativeQuery = true)
     fun findAllBySupervisorId(supervisorId: String) : List<Proposal>
+
+    fun findByExpirationBefore(localDate: LocalDate):List<Proposal>
 
 }
