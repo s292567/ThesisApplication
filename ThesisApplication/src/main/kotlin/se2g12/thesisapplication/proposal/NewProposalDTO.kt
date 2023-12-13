@@ -32,7 +32,7 @@ data class NewProposalDTO (
     @Temporal(TemporalType.DATE)
     var expiration : LocalDate,
     var level: String,
-    var CdS: List<String>
+    var cds: List<String>
 ){
     fun checkBody(){
         val validator: Validator = Validation.buildDefaultValidatorFactory().validator

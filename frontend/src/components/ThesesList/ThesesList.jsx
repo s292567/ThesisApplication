@@ -5,7 +5,12 @@ import { useLocation } from "react-router-dom";
 import { useUserContext } from "../../contexts";
 
 
-export default function ThesesList({ thesesData, handleDelete = () => {}, handleCopy = () => {} }) {
+export default function ThesesList({
+  thesesData,
+  handleDelete = () => {},
+  handleCopy = () => {},
+  handleEdit = () => {},
+}) {
   const location = useLocation();
   const { homeRoute } = useUserContext();
 
@@ -29,9 +34,10 @@ export default function ThesesList({ thesesData, handleDelete = () => {}, handle
                 <ThesisRow
                   key={thesis.id}
                   thesis={thesis}
-                  actions={location.pathname !== homeRoute ? true : false}
+                  actions={location.pathname !== homeRoute}
                   onDelete={handleDelete}
                   onCopy={handleCopy}
+                  onEdit={handleEdit}
                 />
               </Grid>
             </Grid>

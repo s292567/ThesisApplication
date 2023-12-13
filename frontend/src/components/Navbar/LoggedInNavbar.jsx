@@ -13,13 +13,9 @@ import {
   Avatar,
   ListItemIcon,
   Divider, Tooltip,
-  Badge,
 } from '@mui/material';
 import {
   Logout,
-  Settings,
-  MailOutline,
-  NotificationsOutlined,
   DragHandleRounded,
   CancelRounded,
 } from '@mui/icons-material';
@@ -45,19 +41,6 @@ const Icons = styled(Box)({
   gap: "2rem",
 });
 
-const Badges = styled(Box)(({theme}) => ({
-  display: "none",
-  alignItems: "center",
-  gap: "1rem",
-  "& svg": {
-    fontSize: "xx-large",
-    color: "white",
-  },
-  [theme.breakpoints.up("sm")]: {
-    display: "flex",
-  },
-}));
-
 const Links = styled(Box)({
   display: 'flex',
   alignItems: 'center',
@@ -69,7 +52,7 @@ const Links = styled(Box)({
 export default function LoggedInNavbar() {
   const theme = useTheme();
 
-  const {logout, homeRoute, user} = useUserContext();
+  const {logout, homeRoute, user, generalRoutes} = useUserContext();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -91,6 +74,9 @@ export default function LoggedInNavbar() {
   // noinspection JSValidateTypes
   return (
     <>
+      {/**
+       * TOP SECTION OF THE NAVBAR THAT SHOWS ONLY WHEN NOT IN MOBILE
+       */}
       {!isMobile && (
         <AppBar position="static" color="default" elevation={0}>
           <Divider sx={{backgroundColor: "#003366", padding: "0.5rem"}}/>
@@ -104,6 +90,9 @@ export default function LoggedInNavbar() {
           </Toolbar>
         </AppBar>
       )}
+      {/**
+       * TOP SECTION OF THE NAVBAR
+       */}
       <AppBar position="sticky" sx={{height: mobileOpen ? "100vh" : "auto", backgroundColor: '#003366'}}>
         <MyToolbar
           sx={{
@@ -143,31 +132,17 @@ export default function LoggedInNavbar() {
                 },
               }}
             >
-              <Link to={homeRoute} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
-                Home
-              </Link>
-
+              <LinkStyled linkTo={homeRoute} linkText={"Home"} onClick={() => setMobileOpen(false)}/>
+              <LinkStyled linkTo={generalRoutes.theses} linkText={"Theses"} onClick={() => setMobileOpen(false)}/>
               {user.role === "Professor" && (<>
-                  <Link to={frontendRoutes.professorTheses} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
-                    Theses
-                  </Link>
-                  <Link to={frontendRoutes.professorNewThesis} color="inherit" sx={{mx: 2, }} onClick={()=>setMobileOpen(false)}>
-                    New Thesis
-                  </Link>
-                  <Link to={frontendRoutes.professorApplicants} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
-                    Applicants
-                  </Link>
+                  <LinkStyled linkTo={frontendRoutes.professorApplicants} linkText={"Applicants"}
+                              onClick={() => setMobileOpen(false)}/>
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
               )}
-
               {user.role === "Student" && (<>
-                  <Link to={frontendRoutes.studentTheses} color="inherit" sx={{mx: 2}} onClick={()=>setMobileOpen(false)}>
-                    Theses
-                  </Link>
-                    <Link to={frontendRoutes.studentApplications} color="inherit" sx={{mx: 2}}>
-                      Applications
-                    </Link>
+                  <LinkStyled linkTo={frontendRoutes.studentApplications} linkText={"Applications"}
+                              onClick={() => setMobileOpen(false)}/>
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
               )}
@@ -184,14 +159,6 @@ export default function LoggedInNavbar() {
             </IconButton>
           )}
           <Icons>
-            <Badges>
-              <Badge badgeContent={4} color="error">
-                <MailOutline/>
-              </Badge>
-              <Badge badgeContent={2} color="error">
-                <NotificationsOutlined/>
-              </Badge>
-            </Badges>
             {/** Text inside the avatar will be the name and surname initials */}
             {!mobileOpen && (
               <Tooltip title="Account menu">
@@ -253,12 +220,6 @@ export default function LoggedInNavbar() {
             <Avatar/> Profile
           </MenuItem>
           <Divider/>
-          <MenuItem>
-            <ListItemIcon>
-              <Settings fontSize="small"/>
-            </ListItemIcon>
-            Settings
-          </MenuItem>
           <MenuItem onClick={() => {
             logout()
           }}>
@@ -269,6 +230,15 @@ export default function LoggedInNavbar() {
           </MenuItem>
         </Menu>
       </AppBar>
+
     </>
   );
+}
+
+function LinkStyled({linkTo, linkText, onClick}) {
+  return (
+    <Link to={linkTo} color="inherit" sx={{mx: 2}} onClick={onClick}>
+      {linkText}
+    </Link>
+  )
 }

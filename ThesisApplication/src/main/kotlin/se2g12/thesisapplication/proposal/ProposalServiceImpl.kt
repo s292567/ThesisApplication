@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import se2g12.thesisapplication.GroupDep.GroupDepRepository
 import se2g12.thesisapplication.application.ApplicationRepository
 import se2g12.thesisapplication.application.ProposalNotFoundError
+import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.time.LocalDate
@@ -17,13 +18,15 @@ class ProposalServiceImpl(
     private val teacherRepository: TeacherRepository,
     private val studentRepository: StudentRepository,
     private val groupDepRepository: GroupDepRepository,
-    private val applicationRepository: ApplicationRepository
+    private val applicationRepository: ApplicationRepository,
+    private val degreeRepository: DegreeRepository
 )
-    : ProposalService {
+    :ProposalService {
     override fun getProposalByProfessorId(supervisorId: String): List<ProposalDTO> {
         val prop = proposalRepository.findAllBySupervisorId(supervisorId)
         return prop.map{it.toDTO()}
     }
+
     override fun updateProposal(newProposal: NewProposalDTO, professorId: String,oldName:String,old: Proposal):ProposalDTO {
         if (professorId != old.supervisor.id)
             throw ForbiddenError("You ($professorId) cannot update a proposal of which you are not the supervisor (${old.supervisor.id})")
@@ -41,7 +44,7 @@ class ProposalServiceImpl(
             old.notes=newProposal.notes
             old.expiration=newProposal.expiration
             old.level=newProposal.level!!
-            old.cds= newProposal.CdS!!.joinToString(separator = ",")
+            old.cds= newProposal.cds!!.joinToString(separator = ",")
             return proposalRepository.save(old).toDTO()
         }
         else
@@ -105,7 +108,7 @@ class ProposalServiceImpl(
             newProposal.description,
             newProposal.requiredKnowledge, newProposal.notes,
             expirationDate, newProposal.level,
-            newProposal.CdS.joinToString(", ") { it })
+            newProposal.cds.joinToString(", ") { it })
         proposalRepository.save(proposal)
 
     }
@@ -156,7 +159,8 @@ class ProposalServiceImpl(
 
     //getByCds
     override fun getProposalsByCds(cds: String): List<ProposalDTO> {
-        return proposalRepository.findByCds(cds).map { it.toDTO() }
+        return proposalRepository.findByCdsContaining(cds)
+            .map { it.toDTO() }
     }
 
     override fun searchProposals(query: String): List<ProposalDTO> {

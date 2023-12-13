@@ -7,6 +7,7 @@ import {
   SectionTitle,
   MyOutlinedButton,
   SkeletonApplicants,
+  NoDataDisplayed,
 } from "../../components";
 import {
   getProposalsByProfessorId,
@@ -36,25 +37,7 @@ export default function ProfessorDashboardPage() {
     };
 
     fetchProposals().then((data) => {
-      if (data.length === 0) {
-        return (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              padding: "1rem",
-              marginTop: "3rem",
-            }}
-          >
-            <Typography variant="h3" color="darkblue">
-              No theses found.
-            </Typography>
-            ;
-          </Box>
-        );
-      } else {
-        setProposals(data);
-      }
+      setProposals(data);
     });
 
     const fetchApplicants = async () => {
@@ -76,37 +59,42 @@ export default function ProfessorDashboardPage() {
       <Box>
         <SectionTitle text={"Theses Preview:"} />
         {proposals ? (
-          <Box>
-            <ThesesList
-              thesesData={proposals.slice(0, 3)}
-              view={"displayApply"}
-            />
-            <Grid container item justifyContent="center">
-              <MyOutlinedButton
-                text={"See More Theses"}
-                colorBorder={"#003366"}
-                colorBorderHover={"#1976d2"}
-                style={{ fontSize: "large" }}
-                onClick={() => {
-                  navigate(generalRoutes.theses);
-                }}
+          proposals.length === 0 ? (
+            <>
+              <NoDataDisplayed textNoDataDisplayed={"No theses found."} />
+            </>
+          ) : (
+            <Box>
+              <ThesesList
+                thesesData={proposals.slice(0, 2)}
+                view={"displayApply"}
               />
-            </Grid>
-          </Box>
+              <Grid container item justifyContent="center">
+                <MyOutlinedButton
+                  text={"See More Theses"}
+                  colorBorder={"#003366"}
+                  colorBorderHover={"#1976d2"}
+                  style={{ fontSize: "large" }}
+                  onClick={() => {
+                    navigate(generalRoutes.theses);
+                  }}
+                />
+              </Grid>
+            </Box>
+          )
         ) : (
           <SkeletonThesisList count={3} />
         )}
       </Box>
       <Box padding={4} />
-      <Divider variant="middle"/>
+      <Divider variant="middle" />
       <Box>
-        <SectionTitle
-          text={"Applicants preview:"}
-          style={{ marginBottom: "-1rem" }}
-        />
+        <SectionTitle text={"Applicants preview:"} />
         {applicants ? (
           applicants.length === 0 ? (
-            <></>
+            <>
+              <NoDataDisplayed textNoDataDisplayed={"No applicants found."} />
+            </>
           ) : (
             <Box>
               <ProfessorApplicants

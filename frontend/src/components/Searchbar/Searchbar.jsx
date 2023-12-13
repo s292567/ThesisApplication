@@ -15,12 +15,14 @@ import {
   getDistinctLevels,
 } from "../../api";
 import PastelComponent from "../PastelComponent/PastelComponent";
+import {useUserContext} from "../../contexts/index.js";
 
-export default function Searchbar() {
+export default function Searchbar({ clearSearch, handleResearch }) {
+  const {user} = useUserContext();
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [filters, setFilters] = useState([]);
-  const [apiData, setApiData] = useState([]); // Initialized as an empty object
+  const [filters, setFilters] = useState({});
+  const [apiData, setApiData] = useState({}); // Initialized as an empty object
   const [open, setOpen] = useState(false);
 
   // Fetch data from APIs
@@ -28,15 +30,17 @@ export default function Searchbar() {
     const fetchData = async () => {
       try {
         const data = {
-          Cds: await getDistinctCds(),
-          CoSupervisors: await getDistinctCoSupervisors(),
-          Supervisors: await getDistinctSupervisors(),
-          Groups: await getDistinctGroups(),
-          Keywords: await getDistinctKeywords(),
-          Types: await getDistinctTypes(),
-          Levels: await getDistinctLevels(),
+          cds: await getDistinctCds(),
+          coSupervisors: await getDistinctCoSupervisors(),
+          supervisor: await getDistinctSupervisors(),
+          groups: await getDistinctGroups(),
+          keywords: await getDistinctKeywords(),
+          types: await getDistinctTypes(),
+          levels: await getDistinctLevels(),
         };
-
+        if(user.role === "Student") {
+          delete data.cds;
+        }
         setApiData(data); // Setting the state with the fetched data
       } catch (error) {
         console.error("Error fetching data", error);
@@ -49,16 +53,15 @@ export default function Searchbar() {
   // Clear all filters
   const clearAllFilters = () => {
     setFilters([]);
+    setSearchQuery("");
+    clearSearch();
   };
 
   const removeFilter = (filterName) => {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// IN THEORY EVERY TIME A FILTER IS REMOVED, THE API MUST BE CALLED AGAIN SO THAT THE RESULTS ARE UPDATED
-    /// WITH THE NEW FILTERS AND IT MUST BE DONE HERE I THINK
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const newFilters = { ...filters };
     delete newFilters[filterName];
     setFilters(newFilters);
+    handleResearch(newFilters, searchQuery);
   };
 
   // This is the selected filter tags that will be displayed
@@ -102,16 +105,21 @@ export default function Searchbar() {
           <SearchBarComponent
             value={searchQuery}
             onClick={() => setOpen(true)}
-            onSearch={() => {}}
+            onSearch={setSearchQuery}
+            style={{ width: { xs: "70%", md: "40%" } }}
           />
-          <FilterComponent
-            open={open}
-            handleClose={() => setOpen(false)}
-            setFilters={setFilters}
-            apiData={apiData}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
+          {open ? (
+            <FilterComponent
+              open={open}
+              filters={filters}
+              handleClose={() => setOpen(false)}
+              setFilters={setFilters}
+              apiData={apiData}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              handleResearch={handleResearch}
+            />
+          ) : null}
         </Box>
 
         <Box
@@ -125,7 +133,7 @@ export default function Searchbar() {
             alignItems: "middle",
           }}
         >
-          {filterTags.length > 0 && (
+          {filterTags.length > 0 || searchQuery !== "" ? (
             <PastelComponent
               bgColor="#BC7AF9"
               textColor="white"
@@ -133,7 +141,7 @@ export default function Searchbar() {
               onClick={clearAllFilters}
               style={{ marginTop: "3px" }}
             />
-          )}
+          ) : null}
           <Box
             sx={{
               display: "flex",

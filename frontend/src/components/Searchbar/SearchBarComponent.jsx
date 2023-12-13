@@ -2,7 +2,7 @@
 import { Search } from "@mui/icons-material";
 import { InputAdornment, TextField } from "@mui/material";
 
-export default function SearchBarComponent({ value, onClick, onSearch }) {
+export default function SearchBarComponent({ value, onClick, onSearch, style={} }) {
   return (
     <TextField
       placeholder={value || "Search"}
@@ -33,6 +33,7 @@ export default function SearchBarComponent({ value, onClick, onSearch }) {
             borderColor: "#2192FF",
           },
         },
+        ...style,
       }}
     />
   );

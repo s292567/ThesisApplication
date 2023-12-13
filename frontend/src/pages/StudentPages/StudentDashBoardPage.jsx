@@ -7,7 +7,7 @@ import {
   MyOutlinedButton,
   SkeletonApplicants
 } from "../../components";
-import { getAllProposals, getAllApplicationsForLoggedInStudent } from "../../api";
+import { getAllApplicationsForLoggedInStudent, getProposalsByStudentId} from "../../api";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../contexts";
 import { Box, Divider, Grid } from "@mui/material";
@@ -20,27 +20,25 @@ export default function StudentDashboardPage() {
   const { generalRoutes } = useUserContext();
   const [applications, setApplications] = useState(null);
 
+  let username = localStorage.getItem("username");
+  const fetchProposals = async () => {
+    try {
+      return await getProposalsByStudentId(username); // This should be your API call
+    } catch (error) {
+      console.error("Failed to fetch proposals:", error);
+    }
+  };
+  const fetchApplications = async () => {
+    try {
+      // This should be your API call
+      return await getAllApplicationsForLoggedInStudent(username);
+    } catch (error) {
+      console.error("Failed to fetch applications:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchProposals = async () => {
-      try {
-        const response = await getAllProposals(); // This should be your API call
-        setProposals(response);
-      } catch (error) {
-        console.error("Failed to fetch proposals:", error);
-      }
-    };
-    fetchProposals();
-
-    const fetchApplications = async () => {
-      let username = localStorage.getItem("username");
-      try {
-        // This should be your API call
-        return await getAllApplicationsForLoggedInStudent(username);
-      } catch (error) {
-        console.error("Failed to fetch applications:", error);
-      }
-    };
-
+    fetchProposals().then((response) => setProposals(response));
     fetchApplications().then((response) => setApplications(response));
   }, []);
 

@@ -25,7 +25,7 @@
   - `500 Internal Server Error`: Generic server error
 
 ## Search Proposals text search
-**GET `API/thesis/proposals/search`**
+**GET `API/thesis/proposals/search-text`**
 
 Display proposals that contain query string (caps-insensitive) in any of their fields
 
@@ -391,7 +391,7 @@ GET /API/thesis/proposals/groups
 GET /API/thesis/proposals/degrees
 ```
 ## Filtered Search Proposals
-**POST `/API/thesis/proposals/search-filtered`**
+**POST `/API/thesis/proposals/search/`**
 
 - Filters search results through sending a body request with various **optional** filters,
 - The result is the **intersection** of:

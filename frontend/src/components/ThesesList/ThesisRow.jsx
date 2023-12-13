@@ -1,7 +1,6 @@
 // ThesisRow.jsx
 import React, { useState } from "react";
 import {
-  Button,
   Stack,
   Typography,
   Box,
@@ -26,8 +25,9 @@ export default function ThesisRow({
   thesis,
   actions = false,
   style = { backgroundColor: "#F4F5FF" },
-  onDelete = () => {},
-  onCopy = () => {},
+  onDelete = id => {},
+  onCopy = id => {},
+  onEdit = () => {},
 }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -61,9 +61,8 @@ export default function ThesisRow({
     setDetailOpen(false);
   };
 
-  const abilitateActions = () => {
-    if (user.role === "Professor" && actions) return true;
-    else return false;
+  const enableActions = () => {
+    return user.role === "Professor" && actions;
   };
 
   return (
@@ -99,13 +98,13 @@ export default function ThesisRow({
               handleOpenDetail();
             }}
           />
-          {abilitateActions() ? (
+          {enableActions() ? (
             <>
               <PastelComponent
                 textColor={"white"}
                 icon={
                   <ContentCopyOutlined
-                    fontSize={"medium"}
+                    fontSize="medium"
                     sx={{ marginTop: "8px" }}
                   />
                 }
@@ -129,7 +128,7 @@ export default function ThesisRow({
                   bgColor={"#63ce78"}
                   icon={
                     <EditNoteRounded
-                      fontSize={"large"}
+                      fontSize="large"
                       sx={{ marginTop: "2px" }}
                     />
                   }
@@ -143,7 +142,7 @@ export default function ThesisRow({
                 />
                 <PastelComponent
                   bgColor={"#ff7d36"}
-                  icon={<Delete fontSize={"large"} sx={{ marginTop: "2px" }} />}
+                  icon={<Delete fontSize="large" sx={{ marginTop: "2px" }} />}
                   textColor={"white"}
                   style={{ width: "55px", height: "55px", borderRadius: "8px" }}
                   onClick={(event) => {
@@ -152,12 +151,17 @@ export default function ThesisRow({
                     handleAction("delete");
                   }}
                 />
-                <ThesisForm
-                  open={editOpen}
-                  onClose={() => setEditOpen(false)}
-                  onSubmit={() => console.log("submitted")}
-                  thesis={thesis}
-                />
+                {/**
+                 * EDIT MODAL WITH THE FORM
+                 */}
+                {editOpen ? (
+                  <ThesisForm
+                    open={editOpen}
+                    onClose={() => setEditOpen(false)}
+                    onSubmit={onEdit}
+                    thesis={thesis}
+                  />
+                ) : null}
               </Box>
             </>
           ) : null}
@@ -167,15 +171,13 @@ export default function ThesisRow({
       {/**
        * MODAL THAT DO THE POPUP WHICH IS DISPLAYING THE DETAILS ABOUT THE THESIS
        */}
-      <ThesisDetail
-        open={detailOpen}
-        handleClose={handleCloseDetail}
-        thesis={thesis}
-      />
-
-      {/**
-       * EDIT SHOULD BE ACCESSIBLE ONLY IF PROFESSOR
-       */}
+      {detailOpen ? (
+        <ThesisDetail
+          open={detailOpen}
+          handleClose={handleCloseDetail}
+          thesis={thesis}
+        />
+      ) : null}
 
       {/**
        * DELETE SHOULD BE ACCESSIBLE ONLY IF PROFESSOR

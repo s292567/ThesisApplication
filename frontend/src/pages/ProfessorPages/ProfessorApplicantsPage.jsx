@@ -11,7 +11,11 @@ import {
 } from "@mui/material";
 
 import ProfessorApplicants from "./ProfessorApplicants";
-import { SkeletonApplicants } from "../../components";
+import {
+  NoDataDisplayed,
+  SectionTitle,
+  SkeletonApplicants,
+} from "../../components";
 import { getAllApplicationsDataForProfessor } from "../../api";
 
 export default function ProfessorApplicantsPage() {
@@ -99,9 +103,6 @@ export default function ProfessorApplicantsPage() {
           .filter((studentGroup) => studentGroup.proposals.length > 0);
       }
 
-      console.log("ByProposal:\n", updatedGroupedByProposals);
-      console.log("ByStudent:\n", updatedGroupedByStudents);
-
       return {
         ...prevData,
         groupedByProposals: updatedGroupedByProposals,
@@ -110,30 +111,8 @@ export default function ProfessorApplicantsPage() {
     });
   };
 
-  if (isLoading) {
-    return <SkeletonApplicants count={4} />;
-  }
-
   if (error) {
     return <p>Error: {error}</p>;
-  }
-
-  if (data.groupedByProposals.length === 0) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          padding: "1rem",
-          marginTop: "3rem",
-        }}
-      >
-        <Typography variant="h3" color="darkblue">
-          No applications found for yours Theses.
-        </Typography>
-        ;
-      </Box>
-    );
   }
 
   return (
@@ -144,33 +123,42 @@ export default function ProfessorApplicantsPage() {
         flexDirection: "column",
       }}
     >
-      <StyledToggleButtonGroup
-        value={groupBy}
-        exclusive
-        onChange={handleGroupBy}
-        aria-label="group by choice"
-      >
-        <ToggleButton value="proposal">View by Thesis</ToggleButton>
-        <ToggleButton value="student">View by student</ToggleButton>
-      </StyledToggleButtonGroup>
-      <Divider
-        orientation="horizontal"
-        sx={{
-          bgcolor: "#433F42",
-          width: { xs: "90%", md: "50%" },
-          marginLeft: { xs: "5%", md: "25%" },
-        }}
-      />
-      <ProfessorApplicants
-        groupedByProposalArray={
-          groupBy === "proposal" ? data.groupedByProposals : null
-        }
-        groupedByStudentArray={
-          groupBy === "student" ? data.groupedByStudents : null
-        }
-        actions={true}
-        onApplicationStatusChange={handleApplicationStatusChange}
-      />
+      <SectionTitle text={"Applicants Page:"} />
+      {isLoading ? (
+        <SkeletonApplicants count={4} />
+      ) : data.groupedByProposals.length === 0 ? (
+        <NoDataDisplayed textNoDataDisplayed="No applications available" />
+      ) : (
+        <>
+          <StyledToggleButtonGroup
+            value={groupBy}
+            exclusive
+            onChange={handleGroupBy}
+            aria-label="group by choice"
+          >
+            <ToggleButton value="proposal">View by Thesis</ToggleButton>
+            <ToggleButton value="student">View by student</ToggleButton>
+          </StyledToggleButtonGroup>
+          <Divider
+            orientation="horizontal"
+            sx={{
+              bgcolor: "#433F42",
+              width: { xs: "90%", md: "50%" },
+              marginLeft: { xs: "5%", md: "25%" },
+            }}
+          />
+          <ProfessorApplicants
+            groupedByProposalArray={
+              groupBy === "proposal" ? data.groupedByProposals : null
+            }
+            groupedByStudentArray={
+              groupBy === "student" ? data.groupedByStudents : null
+            }
+            actions={true}
+            onApplicationStatusChange={handleApplicationStatusChange}
+          />
+        </>
+      )}
     </Box>
   );
 }

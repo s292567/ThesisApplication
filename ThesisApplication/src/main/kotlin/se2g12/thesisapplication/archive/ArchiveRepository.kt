@@ -6,4 +6,5 @@ import java.util.UUID
 
 @Repository
 interface ArchiveRepository : JpaRepository<Archive, UUID> {
+    fun findByProposalId(proposalID:UUID):List<Archive>
 }

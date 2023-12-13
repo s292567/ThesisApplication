@@ -5,7 +5,6 @@ import {Route, Routes} from "react-router-dom";
 import {useUserContext} from "./contexts";
 
 import {
-    PageNotFound,
     StudentDashboardPage,
     ProfessorDashboardPage,
     ProfessorProposalCreationPage,
@@ -62,7 +61,6 @@ const CheckAuthenticatedRoutes = () => {
 
                     </>
                 )}
-                <Route path="*" element={<PageNotFound/>}/>
             </Route>
         </Routes>
     );

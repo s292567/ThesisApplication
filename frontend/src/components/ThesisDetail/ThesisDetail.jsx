@@ -1,6 +1,6 @@
 // ThesisDetail.jsx
-import React, { useState } from "react";
-import { useUserContext } from "../../contexts";
+import React, {useEffect, useState} from "react";
+import {useUserContext} from "../../contexts";
 import {
   Dialog,
   DialogContent,
@@ -12,21 +12,18 @@ import {
   Box,
   Grid,
 } from "@mui/material";
-import { useLocation } from "react-router-dom";
-import { Close } from "@mui/icons-material";
-import { PastelComponent, WarningPopup } from "../index";
-import { frontendRoutes } from "../../routes";
-import { applyToProposal } from "../../api";
+import {useLocation} from "react-router-dom";
+import {Close} from "@mui/icons-material";
+import {PastelComponent, WarningPopup} from "../index";
+import {frontendRoutes} from "../../routes";
+import {applyToProposal, getThesisStatusById} from "../../api";
 
-export default function ThesisDetail({ thesis, open, handleClose }) {
-  const { userId, user } = useUserContext();
-
-	/// with the following state we can check if the student has already applied to the thesis or not
-	/// and show the correct button, and this information must be retrieved from the backend
-  const [alreadyApplied, setAlreadyApplied] = useState(false); // HERE INSTEAD OF FALSE THERE WILL BE THE THESIS.STATUS
-	const [warningOpen, setWarningOpen] = useState(false);
-
+export default function ThesisDetail({thesis, open, handleClose}) {
+  const {userId, user} = useUserContext();
   const location = useLocation();
+
+  const [alreadyApplied, setAlreadyApplied] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
 
   const formatFullName = (person) => `${person.name} ${person.surname}`;
 
@@ -36,6 +33,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
         studentId: userId,
         proposalId: thesis.id,
       });
+      setAlreadyApplied(true);
       // Return a success message
       return "You have successfully applied to this thesis!";
     } catch (error) {
@@ -44,6 +42,23 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
       throw new Error(error.message || "Failed to apply to the thesis.");
     }
   };
+
+  useEffect(() => {
+    const getThesisStatus = async (proposalId) => {
+      try {
+        const status = await getThesisStatusById(proposalId);
+        console.log("status", status);
+        console.log("thesis", thesis.id);
+        setAlreadyApplied(status);
+      } catch (error) {
+        console.error("Failed to retrieve proposal status:", error);
+        // Throw an error with a message to be caught and displayed by the Snackbar
+        throw new Error(error.message || "Failed to retrieve proposal status.");
+      }
+    };
+
+    thesis?.id && user.role === "Student" && getThesisStatus(thesis.id);
+  }, []);
 
   if (!thesis) return null;
 
@@ -98,7 +113,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             }}
           />
 
-          <Typography mb={2} sx={{fontSize: '3.2rem'}}>
+          <Typography mb={2} sx={{fontSize: "3.2rem"}}>
             <b>{thesis.title}</b>
           </Typography>
 
@@ -114,7 +129,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
                 <b>keywords:</b>
               </Typography>
               <Typography variant="body2" mb={2} color={textColor}>
-                {thesis.keywords}
+                {thesis.keywords.join(", ")}
               </Typography>
             </Box>
             {/**
@@ -168,9 +183,9 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             color: "white",
           }}
         >
-          <Close />
+          <Close/>
         </IconButton>
-        <Divider variant="middle" sx={{ marginTop: "-1rem" }} />
+        <Divider variant="middle" sx={{marginTop: "-1rem"}}/>
         <DialogContent>
           <Paper
             elevation={0}
@@ -189,7 +204,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body1" color={subTitlesColor}>
-                    <b>{thesis.type}</b>
+                    <b>{thesis.type.join(", ")}</b>
                   </Typography>
                 </Grid>
               </Grid>
@@ -213,9 +228,19 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
                   </Typography>
                 </Grid>
               </Grid>
+              <Grid item xs={12} container spacing={0}>
+                <Grid item xs={12}>
+                  <Typography variant="body1">Cds:</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body1" color={subTitlesColor}>
+                    <b>{thesis.cds.join(", ")}</b>
+                  </Typography>
+                </Grid>
+              </Grid>
             </Grid>
 
-            <Divider sx={{ width: "60%", marginBottom: "2rem" }} />
+            <Divider sx={{width: "60%", marginBottom: "2rem"}}/>
 
             <Typography variant="h4" mb={1} color={subTitlesColor}>
               <b>Description</b>
@@ -225,11 +250,22 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
             </Typography>
 
             <Typography variant="h6" color={subTitlesColor}>
-              <b>Required Knowledge</b>
+              <b>Departments groups</b>
             </Typography>
-            <Typography variant="body1" ml={1} mb={6}>
-              {thesis.requiredKnowledge}
+            <Typography variant="body1" ml={1} mb={2}>
+              {thesis.groups.join(", ")}
             </Typography>
+
+            {thesis.requiredKnowledge ? (
+              <>
+                <Typography variant="h6" color={subTitlesColor}>
+                  <b>Required Knowledge</b>
+                </Typography>
+                <Typography variant="body1" ml={1} mb={6}>
+                  {thesis.requiredKnowledge}
+                </Typography>
+              </>
+            ) : null}
 
             {thesis.notes ? (
               <Typography variant="body2">
