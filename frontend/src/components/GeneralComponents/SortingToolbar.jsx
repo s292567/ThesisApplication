@@ -1,4 +1,6 @@
 // SortingToolbar.jsx
+/* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
