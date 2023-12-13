@@ -2,7 +2,6 @@ package se2g12.thesisapplication.date
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import se2g12.thesisapplication.proposal.NewProposalDTO
 import se2g12.thesisapplication.proposal.ProposalDateCheck
 import java.time.LocalDate
 

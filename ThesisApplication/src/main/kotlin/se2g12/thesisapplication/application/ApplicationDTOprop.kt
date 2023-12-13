@@ -1,6 +1,5 @@
 package se2g12.thesisapplication.application
 
-import se2g12.thesisapplication.proposal.Proposal
 import se2g12.thesisapplication.proposal.ProposalDTO
 import java.util.*
 

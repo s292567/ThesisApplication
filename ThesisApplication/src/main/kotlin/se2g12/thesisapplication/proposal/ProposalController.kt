@@ -1,6 +1,5 @@
 package se2g12.thesisapplication.proposal
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
@@ -8,15 +7,15 @@ import org.springframework.web.bind.annotation.*
 import se2g12.thesisapplication.archive.Archive
 import se2g12.thesisapplication.archive.ArchiveService
 import se2g12.thesisapplication.application.ApplicationRepository
-import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
+import se2g12.thesisapplication.teacher.TeacherRepository
 import java.time.LocalDate
 import java.util.*
 
 @RestController
 @CrossOrigin
 
-class ProposalController(private val proposalService:ProposalService,private val archiveService: ArchiveService,private val studentRepository: StudentRepository,private val proposalRepository:ProposalRepository,private val applicationRepository: ApplicationRepository) {
+class ProposalController(private val proposalService:ProposalService,private val archiveService: ArchiveService,private val studentRepository: StudentRepository,private val proposalRepository:ProposalRepository,private val applicationRepository: ApplicationRepository,private val teacherRepository: TeacherRepository) {
 
     //getAll
     @GetMapping("/API/thesis/proposals/all")
@@ -185,13 +184,15 @@ class ProposalController(private val proposalService:ProposalService,private val
         if (authentication != null && authentication.isAuthenticated) {
             // Get the username
             val roles = authentication.authorities.map { it.authority }
-            if (roles.contains("STUDENT")) {
+            if (roles.contains("ROLE_Student")) {
                 val student = studentRepository.findById(authentication.name.split("@")[0]).get()
+                println("Student: ${student}")
                 return filteredList.filter { it.cds.contains(student.degree!!.titleDegree) }
             }
             else
             {
-                val professor=proposalRepository.findById(UUID.fromString(authentication.name.split("@")[0])).get()
+                println("Roles: ${roles}")
+                val professor=teacherRepository.findById(authentication.name.split("@")[0]).get()
                 return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }
             }
         }
