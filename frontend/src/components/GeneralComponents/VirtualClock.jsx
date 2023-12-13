@@ -15,28 +15,29 @@ import { getVirtualClock, setVirtualClock } from "../../api";
 import { useUserContext } from "../../contexts";
 import { useNavigate } from "react-router-dom";
 
-export default function VirtualClock() {
-  const { homeRoute } = useUserContext();
+export default function VirtualClock({ virtualDate }) {
+  const { setVirtualDate, homeRoute } = useUserContext();
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [minDate, setMinDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState(virtualDate);
+  const [minDate, setMinDate] = useState(virtualDate);
 
   useEffect(() => {
     const fetchMinDate = async () => {
       try {
-        return await getVirtualClock();
+        const minDate = await getVirtualClock();
+        if (minDate !== null) {
+          setMinDate(dayjs(minDate));
+          setVirtualDate(dayjs(minDate));
+        }
       } catch (error) {
         console.log(error);
       }
     };
-    fetchMinDate().then((res) => {
-      if(res === null) return;
-      setMinDate(dayjs(res));
-      setSelectedDate(dayjs(res));
-    });
-  }, []);
+
+    fetchMinDate();
+  }, [setVirtualDate]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -53,14 +54,15 @@ export default function VirtualClock() {
   const handleSubmit = async () => {
     const formattedDate = selectedDate.format("YYYY-MM-DD");
     console.log("Submitting date:", formattedDate);
-    try{
+    try {
       await setVirtualClock(formattedDate);
-    }catch(error){
+      setVirtualDate(selectedDate);
+    } catch (error) {
       console.log(error);
-    }finally{
+    } finally {
       handleClose();
       navigate(homeRoute);
-    }    
+    }
   };
 
   return (
