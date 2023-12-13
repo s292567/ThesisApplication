@@ -1,4 +1,5 @@
 // ProfessorApplicantsPage.jsx is used to render the page for the professor to see the applicants for each proposal
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 
 import {
@@ -7,7 +8,6 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   styled,
-  Typography,
 } from "@mui/material";
 
 import ProfessorApplicants from "./ProfessorApplicants";

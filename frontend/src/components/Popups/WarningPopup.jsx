@@ -1,4 +1,5 @@
 // WarningPopup.jsx
+/* eslint-disable react/prop-types */
 import React, { useState, useCallback } from "react";
 import {
   Snackbar,
@@ -16,6 +17,7 @@ import { WarningRounded } from "@mui/icons-material";
 import { PastelComponent } from "../index.js";
 
 export default function WarningPopup({
+
   warningOpen, // useState to manage the open/close state of the popup
   setWarningOpen, // useState to manage the open/close state of the popup
   handleApplied, // function to be called when the user clicks on "yes" (returns a promise)

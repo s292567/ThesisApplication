@@ -48,7 +48,7 @@ class ProposalController(private val proposalService:ProposalService,private val
     @GetMapping("API/thesis/proposals/cds")
 //    @PreAuthorize("hasRole('Student')")
     fun getProposalsByCds(@RequestParam cds: String): List<ProposalDTO> {
-        return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}
+        return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}.filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
     @GetMapping("API/thesis/proposals/getProposalsBySId/{studentId}")
     @PreAuthorize("hasRole('Student')")
@@ -59,7 +59,7 @@ class ProposalController(private val proposalService:ProposalService,private val
         if (authentication != null && authentication.isAuthenticated) {
             // Get the username
             val student=studentRepository.findById(authentication.name.split("@")[0]).get()
-            return proposalService.getProposalsByCds(student.degree!!.titleDegree!!)
+            return proposalService.getProposalsByCds(student.degree!!.titleDegree!!).filter{archiveService.findByPropId(it.id!!).isEmpty()}
         }
        else throw error("no student id found")
     }
@@ -187,13 +187,13 @@ class ProposalController(private val proposalService:ProposalService,private val
             if (roles.contains("ROLE_Student")) {
                 val student = studentRepository.findById(authentication.name.split("@")[0]).get()
                 println("Student: ${student}")
-                return filteredList.filter { it.cds.contains(student.degree!!.titleDegree) }
+                return filteredList.filter { it.cds.contains(student.degree!!.titleDegree) }.filter{archiveService.findByPropId(it.id!!).isEmpty()}
             }
             else
             {
                 println("Roles: ${roles}")
                 val professor=teacherRepository.findById(authentication.name.split("@")[0]).get()
-                return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }
+                return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }.filter{archiveService.findByPropId(it.id!!).isEmpty()}
             }
         }
         else throw error("no student id found")
