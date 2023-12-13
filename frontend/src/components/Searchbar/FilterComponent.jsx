@@ -1,4 +1,5 @@
 // FilterComponent.jsx is a component that renders the filter dialog for the searchbar
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Close } from "@mui/icons-material";
 import {

@@ -1,4 +1,5 @@
 // SearchBarComponent.jsx
+/* eslint-disable react/prop-types */
 import { Search } from "@mui/icons-material";
 import { InputAdornment, TextField } from "@mui/material";
 
