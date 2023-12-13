@@ -16,7 +16,7 @@ class ProposalDateCheck (private val date: Date,private val archiveRepository: A
             var expiredList = proposalRepository.findByExpirationBefore(LocalDate.now())
             if (expiredList.isNotEmpty())
                 expiredList.forEach {
-                    if (archiveRepository.findByProposalId(it.id!!).isNotEmpty())
+                    if (archiveRepository.findByProposalId(it.id!!).isEmpty())
                         archiveRepository.save(Archive(it))
                 }
         }
@@ -26,7 +26,7 @@ class ProposalDateCheck (private val date: Date,private val archiveRepository: A
         var expiredList = proposalRepository.findByExpirationBefore(date)
         if (expiredList.isNotEmpty())
             expiredList.forEach {
-                if (archiveRepository.findByProposalId(it.id!!).isNotEmpty())
+                if (archiveRepository.findByProposalId(it.id!!).isEmpty())
                     archiveRepository.save(Archive(it))
             }
     }
