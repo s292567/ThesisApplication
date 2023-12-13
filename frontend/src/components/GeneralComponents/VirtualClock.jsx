@@ -12,11 +12,14 @@ import dayjs from "dayjs";
 import { AccessTimeFilledRounded, Close } from "@mui/icons-material";
 import { PastelComponent } from "../index";
 import { getVirtualClock, setVirtualClock } from "../../api";
+import { useUserContext } from "../../contexts";
 
-export default function VirtualClock() {
+export default function VirtualClock({virtualDate}) {
+  const { setVirtualDate } = useUserContext();
+
   const [open, setOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [minDate, setMinDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState(virtualDate);
+  const [minDate, setMinDate] = useState(virtualDate);
 
   useEffect(() => {
     const fetchMinDate = async () => {
@@ -29,6 +32,7 @@ export default function VirtualClock() {
     fetchMinDate().then((res) => {
       if(res === null) return;
       setMinDate(dayjs(res));
+      setVirtualDate(dayjs(res));
     });
   }, []);
 
@@ -49,6 +53,7 @@ export default function VirtualClock() {
     console.log("Submitting date:", formattedDate);
     try{
       await setVirtualClock(formattedDate);
+      setVirtualDate(selectedDate);
     }catch(error){
       console.log(error);
     }finally{
