@@ -170,7 +170,7 @@ export default function LoggedInNavbar() {
                   aria-expanded={open ? "true" : undefined}
                 >
                   <Avatar
-                      {/* eslint-disable-next-line react/no-children-prop */}
+                      /* eslint-disable-next-line react/no-children-prop */
                     children={user ? `${user.username[0]}${user.username[1]}` : "MR"}
                     sx={{
                       bgcolor: "#007baa",
