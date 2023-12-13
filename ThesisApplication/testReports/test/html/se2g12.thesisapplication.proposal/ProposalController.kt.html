@@ -21,7 +21,7 @@ import java.util.*
     @GetMapping(&quot;/API/thesis/proposals/all&quot;)
     @PreAuthorize(&quot;hasRole('Student') or hasRole('Professor')&quot;)
     fun getAllProposals(): List&lt;ProposalDTO&gt; {
-<span class="nc" id="L24">        return proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
+<span class="pc" id="L24">        return proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
     }
     //getArchivedPropId Test Endpoint
     @GetMapping(&quot;/API/thesis/test/{proposalId}&quot;)
@@ -32,15 +32,15 @@ import java.util.*
     @GetMapping(&quot;/API/thesis/proposals/statusById/{proposalId}&quot;)
     @PreAuthorize(&quot;hasRole('Student')&quot;)
     fun getThesisStatusById(@PathVariable proposalId: String): Boolean {
-<span class="nc" id="L35">        val securityContext = SecurityContextHolder.getContext()</span>
+<span class="fc" id="L35">        val securityContext = SecurityContextHolder.getContext()</span>
 // Get the authentication object from the security context
-<span class="nc" id="L37">        val authentication = securityContext.authentication</span>
+<span class="fc" id="L37">        val authentication = securityContext.authentication</span>
 
 // Check if the user is authenticated
-<span class="nc bnc" id="L40" title="All 4 branches missed.">        if (authentication != null &amp;&amp; authentication.isAuthenticated) {</span>
+<span class="pc bpc" id="L40" title="2 of 4 branches missed.">        if (authentication != null &amp;&amp; authentication.isAuthenticated) {</span>
             // Get the username
-<span class="nc" id="L42">            var application=applicationRepository.findByProposalIdAndStudentId(UUID.fromString(proposalId),authentication.name.split(&quot;@&quot;)[0])</span>
-<span class="nc bnc" id="L43" title="All 2 branches missed.">            return application.isNotEmpty()</span>
+<span class="fc" id="L42">            var application=applicationRepository.findByProposalIdAndStudentId(UUID.fromString(proposalId),authentication.name.split(&quot;@&quot;)[0])</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">            return application.isNotEmpty()</span>
         }
 <span class="nc" id="L45">        return false</span>
     }
@@ -48,7 +48,7 @@ import java.util.*
     @GetMapping(&quot;API/thesis/proposals/cds&quot;)
 //    @PreAuthorize(&quot;hasRole('Student')&quot;)
     fun getProposalsByCds(@RequestParam cds: String): List&lt;ProposalDTO&gt; {
-<span class="nc" id="L51">        return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}.filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
+<span class="pc" id="L51">        return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}.filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
     }
     @GetMapping(&quot;API/thesis/proposals/getProposalsBySId/{studentId}&quot;)
     @PreAuthorize(&quot;hasRole('Student')&quot;)
@@ -70,12 +70,12 @@ import java.util.*
         @RequestParam(required = false) query: String?,
     ): List&lt;ProposalDTO&gt; {
         // if query null =&gt; return all proposals
-<span class="nc bnc" id="L73" title="All 6 branches missed.">        if (query.isNullOrBlank()) {</span>
-<span class="nc" id="L74">            return proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
+<span class="pc bpc" id="L73" title="1 of 6 branches missed.">        if (query.isNullOrBlank()) {</span>
+<span class="pc" id="L74">            return proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
         }
 
         // else, search across multiple fields
-<span class="nc" id="L78">        return proposalService.searchProposals(query).filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
+<span class="pc" id="L78">        return proposalService.searchProposals(query).filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
     }
 
     @GetMapping(&quot;/API/thesis/proposals/search/{studentId}&quot;)
@@ -84,7 +84,7 @@ import java.util.*
         @RequestParam(required = false) query: String?,
         @PathVariable studentId: String
     ): List&lt;ProposalDTO&gt; {
-<span class="nc" id="L87">        return proposalService.searchProposalByStudentCds(studentId, query).filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
+<span class="pc" id="L87">        return proposalService.searchProposalByStudentCds(studentId, query).filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
     }
 
     //default filtered search
