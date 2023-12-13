@@ -1,4 +1,5 @@
 // SkeletonApplicants.jsx
+/* eslint-disable react/prop-types */
 import { Box, Grid, Paper, Skeleton, styled } from "@mui/material";
 
 export default function SkeletonApplicants({ count }) {

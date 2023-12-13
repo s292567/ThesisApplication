@@ -4,10 +4,15 @@ plugins {
 	id("org.springframework.boot") version "3.1.5"
 	id("io.spring.dependency-management") version "1.1.3"
 	id ("com.google.cloud.tools.jib") version "3.3.1"
+	id("org.sonarqube") version "4.4.1.3373"
+	jacoco
 
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
 	kotlin("plugin.jpa") version "1.8.22"
+
+
+
 }
 
 group = "SE2-G12"
@@ -69,4 +74,17 @@ jib{
 		ports= mutableListOf("8081")
 	}
 	to{image="s292567/g12-final"}
+}
+jacoco {
+	toolVersion="0.8.7"
+}
+tasks.test{
+	finalizedBy("jacocoTestReport")
+}
+sonar {
+	properties {
+		property("sonar.projectKey", "s292567_ThesisApplication")
+		property("sonar.organization", "s292567")
+		property("sonar.host.url", "https://sonarcloud.io")
+	}
 }

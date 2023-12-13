@@ -1,4 +1,5 @@
 // Searchbar.jsx
+/* eslint-disable react/prop-types */
 import { AppBar, Toolbar, Box, Divider } from "@mui/material";
 import { useState, useEffect } from "react";
 import SearchBarComponent from "./SearchBarComponent";

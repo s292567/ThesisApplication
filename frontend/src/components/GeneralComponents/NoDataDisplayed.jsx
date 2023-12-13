@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { StyledPaper } from "../index";
 import { Grid, Typography } from "@mui/material";
 

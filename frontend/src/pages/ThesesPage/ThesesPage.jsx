@@ -12,7 +12,6 @@ import {
   PastelComponent,
   ThesisForm,
 } from "../../components";
-import { getProposalsByProfessorId, getProposalsByStudentId } from "../../api";
 import { useUserContext } from "../../contexts/index.js";
 import {
   searchProposals,
@@ -20,6 +19,9 @@ import {
   deleteProposalById,
   updateProposal,
   insertProposal,
+  getProposalsByStudentId,
+  getProposalsByProfessorId,
+
 } from "../../api";
 import { Add } from "@mui/icons-material";
 

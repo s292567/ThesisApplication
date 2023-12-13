@@ -1,4 +1,5 @@
 // CustomAutocomplete.jsx
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Autocomplete, TextField, createFilterOptions } from "@mui/material";
 

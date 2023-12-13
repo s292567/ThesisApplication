@@ -94,7 +94,7 @@ class ProposalServiceImplTest {
         verify(exactly = 1) { proposalRepository.save(any()) }
     }
     @Test
-    fun `addNewProposal throws error if invalid group present`() {
+    fun `addNewProposalThrowsErrorIfInvalidGroupPresent`() {
         // Mock data
         val professorId = "p101"
         val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
@@ -126,7 +126,7 @@ class ProposalServiceImplTest {
         verify(exactly = 0) { proposalRepository.save(any()) }
     }
     @Test
-    fun `addNewProposal throws error if professor is not found`() {
+    fun `addNewProposalThrowsErrorIfProfessorIsNotFound`() {
         // Mock data
         val professorId = "p202"
         val newProposalDTO = mockk<NewProposalDTO>()
@@ -141,7 +141,7 @@ class ProposalServiceImplTest {
         verify(exactly = 0) { proposalRepository.save(any()) }
     }
     @Test
-    fun `test getAllProposals`() {
+    fun `getAllProposals`() {
         val teacher = Teacher("Ferrari", "Luca")
         // Mock data
         val proposals = listOf(mockProposal)
@@ -171,7 +171,7 @@ class ProposalServiceImplTest {
         assertEquals(proposalsDTO.first().expiration, result.first().expiration)
     }
     @Test
-    fun `test getProposalsByCds`() {
+    fun `getProposalsByCds`() {
         val date2 = LocalDate.parse("2026-07-21", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         // Arrange
         val cds = "Computer Engineering"
@@ -197,7 +197,7 @@ class ProposalServiceImplTest {
     }
 
     @Test
-    fun `test searchProposals`() {
+    fun `searchProposals`() {
         val query = "image"
         val proposalList = listOf(mockProposal)
         every { proposalRepository.searchProposals(query) } returns proposalList
@@ -210,7 +210,7 @@ class ProposalServiceImplTest {
     }
 
     @Test
-    fun `test searchProposalByStudentCds`() {
+    fun `searchProposalByStudentCds`() {
         // Arrange
         val studentId = "s123456"
         val query = "something"
@@ -242,7 +242,7 @@ class ProposalServiceImplTest {
         verify (exactly = 0) { proposalRepository.findByCds(any()) }
     }
     @Test
-    fun `test searchProposalByStudentCds without query`() {
+    fun `searchProposalByStudentCdsWithoutQuery`() {
         // Arrange
         val studentId = "s123456"
         val query = ""
@@ -274,7 +274,7 @@ class ProposalServiceImplTest {
         assertEquals(proposalList.map { it.toDTO() }, result)
     }
     @Test
-    fun `searchProposalByStudentCds throws error if student not found`() {
+    fun `searchProposalByStudentCdsThrowsErrorIfStudentNotFound`() {
         val studentId = "s000000"
         val query = "something"
 
@@ -288,7 +288,7 @@ class ProposalServiceImplTest {
         verify (exactly = 0) { proposalRepository.searchProposals(any()) }
     }
     @Test
-    fun `test getDistinctSupervisors`(){
+    fun `getDistinctSupervisors`(){
         val listSupervisors = listOf("Luca Ferrari", "Sofìa Garcìa")
         every { proposalRepository.findDistinctSupervisors() } returns listSupervisors
 
@@ -299,7 +299,7 @@ class ProposalServiceImplTest {
         assertEquals(listSupervisors.last(), supervisors.last())
     }
     @Test
-    fun `test getDistinctCoSupervisors`(){
+    fun `getDistinctCoSupervisors`(){
         val listCoSupervisors = listOf("Ji-Sung Park", "Mario Rossi", "Sofìa Garcìa")
         every { proposalRepository.findDistinctCoSupervisors() } returns listCoSupervisors
 
@@ -310,7 +310,7 @@ class ProposalServiceImplTest {
         assertEquals(listCoSupervisors.last(), coSupervisors.last())
     }
     @Test
-    fun `test getDistinctProposalTypes`(){
+    fun `getDistinctProposalTypes`(){
         val listTypes = listOf("Research", "Development")
         every { proposalRepository.findDistinctProposalTypes() } returns listTypes
 
@@ -321,7 +321,7 @@ class ProposalServiceImplTest {
         assertEquals(listTypes.last(), types.last())
     }
     @Test
-    fun `test getDistinctProposalLevels`(){
+    fun `getDistinctProposalLevels`(){
         val listLevels = listOf("BSc", "MSc")
         every { proposalRepository.findDistinctProposalLevels() } returns listLevels
 
@@ -332,7 +332,7 @@ class ProposalServiceImplTest {
         assertEquals(listLevels.last(), levels.last())
     }
     @Test
-    fun `test getDistinctProposalKeywords`(){
+    fun `getDistinctProposalKeywords`(){
         val listKeywords = listOf("key1", "key2", "key3")
         every { proposalRepository.findDistinctProposalKeywords() } returns listKeywords
 
@@ -343,7 +343,7 @@ class ProposalServiceImplTest {
         assertEquals(listKeywords.last(), keywords.last())
     }
     @Test
-    fun `test getDistinctProposalGroups`(){
+    fun `getDistinctProposalGroups`(){
         val listGroups = listOf("G13", "G21")
         every { proposalRepository.findDistinctProposalGroups() } returns listGroups
 
@@ -354,7 +354,7 @@ class ProposalServiceImplTest {
         assertEquals(listGroups.last(), groups.last())
     }
     @Test
-    fun `test getDistinctProposalCds`(){
+    fun `getDistinctProposalCds`(){
         val listCdS = listOf("Computer Engineering", "Civil Engineering")
         every { proposalRepository.findDistinctProposalCds() } returns listCdS
 
@@ -456,7 +456,7 @@ class ProposalServiceImplTest {
     }
 
     @Test
-    fun `test getting the proposals of a professor`(){
+    fun `gettingTheProposalsOfAProfessor`(){
         val professorId = "p101"
         val teacher = Teacher("Ferrari", "Luca")
         val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
@@ -482,7 +482,7 @@ class ProposalServiceImplTest {
     }
 
     @Test
-    fun `test successfully update proposal`(){
+    fun `successfullyUpdateProposal`(){
         val professorId = "p101"
         val teacher = Teacher("Ferrari", "Luca")
         val group = mockk<GroupDep>()
@@ -530,7 +530,7 @@ class ProposalServiceImplTest {
         verify (exactly = 1) { proposalRepository.save(any()) }
     }
     @Test
-    fun `test update proposal with wrong date`(){
+    fun `updateProposalWithWrongDate`(){
         val professorId = "p101"
         val group = mockk<GroupDep>()
         val wrongDate = LocalDate.parse("2023-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
@@ -563,7 +563,7 @@ class ProposalServiceImplTest {
         verify (exactly = 0) { proposalRepository.save(any()) }
     }
     @Test
-    fun `test update proposal without supervisors`(){
+    fun `updateProposalWithoutSupervisors`(){
         val professorId = "p101"
         val group = mockk<GroupDep>()
         val newProposal = NewProposalDTO("New title for the proposal",
@@ -595,7 +595,7 @@ class ProposalServiceImplTest {
         verify (exactly = 0) { proposalRepository.save(any()) }
     }
     @Test
-    fun `test update proposal without keywords`(){
+    fun `updateProposalWithoutKeywords`(){
         val professorId = "p101"
         val group = mockk<GroupDep>()
         val newProposal = NewProposalDTO("New title for the proposal",
@@ -627,7 +627,7 @@ class ProposalServiceImplTest {
         verify (exactly = 0) { proposalRepository.save(any()) }
     }
     @Test
-    fun `test update proposal with wrong groups`(){
+    fun `updateProposalWithWrongGroups`(){
         val professorId = "p101"
         val newProposal = NewProposalDTO("New title for the proposal",
             listOf("Paolo Ricci", "Mario Rossi"),
@@ -658,7 +658,7 @@ class ProposalServiceImplTest {
         verify (exactly = 0) { proposalRepository.save(any()) }
     }
     @Test
-    fun `test update proposal with empty description`(){
+    fun `updateProposalWithEmptyDescription`(){
         val professorId = "p101"
         val group = mockk<GroupDep>()
         val newProposal = NewProposalDTO("New title for the proposal",
@@ -690,7 +690,7 @@ class ProposalServiceImplTest {
         verify (exactly = 0) { proposalRepository.save(any()) }
     }
     @Test
-    fun `test update proposal with more than 1 error`(){
+    fun `updateProposalWithMoreThan1Error`(){
         // empty description and no keywords
         val professorId = "p101"
         val group = mockk<GroupDep>()
@@ -724,7 +724,7 @@ class ProposalServiceImplTest {
         verify (exactly = 0) { proposalRepository.save(any()) }
     }
     @Test
-    fun `test update proposal wrong professor`(){
+    fun `updateProposalWrongProfessor`(){
         val professorId = "p101"
         val group = mockk<GroupDep>()
         val newProposal = NewProposalDTO("New title for the proposal",
