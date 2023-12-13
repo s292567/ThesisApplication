@@ -1,35 +1,42 @@
 package se2g12.thesisapplication.proposal
 
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
+import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito.*
-import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.transaction.annotation.Transactional
 import se2g12.thesisapplication.GroupDep.GroupDep
-import se2g12.thesisapplication.archive.Archive
 import se2g12.thesisapplication.archive.ArchiveRepository
-import se2g12.thesisapplication.date.Date
 import se2g12.thesisapplication.teacher.Teacher
+import se2g12.thesisapplication.teacher.TeacherRepository
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-@ExtendWith(MockitoExtension::class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@Transactional
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ProposalDateCheckTest {
-    private lateinit var proposalRepository: ProposalRepository
-    private lateinit var archiveRepository: ProposalRepository
-    private lateinit var proposalDateCheck: ProposalDateCheck
 
-    @BeforeEach
-    fun setUp() {
-        proposalRepository = mockk()
-        archiveRepository=mockk()
-        proposalDateCheck=mockk()
-    }
+    @Autowired
+    lateinit var teacherRepository: TeacherRepository
+
+    @Autowired
+    lateinit var archiveRepository: ArchiveRepository
+
+    @Autowired
+    lateinit var proposalRepository: ProposalRepository
+
+    @Autowired
+    lateinit var proposalDateCheck: ProposalDateCheck
+
     @Test
     fun testCheckForMyDateChanges() {
         // Mock a specific date
@@ -37,10 +44,11 @@ class ProposalDateCheckTest {
         val localDate: LocalDate = LocalDate.parse("2020-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
         // Mock proposalRepository and archiveRepository behaviors as needed
-
+        var teacher = Teacher("Ferrari", "Luca", "p101@example.com", GroupDep("G13"),id="p101")
+        teacher= teacherRepository.save(teacher);
         val proposal = Proposal(
             title = "Sample Proposal Late",
-            supervisor = Teacher("Ferrari", "Luca", "p101@example.com", GroupDep("G13")),
+            supervisor = teacher,
             coSupervisors = "Jane Doe, Bob Smith",
             keywords = "Java, Kotlin, MockK",
             type = "Research",
@@ -52,15 +60,14 @@ class ProposalDateCheckTest {
             level = "Master",
             cds = "Computer Science, Data Science"
         )
+        proposalRepository.save(proposal)
 
-        every { proposalRepository.save(proposal) } returns mockk()
         // Run the method to be tested
-        every { proposalDateCheck.checkForMyDateChanges(date)}returns mockk()
-        every { archiveRepository.findAll() } returns mockk()
-        // Verify other conditions as needed
-        val archived = archiveRepository.findAll()
+        proposalDateCheck.checkForMyDateChanges(date)
 
-        Assertions.assertEquals("Sample Proposal Late", archived)
+        // Verify other conditions as needed
+        val archived = archiveRepository.findAll().filter{it.proposal.title.compareTo(proposal.title)==0 }
+        Assertions.assertEquals("Sample Proposal Late", archived.first().proposal.title)
         // Add more specific assertions based on your requirements
     }
 }
