@@ -184,9 +184,16 @@ class ProposalController(private val proposalService:ProposalService,private val
         val authentication = securityContext.authentication
         if (authentication != null && authentication.isAuthenticated) {
             // Get the username
-            
-            val student=studentRepository.findById(authentication.name.split("@")[0]).get()
-            return filteredList.filter{it.cds.contains(student.degree!!.titleDegree)}
+            val roles = authentication.authorities.map { it.authority }
+            if (roles.contains("STUDENT")) {
+                val student = studentRepository.findById(authentication.name.split("@")[0]).get()
+                return filteredList.filter { it.cds.contains(student.degree!!.titleDegree) }
+            }
+            else
+            {
+                val professor=proposalRepository.findById(UUID.fromString(authentication.name.split("@")[0])).get()
+                return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }
+            }
         }
         else throw error("no student id found")
 
