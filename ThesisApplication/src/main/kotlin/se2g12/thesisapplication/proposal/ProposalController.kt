@@ -185,12 +185,14 @@ class ProposalController(private val proposalService:ProposalService,private val
         if (authentication != null && authentication.isAuthenticated) {
             // Get the username
             val roles = authentication.authorities.map { it.authority }
-            if (roles.contains("STUDENT")) {
+            if (roles.contains("ROLE_Student")) {
                 val student = studentRepository.findById(authentication.name.split("@")[0]).get()
+                println("Student: ${student}")
                 return filteredList.filter { it.cds.contains(student.degree!!.titleDegree) }
             }
             else
             {
+                println("Roles: ${roles}")
                 val professor=proposalRepository.findById(UUID.fromString(authentication.name.split("@")[0])).get()
                 return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }
             }
