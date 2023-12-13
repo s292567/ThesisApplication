@@ -27,7 +27,7 @@ export default function VirtualClock() {
       }
     };
     fetchMinDate().then((res) => {
-      if(res === undefined) return;
+      if(res === null) return;
       setMinDate(dayjs(res));
     });
   }, []);
