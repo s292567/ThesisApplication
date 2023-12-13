@@ -1,16 +1,22 @@
 package se2g12.thesisapplication.proposal
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import se2g12.thesisapplication.archive.Archive
 import se2g12.thesisapplication.archive.ArchiveService
+import se2g12.thesisapplication.application.ApplicationRepository
+import se2g12.thesisapplication.student.Student
+import se2g12.thesisapplication.student.StudentRepository
 import java.time.LocalDate
 import java.util.*
 
 @RestController
 @CrossOrigin
-class ProposalController(@Autowired private val proposalService: ProposalService,private val archiveService: ArchiveService) {
+
+class ProposalController(private val proposalService:ProposalService,private val archiveService: ArchiveService,private val studentRepository: StudentRepository,private val proposalRepository:ProposalRepository,private val applicationRepository: ApplicationRepository) {
 
     //getAll
     @GetMapping("/API/thesis/proposals/all")
@@ -23,15 +29,35 @@ class ProposalController(@Autowired private val proposalService: ProposalService
     fun getTest(@PathVariable proposalId: String): List<Archive> {
         return archiveService.findByPropId(UUID.fromString(proposalId))
     }
+
+    @GetMapping("/API/thesis/proposals/statusById/{proposalId}")
+    @PreAuthorize("hasRole('Student')")
+    fun getThesisStatusById(@PathVariable proposalId: String): Boolean {
+        val securityContext = SecurityContextHolder.getContext()
+// Get the authentication object from the security context
+        val authentication = securityContext.authentication
+
+// Check if the user is authenticated
+        if (authentication != null && authentication.isAuthenticated) {
+            // Get the username
+            var application=applicationRepository.findByProposalIdAndStudentId(UUID.fromString(proposalId),authentication.name.split("@")[0])
+            return application.isNotEmpty()
+        }
+        return false
+    }
     //getByCds
     @GetMapping("API/thesis/proposals/cds")
 //    @PreAuthorize("hasRole('Student')")
     fun getProposalsByCds(@RequestParam cds: String): List<ProposalDTO> {
         return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
-
+    @GetMapping("API/thesis/proposals/getProposalsBySId/{studentId}")
+    fun getProposalsStudentId(@PathVariable studentId: String): List<ProposalDTO> {
+        val studentId=studentRepository.findById(studentId).get()
+        return proposalService.getProposalsByCds(studentId.degree!!.titleDegree!!)
+    }
     // search input string across all fields
-    @GetMapping("API/thesis/proposals/search")
+    @GetMapping("API/thesis/proposals/search-text")
 //    @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun searchProposals(
         @RequestParam(required = false) query: String?,
@@ -55,7 +81,7 @@ class ProposalController(@Autowired private val proposalService: ProposalService
     }
 
     //default filtered search
-    @PostMapping("/API/thesis/proposals/search-filtered")
+    @PostMapping("/API/thesis/proposals/search/")
     @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun searchProposalsCustom(
         @RequestBody filterCriteria: ProposalFilterCriteria
@@ -148,51 +174,66 @@ class ProposalController(@Autowired private val proposalService: ProposalService
         return filteredList
     }
 
-        @GetMapping("/API/thesis/proposals/supervisors")
-        fun getDistinctSupervisorNames(): List<String> {
-            return proposalService.getDistinctSupervisors()
-        }
-
-        @GetMapping("/API/thesis/proposals/coSupervisors")
-        fun getDistinctCoSupervisors(): List<String> {
-            return proposalService.getDistinctCoSupervisors()
-                .flatMap { it.split(", ") }
-                .distinct()
-        }
-
-        @GetMapping("/API/thesis/proposals/types")
-        fun getDistinctProposalTypes(): List<String> {
-            return proposalService.getDistinctProposalTypes()
-                .flatMap { it.split(", ") }
-                .distinct()
-        }
-
-        @GetMapping("/API/thesis/proposals/levels")
-        fun getDistinctProposalLevels(): List<String> {
-            return proposalService.getDistinctProposalLevels()
-        }
-
-        @GetMapping("/API/thesis/proposals/keywords")
-        fun getDistinctProposalKeywords(): List<String> {
-            return proposalService.getDistinctProposalKeywords()
-                .flatMap { it.split(", ") }
-                .distinct()
-        }
-
-        @GetMapping("/API/thesis/proposals/groups")
-        fun getDistinctProposalGroups(): List<String> {
-            return proposalService.getDistinctProposalGroups()
-                .flatMap { it.split(", ") }
-                .distinct()
-        }
-
-        @GetMapping("/API/thesis/proposals/degrees")
-        fun getDistinctProposalCds(): List<String> {
-            return proposalService.getDistinctProposalCds()
-                .flatMap { it.split(", ") }
-                .distinct()
-        }
-
+    @PostMapping("/API/thesis/proposals/copy/{proposalId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('Professor')")
+    fun copyProposal(@PathVariable proposalId: UUID): ProposalDTO {
+        val copiedProposal = proposalService.copyProposal(proposalId)
+        return copiedProposal.toDTO()
     }
+
+    @DeleteMapping("/API/thesis/proposals/delete/{proposalId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('Professor')")
+    fun deleteProposal(@PathVariable proposalId: UUID) {
+        proposalService.deleteProposalById(proposalId)
+    }
+
+    @GetMapping("/API/thesis/proposals/supervisors")
+    fun getDistinctSupervisorNames(): List<String> {
+        return proposalService.getDistinctSupervisors()
+    }
+
+    @GetMapping("/API/thesis/proposals/coSupervisors")
+    fun getDistinctCoSupervisors(): List<String> {
+        return proposalService.getDistinctCoSupervisors()
+            .flatMap { it.split(", ") }
+            .distinct()
+    }
+
+    @GetMapping("/API/thesis/proposals/types")
+    fun getDistinctProposalTypes(): List<String> {
+        return proposalService.getDistinctProposalTypes()
+            .flatMap { it.split(", ") }
+            .distinct()
+    }
+
+    @GetMapping("/API/thesis/proposals/levels")
+    fun getDistinctProposalLevels(): List<String> {
+        return proposalService.getDistinctProposalLevels()
+    }
+
+    @GetMapping("/API/thesis/proposals/keywords")
+    fun getDistinctProposalKeywords(): List<String> {
+        return proposalService.getDistinctProposalKeywords()
+            .flatMap { it.split(", ") }
+            .distinct()
+    }
+
+    @GetMapping("/API/thesis/proposals/groups")
+    fun getDistinctProposalGroups(): List<String> {
+        return proposalService.getDistinctProposalGroups()
+            .flatMap { it.split(", ") }
+            .distinct()
+    }
+
+    @GetMapping("/API/thesis/proposals/degrees")
+    fun getDistinctProposalCds(): List<String> {
+        return proposalService.getDistinctProposalCds()
+            .flatMap { it.split(", ") }
+            .distinct()
+    }
+
+}
 
 

@@ -1,7 +1,5 @@
 // userContext.jsx
 import React, { useState, createContext, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { getProfileApi, loginApi } from "../api";
 import { frontendRoutes as routes } from "../routes";
 import {AuthContext} from "react-oauth2-code-pkce";
 
@@ -19,8 +17,7 @@ const UserProvider = ({ children }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [homeRoute, setHomeRoute] = useState("/");
   const [generalRoutes, setGeneralRoutes] = useState({
-    theses: "/",
-
+    theses: "/", // default value
   });
 
   useEffect(() => {
@@ -47,36 +44,6 @@ const UserProvider = ({ children }) => {
 
 
   }, [tokenData]);
-
-
-  // Funzione di login
-  /*const login = async (username, password) => {
-    try {
-      const token = await loginApi(username, password);
-      setJwtToken(token);
-      setLoggedIn(true);
-      setUserId(username.split("@")[0]);
-      localStorage.setItem("jwt", token);
-
-      const loggedUser = await getProfileApi(username);
-      setUser(loggedUser);
-      localStorage.setItem("username", loggedUser.username);
-
-      if (loggedUser.role === "Student") {
-        setHomeRoute(routes.studentDashboard);
-        setGeneralRoutes(prev => ({...prev, theses: routes.studentTheses}));
-        navigate(routes.studentDashboard);
-      } else if (loggedUser.role === "Professor") {
-        setHomeRoute(routes.professorDashboard);
-        setGeneralRoutes(prev => ({...prev, theses: routes.professorTheses}));
-        navigate(routes.professorDashboard);
-      }
-    } catch (error) {
-      setErrorMsg(error.detail);
-      navigate(routes.login);
-      console.log("in the error catch", error.detail);
-    }
-  }*/
 
   // Funzione di logout
   const logout = () => {

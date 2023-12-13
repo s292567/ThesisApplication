@@ -1,8 +1,8 @@
 // DefaultLayoutPage.jsx
-import {Box, styled} from "@mui/material";
-import {Navbar} from "../../components";
-import {Outlet} from "react-router-dom";
-import {useUserContext} from "../../contexts/index.js";
+import { Box, styled } from "@mui/material";
+import { Navbar, VirtualClock } from "../../components";
+import { Outlet } from "react-router-dom";
+import { useUserContext } from "../../contexts/index.js";
 
 const MyMain = styled(Box)({
   display: "flex",
@@ -12,20 +12,27 @@ const MyMain = styled(Box)({
 });
 
 function DefaultLayoutPage() {
-
   // it will be possible to implement here the redirection to the specific dashboard
+  const { user } = useUserContext();
 
   return (
     <Box>
       <header>
-        <Navbar/>
+        <Navbar />
       </header>
       <main>
         <MyMain>
-          <Outlet/>
+          <Outlet />
         </MyMain>
       </main>
       <footer>
+        {user && user.role === "Professor" ? (
+          <>
+            <Box sx={{ padding: "2rem" }} />
+            <VirtualClock />
+            <Box sx={{ padding: "3rem" }} />
+          </>
+        ) : null}
       </footer>
     </Box>
   );

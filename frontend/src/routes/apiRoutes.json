@@ -12,6 +12,21 @@
     "browseAllApplyingStudents": "applications/students?proposalId=",
     "browseAllApplications": "applications/by?proposalId=",
     "getProposalByProfessorId": "proposals/getProfessorProposals/",
+
     "setVirtualDate": "date/set/",
-    "getVirtualDate": "date/get/"
+    "getVirtualDate": "date/get/",
+
+    "getProposalByStudentId": "proposals/getProposalsBySId/",
+    "deleteProposalById": "proposals/delete/",
+    "copyProposalById": "proposals/copy/",
+    
+    "getDistinctSupervisors": "proposals/supervisors",
+    "getDistinctCoSupervisors": "proposals/coSupervisors",
+    "getDistinctTypes": "proposals/types",
+    "getDistinctLevels": "proposals/levels",
+    "getDistinctKeywords": "proposals/keywords",
+    "getDistinctGroups": "proposals/groups",
+    "getDistinctCds": "proposals/degrees",
+    "getThesisStatusByProposalId": "proposals/statusById/"
+
 }

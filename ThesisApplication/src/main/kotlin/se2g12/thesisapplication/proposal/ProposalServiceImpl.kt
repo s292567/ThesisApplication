@@ -3,25 +3,27 @@ package se2g12.thesisapplication.proposal
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import se2g12.thesisapplication.GroupDep.GroupDepRepository
+import se2g12.thesisapplication.application.ApplicationRepository
+import se2g12.thesisapplication.application.ProposalNotFoundError
+import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.student.StudentRepository
-import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
-import java.text.SimpleDateFormat
-import java.time.Instant
 import java.time.LocalDate
 import java.util.*
 
 
 @Service
-class ProposalServiceImpl (
+class ProposalServiceImpl(
     private val proposalRepository: ProposalRepository,
     private val teacherRepository: TeacherRepository,
     private val studentRepository: StudentRepository,
-    private val groupDepRepository: GroupDepRepository
+    private val groupDepRepository: GroupDepRepository,
+    private val applicationRepository: ApplicationRepository,
+    private val degreeRepository: DegreeRepository
 )
-    : ProposalService {
+    :ProposalService {
     override fun getProposalByProfessorId(supervisorId: String): List<ProposalDTO> {
-        var prop = proposalRepository.findAllBySupervisorId(supervisorId)
+        val prop = proposalRepository.findAllBySupervisorId(supervisorId)
         return prop.map{it.toDTO()}
     }
 
@@ -30,7 +32,7 @@ class ProposalServiceImpl (
         val message=checkProposal(newProposal)
         if(message=="") {
             old.title=newProposal.title!!
-            old.supervisor=teacherRepository.findByEmail("$professorId@example.com").first()
+            old.supervisor=teacherRepository.findById(professorId).get()
             old.coSupervisors=newProposal.coSupervisors!!.joinToString(separator = ",")
             old.keywords=newProposal.keywords!!.joinToString(separator = ",")
             old.type=newProposal.type!!.joinToString(separator = ",")
@@ -40,16 +42,15 @@ class ProposalServiceImpl (
             old.notes=newProposal.notes
             old.expiration=newProposal.expiration
             old.level=newProposal.level!!
-            old.cds= newProposal.CdS!!.joinToString(separator = ",")
+            old.cds= newProposal.cds!!.joinToString(separator = ",")
             return proposalRepository.save(old).toDTO()
         }
         //add custom exception
         return old.toDTO()
     }
     private fun checkProposal(newProposal: NewProposalDTO):String{
-        var message:String=""
+        var message=""
         //date check
-        val simpleDate= SimpleDateFormat("yyyy-MM-dd")
         val currentDate=LocalDate.now()
         if(currentDate.isAfter(newProposal.expiration))
             message= "$message expire date is before now"
@@ -69,8 +70,7 @@ class ProposalServiceImpl (
     @Transactional
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
         // username=email of the logged in professor
-        val supervisor = teacherRepository.findByEmail(professorId).first()
-        val newPropGroups = newProposal.groups.map { it.uppercase(Locale.getDefault()) }
+        val supervisor = teacherRepository.findById(professorId).get()
         val possibleGroups: MutableList<String?> = mutableListOf(supervisor.group?.id)
         if(! newProposal.coSupervisors.isNullOrEmpty()){
             for (coSup in newProposal.coSupervisors!!){
@@ -105,10 +105,47 @@ class ProposalServiceImpl (
             newProposal.description,
             newProposal.requiredKnowledge, newProposal.notes,
             expirationDate, newProposal.level,
-            newProposal.CdS.joinToString(", ") { it })
+            newProposal.cds.joinToString(", ") { it })
         proposalRepository.save(proposal)
 
     }
+
+    override fun deleteProposalById(proposalId: UUID) {
+        // Delete associated applications
+        val applications = applicationRepository.findByProposalId(proposalId)
+        applications.forEach { applicationRepository.delete(it) }
+
+        // Delete the proposal itself
+        proposalRepository.deleteById(proposalId)
+    }
+
+    override fun copyProposal(proposalId: UUID): Proposal {
+        val originalProposal = proposalRepository.findById(proposalId).orElseThrow {
+            throw ProposalNotFoundError("Proposal not found!")
+        }
+
+        // Create a new proposal with the same attributes, excluding the ID
+        val copiedProposal = Proposal(
+            title = originalProposal.title,
+            supervisor = originalProposal.supervisor,
+            coSupervisors = originalProposal.coSupervisors,
+            keywords = originalProposal.keywords,
+            type = originalProposal.type,
+            groups = originalProposal.groups,
+            description = originalProposal.description,
+            requiredKnowledge = originalProposal.requiredKnowledge,
+            notes = originalProposal.notes,
+            expiration = originalProposal.expiration,
+            level = originalProposal.level,
+            cds = originalProposal.cds
+        )
+
+        // Save the copied proposal
+        val savedCopiedProposal = proposalRepository.save(copiedProposal)
+
+        return savedCopiedProposal
+    }
+
     //getAll
 
     override fun getAllProposals(): List<ProposalDTO> {
@@ -117,7 +154,8 @@ class ProposalServiceImpl (
 
     //getByCds
     override fun getProposalsByCds(cds: String): List<ProposalDTO> {
-        return proposalRepository.findByCds(cds).map { it.toDTO() }
+        return proposalRepository.findByCdsContaining(cds)
+            .map { it.toDTO() }
     }
 
     override fun searchProposals(query: String): List<ProposalDTO> {

@@ -25,7 +25,7 @@
   - `500 Internal Server Error`: Generic server error
 
 ## Search Proposals text search
-**GET `API/thesis/proposals/search`**
+**GET `API/thesis/proposals/search-text`**
 
 Display proposals that contain query string (caps-insensitive) in any of their fields
 
@@ -388,7 +388,7 @@ GET /API/thesis/proposals/groups
 GET /API/thesis/proposals/degrees
 ```
 ## Filtered Search Proposals
-**POST `/API/thesis/proposals/search-filtered`**
+**POST `/API/thesis/proposals/search/`**
 
 - Filters search results through sending a body request with various **optional** filters,
 - The result is the **intersection** of:
@@ -650,3 +650,85 @@ GET /API/thesis/proposals/degrees
   - `400 Bad Request`: Error in the request body
   - `401 Unauthorized`: The user is not logged in
   - `500 Internal Server Error`: Generic server error
+
+# Copy Proposal
+
+**POST `/API/thesis/proposals/copy/{proposalId}`**
+
+Creates a new proposal by copying an existing proposal with the same attributes (except for the ID). The new proposal will have a unique ID.
+
+- **Path Parameters:**
+  - `proposalId` (UUID): The ID of the proposal to be copied.
+
+**Example Request URL:**
+
+**POST `/API/thesis/proposals/copy/000003e8-8169-21ee-8000-325096b39f47`**
+
+**Example Response Body:**
+```json
+{
+  "id": "000003e8-8169-21ee-9d00-325096b39f47",
+  "title": "Structural Engineering (Copy)",
+  "supervisor": {
+    "surname": "Crociera",
+    "name": "Tommaso",
+    "email": "tommaso.crociera@example.com",
+    "group": {
+      "id": "G41",
+      "department": {
+        "codDepartment": "DEP04"
+      }
+    },
+    "department": {
+      "codDepartment": "DEP04"
+    },
+    "id": "p110"
+  },
+  "coSupervisors": [],
+  "keywords": [
+    "Structural Engineering",
+    "Construction"
+  ],
+  "type": [
+    "Development"
+  ],
+  "groups": [
+    "G41"
+  ],
+  "description": "Develop innovative solutions in structural engineering.",
+  "requiredKnowledge": "Strong background in structural engineering",
+  "notes": "This thesis focuses on developing innovative solutions in structural engineering. The student should have a strong background in structural engineering.",
+  "expiration": "2024-02-29",
+  "level": "MSc",
+  "cds": [
+    "Civil Engineering"
+  ]
+}
+```
+    Response Status:
+        201 Created: The new proposal has been created successfully.
+        404 Not Found: The original proposal with the specified ID was not found.
+        401 Unauthorized: The user is not logged in.
+        500 Internal Server Error: Generic server error.
+# Delete Proposal
+
+** DELETE `/API/thesis/proposals/delete/{proposalId}`**
+
+Deletes a proposal and its associated applications.
+
+- **Path Parameters**:
+  - proposalId (UUID): The ID of the proposal to be deleted.
+
+**Example Request URL**
+
+**DELETE `/API/thesis/proposals/delete/000003e8-8169-21ee-8000-325096b39f47`**
+
+**Example Response**:
+(No response body)
+
+Response Status:
+
+    204 No Content: The proposal and its applications have been deleted successfully.
+    404 Not Found: The proposal with the specified ID was not found.
+    401 Unauthorized: The user is not logged in.
+    500 Internal Server Error: Generic server error.

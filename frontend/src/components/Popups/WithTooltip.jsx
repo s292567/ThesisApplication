@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {Tooltip, useMediaQuery, Zoom} from '@mui/material';
+import React, { useState, useRef, useEffect } from "react";
+import { Tooltip, useMediaQuery, Zoom } from "@mui/material";
 
 export default function WithTooltip({ tooltipContent, children }) {
   const [open, setOpen] = useState(false);
@@ -9,9 +9,9 @@ export default function WithTooltip({ tooltipContent, children }) {
   const startCloseTimeout = (time) => {
     // Start a timeout to auto-close the tooltip after 1 second
     let timeout;
-    if(time){
+    if (time) {
       timeout = time;
-    }else{
+    } else {
       timeout = 1000;
     }
 
@@ -47,20 +47,27 @@ export default function WithTooltip({ tooltipContent, children }) {
     return () => clearTimeout(closeTimeout.current);
   }, []);
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      handleTooltipOpen();
+    }
+  };
 
   return (
     <div>
-      <div onClick={handleTooltipOpen}>
-        {children /** This is the component on which you are displaying the popover */} 
+      <div onClick={handleTooltipOpen} onKeyDown={handleKeyDown} tabIndex={0}>
+        {
+          children /** This is the component on which you are displaying the popover */
+        }
       </div>
       <Tooltip
         title={
           /** The tooltipContent is what is displayed inside the popover box */
-          <div 
-            ref={tooltipRef} 
-            onMouseEnter={handleMouseEnterTooltip} 
+          <div
+            ref={tooltipRef}
+            onMouseEnter={handleMouseEnterTooltip}
             onMouseLeave={handleMouseLeaveTooltip}
-            style={{width: isMobile ? '350px' : '650px'}}
+            style={{ width: isMobile ? "350px" : "650px" }}
           >
             {tooltipContent}
           </div>
@@ -71,12 +78,12 @@ export default function WithTooltip({ tooltipContent, children }) {
         arrow
         PopperProps={{ sx: { zIndex: 0 } }}
         componentsProps={{
-          tooltip: { sx: { bgcolor: "transparent", boxShadow: "none" } }
+          tooltip: { sx: { bgcolor: "transparent", boxShadow: "none" } },
         }}
         disableFocusListener
         disableHoverListener
         disableTouchListener
-        placement='bottom-start'
+        placement="bottom-start"
       >
         <div />
       </Tooltip>

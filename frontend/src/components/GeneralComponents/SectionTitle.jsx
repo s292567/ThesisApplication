@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 
-export default function SectionTitle({ text }) {
+export default function SectionTitle({ text, style={} }) {
   return (
     <>
       <Typography
@@ -13,6 +13,7 @@ export default function SectionTitle({ text }) {
           padding: "1rem",
           display: "flex",
           justifyContent: "center",
+          ...style
         }}
       >
         {text}

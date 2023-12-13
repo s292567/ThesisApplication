@@ -4,35 +4,15 @@ import axiosInstance from './API_Config.js'; // Import your axios instance
 import { apiRoutes as routes } from '../routes';
 import { getProposalsByProfessorId } from './API_proposals.js';
 
-
 /**
  * Accept an application to a proposal
+ * @param {string} proposalId
+ * @param {string} studentId
+ * @param {string} professorId
+ * @returns {Promise<void>}
+ * @throws {Error} if the request fails
+ * 
  */
-/*export const acceptApplication = async (applicationId, professorId) => {
-    return axiosInstance.patch(routes.acceptApplication+`/${professorId}`, {id:applicationId, status:"accepted"})
-        .then(response => {
-            if (response.status === 200)
-                console.log("Application accepted");
-            else
-                console.error('Request failed with status: ', response.status);
-        }).catch(error =>{
-            console.error('Error while accepting an application: ', error);
-        });
-};
-/!**
- * Decline an application to a proposal
- *!/
-export const declineApplication = async (applicationId, professorId) => {
-    return axiosInstance.patch(routes.acceptApplication+`/${professorId}`, {id:applicationId, status:"declined"})
-        .then(response => {
-            if (response.status === 200)
-                console.log("Application declined");
-            else
-                console.error('Request failed with status: ', response.status);
-        }).catch(error =>{
-            console.error('Error while declining an application: ', error);
-        });
-};*/
 export const acceptApplication = async (proposalId,studentId, professorId) => {
     return axiosInstance.patch(routes.acceptApplication+`/${professorId}`, {studentId:studentId, proposalId: proposalId, status:"accepted"})
         .then(response => {
@@ -116,7 +96,6 @@ export const getAllApplicationsForLoggedInStudent = async (studentId) => {
         }
     }).then(response => {
         if (response.status === 200) {
-            console.log(response.data);
             return response.data;
         } else {
             console.error('Request failed with status: ', response.status);
@@ -169,8 +148,6 @@ export const getAllApplicationsDataForProfessor = async (professorId) => {
             proposals: proposals
         }));
 
-        console.log('API GROUPED BY PROPOSALS: \n', groupedByProposals);
-        console.log('API GROUPED BY STUDENTS: \n', groupedByStudents);
         return { groupedByProposals, groupedByStudents };
     } catch (error) {
         console.error("Error fetching data:", error);

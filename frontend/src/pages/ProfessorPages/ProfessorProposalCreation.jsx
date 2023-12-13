@@ -1,7 +1,5 @@
 import React from "react";
 
-import {ProposalForm,} from "../../components"
-
 import Box from "@mui/material/Box";
 import {useUserContext} from "../../contexts"
 
@@ -11,7 +9,8 @@ const ProfessorProposalCreationPage = () => {
 
   return (
     <Box sx={{marginBottom: "2rem", marginTop: "2rem"}}>
-      <ProposalForm userId={userId}/>
+      <h1>Professor Proposal Creation Page</h1>
+      <p>Professor ID: {userId}</p>
     </Box>
   );
 };

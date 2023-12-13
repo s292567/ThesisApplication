@@ -16,8 +16,8 @@ export default function PastelComponent({
     color: textColor,
     fontSize: fontSize,
     borderRadius: "18px",
-    width: "100%",
-    height: "100%",
+    width: 'fit-content',
+    height: 'fit-content',
     padding: "6px 12px",
     display: "flex",
     justifyContent: "center",
@@ -39,7 +39,7 @@ export default function PastelComponent({
         ...style,
       }}
     >
-      {icon && icon}
+      {icon !== null ? icon : null}
       {text}
     </Button>
   ) : (
