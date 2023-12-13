@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Typography } from "@mui/material";
 
 export default function SectionTitle({ text, style={} }) {
