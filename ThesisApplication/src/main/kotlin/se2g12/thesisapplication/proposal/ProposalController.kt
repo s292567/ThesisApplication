@@ -10,13 +10,14 @@ import se2g12.thesisapplication.archive.ArchiveService
 import se2g12.thesisapplication.application.ApplicationRepository
 import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
+import se2g12.thesisapplication.teacher.TeacherRepository
 import java.time.LocalDate
 import java.util.*
 
 @RestController
 @CrossOrigin
 
-class ProposalController(private val proposalService:ProposalService,private val archiveService: ArchiveService,private val studentRepository: StudentRepository,private val proposalRepository:ProposalRepository,private val applicationRepository: ApplicationRepository) {
+class ProposalController(private val proposalService:ProposalService,private val archiveService: ArchiveService,private val studentRepository: StudentRepository,private val proposalRepository:ProposalRepository,private val applicationRepository: ApplicationRepository,private val teacherRepository: TeacherRepository) {
 
     //getAll
     @GetMapping("/API/thesis/proposals/all")
@@ -193,7 +194,7 @@ class ProposalController(private val proposalService:ProposalService,private val
             else
             {
                 println("Roles: ${roles}")
-                val professor=proposalRepository.findById(UUID.fromString(authentication.name.split("@")[0])).get()
+                val professor=teacherRepository.findById(authentication.name.split("@")[0]).get()
                 return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }
             }
         }
