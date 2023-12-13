@@ -83,6 +83,7 @@ tasks.test{
 }
 sonar {
 	properties {
+		property ("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
 		property("sonar.projectKey", "s292567_ThesisApplication")
 		property("sonar.organization", "s292567")
 		property("sonar.host.url", "https://sonarcloud.io")
