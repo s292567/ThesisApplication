@@ -42,7 +42,7 @@ class ApplicationServiceImpl (
     override fun declineApplication(applicationId: UUID) {
         val app=getModifiableApplication(applicationId)
         //notify declined student
-        emailService.sendHtmlEmail(app.student.email,"accepted")
+        emailService.sendHtmlEmail(app.student.email,"declined")
         applicationRepository.updateStatusById(applicationId, "declined")
     }
 

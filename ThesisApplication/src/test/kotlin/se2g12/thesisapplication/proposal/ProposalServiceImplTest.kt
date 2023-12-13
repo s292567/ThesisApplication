@@ -42,6 +42,7 @@ class ProposalServiceImplTest {
         studentRepository = mockk()
         groupDepRepository = mockk()
         applicationRepository = mockk()
+        degreeRepository = mockk()
         proposalService = ProposalServiceImpl(proposalRepository, teacherRepository, studentRepository, groupDepRepository, applicationRepository, degreeRepository)
         mockTeacher = mockk<Teacher>()
         date = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
@@ -187,7 +188,7 @@ class ProposalServiceImplTest {
                 date2,
                 "MSc",
                 "Computer Engineering"))
-        every { proposalRepository.findByCds(cds) } returns proposalList
+        every { proposalRepository.findByCdsContaining(cds) } returns proposalList
 
         val result = proposalService.getProposalsByCds(cds)
 
@@ -263,12 +264,12 @@ class ProposalServiceImplTest {
                 "Computer Engineering"))
         every { studentRepository.findById(studentId) } returns Optional.of(student)
         every { proposalRepository.searchProposals(query) } returns proposalList
-        every { proposalRepository.findByCds(cdsName) } returns proposalList
+        every { proposalRepository.findByCdsContaining(cdsName) } returns proposalList
 
         val result = proposalService.searchProposalByStudentCds(studentId, query)
 
         verify (exactly = 0) { proposalRepository.searchProposals(query) }
-        verify (exactly = 1) { proposalRepository.findByCds(cdsName) }
+        verify (exactly = 1) { proposalRepository.findByCdsContaining(cdsName) }
         // Assert
         assertEquals(proposalList.map { it.toDTO() }, result)
     }
