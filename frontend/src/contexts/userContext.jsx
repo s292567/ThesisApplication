@@ -21,8 +21,6 @@ const UserProvider = ({ children }) => {
     theses: "/", // default value
   });
 
-  const [virtualDate, setVirtualDate] = useState(dayjs());
-
   useEffect(() => {
     if (!user && tokenData) {
       let role;
@@ -72,10 +70,6 @@ const UserProvider = ({ children }) => {
     logout,
     homeRoute,
     generalRoutes,
-
-    
-    virtualDate,
-    setVirtualDate,
   };
 
   return (
