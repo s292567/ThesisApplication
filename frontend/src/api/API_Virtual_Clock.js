@@ -17,7 +17,7 @@ export const setVirtualClock = async (dateString) => {
             'Content-Type' : 'application/json' ,
             'Authorization': 'Bearer '+ jwt
         }}).then(response => {
-        if (response.status === 200) {
+        if (response.status === 201) {
             return response.data;
         } else {
             console.error('Request failed with status: ', response.status);
