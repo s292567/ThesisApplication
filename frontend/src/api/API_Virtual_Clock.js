@@ -4,7 +4,7 @@ import { apiRoutes as routes } from '../routes';
 export const setVirtualClock = async (dateString) => {
     let jwt = localStorage.getItem("ROCP_token");
     jwt=jwt.substring(1,jwt.length-1);
-    return axiosInstance.put(routes.setVirtualDate + dateString,{
+    return axiosInstance.post(routes.setVirtualDate + dateString,{
         headers: {
             'Content-Type' : 'application/json' ,
             'Authorization': 'Bearer '+ jwt
