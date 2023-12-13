@@ -13,13 +13,15 @@ import { AccessTimeFilledRounded, Close } from "@mui/icons-material";
 import { PastelComponent } from "../index";
 import { getVirtualClock, setVirtualClock } from "../../api";
 import { useUserContext } from "../../contexts";
+import { useNavigate } from "react-router-dom";
 
-export default function VirtualClock({virtualDate}) {
-  const { setVirtualDate } = useUserContext();
+export default function VirtualClock() {
+  const { homeRoute } = useUserContext();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(virtualDate);
-  const [minDate, setMinDate] = useState(virtualDate);
+  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [minDate, setMinDate] = useState(dayjs());
 
   useEffect(() => {
     const fetchMinDate = async () => {
@@ -32,7 +34,7 @@ export default function VirtualClock({virtualDate}) {
     fetchMinDate().then((res) => {
       if(res === null) return;
       setMinDate(dayjs(res));
-      setVirtualDate(dayjs(res));
+      setSelectedDate(dayjs(res));
     });
   }, []);
 
@@ -53,11 +55,11 @@ export default function VirtualClock({virtualDate}) {
     console.log("Submitting date:", formattedDate);
     try{
       await setVirtualClock(formattedDate);
-      setVirtualDate(selectedDate);
     }catch(error){
       console.log(error);
     }finally{
       handleClose();
+      navigate(homeRoute);
     }    
   };
 
