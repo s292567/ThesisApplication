@@ -37,7 +37,7 @@ export default function VirtualClock({ virtualDate }) {
     };
 
     fetchMinDate();
-  }, []);
+  }, [setVirtualDate]);
 
   const handleOpen = () => {
     setOpen(true);
