@@ -12,10 +12,14 @@ class ProposalException : ResponseEntityExceptionHandler(){
     @ExceptionHandler(ProposalBodyError::class)
     fun proposalBodyError(e : ProposalBodyError) = ProblemDetail
         .forStatusAndDetail(HttpStatus.BAD_REQUEST, e.message!!)
+    @ExceptionHandler(NotFound::class)
+    fun notFound(e : NotFound) = ProblemDetail
+        .forStatusAndDetail(HttpStatus.NOT_FOUND, e.message!!)
     @ExceptionHandler(ForbiddenError::class)
     fun forbiddenError(e : ForbiddenError) = ProblemDetail
         .forStatusAndDetail(HttpStatus.FORBIDDEN, e.message!!)
 }
 
 class ProposalBodyError(message: String?) : Throwable(message)
+class NotFound(message: String) : Throwable(message)
 class ForbiddenError(message: String?) : Throwable(message)

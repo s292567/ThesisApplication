@@ -207,6 +207,7 @@ Display proposals that contain query string (caps-insensitive) in any of their f
 - response status:
   - `200 OK`: All filtered proposals are being displayed
   - `401 Unauthorized`: The user is not logged in
+  - `404 Not Found`: The student was not found
   - `500 Internal Server Error`: Generic server error
 
 ## Insert Proposal
@@ -237,6 +238,7 @@ Display proposals that contain query string (caps-insensitive) in any of their f
   - `201 Created`: The proposal has been inserted in the DB
   - `400 Bad Request`: Error in the request body
   - `401 Unauthorized`: The user is not logged in
+  - `404 Not Found`: The professor was not found
   - `500 Internal Server Error`: Generic server error
 
 ## Apply to Proposal
@@ -253,6 +255,7 @@ Display proposals that contain query string (caps-insensitive) in any of their f
   - `201 Created`: The application to the proposal has been created
   - `404 Not Found`: The proposal has not been found
   - `401 Unauthorized`: The user is not logged in
+  - `409 Conflict`: The student already has an accepted application; or has a pending application for the specified proposal
   - `500 Internal Server Error`: Generic server error
 
 ## Accept an application

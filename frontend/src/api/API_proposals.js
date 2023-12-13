@@ -154,7 +154,6 @@ export const getProposalsByProfessorId = async (professorId) => {
     })
     .then((response) => {
       if (response.status === 200) {
-        // console.log("API getProposalsByProfessorId: ", response);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);
@@ -203,7 +202,6 @@ export const copyProposalById = async (proposalId) => {
     )
     .then((response) => {
       if (response.status === 201) {
-        // console.log("API getProposalsByProfessorId: ", response);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);
@@ -225,7 +223,6 @@ export const getProposalsByStudentId = async (studentId) => {
     })
     .then((response) => {
       if (response.status === 200) {
-        // console.log("API getProposalsByProfessorId: ", response);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);
@@ -248,7 +245,6 @@ export const getThesisStatusById = async (proposalId) => {
     })
     .then((response) => {
       if (response.status === 200) {
-        // console.log("API getProposalsByProfessorId: ", response);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);
