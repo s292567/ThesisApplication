@@ -16,7 +16,7 @@ import { useUserContext } from "../../contexts";
 import { useNavigate } from "react-router-dom";
 
 export default function VirtualClock({ virtualDate }) {
-  const { setVirtualDate, homeRoute } = useUserContext();
+  const { setVirtualDate } = useUserContext();
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -57,11 +57,12 @@ export default function VirtualClock({ virtualDate }) {
     try {
       await setVirtualClock(formattedDate);
       setVirtualDate(selectedDate);
+      navigate("/refresh");
+      navigate(-1);
     } catch (error) {
       console.log(error);
     } finally {
       handleClose();
-      navigate(homeRoute);
     }
   };
 
