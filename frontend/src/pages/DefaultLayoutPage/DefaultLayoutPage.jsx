@@ -13,7 +13,7 @@ const MyMain = styled(Box)({
 
 function DefaultLayoutPage() {
   // it will be possible to implement here the redirection to the specific dashboard
-  const { user } = useUserContext();
+  const { user, virtualDate } = useUserContext();
 
   return (
     <Box>
@@ -29,7 +29,7 @@ function DefaultLayoutPage() {
         {user ? (
           <>
             <Box sx={{ padding: "2rem" }} />
-            <VirtualClock />
+            <VirtualClock virtualDate={virtualDate} />
             <Box sx={{ padding: "3rem" }} />
           </>
         ) : null}
