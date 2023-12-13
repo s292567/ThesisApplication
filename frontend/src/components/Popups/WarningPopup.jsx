@@ -1,5 +1,6 @@
 // WarningPopup.jsx
 /* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useCallback } from "react";
 import {
   Snackbar,
@@ -133,7 +134,7 @@ export default function WarningPopup({
   );
 }
 
-const MyDialog = styled(Dialog)(({ theme }) => ({
+const MyDialog = styled(Dialog)(() => ({
   ".MuiPaper-root": {
     borderRadius: "20px",
     padding: "2rem",

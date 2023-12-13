@@ -1,4 +1,5 @@
 // FilterTag.jsx
+/* eslint-disable react/prop-types */
 import { Chip } from '@mui/material';
 
 export default function FilterTag({ label, onRemove }) {
