@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -11,10 +11,26 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { AccessTimeFilledRounded, Close } from "@mui/icons-material";
 import { PastelComponent } from "../index";
+import { getVirtualClock, setVirtualClock } from "../../api";
 
 export default function VirtualClock() {
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [minDate, setMinDate] = useState(dayjs());
+
+  useEffect(() => {
+    const fetchMinDate = async () => {
+      try {
+        return await getVirtualClock();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMinDate().then((res) => {
+      if(res === undefined) return;
+      setMinDate(dayjs(res));
+    });
+  }, []);
 
   const handleOpen = () => {
     setOpen(true);
@@ -28,13 +44,16 @@ export default function VirtualClock() {
     setSelectedDate(newValue);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const formattedDate = selectedDate.format("YYYY-MM-DD");
     console.log("Submitting date:", formattedDate);
-    // Replace this console.log with your API call
-    // yourApiFunction(formattedDate);
-
-    handleClose();
+    try{
+      await setVirtualClock(formattedDate);
+    }catch(error){
+      console.log(error);
+    }finally{
+      handleClose();
+    }    
   };
 
   return (
@@ -103,7 +122,7 @@ export default function VirtualClock() {
               label={"Expiration date"}
               date={selectedDate}
               onChange={handleDateChange}
-              minDate={dayjs()}
+              minDate={minDate}
               sx={{
                 backgroundColor: "white",
                 borderRadius: "20px",
@@ -117,14 +136,14 @@ export default function VirtualClock() {
                 },
                 "& .MuiTypography-root": {
                   // Targeting text, including month and year in the header
-                  
+
                   fontSize: "1.1rem", // Adjust the font size as needed
                 },
               }}
             />
           </LocalizationProvider>
         </DialogContent>
-        <DialogActions sx={{padding: "1rem", marginTop: "1.5rem"}}>
+        <DialogActions sx={{ padding: "1rem", marginTop: "1.5rem" }}>
           <PastelComponent
             bgColor={"#04009A"}
             textColor={"white"}
