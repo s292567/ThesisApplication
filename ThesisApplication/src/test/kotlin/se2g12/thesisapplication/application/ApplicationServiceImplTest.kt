@@ -118,7 +118,7 @@ class ApplicationServiceImplTest {
 
 
     @Test
-    fun `accept application with success`(){
+    fun `acceptApplicationWithSuccess`(){
         val applicationUUID = UUID.randomUUID()
         val studentId="s123456"
         val proposalId = UUID.randomUUID()
