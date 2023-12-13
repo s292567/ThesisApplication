@@ -11,6 +11,7 @@ import se2g12.thesisapplication.GroupDep.GroupDepRepository
 import se2g12.thesisapplication.application.Application
 import se2g12.thesisapplication.application.ApplicationRepository
 import se2g12.thesisapplication.degree.Degree
+import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.Teacher
@@ -31,6 +32,7 @@ class ProposalServiceImplTest {
     private lateinit var mockProposal: Proposal
     private lateinit var mockTeacher: Teacher
     private lateinit var date: LocalDate
+    private lateinit var degreeRepository: DegreeRepository
 
 
     @BeforeEach
@@ -40,7 +42,7 @@ class ProposalServiceImplTest {
         studentRepository = mockk()
         groupDepRepository = mockk()
         applicationRepository = mockk()
-        proposalService = ProposalServiceImpl(proposalRepository, teacherRepository, studentRepository, groupDepRepository, applicationRepository)
+        proposalService = ProposalServiceImpl(proposalRepository, teacherRepository, studentRepository, groupDepRepository, applicationRepository, degreeRepository)
         mockTeacher = mockk<Teacher>()
         date = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         mockProposal = Proposal("Advanced algorithms for image processing",

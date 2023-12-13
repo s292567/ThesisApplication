@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.assertThrows
+import se2g12.thesisapplication.Mail.EmailService
 import se2g12.thesisapplication.archive.ArchiveRepository
 import se2g12.thesisapplication.degree.Degree
 import se2g12.thesisapplication.proposal.Proposal
@@ -21,8 +22,9 @@ class ApplicationServiceImplTest {
     private val proposalRepository = mockk<ProposalRepository>()
     private val applicationRepository = mockk<ApplicationRepository>()
     private val archiveRepository = mockk<ArchiveRepository>()
+    private val emailService = mockk<EmailService>()
 
-    private val applicationService = ApplicationServiceImpl(applicationRepository, proposalRepository, studentRepository, archiveRepository)
+    private val applicationService = ApplicationServiceImpl(applicationRepository, proposalRepository, studentRepository, archiveRepository, emailService)
     private val mockProposal = mockk<Proposal>()
     @Test
     fun `test addNewApplication successful`() {
