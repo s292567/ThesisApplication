@@ -77,13 +77,20 @@ jib{
 }
 jacoco {
 	toolVersion="0.8.7"
+	reportsDirectory = file("${project.projectDir}/testReports")
 }
 tasks.test{
 	finalizedBy("jacocoTestReport")
 }
+tasks.jacocoTestReport {
+	reports {
+		xml.required = true
+		html.required = true
+	}
+}
 sonar {
 	properties {
-		property ("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+		property ("sonar.coverage.jacoco.xmlReportPaths", "testReports/test/jacocoTestReport.xml")
 		property("sonar.projectKey", "s292567_ThesisApplication")
 		property("sonar.organization", "s292567")
 		property("sonar.host.url", "https://sonarcloud.io")

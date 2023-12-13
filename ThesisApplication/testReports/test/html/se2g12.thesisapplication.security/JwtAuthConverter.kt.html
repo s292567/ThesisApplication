@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JwtAuthConverter.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.security</a> &gt; <span class="el_source">JwtAuthConverter.kt</span></div><h1>JwtAuthConverter.kt</h1><pre class="source lang-java linenums">package se2g12.thesisapplication.security
+
+import org.springframework.core.convert.converter.Converter
+import org.springframework.security.authentication.AbstractAuthenticationToken
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.oauth2.jwt.Jwt
+import org.springframework.security.oauth2.jwt.JwtClaimNames
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter
+import org.springframework.stereotype.Component
+import java.util.stream.Collectors
+import java.util.stream.Stream
+
+
+<span class="fc" id="L16">@Component</span>
+<span class="fc" id="L17">class JwtAuthConverter(private val properties: JwtAuthConverterProperties) : Converter&lt;Jwt?, AbstractAuthenticationToken?&gt; {</span>
+<span class="fc" id="L18">    private val jwtGrantedAuthoritiesConverter = JwtGrantedAuthoritiesConverter()</span>
+
+    override fun convert(jwt: Jwt): AbstractAuthenticationToken {
+
+<span class="nc" id="L22">        val authorities: Collection&lt;GrantedAuthority&gt; = Stream.concat(</span>
+<span class="nc" id="L23">            jwtGrantedAuthoritiesConverter.convert(jwt)!!.stream(),</span>
+<span class="nc" id="L24">            extractResourceRoles(jwt).stream()</span>
+<span class="nc" id="L25">        ).collect(Collectors.toSet())</span>
+<span class="nc" id="L26">        return JwtAuthenticationToken(jwt, authorities, getPrincipalClaimName(jwt))</span>
+    }
+
+    private fun getPrincipalClaimName(jwt: Jwt): String {
+<span class="nc" id="L30">        var claimName: String? = JwtClaimNames.SUB</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (properties.getPrincipalAttribute() != null) {</span>
+<span class="nc" id="L32">            claimName = properties.getPrincipalAttribute()</span>
+        }
+<span class="nc" id="L34">        return jwt.getClaim(claimName)</span>
+    }
+
+    private fun extractResourceRoles(jwt: Jwt): Collection&lt;GrantedAuthority&gt; {
+<span class="nc" id="L38">        val resourceAccess: Map&lt;String, Any&gt; = jwt.getClaim(&quot;realm_access&quot;)</span>
+<span class="nc" id="L39">        try {</span>
+<span class="nc" id="L40">            var resourceRoles: Collection&lt;String&gt; = resourceAccess[&quot;roles&quot;] as Collection&lt;String&gt;;</span>
+<span class="nc" id="L41">            return resourceRoles.stream().map { SimpleGrantedAuthority(&quot;ROLE_&quot; + it) }.collect(Collectors.toSet())</span>
+<span class="nc" id="L42">        }catch(ex:Exception){</span>
+<span class="nc" id="L43">            println(&quot;Error&quot;)</span>
+<span class="nc" id="L44">            return emptySet()</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

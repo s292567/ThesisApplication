@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserService.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.security</a> &gt; <span class="el_source">UserService.kt</span></div><h1>UserService.kt</h1><pre class="source lang-java linenums">package se2g12.thesisapplication.security
+
+import org.keycloak.admin.client.Keycloak
+import org.keycloak.representations.idm.CredentialRepresentation
+import org.keycloak.representations.idm.RoleRepresentation
+import org.keycloak.representations.idm.UserRepresentation
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.stereotype.Service
+import javax.ws.rs.core.Response
+
+
+<span class="fc" id="L13">@Service</span>
+<span class="fc" id="L14">class   UserService(</span>
+<span class="fc" id="L15">    private val keycloak: Keycloak,</span>
+<span class="fc" id="L16">    @Value(&quot;\${keycloak.realm}&quot;)</span>
+    private val realm: String
+) {
+
+    fun findByUsername(username: String): List&lt;UserRepresentation&gt; =
+<span class="fc" id="L21">        keycloak</span>
+<span class="fc" id="L22">            .realm(realm)</span>
+<span class="fc" id="L23">            .users()</span>
+<span class="fc" id="L24">            .search(username)</span>
+    fun findRoleByName(roleName: String): RoleRepresentation =
+<span class="fc" id="L26">        keycloak</span>
+<span class="fc" id="L27">            .realm(realm)</span>
+<span class="fc" id="L28">            .roles()</span>
+<span class="fc" id="L29">            .get(roleName)</span>
+<span class="fc" id="L30">            .toRepresentation()</span>
+
+    fun getRoleById(id:String): List&lt;String&gt; {
+
+<span class="nc" id="L34">        return keycloak</span>
+<span class="nc" id="L35">            .realm(realm)</span>
+<span class="nc" id="L36">            .users()</span>
+<span class="nc" id="L37">            .get(id)</span>
+<span class="nc" id="L38">            .roles()</span>
+<span class="nc" id="L39">            .realmLevel()</span>
+<span class="nc" id="L40">            .listAll()</span>
+<span class="nc" id="L41">            .map { it.toString() }</span>
+    }
+
+
+
+    fun assignRoleWithUsername(username: String, roleRepresentation: RoleRepresentation) {
+<span class="fc" id="L47">        var resultSearch= findByUsername(username)</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (resultSearch.isEmpty()){</span>
+<span class="fc" id="L49">            throw UsernameNotFoundException(&quot;Cannot find the username&quot;)</span>
+        }
+
+<span class="fc" id="L52">        val user=resultSearch.first()</span>
+
+<span class="fc" id="L54">        keycloak</span>
+<span class="fc" id="L55">            .realm(realm)</span>
+<span class="fc" id="L56">            .users()</span>
+<span class="fc" id="L57">            .get(user.id)</span>
+<span class="fc" id="L58">            .roles()</span>
+<span class="fc" id="L59">            .realmLevel()</span>
+<span class="fc" id="L60">            .add(listOf(roleRepresentation))</span>
+<span class="fc" id="L61">    }</span>
+
+    fun updateUser(usernameOld:String, userDTO: UserDTO, roleName: String) {         //da vedere
+<span class="nc" id="L64">        var resultSearch= findByUsername(usernameOld)</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (resultSearch.isEmpty()){</span>
+<span class="nc" id="L66">            throw UsernameNotFoundException(&quot;Cannot find the username&quot;)</span>
+        }
+<span class="nc" id="L68">        val role = findRoleByName(roleName);</span>
+<span class="nc" id="L69">        val user=resultSearch.first()</span>
+
+<span class="nc" id="L71">        keycloak</span>
+<span class="nc" id="L72">            .realm(realm)</span>
+<span class="nc" id="L73">            .users()</span>
+<span class="nc" id="L74">            .get(user.id)</span>
+<span class="nc" id="L75">            .update(prepareUserRepresentation(userDTO, preparePasswordRepresentation(userDTO.password)));</span>
+
+<span class="nc" id="L77">        keycloak</span>
+<span class="nc" id="L78">            .realm(realm)</span>
+<span class="nc" id="L79">            .users()</span>
+<span class="nc" id="L80">            .get(user.id)</span>
+<span class="nc" id="L81">            .roles()</span>
+<span class="nc" id="L82">            .realmLevel()</span>
+<span class="nc" id="L83">            .listAll()</span>
+<span class="nc" id="L84">            .clear()</span>
+<span class="nc" id="L85">        keycloak</span>
+<span class="nc" id="L86">            .realm(realm)</span>
+<span class="nc" id="L87">            .users()</span>
+<span class="nc" id="L88">            .get(user.id)</span>
+<span class="nc" id="L89">            .roles()</span>
+<span class="nc" id="L90">            .realmLevel()</span>
+<span class="nc" id="L91">            .add(listOf(findRoleByName(roleName)))</span>
+
+<span class="nc" id="L93">    }</span>
+
+    fun getListUserByRole(roleName: String):List&lt;UserDTO&gt;{
+<span class="nc" id="L96">        return keycloak.realm(realm).roles().get(roleName).getUserMembers().filter { user -&gt; user.isEnabled }.map { user -&gt; UserDTO(user.username,&quot;&quot;) };</span>
+    }
+
+
+    fun create(request: UserDTO): Response {
+<span class="nc" id="L101">        val password = preparePasswordRepresentation(request.password)</span>
+<span class="nc" id="L102">        val user = prepareUserRepresentation(request, password)</span>
+<span class="nc" id="L103">        return keycloak</span>
+<span class="nc" id="L104">            .realm(realm)</span>
+<span class="nc" id="L105">            .users()</span>
+<span class="nc" id="L106">            .create(user)</span>
+    }
+
+
+
+    private fun preparePasswordRepresentation(
+        password: String
+    ): CredentialRepresentation {
+<span class="nc" id="L114">        val cR = CredentialRepresentation()</span>
+<span class="nc" id="L115">        cR.isTemporary = false</span>
+<span class="nc" id="L116">        cR.type = CredentialRepresentation.PASSWORD</span>
+<span class="nc" id="L117">        cR.value = password</span>
+<span class="nc" id="L118">        return cR</span>
+    }
+
+    private fun prepareUserRepresentation(
+        request: UserDTO,
+        cR: CredentialRepresentation
+    ): UserRepresentation {
+<span class="nc" id="L125">        val newUser = UserRepresentation()</span>
+<span class="nc" id="L126">        newUser.username = request.username</span>
+<span class="nc" id="L127">        newUser.credentials = listOf(cR)</span>
+<span class="nc" id="L128">        newUser.isEnabled = true</span>
+<span class="nc" id="L129">        return newUser</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Proposal.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.proposal</a> &gt; <span class="el_source">Proposal.kt</span></div><h1>Proposal.kt</h1><pre class="source lang-java linenums">package se2g12.thesisapplication.proposal
+
+import jakarta.persistence.*
+import se2g12.thesisapplication.teacher.Teacher
+import java.time.LocalDate
+import java.util.*
+
+<span class="fc" id="L8">@Entity</span>
+<span class="pc" id="L9">data class Proposal(</span>
+<span class="fc" id="L10">    var title: String,</span>
+<span class="fc" id="L11">    @ManyToOne</span>
+    @JoinColumn(name = &quot;supervisor_id&quot;, referencedColumnName = &quot;id&quot;)
+<span class="fc" id="L13">    var supervisor: Teacher,  // Reference to the associated teacher</span>
+    // For simplicity, co-supervisors are stored as a comma-separated string of teacher IDs
+<span class="pc" id="L15">    var coSupervisors: String? = null,</span>
+    // For simplicity, keywords are stored as a comma-separated string
+<span class="fc" id="L17">    var keywords: String,</span>
+<span class="fc" id="L18">    var type: String,</span>
+    // For simplicity, groups are stored as a comma-separated string
+<span class="fc" id="L20">    var groups: String,</span>
+<span class="fc" id="L21">    var description: String,</span>
+<span class="pc" id="L22">    var requiredKnowledge: String?=null,</span>
+<span class="pc" id="L23">    var notes: String?=null,</span>
+<span class="fc" id="L24">    @Temporal(TemporalType.DATE)</span>
+<span class="fc" id="L25">    var expiration: LocalDate,</span>
+<span class="fc" id="L26">    var level: String,</span>
+<span class="fc" id="L27">    var cds: String</span>
+){
+    @Id
+    @GeneratedValue(generator = &quot;uuid2&quot;)
+<span class="fc" id="L31">    val id: UUID?=null</span>
+<span class="nc" id="L32">}</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

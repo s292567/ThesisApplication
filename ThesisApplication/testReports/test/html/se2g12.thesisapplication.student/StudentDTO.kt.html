@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StudentDTO.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.student</a> &gt; <span class="el_source">StudentDTO.kt</span></div><h1>StudentDTO.kt</h1><pre class="source lang-java linenums">package se2g12.thesisapplication.student
+
+
+import java.util.*
+
+<span class="pc" id="L6">data class StudentDTO(</span>
+<span class="pc" id="L7">    val id: String? = null,</span>
+<span class="pc" id="L8">    val surname: String? = null,</span>
+<span class="pc" id="L9">    val name: String? = null,</span>
+<span class="pc" id="L10">    val gender: String? = null,</span>
+<span class="pc" id="L11">    val nationality: String? = null,</span>
+<span class="pc" id="L12">    val email: String? = null,</span>
+<span class="pc" id="L13">    val codDegree: String? = null,</span>
+<span class="pc" id="L14">    val enrollmentYear: Int? = null</span>
+<span class="nc" id="L15">)</span>
+
+fun Student.toDTO() : StudentDTO {
+<span class="fc" id="L18">    return StudentDTO(</span>
+<span class="fc" id="L19">        this.id,</span>
+<span class="fc" id="L20">        this.surname,</span>
+<span class="fc" id="L21">        this.name,</span>
+<span class="fc" id="L22">        this.gender,</span>
+<span class="fc" id="L23">        this.nationality,</span>
+<span class="fc" id="L24">        this.email,</span>
+<span class="fc" id="L25">        this.degree!!.titleDegree,</span>
+<span class="fc" id="L26">        this.enrollmentYear</span>
+    )
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

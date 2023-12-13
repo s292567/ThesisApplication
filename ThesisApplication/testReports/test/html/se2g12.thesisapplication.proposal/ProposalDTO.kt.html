@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProposalDTO.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.proposal</a> &gt; <span class="el_source">ProposalDTO.kt</span></div><h1>ProposalDTO.kt</h1><pre class="source lang-java linenums">        package se2g12.thesisapplication.proposal
+
+        import jakarta.persistence.Temporal
+        import jakarta.persistence.TemporalType
+        import se2g12.thesisapplication.teacher.Teacher
+        import java.time.LocalDate
+        import java.util.*
+
+<span class="pc" id="L9">        data class ProposalDTO(</span>
+<span class="pc" id="L10">            val id: UUID?= null,</span>
+<span class="fc" id="L11">            val title: String,</span>
+<span class="fc" id="L12">            val supervisor: Teacher,</span>
+<span class="pc" id="L13">            val coSupervisors: List&lt;String&gt;? = null,</span>
+<span class="fc" id="L14">            val keywords: List&lt;String&gt;,</span>
+<span class="fc" id="L15">            val type: List&lt;String&gt;,</span>
+<span class="fc" id="L16">            val groups: List&lt;String&gt;,</span>
+<span class="fc" id="L17">            val description: String,</span>
+<span class="pc" id="L18">            val requiredKnowledge: String? = null,</span>
+<span class="pc" id="L19">            val notes: String? = null,</span>
+<span class="fc" id="L20">            @Temporal(TemporalType.DATE)</span>
+<span class="pc" id="L21">            var expiration : LocalDate,</span>
+<span class="fc" id="L22">            val level: String,</span>
+<span class="fc" id="L23">            val cds: List&lt;String&gt;</span>
+<span class="nc" id="L24">        )</span>
+
+        fun Proposal.toDTO(): ProposalDTO {
+<span class="pc bpc" id="L27" title="1 of 6 branches missed.">            val coSup = if (this.coSupervisors.isNullOrBlank())</span>
+<span class="fc" id="L28">                emptyList&lt;String&gt;()</span>
+            else
+<span class="fc" id="L30">                this.coSupervisors!!.split(&quot;, &quot;, &quot;,&quot;)</span>
+
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">            val key = if (this.keywords.isBlank())</span>
+<span class="nc" id="L33">                emptyList&lt;String&gt;()</span>
+            else
+<span class="fc" id="L35">                this.keywords.split(&quot;, &quot;, &quot;,&quot;)</span>
+
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">            val gr = if (this.groups.isBlank())</span>
+<span class="nc" id="L38">                emptyList&lt;String&gt;()</span>
+            else
+<span class="fc" id="L40">                this.groups.split(&quot;, &quot;, &quot;,&quot;)</span>
+
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">            val proposalTypes = if (this.type.isBlank())</span>
+<span class="nc" id="L43">                emptyList&lt;String&gt;()</span>
+            else
+<span class="fc" id="L45">                this.type.split(&quot;, &quot;, &quot;,&quot;)</span>
+
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">            val cdsNames = if (this.cds.isBlank())</span>
+<span class="nc" id="L48">                emptyList&lt;String&gt;()</span>
+            else
+<span class="fc" id="L50">                this.cds.split(&quot;, &quot;, &quot;,&quot;)</span>
+
+<span class="fc" id="L52">            return ProposalDTO(</span>
+<span class="fc" id="L53">                this.id,</span>
+<span class="fc" id="L54">                this.title,</span>
+<span class="fc" id="L55">                this.supervisor,</span>
+<span class="fc" id="L56">                coSup,</span>
+<span class="fc" id="L57">                key,</span>
+<span class="fc" id="L58">                proposalTypes,</span>
+<span class="fc" id="L59">                gr,</span>
+<span class="fc" id="L60">                this.description,</span>
+<span class="fc" id="L61">                this.requiredKnowledge,</span>
+<span class="fc" id="L62">                this.notes,</span>
+<span class="fc" id="L63">                this.expiration,</span>
+<span class="fc" id="L64">                this.level,</span>
+<span class="fc" id="L65">                cdsNames // cdsNames is converted to List&lt;String&gt;</span>
+            )
+        }
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

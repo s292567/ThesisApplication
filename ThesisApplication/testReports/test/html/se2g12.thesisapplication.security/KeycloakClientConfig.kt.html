@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KeycloakClientConfig.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.security</a> &gt; <span class="el_source">KeycloakClientConfig.kt</span></div><h1>KeycloakClientConfig.kt</h1><pre class="source lang-java linenums">package se2g12.thesisapplication.security
+
+import org.keycloak.OAuth2Constants.CLIENT_CREDENTIALS
+import org.keycloak.admin.client.Keycloak
+import org.keycloak.admin.client.KeycloakBuilder
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
+<span class="fc" id="L10">@Configuration</span>
+<span class="fc" id="L11">class KeycloakClientConfig(</span>
+<span class="fc" id="L12">    @Value(&quot;\${keycloak.credentials.secret}&quot;)</span>
+    private val secretKey: String,
+<span class="fc" id="L14">    @Value(&quot;\${keycloak.resource}&quot;)</span>
+    private val clientId: String,
+<span class="fc" id="L16">    @Value(&quot;\${keycloak.auth-server-url}&quot;)</span>
+    private val authUrl: String,
+<span class="fc" id="L18">    @Value(&quot;\${keycloak.realm}&quot;)</span>
+    private val realm: String
+) {
+    @Bean
+    fun keycloak(): Keycloak {
+<span class="fc" id="L23">        return KeycloakBuilder.builder()</span>
+<span class="fc" id="L24">            .grantType(CLIENT_CREDENTIALS)</span>
+<span class="fc" id="L25">            .serverUrl(authUrl)</span>
+<span class="fc" id="L26">            .realm(realm)</span>
+<span class="fc" id="L27">            .clientId(clientId)</span>
+<span class="fc" id="L28">            .clientSecret(secretKey)</span>
+<span class="fc" id="L29">            .build()</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

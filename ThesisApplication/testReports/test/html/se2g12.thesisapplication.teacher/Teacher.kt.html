@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Teacher.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.teacher</a> &gt; <span class="el_source">Teacher.kt</span></div><h1>Teacher.kt</h1><pre class="source lang-java linenums">package se2g12.thesisapplication.teacher
+
+import jakarta.persistence.*
+import se2g12.thesisapplication.GroupDep.GroupDep
+import se2g12.thesisapplication.department.Department
+
+<span class="fc" id="L7">@Entity</span>
+<span class="fc" id="L8">data class Teacher(</span>
+<span class="fc" id="L9">    val surname: String,</span>
+<span class="fc" id="L10">    val name: String,</span>
+<span class="fc" id="L11">    val email: String? = null,</span>
+<span class="fc" id="L12">    @ManyToOne</span>
+    @JoinColumn(name = &quot;codGroup&quot;, referencedColumnName = &quot;id&quot;)
+<span class="fc" id="L14">    val group: GroupDep? = null,</span>
+
+<span class="fc" id="L16">    @ManyToOne</span>
+    @JoinColumn(name = &quot;codDepartment&quot;, referencedColumnName = &quot;codDepartment&quot;)
+<span class="pc" id="L18">    val department: Department? = null,</span>
+<span class="fc" id="L19">    @Id</span>
+<span class="pc" id="L20">    val id: String? = null</span>
+){
+
+<span class="fc" id="L23">}</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
