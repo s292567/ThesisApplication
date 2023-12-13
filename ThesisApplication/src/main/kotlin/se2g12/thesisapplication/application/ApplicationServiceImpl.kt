@@ -24,15 +24,21 @@ class ApplicationServiceImpl (
     : ApplicationService {
 
     override fun addNewApplication(newApplication: NewApplicationDTO) {
-        val student=studentRepository.findById(newApplication.studentId).get()
+        checkApplicationConflicts(newApplication.studentId, newApplication.proposalId)
+        val student=studentRepository.findById(newApplication.studentId)
+            .orElseThrow { StudentNotFoundError("Student ${newApplication.studentId} not found") }
         val proposal=proposalRepository.findById(newApplication.proposalId)
-        if (proposal.isEmpty)
-            throw ProposalNotFoundError("Proposal ${newApplication.proposalId} not found")
-        val application=Application(student, proposal.get(), "pending")
+            .orElseThrow { ProposalNotFoundError("Proposal ${newApplication.proposalId} not found") }
+        val application=Application(student, proposal, "pending")
         applicationRepository.save(application)
-        emailService.sendHtmlEmail(proposal.get().supervisor.email,"added new application for proposal ${proposal.get().title}")
+        emailService.sendHtmlEmail(proposal.supervisor.email,"added new application for proposal ${proposal.title}")
     }
-
+    private fun checkApplicationConflicts(studentId: String, proposalId: UUID){
+        if (applicationRepository.findByStudentIdAndStatus(studentId, "accepted").isNotEmpty())
+            throw ApplicationConflictError("You ($studentId) already have an accepted application.")
+        if (applicationRepository.findByStudentIdAndProposalIdAndStatus(studentId, proposalId, "pending").isNotEmpty())
+            throw ApplicationConflictError("You ($studentId) already have a pending application for this proposal." )
+    }
     override fun declineApplication(applicationId: UUID) {
         val app=getModifiableApplication(applicationId)
         //notify declined student
@@ -60,24 +66,34 @@ class ApplicationServiceImpl (
     }
 
     override fun declineApplicationByProposalAndStudent(proposalId: UUID, studentId: String) {
-
-        var appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id
-        declineApplication(appId!!)
+        try {
+            val appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id
+            declineApplication(appId!!)
+        }
+        catch (e: NoSuchElementException){
+            throw ApplicationNotFoundError("Application by student $studentId for proposal $proposalId not found")
+        }
     }
 
     override fun acceptApplicationByProposalAndStudent(proposalId: UUID, studentId: String) {
-        var appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id
-        acceptApplication(appId!!)
+        try {
+            val appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id!!
+            acceptApplication(appId)
+        }
+        catch (e: NoSuchElementException){
+            throw ApplicationNotFoundError("Application by student $studentId for proposal $proposalId not found")
+        }
+
     }
 
     private fun getModifiableApplication(applicationId: UUID): Application{
-        val app= applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError(applicationId) }
+        val app= applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError("Application $applicationId not found") }
         if (app.status != "pending")
             throw NotModifiableApplicationError(applicationId, app.status!!)
         return app
     }
     override fun getApplicationProposalSupervisorId(applicationId: UUID): String {
-        val app = applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError(applicationId) }
+        val app = applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError("Application $applicationId not found") }
         return app.proposal.supervisor.id!!
     }
 
