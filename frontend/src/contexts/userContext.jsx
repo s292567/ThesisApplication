@@ -2,7 +2,6 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
 import { frontendRoutes as routes } from "../routes";
 import {AuthContext} from "react-oauth2-code-pkce";
-import dayjs from "dayjs";
 
 const UserContext = createContext(undefined);
 
@@ -20,8 +19,6 @@ const UserProvider = ({ children }) => {
   const [generalRoutes, setGeneralRoutes] = useState({
     theses: "/", // default value
   });
-
-  const [virtualDate, setVirtualDate] = useState(dayjs());
 
   useEffect(() => {
     if (!user && tokenData) {
@@ -72,9 +69,6 @@ const UserProvider = ({ children }) => {
     logout,
     homeRoute,
     generalRoutes,
-    
-    virtualDate,
-    setVirtualDate,
   };
 
   return (

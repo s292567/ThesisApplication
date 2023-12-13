@@ -1,3 +1,4 @@
+// VirtualClock.jsx
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -12,16 +13,14 @@ import dayjs from "dayjs";
 import { AccessTimeFilledRounded, Close } from "@mui/icons-material";
 import { PastelComponent } from "../index";
 import { getVirtualClock, setVirtualClock } from "../../api";
-import { useUserContext } from "../../contexts";
 import { useNavigate } from "react-router-dom";
 
 export default function VirtualClock({ virtualDate }) {
-  const { setVirtualDate } = useUserContext();
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(virtualDate);
-  const [minDate, setMinDate] = useState(virtualDate);
+  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [minDate, setMinDate] = useState(dayjs());
 
   useEffect(() => {
     const fetchMinDate = async () => {
@@ -29,7 +28,7 @@ export default function VirtualClock({ virtualDate }) {
         const minDate = await getVirtualClock();
         if (minDate !== null) {
           setMinDate(dayjs(minDate));
-          setVirtualDate(dayjs(minDate));
+          setSelectedDate(dayjs(minDate));
         }
       } catch (error) {
         console.log(error);
@@ -37,7 +36,7 @@ export default function VirtualClock({ virtualDate }) {
     };
 
     fetchMinDate();
-  }, [setVirtualDate]);
+  }, []);
 
   const handleOpen = () => {
     setOpen(true);
@@ -56,7 +55,7 @@ export default function VirtualClock({ virtualDate }) {
     console.log("Submitting date:", formattedDate);
     try {
       await setVirtualClock(formattedDate);
-      setVirtualDate(selectedDate);
+      /** Forced refresh  */
       navigate("/refresh");
       navigate(-1);
     } catch (error) {
