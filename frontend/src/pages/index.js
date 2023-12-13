@@ -9,6 +9,7 @@ import ProfessorProposalCreationPage from "./professorPages/ProfessorProposalCre
 import ProfessorApplicantsPage from "./ProfessorPages/ProfessorApplicantsPage.jsx";
 
 import DefaultLayoutPage from "./DefaultLayoutPage/DefaultLayoutPage";
+import RefreshComponentPage from "./DefaultLayoutPage/RefreshComponentPage.jsx";
 
 import ThesesPage from "./ThesesPage/ThesesPage.jsx";
 
@@ -16,6 +17,7 @@ import StudentApplicationsPage from "./studentPages/StudentApplicationsPage.jsx"
 
 export {
     DefaultLayoutPage,
+    RefreshComponentPage,
     LandingPage,
     LoginPage,
     PageNotFound,
