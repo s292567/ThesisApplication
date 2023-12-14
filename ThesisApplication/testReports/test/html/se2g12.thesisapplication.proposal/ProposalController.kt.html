@@ -169,7 +169,7 @@ import java.util.*
 <span class="fc" id="L169">                println(&quot;Proposal Expiration: $proposalExpiration, Current Date: $currentDate, End Date Value: $endDateValue&quot;)</span>
 
 <span class="pc bpc" id="L171" title="1 of 2 branches missed.">                if (endDateValue != null) {</span>
-<span class="pc bpc" id="L172" title="2 of 4 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate &amp;&amp; proposalExpiration &lt;= endDateValue</span>
+<span class="pc bpc" id="L172" title="1 of 4 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate &amp;&amp; proposalExpiration &lt;= endDateValue</span>
                 } else {
                     // If endDate is null, there's no upper limit for the expiration date
 <span class="nc bnc" id="L175" title="All 2 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate</span>
