@@ -1,35 +1,59 @@
 package se2g12.thesisapplication.proposal
 
+
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.transaction.annotation.Transactional
+import se2g12.thesisapplication.GroupDep.GroupDep
+import se2g12.thesisapplication.GroupDep.GroupDepRepository
+import se2g12.thesisapplication.application.Application
+import se2g12.thesisapplication.application.ApplicationRepository
+import se2g12.thesisapplication.archive.ArchiveRepository
+import se2g12.thesisapplication.archive.ArchiveService
+import se2g12.thesisapplication.degree.Degree
+import se2g12.thesisapplication.degree.DegreeRepository
+import se2g12.thesisapplication.department.Department
+import se2g12.thesisapplication.department.DepartmentRepository
+
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+
 
 import org.junit.jupiter.api.Assertions.*
-import org.springframework.beans.factory.annotation.Autowired
+
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
-import org.springframework.test.web.servlet.MockMvc
+
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import se2g12.thesisapplication.application.Application
-import se2g12.thesisapplication.application.ApplicationRepository
-import se2g12.thesisapplication.archive.Archive
-import se2g12.thesisapplication.archive.ArchiveService
-import se2g12.thesisapplication.degree.Degree
+
 import se2g12.thesisapplication.security.JwtAuthConverterProperties
+
 import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
 import java.util.Optional
 import java.util.UUID
 
@@ -260,6 +284,4 @@ class ProposalControllerTest(@Autowired val mockMvc: MockMvc)  {
         every { authentication.isAuthenticated } returns isAuthenticated
         every { authentication.name } returns name
         return authentication
-    }
-
-}
+    }}

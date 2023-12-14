@@ -7,21 +7,21 @@ import java.util.*
 
 
 <span class="fc" id="L9">@Entity</span>
-<span class="fc" id="L10">data class Application(</span>
+<span class="pc" id="L10">data class Application(</span>
 <span class="fc" id="L11">    @ManyToOne</span>
     @JoinColumn(name = &quot;student_id&quot;)
-<span class="fc" id="L13">    val student: Student,</span>
+<span class="nc" id="L13">    val student: Student,</span>
 
 <span class="fc" id="L15">    @ManyToOne</span>
     @JoinColumn(name = &quot;proposal_id&quot;)
-<span class="fc" id="L17">    val proposal: Proposal,</span>
+<span class="nc" id="L17">    val proposal: Proposal,</span>
 
-<span class="fc" id="L19">    val status: String?=&quot;pending&quot;,</span>
+<span class="pc" id="L19">    val status: String?=&quot;pending&quot;,</span>
 ){
     @Id
     @GeneratedValue(generator = &quot;uuid2&quot;)
-<span class="pc" id="L23">    var id: UUID?=null</span>
+<span class="nc" id="L23">    var id: UUID?=null</span>
 
-<span class="fc" id="L25">}</span>
+<span class="nc" id="L25">}</span>
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
