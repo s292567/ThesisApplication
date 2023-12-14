@@ -14,23 +14,19 @@ interface ProposalService {
     fun searchProposalByStudentCds(studentId: String, query: String? ): List<ProposalDTO>
 
     fun getDistinctSupervisors(): List<String>
-    // Retrieve distinct co-supervisor names
-    fun getDistinctCoSupervisors(): List<String>
+    fun findDistinctSupervisors(): List<String>
 
-    // Retrieve distinct proposal types
-    fun getDistinctProposalTypes(): List<String>
+    fun findDistinctCoSupervisors(): List<String>
 
-    // Retrieve distinct proposal levels
-    fun getDistinctProposalLevels(): List<String>
+    fun findDistinctProposalTypes(): List<String>
 
-    // Retrieve distinct proposal keywords
-    fun getDistinctProposalKeywords(): List<String>
+    fun findDistinctProposalLevels(): List<String>
 
-    // Retrieve distinct proposal groups
-    fun getDistinctProposalGroups(): List<String>
+    fun findDistinctProposalKeywords(): List<String>
 
-    // Retrieve distinct proposal cds
-    fun getDistinctProposalCds(): List<String>
+    fun findDistinctProposalGroups(): List<String>
+
+    fun findDistinctProposalCds(): List<String>
 
 }
 

@@ -2,13 +2,19 @@ package se2g12.thesisapplication.professor
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import se2g12.thesisapplication.archive.ArchiveServiceImpl
 import se2g12.thesisapplication.proposal.*
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.util.*
 
 @RestController
 @CrossOrigin
-class ProfessorController(private val proposalService: ProposalService,private val proposalRepository: ProposalRepository,private val teacherRepository: TeacherRepository) {
+class ProfessorController(
+    private val proposalService: ProposalService,
+    private val proposalRepository: ProposalRepository,
+    private val teacherRepository: TeacherRepository,
+    private val archiveService: ArchiveServiceImpl
+) {
 
     @PostMapping("/API/thesis/proposals/{professorId}")
     @ResponseStatus(HttpStatus.CREATED)
@@ -28,6 +34,6 @@ class ProfessorController(private val proposalService: ProposalService,private v
     }
     @GetMapping("/API/thesis/proposals/getProfessorProposals/{professorId}")
     fun getProposalByProfessorId(@PathVariable professorId:String):List<ProposalDTO> {
-        return proposalService.getProposalByProfessorId( professorId );
+        return proposalService.getProposalByProfessorId( professorId ).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
 }

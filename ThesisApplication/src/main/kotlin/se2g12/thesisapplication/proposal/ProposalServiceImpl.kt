@@ -180,28 +180,32 @@ class ProposalServiceImpl(
         return proposalRepository.findDistinctSupervisors()
     }
 
-    override fun getDistinctCoSupervisors(): List<String> {
-        return proposalRepository.findDistinctCoSupervisors()
+    override fun findDistinctSupervisors(): List<String> {
+        return proposalRepository.findDistinctSupervisors()
     }
 
-    override fun getDistinctProposalTypes(): List<String> {
-        return proposalRepository.findDistinctProposalTypes()
+    override fun findDistinctCoSupervisors(): List<String> {
+        return getAllProposals().flatMap { it.coSupervisors.orEmpty() }.distinct()
     }
 
-    override fun getDistinctProposalLevels(): List<String> {
-        return proposalRepository.findDistinctProposalLevels()
+    override fun findDistinctProposalTypes(): List<String> {
+        return getAllProposals().flatMap { it.type.orEmpty() }.distinct()
     }
 
-    override fun getDistinctProposalKeywords(): List<String> {
-        return proposalRepository.findDistinctProposalKeywords()
+    override fun findDistinctProposalLevels(): List<String> {
+        return getAllProposals().mapNotNull { it.level }.distinct()
     }
 
-    override fun getDistinctProposalGroups(): List<String> {
-        return proposalRepository.findDistinctProposalGroups()
+    override fun findDistinctProposalKeywords(): List<String> {
+        return getAllProposals().flatMap { it.keywords.orEmpty() }.distinct()
     }
 
-    override fun getDistinctProposalCds(): List<String> {
-        return proposalRepository.findDistinctProposalCds()
+    override fun findDistinctProposalGroups(): List<String> {
+        return getAllProposals().flatMap { it.groups.orEmpty() }.distinct()
+    }
+
+    override fun findDistinctProposalCds(): List<String> {
+        return getAllProposals().flatMap { it.cds.orEmpty() }.distinct()
     }
 
 }

@@ -38,10 +38,10 @@ import java.util.UUID
             throw UnauthorizedProfessorError(&quot;Cannot operate on applications to proposals of other professors&quot;)
         */
 
-<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (application.status == &quot;accepted&quot;) {</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (application.status == &quot;accepted&quot;) {</span>
 <span class="fc" id="L42">            applicationService.acceptApplicationByProposalAndStudent(application.proposalId, application.studentId)</span>
-<span class="nc bnc" id="L43" title="All 2 branches missed.">        }else if (application.status == &quot;declined&quot;) {</span>
-<span class="nc" id="L44">            applicationService.declineApplicationByProposalAndStudent(application.proposalId, application.studentId)</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        }else if (application.status == &quot;declined&quot;) {</span>
+<span class="fc" id="L44">            applicationService.declineApplicationByProposalAndStudent(application.proposalId, application.studentId)</span>
         }
 <span class="fc" id="L46">    }</span>
     @GetMapping(&quot;/API/thesis/applications/students&quot;)

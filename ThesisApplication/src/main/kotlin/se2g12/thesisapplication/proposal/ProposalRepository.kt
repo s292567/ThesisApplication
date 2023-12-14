@@ -36,29 +36,6 @@ interface ProposalRepository : JpaRepository<Proposal, UUID> {
     // Find distinct supervisor names
     @Query("SELECT DISTINCT CONCAT(p.supervisor.name, ' ', p.supervisor.surname) FROM Proposal p")
     fun findDistinctSupervisors(): List<String>
-    // Find distinct co-supervisor names
-    @Query("SELECT DISTINCT unnest(string_to_array(p.coSupervisors, ', ')) AS coSup FROM Proposal p")
-    fun findDistinctCoSupervisors(): List<String>
-
-    // Find distinct proposal types
-    @Query("SELECT DISTINCT unnest(string_to_array(p.type, ', ')) AS key FROM Proposal p")
-    fun findDistinctProposalTypes(): List<String>
-
-    // Find distinct proposal levels
-    @Query("SELECT DISTINCT p.level FROM Proposal p")
-    fun findDistinctProposalLevels(): List<String>
-
-    // Find distinct proposal keywords
-    @Query("SELECT DISTINCT unnest(string_to_array(p.keywords, ', ')) AS key FROM Proposal p")
-    fun findDistinctProposalKeywords(): List<String>
-
-    // Find distinct proposal groups
-    @Query("SELECT DISTINCT unnest(string_to_array(p.groups, ', ')) AS grp FROM Proposal p")
-    fun findDistinctProposalGroups(): List<String>
-
-    // Find distinct proposal cds
-    @Query("SELECT DISTINCT unnest(string_to_array(p.cds, ', ')) AS cds FROM Proposal p")
-    fun findDistinctProposalCds(): List<String>
 
     @Query("SELECT * FROM proposal WHERE supervisor_id = :supervisorId", nativeQuery = true)
     fun findAllBySupervisorId(supervisorId: String) : List<Proposal>

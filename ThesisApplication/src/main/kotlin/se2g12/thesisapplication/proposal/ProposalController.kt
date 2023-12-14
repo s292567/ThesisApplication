@@ -48,7 +48,7 @@ class ProposalController(private val proposalService:ProposalService,private val
     @GetMapping("API/thesis/proposals/cds")
 //    @PreAuthorize("hasRole('Student')")
     fun getProposalsByCds(@RequestParam cds: String): List<ProposalDTO> {
-        return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}.filter{archiveService.findByPropId(it.id!!).isEmpty()}
+        return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
     @GetMapping("API/thesis/proposals/getProposalsBySId/{studentId}")
     @PreAuthorize("hasRole('Student')")
@@ -217,48 +217,39 @@ class ProposalController(private val proposalService:ProposalService,private val
 
     @GetMapping("/API/thesis/proposals/supervisors")
     fun getDistinctSupervisorNames(): List<String> {
-        return proposalService.getDistinctSupervisors()
+        return proposalService.findDistinctSupervisors()
     }
 
     @GetMapping("/API/thesis/proposals/coSupervisors")
     fun getDistinctCoSupervisors(): List<String> {
-        return proposalService.getDistinctCoSupervisors()
-            .flatMap { it.split(", ") }
-            .distinct()
+        return proposalService.findDistinctCoSupervisors()
     }
 
     @GetMapping("/API/thesis/proposals/types")
     fun getDistinctProposalTypes(): List<String> {
-        return proposalService.getDistinctProposalTypes()
-            .flatMap { it.split(", ") }
-            .distinct()
+        return proposalService.findDistinctProposalTypes()
     }
 
     @GetMapping("/API/thesis/proposals/levels")
     fun getDistinctProposalLevels(): List<String> {
-        return proposalService.getDistinctProposalLevels()
+        return proposalService.findDistinctProposalLevels()
     }
 
     @GetMapping("/API/thesis/proposals/keywords")
     fun getDistinctProposalKeywords(): List<String> {
-        return proposalService.getDistinctProposalKeywords()
-            .flatMap { it.split(", ") }
-            .distinct()
+        return proposalService.findDistinctProposalKeywords()
     }
 
     @GetMapping("/API/thesis/proposals/groups")
     fun getDistinctProposalGroups(): List<String> {
-        return proposalService.getDistinctProposalGroups()
-            .flatMap { it.split(", ") }
-            .distinct()
+        return proposalService.findDistinctProposalGroups()
     }
 
     @GetMapping("/API/thesis/proposals/degrees")
     fun getDistinctProposalCds(): List<String> {
-        return proposalService.getDistinctProposalCds()
-            .flatMap { it.split(", ") }
-            .distinct()
+        return proposalService.findDistinctProposalCds()
     }
+
 
 }
 
