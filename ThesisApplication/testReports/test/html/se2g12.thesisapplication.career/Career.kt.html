@@ -10,20 +10,20 @@ import java.util.*
 <span class="nc" id="L10">    val codCourse: String? = null</span>
 <span class="nc" id="L11">) : Serializable</span>
 
-<span class="nc" id="L13">@Entity</span>
+<span class="fc" id="L13">@Entity</span>
 @IdClass(CareerId::class)
-<span class="nc" id="L15">data class Career(</span>
-<span class="nc" id="L16">    @Id</span>
+<span class="pc" id="L15">data class Career(</span>
+<span class="fc" id="L16">    @Id</span>
     @ManyToOne
     @JoinColumn(name = &quot;student_id&quot;, referencedColumnName = &quot;id&quot;)
-<span class="nc" id="L19">    val student: Student? = null,</span>
+<span class="pc" id="L19">    val student: Student? = null,</span>
 
-<span class="nc" id="L21">    @Id</span>
+<span class="fc" id="L21">    @Id</span>
     @Column(name = &quot;codCourse&quot;)
-<span class="nc" id="L23">    val codCourse: String? = null,</span>
-<span class="nc" id="L24">    val titleCourse: String? = null,</span>
-<span class="nc" id="L25">    val cfu: Int? = null,</span>
-<span class="nc" id="L26">    val grade: Int? = null,</span>
-<span class="nc" id="L27">    val date: Date? = null</span>
+<span class="pc" id="L23">    val codCourse: String? = null,</span>
+<span class="pc" id="L24">    val titleCourse: String? = null,</span>
+<span class="pc" id="L25">    val cfu: Int? = null,</span>
+<span class="pc" id="L26">    val grade: Int? = null,</span>
+<span class="pc" id="L27">    val date: Date? = null</span>
 <span class="nc" id="L28">)</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

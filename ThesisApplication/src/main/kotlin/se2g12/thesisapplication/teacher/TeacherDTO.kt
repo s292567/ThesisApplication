@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email
 import java.util.*
 
 data class TeacherDTO (
-    val id: UUID? = null,
+    val id: String? = null,
     val surname: String? = null,
     val name: String? = null,
     val email: Email? = null,

@@ -1,5 +1,5 @@
 package se2g12.thesisapplication.department
 
-class DepartmentDTO {
+class DepartmentDTO (
     val codDepartment: String? = null
-}
+)

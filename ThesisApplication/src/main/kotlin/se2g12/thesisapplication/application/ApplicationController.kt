@@ -24,7 +24,7 @@ class ApplicationController(private val applicationService: ApplicationService,p
 
         // if another status is passed, do nothing
     }
-    private fun updateApplicationById(professorId: String, application: ApplicationDTO){
+    /*private fun updateApplicationById(professorId: String, application: ApplicationDTO){
         if (professorId !== applicationService.getApplicationProposalSupervisorId(application.id!!))
             throw UnauthorizedProfessorError("Cannot operate on applications to proposals of other professors")
         if (application.status == "accepted") {
@@ -32,7 +32,7 @@ class ApplicationController(private val applicationService: ApplicationService,p
         }else if (application.status == "declined") {
             applicationService.declineApplication(application.id!!)
         }
-    }
+    }*/
     private fun updateApplicationByProposalAndStudent(application: ApplicationStatus){
         /*if (professorId !== applicationService.getApplicationProposalSupervisorId(application.id!!))
             throw UnauthorizedProfessorError("Cannot operate on applications to proposals of other professors")
