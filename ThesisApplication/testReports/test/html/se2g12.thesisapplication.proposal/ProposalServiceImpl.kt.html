@@ -169,7 +169,7 @@ import java.util.*
     override fun searchProposalByStudentCds(studentId: String, query: String? ): List&lt;ProposalDTO&gt; {
 <span class="fc" id="L170">        val cdsName = studentRepository.findById(studentId).orElseThrow { NotFound(&quot;Student $studentId not found&quot;) }</span>
 <span class="fc" id="L171">            .degree!!.titleDegree!!</span>
-<span class="pc bpc" id="L172" title="1 of 6 branches missed.">        if (query.isNullOrBlank())</span>
+<span class="fc bfc" id="L172" title="All 6 branches covered.">        if (query.isNullOrBlank())</span>
 <span class="fc" id="L173">            return getProposalsByCds(cdsName)</span>
 <span class="fc" id="L174">        return proposalRepository.searchProposals(query)</span>
         // filtering if the proposal contains the cdsCode in the field cds (a list of cds codes)
@@ -180,28 +180,32 @@ import java.util.*
 <span class="fc" id="L180">        return proposalRepository.findDistinctSupervisors()</span>
     }
 
-    override fun getDistinctCoSupervisors(): List&lt;String&gt; {
-<span class="fc" id="L184">        return proposalRepository.findDistinctCoSupervisors()</span>
+    override fun findDistinctSupervisors(): List&lt;String&gt; {
+<span class="fc" id="L184">        return proposalRepository.findDistinctSupervisors()</span>
     }
 
-    override fun getDistinctProposalTypes(): List&lt;String&gt; {
-<span class="fc" id="L188">        return proposalRepository.findDistinctProposalTypes()</span>
+    override fun findDistinctCoSupervisors(): List&lt;String&gt; {
+<span class="fc" id="L188">        return getAllProposals().flatMap { it.coSupervisors.orEmpty() }.distinct()</span>
     }
 
-    override fun getDistinctProposalLevels(): List&lt;String&gt; {
-<span class="fc" id="L192">        return proposalRepository.findDistinctProposalLevels()</span>
+    override fun findDistinctProposalTypes(): List&lt;String&gt; {
+<span class="fc" id="L192">        return getAllProposals().flatMap { it.type.orEmpty() }.distinct()</span>
     }
 
-    override fun getDistinctProposalKeywords(): List&lt;String&gt; {
-<span class="fc" id="L196">        return proposalRepository.findDistinctProposalKeywords()</span>
+    override fun findDistinctProposalLevels(): List&lt;String&gt; {
+<span class="fc" id="L196">        return getAllProposals().mapNotNull { it.level }.distinct()</span>
     }
 
-    override fun getDistinctProposalGroups(): List&lt;String&gt; {
-<span class="fc" id="L200">        return proposalRepository.findDistinctProposalGroups()</span>
+    override fun findDistinctProposalKeywords(): List&lt;String&gt; {
+<span class="fc" id="L200">        return getAllProposals().flatMap { it.keywords.orEmpty() }.distinct()</span>
     }
 
-    override fun getDistinctProposalCds(): List&lt;String&gt; {
-<span class="fc" id="L204">        return proposalRepository.findDistinctProposalCds()</span>
+    override fun findDistinctProposalGroups(): List&lt;String&gt; {
+<span class="fc" id="L204">        return getAllProposals().flatMap { it.groups.orEmpty() }.distinct()</span>
+    }
+
+    override fun findDistinctProposalCds(): List&lt;String&gt; {
+        return getAllProposals().flatMap { it.cds.orEmpty() }.distinct()
     }
 
 }

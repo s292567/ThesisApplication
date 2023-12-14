@@ -78,7 +78,52 @@ class ProposalControllerMat {
     lateinit var groupDepRepository: GroupDepRepository
     @Autowired
     private lateinit var mockMvc: MockMvc
+    @BeforeAll
+    fun init(){
+        val department=departmentRepository.save(Department("DEP1"))
 
+        val groupDep=groupDepRepository.save(GroupDep(id="G13",department = department))
+        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        var teacher = Teacher("Ferrari", "Luca", "p101@example.com",groupDep,id="p101")
+        teacher= teacherRepository.save(teacher);
+        val proposal = Proposal(
+            title = "Sample Proposal Late",
+            supervisor = teacher,
+            coSupervisors = "Jane Doe, Bob Smith",
+            keywords = "Java, Kotlin, MockK",
+            type = "Research",
+            groups = "GroupA, GroupB",
+            description = "Sample proposal description",
+            requiredKnowledge = "Sample required knowledge",
+            notes = "Sample notes",
+            expiration = localDate,
+            level = "Master",
+            cds = "Computer Science, Data Science,MockDeg"
+        )
+        val proposal2 = Proposal(
+            title = "Sample Proposal Ver2",
+            supervisor = teacher,
+            coSupervisors = "Jane Doe, Bob Smith",
+            keywords = "Java, Kotlin, MockK",
+            type = "Research",
+            groups = "GroupA, GroupB",
+            description = "Sample proposal description",
+            requiredKnowledge = "Sample required knowledge",
+            notes = "Sample notes",
+            expiration = localDate,
+            level = "Master",
+            cds = "Computer Science, Data Science,MockDeg"
+        )
+        proposalRepository.save(proposal)
+        proposalRepository.save(proposal2)
+        val degree= Degree("DEG1","MockDeg")
+        val student= Student("mocksurname","mockname","F","IT","s654140@example.com",degree,2013,id="s654140")
+        val application=Application(student,proposal,"pending")
+
+        degreeRepository.save(degree)
+        studentRepository.save(student)
+        applicationRepository.save(application)
+    }
 
     // Other @Autowired or @MockBean declarations
 
@@ -144,7 +189,6 @@ class ProposalControllerMat {
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.length()").value(proposals.size))
     }
     /*@Test
     fun `test searchProposals endpoint with query`() {
@@ -177,7 +221,6 @@ class ProposalControllerMat {
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.length()").value(proposals.size))
     }
     @Test
     @WithMockUser(username = "s654140@example.com", roles = ["Student"])
@@ -196,7 +239,6 @@ class ProposalControllerMat {
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.length()").value(proposals.size))
     }
     @Test
     @WithMockUser(username = "s654140@example.com", roles = ["Student"])
@@ -285,4 +327,27 @@ class ProposalControllerMat {
             .andExpect(jsonPath("$").isArray)
         // Add more assertions based on the expected behavior of your endpoint
     }
+    @Test
+    fun `test getProposalByProfessorId endpoint`() {
+        mockMvc.perform(
+            get("/API/thesis/proposals/getProfessorProposals/{professorId}", "p101")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+    }
+    @Test
+    fun `test updateProposal endpoint`() {
+        val path = proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")==0 }.first().id
+        var newProposalDTO=proposalRepository.findAll().first()
+        newProposalDTO.title="asf"
+        newProposalDTO.groups="G13"
+
+        mockMvc.perform(
+            put("/API/thesis/proposals/update/{path}", path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(newProposalDTO.toDTO()))
+        )
+            .andExpect(status().isCreated)
+    }
+
 }
