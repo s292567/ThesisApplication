@@ -48,7 +48,7 @@ class ProposalController(private val proposalService:ProposalService,private val
     @GetMapping("API/thesis/proposals/cds")
 //    @PreAuthorize("hasRole('Student')")
     fun getProposalsByCds(@RequestParam cds: String): List<ProposalDTO> {
-        return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}.filter{archiveService.findByPropId(it.id!!).isEmpty()}
+        return proposalService.getProposalsByCds(cds).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
     @GetMapping("API/thesis/proposals/getProposalsBySId/{studentId}")
     @PreAuthorize("hasRole('Student')")
