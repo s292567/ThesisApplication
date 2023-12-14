@@ -8,16 +8,16 @@ import se2g12.thesisapplication.department.Department
 <span class="fc" id="L8">data class Teacher(</span>
 <span class="fc" id="L9">    val surname: String,</span>
 <span class="fc" id="L10">    val name: String,</span>
-<span class="pc" id="L11">    val email: String? = null,</span>
+<span class="fc" id="L11">    val email: String? = null,</span>
 <span class="fc" id="L12">    @ManyToOne</span>
     @JoinColumn(name = &quot;codGroup&quot;, referencedColumnName = &quot;id&quot;)
-<span class="pc" id="L14">    val group: GroupDep? = null,</span>
+<span class="fc" id="L14">    val group: GroupDep? = null,</span>
 
 <span class="fc" id="L16">    @ManyToOne</span>
     @JoinColumn(name = &quot;codDepartment&quot;, referencedColumnName = &quot;codDepartment&quot;)
 <span class="fc" id="L18">    val department: Department? = null,</span>
 <span class="fc" id="L19">    @Id</span>
-<span class="pc" id="L20">    val id: String? = null</span>
+<span class="fc" id="L20">    val id: String? = null</span>
 ){
 
 <span class="fc" id="L23">}</span>

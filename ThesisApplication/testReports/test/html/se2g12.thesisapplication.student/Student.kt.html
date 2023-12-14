@@ -5,17 +5,17 @@ import java.util.*
 
 <span class="fc" id="L6">@Entity</span>
 <span class="fc" id="L7">data class Student (</span>
-<span class="pc" id="L8">    val surname:String?=null,</span>
-<span class="pc" id="L9">    val name:String?=null,</span>
-<span class="pc" id="L10">    val gender:String?=null,</span>
-<span class="pc" id="L11">    val nationality:String?=null,</span>
-<span class="pc" id="L12">    val email: String?=null,</span>
+<span class="fc" id="L8">    val surname:String?=null,</span>
+<span class="fc" id="L9">    val name:String?=null,</span>
+<span class="fc" id="L10">    val gender:String?=null,</span>
+<span class="fc" id="L11">    val nationality:String?=null,</span>
+<span class="fc" id="L12">    val email: String?=null,</span>
 <span class="fc" id="L13">    @ManyToOne</span>
     @JoinColumn(name = &quot;codDegree&quot;, referencedColumnName = &quot;codDegree&quot;)
-<span class="pc" id="L15">    val degree: Degree? = null,</span>
-<span class="pc" id="L16">    val enrollmentYear:Int?=null,</span>
+<span class="fc" id="L15">    val degree: Degree? = null,</span>
+<span class="fc" id="L16">    val enrollmentYear:Int?=null,</span>
 <span class="fc" id="L17">    @Id</span>
-<span class="pc" id="L18">    val id: String?=null</span>
+<span class="fc" id="L18">    val id: String?=null</span>
 ){
 
 <span class="fc" id="L21">}</span>

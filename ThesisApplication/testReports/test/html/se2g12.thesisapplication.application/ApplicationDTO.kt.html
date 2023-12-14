@@ -2,14 +2,14 @@
 
 import java.util.UUID
 
-<span class="nc" id="L5">data class ApplicationDTO (</span>
-<span class="nc" id="L6">    var id:UUID?,</span>
-<span class="nc" id="L7">    var studentId:String?,</span>
-<span class="nc" id="L8">    var proposalId:UUID?,</span>
-<span class="nc" id="L9">    var status: String?</span>
+<span class="fc" id="L5">data class ApplicationDTO (</span>
+<span class="pc" id="L6">    var id:UUID?,</span>
+<span class="pc" id="L7">    var studentId:String?,</span>
+<span class="pc" id="L8">    var proposalId:UUID?,</span>
+<span class="pc" id="L9">    var status: String?</span>
 )
 
 fun Application.toDTO(): ApplicationDTO{
-<span class="nc" id="L13">    return ApplicationDTO(this.id, this.student.id!!, this.proposal.id!!, this.status!!)</span>
+<span class="fc" id="L13">    return ApplicationDTO(this.id, this.student.id!!, this.proposal.id!!, this.status!!)</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

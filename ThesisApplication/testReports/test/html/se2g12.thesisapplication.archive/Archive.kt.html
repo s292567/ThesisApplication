@@ -4,11 +4,11 @@ import jakarta.persistence.*
 import se2g12.thesisapplication.proposal.Proposal
 import java.util.*
 
-<span class="nc" id="L7">@Entity</span>
-<span class="nc" id="L8">data class Archive(</span>
-<span class="nc" id="L9">    @OneToOne</span>
+<span class="fc" id="L7">@Entity</span>
+<span class="fc" id="L8">data class Archive(</span>
+<span class="fc" id="L9">    @OneToOne</span>
     @JoinColumn(name = &quot;proposal_id&quot;, referencedColumnName = &quot;id&quot;)
-<span class="nc" id="L11">    val proposal: Proposal</span>
+<span class="fc" id="L11">    val proposal: Proposal</span>
 ){
     @Id
     @GeneratedValue(generator = &quot;uuid2&quot;)

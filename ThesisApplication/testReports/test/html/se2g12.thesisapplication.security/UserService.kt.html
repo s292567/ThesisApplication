@@ -18,16 +18,16 @@ import javax.ws.rs.core.Response
 ) {
 
     fun findByUsername(username: String): List&lt;UserRepresentation&gt; =
-<span class="nc" id="L21">        keycloak</span>
-<span class="nc" id="L22">            .realm(realm)</span>
-<span class="nc" id="L23">            .users()</span>
-<span class="nc" id="L24">            .search(username)</span>
+<span class="fc" id="L21">        keycloak</span>
+<span class="fc" id="L22">            .realm(realm)</span>
+<span class="fc" id="L23">            .users()</span>
+<span class="fc" id="L24">            .search(username)</span>
     fun findRoleByName(roleName: String): RoleRepresentation =
-<span class="nc" id="L26">        keycloak</span>
-<span class="nc" id="L27">            .realm(realm)</span>
-<span class="nc" id="L28">            .roles()</span>
-<span class="nc" id="L29">            .get(roleName)</span>
-<span class="nc" id="L30">            .toRepresentation()</span>
+<span class="fc" id="L26">        keycloak</span>
+<span class="fc" id="L27">            .realm(realm)</span>
+<span class="fc" id="L28">            .roles()</span>
+<span class="fc" id="L29">            .get(roleName)</span>
+<span class="fc" id="L30">            .toRepresentation()</span>
 
     fun getRoleById(id:String): List&lt;String&gt; {
 
@@ -44,21 +44,21 @@ import javax.ws.rs.core.Response
 
 
     fun assignRoleWithUsername(username: String, roleRepresentation: RoleRepresentation) {
-<span class="nc" id="L47">        var resultSearch= findByUsername(username)</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">        if (resultSearch.isEmpty()){</span>
-<span class="nc" id="L49">            throw UsernameNotFoundException(&quot;Cannot find the username&quot;)</span>
+<span class="fc" id="L47">        var resultSearch= findByUsername(username)</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (resultSearch.isEmpty()){</span>
+<span class="fc" id="L49">            throw UsernameNotFoundException(&quot;Cannot find the username&quot;)</span>
         }
 
-<span class="nc" id="L52">        val user=resultSearch.first()</span>
+<span class="fc" id="L52">        val user=resultSearch.first()</span>
 
-<span class="nc" id="L54">        keycloak</span>
-<span class="nc" id="L55">            .realm(realm)</span>
-<span class="nc" id="L56">            .users()</span>
-<span class="nc" id="L57">            .get(user.id)</span>
-<span class="nc" id="L58">            .roles()</span>
-<span class="nc" id="L59">            .realmLevel()</span>
-<span class="nc" id="L60">            .add(listOf(roleRepresentation))</span>
-<span class="nc" id="L61">    }</span>
+<span class="fc" id="L54">        keycloak</span>
+<span class="fc" id="L55">            .realm(realm)</span>
+<span class="fc" id="L56">            .users()</span>
+<span class="fc" id="L57">            .get(user.id)</span>
+<span class="fc" id="L58">            .roles()</span>
+<span class="fc" id="L59">            .realmLevel()</span>
+<span class="fc" id="L60">            .add(listOf(roleRepresentation))</span>
+<span class="fc" id="L61">    }</span>
 
     fun updateUser(usernameOld:String, userDTO: UserDTO, roleName: String) {         //da vedere
 <span class="nc" id="L64">        var resultSearch= findByUsername(usernameOld)</span>

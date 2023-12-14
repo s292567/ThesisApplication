@@ -1,4 +1,5 @@
 package se2g12.thesisapplication.proposal
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
@@ -23,8 +24,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.transaction.annotation.Transactional
 import se2g12.thesisapplication.GroupDep.GroupDep
 import se2g12.thesisapplication.GroupDep.GroupDepRepository
@@ -51,6 +51,9 @@ import java.time.format.DateTimeFormatter
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureMockMvc(addFilters = false)
 class ProposalControllerMat {
+    @Autowired
+    private lateinit var objectMapper: ObjectMapper
+
     @Autowired
     lateinit var archiveRepository: ArchiveRepository
 
@@ -98,7 +101,7 @@ class ProposalControllerMat {
             notes = "Sample notes",
             expiration = localDate,
             level = "Master",
-            cds = "Computer Science, Data Science"
+            cds = "Computer Science, Data Science,MockDeg"
         )
         val proposal2 = Proposal(
             title = "Sample Proposal Ver2",
@@ -112,7 +115,7 @@ class ProposalControllerMat {
             notes = "Sample notes",
             expiration = localDate,
             level = "Master",
-            cds = "Computer Science, Data Science"
+            cds = "Computer Science, Data Science,MockDeg"
         )
         proposalRepository.save(proposal)
         proposalRepository.save(proposal2)
@@ -156,5 +159,161 @@ class ProposalControllerMat {
             .andExpect(MockMvcResultMatchers.jsonPath("$").value(false))
     }
 
-// Add more tests for other endpoints as needed
+    @Test
+    fun `test getProposalsByCds endpoint`() {
+        // Mock data
+        val cds = "Computer Science"  // Replace with your actual CDS value
+        val proposal1 = proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")==0 }.first().toDTO()
+        val proposal2 = proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")!=0 }.first().toDTO()
+        val proposals = listOf(proposal1, proposal2)
+
+
+        // Perform the request and assert the response
+        mockMvc.perform(
+            get("/API/thesis/proposals/cds")
+                .param("cds", cds)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(proposals.size))
+    }
+    /*@Test
+    fun `test searchProposals endpoint with query`() {
+        // Mock data
+        val query = "your_search_query"  // Replace with your actual search query
+        val proposal1 = proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")==0 }.first().toDTO()
+        val proposal2 = proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")!=0 }.first().toDTO()
+        val proposals = listOf(proposal1, proposal2)
+
+
+        mockMvc.perform(
+            get("/API/thesis/proposals/search-text")
+                .param("query", query)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(proposals.size))
+    }*/
+    @Test
+    fun `test searchProposals endpoint without query`() {
+        // Mock data
+        val proposal1 = proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")==0 }.first().toDTO()
+        val proposal2 = proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")!=0 }.first().toDTO()
+        val proposals = listOf(proposal1, proposal2)
+
+
+        // Perform the request and assert the response
+        mockMvc.perform(
+            get("/API/thesis/proposals/search-text")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(proposals.size))
+    }
+    @Test
+    @WithMockUser(username = "s654140@example.com", roles = ["Student"])
+    fun `test searchProposalsByStudentCds endpoint without query`() {
+        // Mock data
+        val studentId = "s654140"  // Replace with your actual student ID
+        val proposal1 = proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")==0 }.first().toDTO()
+        val proposal2 = proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")!=0 }.first().toDTO()
+        val proposals = listOf(proposal1, proposal2)
+
+
+
+        // Perform the request and assert the response
+        mockMvc.perform(
+            get("/API/thesis/proposals/search/{studentId}", studentId)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(proposals.size))
+    }
+    @Test
+    @WithMockUser(username = "s654140@example.com", roles = ["Student"])
+    fun `test searchProposalsCustom endpoint student`() {
+        // Mock data
+        val filterCriteria = ProposalFilterCriteria("Luca Ferrari","Jane Doe".split(","),"Java".split(",")
+            ,cds = "Computer Science, Data Science,MockDeg".split(","), endDate = LocalDate.parse("2020-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+            groups="GroupA, GroupB".split(","), queryString = null,types = "Research".split(",")
+            )
+
+
+
+        // Perform the request and assert the response
+        mockMvc.perform(
+            post("/API/thesis/proposals/search/")
+                .content("""${objectMapper.writeValueAsString(filterCriteria)}""")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+        // Add more assertions based on the expected behavior of your endpoint
+    }
+    @Test
+    @WithMockUser(username = "p101@example.com", roles = ["Professor"])
+    fun `test copyProposal endpoint`() {
+
+        var proposalId=proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")==0 }.first().id
+        mockMvc.perform(
+            post("/API/thesis/proposals/copy/{proposalId}", proposalId)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isCreated)
+        // Add more assertions based on the expected behavior of your endpoint
+    }
+    @Test
+    @WithMockUser(username = "p101@example.com", roles = ["Professor"])
+    fun `test deleteProposal endpoint`() {
+
+        var proposalId=proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")==0 }.first().id
+        mockMvc.perform(
+            delete("/API/thesis/proposals/delete/{proposalId}", proposalId)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isNoContent)
+    }
+    @Test
+    fun `test getDistinctSupervisorNames endpoint`() {
+        performAndAssert("/API/thesis/proposals/supervisors")
+    }
+
+
+    @Test
+    fun `test getDistinctProposalLevels endpoint`() {
+        performAndAssert("/API/thesis/proposals/levels")
+    }
+    /*@Test
+    fun `test getDistinctCoSupervisors endpoint`() {
+        performAndAssert("/API/thesis/proposals/coSupervisors")
+    }
+
+    @Test
+    fun `test getDistinctProposalTypes endpoint`() {
+        performAndAssert("/API/thesis/proposals/types")
+    }
+
+    @Test
+    fun `test getDistinctProposalKeywords endpoint`() {
+        performAndAssert("/API/thesis/proposals/keywords")
+    }
+
+    @Test
+    fun `test getDistinctProposalGroups endpoint`() {
+        performAndAssert("/API/thesis/proposals/groups")
+    }
+
+    @Test
+    fun `test getDistinctProposalCds endpoint`() {
+        performAndAssert("/API/thesis/proposals/degrees")
+    }*/
+
+    private fun performAndAssert(endpoint: String) {
+        mockMvc.perform(
+            get(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$").isArray)
+        // Add more assertions based on the expected behavior of your endpoint
+    }
 }
