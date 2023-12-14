@@ -28,82 +28,33 @@ import javax.ws.rs.core.Response
 <span class="fc" id="L28">            .roles()</span>
 <span class="fc" id="L29">            .get(roleName)</span>
 <span class="fc" id="L30">            .toRepresentation()</span>
-
-    fun getRoleById(id:String): List&lt;String&gt; {
-
-<span class="nc" id="L34">        return keycloak</span>
-<span class="nc" id="L35">            .realm(realm)</span>
-<span class="nc" id="L36">            .users()</span>
-<span class="nc" id="L37">            .get(id)</span>
-<span class="nc" id="L38">            .roles()</span>
-<span class="nc" id="L39">            .realmLevel()</span>
-<span class="nc" id="L40">            .listAll()</span>
-<span class="nc" id="L41">            .map { it.toString() }</span>
-    }
-
-
-
     fun assignRoleWithUsername(username: String, roleRepresentation: RoleRepresentation) {
-<span class="fc" id="L47">        var resultSearch= findByUsername(username)</span>
-<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (resultSearch.isEmpty()){</span>
-<span class="fc" id="L49">            throw UsernameNotFoundException(&quot;Cannot find the username&quot;)</span>
+<span class="fc" id="L32">        var resultSearch= findByUsername(username)</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        if (resultSearch.isEmpty()){</span>
+<span class="fc" id="L34">            throw UsernameNotFoundException(&quot;Cannot find the username&quot;)</span>
         }
 
-<span class="fc" id="L52">        val user=resultSearch.first()</span>
+<span class="fc" id="L37">        val user=resultSearch.first()</span>
 
-<span class="fc" id="L54">        keycloak</span>
-<span class="fc" id="L55">            .realm(realm)</span>
-<span class="fc" id="L56">            .users()</span>
-<span class="fc" id="L57">            .get(user.id)</span>
-<span class="fc" id="L58">            .roles()</span>
-<span class="fc" id="L59">            .realmLevel()</span>
-<span class="fc" id="L60">            .add(listOf(roleRepresentation))</span>
-<span class="fc" id="L61">    }</span>
-
-    fun updateUser(usernameOld:String, userDTO: UserDTO, roleName: String) {         //da vedere
-<span class="nc" id="L64">        var resultSearch= findByUsername(usernameOld)</span>
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (resultSearch.isEmpty()){</span>
-<span class="nc" id="L66">            throw UsernameNotFoundException(&quot;Cannot find the username&quot;)</span>
-        }
-<span class="nc" id="L68">        val role = findRoleByName(roleName);</span>
-<span class="nc" id="L69">        val user=resultSearch.first()</span>
-
-<span class="nc" id="L71">        keycloak</span>
-<span class="nc" id="L72">            .realm(realm)</span>
-<span class="nc" id="L73">            .users()</span>
-<span class="nc" id="L74">            .get(user.id)</span>
-<span class="nc" id="L75">            .update(prepareUserRepresentation(userDTO, preparePasswordRepresentation(userDTO.password)));</span>
-
-<span class="nc" id="L77">        keycloak</span>
-<span class="nc" id="L78">            .realm(realm)</span>
-<span class="nc" id="L79">            .users()</span>
-<span class="nc" id="L80">            .get(user.id)</span>
-<span class="nc" id="L81">            .roles()</span>
-<span class="nc" id="L82">            .realmLevel()</span>
-<span class="nc" id="L83">            .listAll()</span>
-<span class="nc" id="L84">            .clear()</span>
-<span class="nc" id="L85">        keycloak</span>
-<span class="nc" id="L86">            .realm(realm)</span>
-<span class="nc" id="L87">            .users()</span>
-<span class="nc" id="L88">            .get(user.id)</span>
-<span class="nc" id="L89">            .roles()</span>
-<span class="nc" id="L90">            .realmLevel()</span>
-<span class="nc" id="L91">            .add(listOf(findRoleByName(roleName)))</span>
-
-<span class="nc" id="L93">    }</span>
-
-    fun getListUserByRole(roleName: String):List&lt;UserDTO&gt;{
-<span class="nc" id="L96">        return keycloak.realm(realm).roles().get(roleName).getUserMembers().filter { user -&gt; user.isEnabled }.map { user -&gt; UserDTO(user.username,&quot;&quot;) };</span>
-    }
+<span class="fc" id="L39">        keycloak</span>
+<span class="fc" id="L40">            .realm(realm)</span>
+<span class="fc" id="L41">            .users()</span>
+<span class="fc" id="L42">            .get(user.id)</span>
+<span class="fc" id="L43">            .roles()</span>
+<span class="fc" id="L44">            .realmLevel()</span>
+<span class="fc" id="L45">            .add(listOf(roleRepresentation))</span>
+<span class="fc" id="L46">    }</span>
 
 
-    fun create(request: UserDTO): Response {
-<span class="nc" id="L101">        val password = preparePasswordRepresentation(request.password)</span>
-<span class="nc" id="L102">        val user = prepareUserRepresentation(request, password)</span>
-<span class="nc" id="L103">        return keycloak</span>
-<span class="nc" id="L104">            .realm(realm)</span>
-<span class="nc" id="L105">            .users()</span>
-<span class="nc" id="L106">            .create(user)</span>
+
+
+    /*fun create(request: UserDTO): Response {
+        val password = preparePasswordRepresentation(request.password)
+        val user = prepareUserRepresentation(request, password)
+        return keycloak
+            .realm(realm)
+            .users()
+            .create(user)
     }
 
 
@@ -111,22 +62,22 @@ import javax.ws.rs.core.Response
     private fun preparePasswordRepresentation(
         password: String
     ): CredentialRepresentation {
-<span class="nc" id="L114">        val cR = CredentialRepresentation()</span>
-<span class="nc" id="L115">        cR.isTemporary = false</span>
-<span class="nc" id="L116">        cR.type = CredentialRepresentation.PASSWORD</span>
-<span class="nc" id="L117">        cR.value = password</span>
-<span class="nc" id="L118">        return cR</span>
+        val cR = CredentialRepresentation()
+        cR.isTemporary = false
+        cR.type = CredentialRepresentation.PASSWORD
+        cR.value = password
+        return cR
     }
 
     private fun prepareUserRepresentation(
         request: UserDTO,
         cR: CredentialRepresentation
     ): UserRepresentation {
-<span class="nc" id="L125">        val newUser = UserRepresentation()</span>
-<span class="nc" id="L126">        newUser.username = request.username</span>
-<span class="nc" id="L127">        newUser.credentials = listOf(cR)</span>
-<span class="nc" id="L128">        newUser.isEnabled = true</span>
-<span class="nc" id="L129">        return newUser</span>
-    }
+        val newUser = UserRepresentation()
+        newUser.username = request.username
+        newUser.credentials = listOf(cR)
+        newUser.isEnabled = true
+        return newUser
+    }*/
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

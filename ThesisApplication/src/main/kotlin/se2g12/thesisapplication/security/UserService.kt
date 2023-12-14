@@ -28,21 +28,6 @@ class   UserService(
             .roles()
             .get(roleName)
             .toRepresentation()
-
-    fun getRoleById(id:String): List<String> {
-
-        return keycloak
-            .realm(realm)
-            .users()
-            .get(id)
-            .roles()
-            .realmLevel()
-            .listAll()
-            .map { it.toString() }
-    }
-
-
-
     fun assignRoleWithUsername(username: String, roleRepresentation: RoleRepresentation) {
         var resultSearch= findByUsername(username)
         if (resultSearch.isEmpty()){
@@ -60,44 +45,10 @@ class   UserService(
             .add(listOf(roleRepresentation))
     }
 
-    fun updateUser(usernameOld:String, userDTO: UserDTO, roleName: String) {         //da vedere
-        var resultSearch= findByUsername(usernameOld)
-        if (resultSearch.isEmpty()){
-            throw UsernameNotFoundException("Cannot find the username")
-        }
-        val role = findRoleByName(roleName);
-        val user=resultSearch.first()
-
-        keycloak
-            .realm(realm)
-            .users()
-            .get(user.id)
-            .update(prepareUserRepresentation(userDTO, preparePasswordRepresentation(userDTO.password)));
-
-        keycloak
-            .realm(realm)
-            .users()
-            .get(user.id)
-            .roles()
-            .realmLevel()
-            .listAll()
-            .clear()
-        keycloak
-            .realm(realm)
-            .users()
-            .get(user.id)
-            .roles()
-            .realmLevel()
-            .add(listOf(findRoleByName(roleName)))
-
-    }
-
-    fun getListUserByRole(roleName: String):List<UserDTO>{
-        return keycloak.realm(realm).roles().get(roleName).getUserMembers().filter { user -> user.isEnabled }.map { user -> UserDTO(user.username,"") };
-    }
 
 
-    fun create(request: UserDTO): Response {
+
+    /*fun create(request: UserDTO): Response {
         val password = preparePasswordRepresentation(request.password)
         val user = prepareUserRepresentation(request, password)
         return keycloak
@@ -127,5 +78,5 @@ class   UserService(
         newUser.credentials = listOf(cR)
         newUser.isEnabled = true
         return newUser
-    }
+    }*/
 }
