@@ -169,7 +169,7 @@ import java.util.*
     override fun searchProposalByStudentCds(studentId: String, query: String? ): List&lt;ProposalDTO&gt; {
 <span class="fc" id="L170">        val cdsName = studentRepository.findById(studentId).orElseThrow { NotFound(&quot;Student $studentId not found&quot;) }</span>
 <span class="fc" id="L171">            .degree!!.titleDegree!!</span>
-<span class="fc bfc" id="L172" title="All 6 branches covered.">        if (query.isNullOrBlank())</span>
+<span class="pc bpc" id="L172" title="1 of 6 branches missed.">        if (query.isNullOrBlank())</span>
 <span class="fc" id="L173">            return getProposalsByCds(cdsName)</span>
 <span class="fc" id="L174">        return proposalRepository.searchProposals(query)</span>
         // filtering if the proposal contains the cdsCode in the field cds (a list of cds codes)
