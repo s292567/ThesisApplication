@@ -56,14 +56,14 @@ sections:
 - Unit Testing:
   - Total hours estimated
   - Total hours spent
-  - Nr of automated unit test cases 
+  - Nr of automated unit test cases 10
   - Coverage (if available)
 - E2E testing:
   - Total hours estimated
   - Total hours spent
 - Code review 
-  - Total hours estimated 
-  - Total hours spent
+  - Total hours estimated 3 hours
+  - Total hours spent 3 hours
   
 
 
