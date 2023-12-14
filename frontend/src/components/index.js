@@ -34,6 +34,8 @@ import VirtualClock from "./GeneralComponents/VirtualClock.jsx";
 
 import CustomAutocomplete from "./GeneralComponents/CustomAutocomplete.jsx";
 
+import ApplyToThesisPopup from "./Popups/ApplyToThesisPopup.jsx";
+
 export {
     Navbar,
     LoggedInNavbar,
@@ -44,6 +46,8 @@ export {
     ThesisRow,
     ThesisForm,
     CustomAutocomplete,
+
+    ApplyToThesisPopup,
 
     MyOutlinedButton,
     PastelComponent,

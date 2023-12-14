@@ -1,6 +1,6 @@
 // ThesisDetail.jsx
-import React, {useEffect, useState} from "react";
-import {useUserContext} from "../../contexts";
+import React, { useEffect, useState } from "react";
+import { useUserContext } from "../../contexts";
 import {
   Dialog,
   DialogContent,
@@ -12,14 +12,14 @@ import {
   Box,
   Grid,
 } from "@mui/material";
-import {useLocation} from "react-router-dom";
-import {Close} from "@mui/icons-material";
-import {PastelComponent, WarningPopup} from "../index";
-import {frontendRoutes} from "../../routes";
-import {applyToProposal, getThesisStatusById} from "../../api";
+import { useLocation } from "react-router-dom";
+import { Close } from "@mui/icons-material";
+import { ApplyToThesisPopup, PastelComponent, WarningPopup } from "../index";
+import { frontendRoutes } from "../../routes";
+import { applyToProposal, getThesisStatusById } from "../../api";
 
-export default function ThesisDetail({thesis, open, handleClose}) {
-  const {userId, user} = useUserContext();
+export default function ThesisDetail({ thesis, open, handleClose }) {
+  const { userId, user } = useUserContext();
   const location = useLocation();
 
   const [alreadyApplied, setAlreadyApplied] = useState(false);
@@ -27,7 +27,7 @@ export default function ThesisDetail({thesis, open, handleClose}) {
 
   const formatFullName = (person) => `${person.name} ${person.surname}`;
 
-  const handleApplied = async () => {
+  const handleApplying = async (file=null) => {
     try {
       await applyToProposal({
         studentId: userId,
@@ -113,7 +113,7 @@ export default function ThesisDetail({thesis, open, handleClose}) {
             }}
           />
 
-          <Typography mb={2} sx={{fontSize: "3.2rem"}}>
+          <Typography mb={2} sx={{ fontSize: "3.2rem" }}>
             <b>{thesis.title}</b>
           </Typography>
 
@@ -150,11 +150,22 @@ export default function ThesisDetail({thesis, open, handleClose}) {
                       fontSize: "1.2rem",
                     }}
                   />
+                  {/**
+                   * WARNING POPUP
                   <WarningPopup
                     warningOpen={warningOpen}
                     setWarningOpen={setWarningOpen}
                     handleApplied={handleApplied}
                     warningMessage={"Are you sure you want to apply?"}
+                  />
+                  */}
+                  {/**
+                   * IT MUST BE A WARNING POPUP BUT WITHIN IT THE POSSIBILITY TO ALSO ADD A CV
+                   */}
+                  <ApplyToThesisPopup
+                    open={warningOpen}
+                    onClose={() => setWarningOpen(false)}
+                    handleAppling={handleApplying}
                   />
                 </>
               ) : (
@@ -183,9 +194,9 @@ export default function ThesisDetail({thesis, open, handleClose}) {
             color: "white",
           }}
         >
-          <Close/>
+          <Close />
         </IconButton>
-        <Divider variant="middle" sx={{marginTop: "-1rem"}}/>
+        <Divider variant="middle" sx={{ marginTop: "-1rem" }} />
         <DialogContent>
           <Paper
             elevation={0}
@@ -240,7 +251,7 @@ export default function ThesisDetail({thesis, open, handleClose}) {
               </Grid>
             </Grid>
 
-            <Divider sx={{width: "60%", marginBottom: "2rem"}}/>
+            <Divider sx={{ width: "60%", marginBottom: "2rem" }} />
 
             <Typography variant="h4" mb={1} color={subTitlesColor}>
               <b>Description</b>
