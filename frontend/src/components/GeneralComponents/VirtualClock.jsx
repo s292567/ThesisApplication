@@ -6,6 +6,7 @@ import {
   DialogActions,
   DialogContent,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import { LocalizationProvider, DateCalendar } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -19,23 +20,26 @@ export default function VirtualClock({ virtualDate }) {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [minDate, setMinDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [minDate, setMinDate] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchMinDate = async () => {
+    try {
+      return await getVirtualClock();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchMinDate = async () => {
-      try {
-        const minDate = await getVirtualClock();
-        if (minDate !== null) {
-          setMinDate(dayjs(minDate));
-          setSelectedDate(dayjs(minDate));
-        }
-      } catch (error) {
-        console.log(error);
+    fetchMinDate().then((minDateTmp) => {
+      if (minDateTmp !== null) {
+        setSelectedDate(dayjs(minDateTmp));
+        setMinDate(dayjs(minDateTmp));
       }
-    };
-
-    fetchMinDate();
+      setLoading(false);
+    });
   }, []);
 
   const handleOpen = () => {
@@ -67,6 +71,7 @@ export default function VirtualClock({ virtualDate }) {
 
   return (
     <>
+      {/* VIRTUAL CLOCK BUTTON */}
       <PastelComponent
         onClick={handleOpen}
         bgColor={"#04009A"}
@@ -79,7 +84,6 @@ export default function VirtualClock({ virtualDate }) {
           paddingRight: "1rem",
         }}
       />
-
       <Dialog
         open={open}
         onClose={handleClose}
@@ -126,31 +130,39 @@ export default function VirtualClock({ virtualDate }) {
         </IconButton>
 
         <DialogContent>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar
-              label={"Expiration date"}
-              date={selectedDate}
-              onChange={handleDateChange}
-              minDate={minDate}
-              sx={{
-                backgroundColor: "white",
-                borderRadius: "20px",
-                width: "fit-content",
-                padding: "1rem",
-                paddingX: "2rem",
-                "& .MuiButtonBase-root": {
-                  // Targeting the days in the calendar
-                  fontSize: "1.3rem", // Adjust the font size as needed
-                  padding: "1rem",
-                },
-                "& .MuiTypography-root": {
-                  // Targeting text, including month and year in the header
+          {loading ? (
+            <>
+              <CircularProgress /> <p>Loading...</p>
+            </>
+          ) : (
+            <>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateCalendar
+                  label={"Expiration date"}
+                  date={selectedDate}
+                  onChange={handleDateChange}
+                  minDate={minDate}
+                  sx={{
+                    backgroundColor: "white",
+                    borderRadius: "20px",
+                    width: "fit-content",
+                    padding: "1rem",
+                    paddingX: "2rem",
+                    "& .MuiButtonBase-root": {
+                      // Targeting the days in the calendar
+                      fontSize: "1.3rem", // Adjust the font size as needed
+                      padding: "1rem",
+                    },
+                    "& .MuiTypography-root": {
+                      // Targeting text, including month and year in the header
 
-                  fontSize: "1.1rem", // Adjust the font size as needed
-                },
-              }}
-            />
-          </LocalizationProvider>
+                      fontSize: "1.1rem", // Adjust the font size as needed
+                    },
+                  }}
+                />
+              </LocalizationProvider>
+            </>
+          )}
         </DialogContent>
         <DialogActions sx={{ padding: "1rem", marginTop: "1.5rem" }}>
           <PastelComponent

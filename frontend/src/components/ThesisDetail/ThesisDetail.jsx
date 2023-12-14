@@ -136,7 +136,7 @@ export default function ThesisDetail({thesis, open, handleClose}) {
              * APPLY BUTTON SECTION
              */}
             {user.role === "Student" &&
-            location.pathname !== frontendRoutes.studentApplications ? (
+            location.pathname === frontendRoutes.studentTheses ? (
               !alreadyApplied ? (
                 <>
                   <PastelComponent

@@ -1,12 +1,6 @@
 // ThesisRow.jsx
 import React, { useState } from "react";
-import {
-  Stack,
-  Typography,
-  Box,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Stack, Typography, Box, useMediaQuery, useTheme } from "@mui/material";
 import {
   Delete,
   EditNoteRounded,
@@ -25,8 +19,8 @@ export default function ThesisRow({
   thesis,
   actions = false,
   style = { backgroundColor: "#F4F5FF" },
-  onDelete = id => {},
-  onCopy = id => {},
+  onDelete = (id) => {},
+  onCopy = (id) => {},
   onEdit = () => {},
 }) {
   const theme = useTheme();
