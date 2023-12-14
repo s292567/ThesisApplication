@@ -80,19 +80,16 @@ sections:
 ![report](restrospective_2_2.jpg)
 
 - Unit Testing:
-  - 4 hours
-  - 5 hours
+  - Total hours estimated 4 hours
+  - Total hours spent 5 hours
   - Nr of automated unit test cases 
-  - 20%
+  - Coverage (if available) 20%
 - E2E testing:
-  - 2 hours
-  - 1 hour
+  - Total hours estimated 2 hours
+  - Total hours spent 2 hours
 - Code review 
-  - 3 hours
-  - 3 hours
-  
-
-
+  - Total hours estimated 3 hours
+  - Total hours spent 3 hours
 
 
 ## ASSESSMENT
