@@ -81,52 +81,7 @@ class ProposalControllerMat {
 
 
     // Other @Autowired or @MockBean declarations
-    @BeforeAll
-    fun init(){
-        val department=departmentRepository.save(Department("DEP1"))
 
-        val groupDep=groupDepRepository.save(GroupDep(id="G13",department = department))
-        val localDate: LocalDate = LocalDate.parse("2020-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        var teacher = Teacher("Ferrari", "Luca", "p101@example.com",groupDep,id="p101")
-        teacher= teacherRepository.save(teacher);
-        val proposal = Proposal(
-            title = "Sample Proposal Late",
-            supervisor = teacher,
-            coSupervisors = "Jane Doe, Bob Smith",
-            keywords = "Java, Kotlin, MockK",
-            type = "Research",
-            groups = "GroupA, GroupB",
-            description = "Sample proposal description",
-            requiredKnowledge = "Sample required knowledge",
-            notes = "Sample notes",
-            expiration = localDate,
-            level = "Master",
-            cds = "Computer Science, Data Science,MockDeg"
-        )
-        val proposal2 = Proposal(
-            title = "Sample Proposal Ver2",
-            supervisor = teacher,
-            coSupervisors = "Jane Doe, Bob Smith",
-            keywords = "Java, Kotlin, MockK",
-            type = "Research",
-            groups = "GroupA, GroupB",
-            description = "Sample proposal description",
-            requiredKnowledge = "Sample required knowledge",
-            notes = "Sample notes",
-            expiration = localDate,
-            level = "Master",
-            cds = "Computer Science, Data Science,MockDeg"
-        )
-        proposalRepository.save(proposal)
-        proposalRepository.save(proposal2)
-        val degree=Degree("DEG1","MockDeg")
-        val student= Student("mocksurname","mockname","F","IT","s654140@example.com",degree,2013,id="s654140")
-        val application=Application(student,proposal,"pending")
-
-        degreeRepository.save(degree)
-        studentRepository.save(student)
-        applicationRepository.save(application)
-    }
     @WithMockUser(roles = ["Student"])
     @Test
     fun `test getAllProposals endpoint`() {

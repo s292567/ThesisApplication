@@ -15,15 +15,15 @@ import java.util.UUID
     @PostMapping(&quot;/API/thesis/proposals/apply&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     fun addNewApplication(@RequestBody obj: NewApplicationDTO){
-<span class="nc" id="L18">        applicationService.addNewApplication(obj)</span>
-<span class="nc" id="L19">    }</span>
+<span class="fc" id="L18">        applicationService.addNewApplication(obj)</span>
+<span class="fc" id="L19">    }</span>
 
     @PatchMapping(&quot;/API/thesis/applications/{professorId}&quot;)
     fun updateApplication(@PathVariable professorId: String, @RequestBody application: ApplicationStatus){
-<span class="nc" id="L23">        updateApplicationByProposalAndStudent(application)</span>
+<span class="fc" id="L23">        updateApplicationByProposalAndStudent(application)</span>
 
         // if another status is passed, do nothing
-<span class="nc" id="L26">    }</span>
+<span class="fc" id="L26">    }</span>
     private fun updateApplicationById(professorId: String, application: ApplicationDTO){
 <span class="nc bnc" id="L28" title="All 2 branches missed.">        if (professorId !== applicationService.getApplicationProposalSupervisorId(application.id!!))</span>
 <span class="nc" id="L29">            throw UnauthorizedProfessorError(&quot;Cannot operate on applications to proposals of other professors&quot;)</span>
@@ -38,29 +38,29 @@ import java.util.UUID
             throw UnauthorizedProfessorError(&quot;Cannot operate on applications to proposals of other professors&quot;)
         */
 
-<span class="nc bnc" id="L41" title="All 2 branches missed.">        if (application.status == &quot;accepted&quot;) {</span>
-<span class="nc" id="L42">            applicationService.acceptApplicationByProposalAndStudent(application.proposalId, application.studentId)</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (application.status == &quot;accepted&quot;) {</span>
+<span class="fc" id="L42">            applicationService.acceptApplicationByProposalAndStudent(application.proposalId, application.studentId)</span>
 <span class="nc bnc" id="L43" title="All 2 branches missed.">        }else if (application.status == &quot;declined&quot;) {</span>
 <span class="nc" id="L44">            applicationService.declineApplicationByProposalAndStudent(application.proposalId, application.studentId)</span>
         }
-<span class="nc" id="L46">    }</span>
+<span class="fc" id="L46">    }</span>
     @GetMapping(&quot;/API/thesis/applications/students&quot;)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun getAllApplyingStudentsForProposal(@RequestParam proposalId: UUID) : List&lt;StudentDTO&gt; {
-<span class="nc" id="L50">        return applicationService.getAllApplyingStudentsForProposalById(UUID.fromString(proposalId.toString()))</span>
+<span class="fc" id="L50">        return applicationService.getAllApplyingStudentsForProposalById(UUID.fromString(proposalId.toString()))</span>
     }
 
     @GetMapping(&quot;/API/thesis/applications/by&quot;)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun getAllApplicationsForProposal(@RequestParam proposalId: UUID) : List&lt;ApplicationDTO&gt; {
-<span class="nc" id="L56">        return applicationService.getAllApplicationsForProposalById(UUID.fromString(proposalId.toString()))</span>
+<span class="fc" id="L56">        return applicationService.getAllApplicationsForProposalById(UUID.fromString(proposalId.toString()))</span>
     }
 
     @GetMapping(&quot;/API/thesis/applications/student/{studentId}&quot;)
     @PreAuthorize(&quot;hasRole('Student')&quot;)
     fun getApplicationsForLoggedInStudent(@PathVariable studentId: String): List&lt;ApplicationDTOprop&gt; {
-<span class="nc" id="L62">        return applicationService.getApplicationsForStudent(studentId).map{</span>
-<span class="nc" id="L63">            ApplicationDTOprop(id=it.id,studentId=it.studentId, proposal = proposalRepository.getReferenceById(it.proposalId!!).toDTO(), status = it.status)</span>
+<span class="fc" id="L62">        return applicationService.getApplicationsForStudent(studentId).map{</span>
+<span class="fc" id="L63">            ApplicationDTOprop(id=it.id,studentId=it.studentId, proposal = proposalRepository.getReferenceById(it.proposalId!!).toDTO(), status = it.status)</span>
         }
     }
 }
