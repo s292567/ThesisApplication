@@ -80,16 +80,16 @@ sections:
 ![report](restrospective_2_2.jpg)
 
 - Unit Testing:
-  - Total hours estimated
-  - Total hours spent
+  - 4 hours
+  - 5 hours
   - Nr of automated unit test cases 
-  - Coverage (if available)
+  - 20%
 - E2E testing:
-  - Total hours estimated
-  - Total hours spent
+  - 2 hours
+  - 1 hour
 - Code review 
-  - Total hours estimated 
-  - Total hours spent
+  - 3 hours
+  - 3 hours
   
 
 
