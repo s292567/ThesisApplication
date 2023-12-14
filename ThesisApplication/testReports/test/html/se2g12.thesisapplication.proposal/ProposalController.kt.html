@@ -53,13 +53,13 @@ import java.util.*
     @GetMapping(&quot;API/thesis/proposals/getProposalsBySId/{studentId}&quot;)
     @PreAuthorize(&quot;hasRole('Student')&quot;)
     fun getProposalsStudentId(@PathVariable studentId: String): List&lt;ProposalDTO&gt; {
-<span class="nc" id="L56">        val securityContext = SecurityContextHolder.getContext()</span>
+<span class="fc" id="L56">        val securityContext = SecurityContextHolder.getContext()</span>
 // Get the authentication object from the security context
-<span class="nc" id="L58">        val authentication = securityContext.authentication</span>
-<span class="nc bnc" id="L59" title="All 4 branches missed.">        if (authentication != null &amp;&amp; authentication.isAuthenticated) {</span>
+<span class="fc" id="L58">        val authentication = securityContext.authentication</span>
+<span class="pc bpc" id="L59" title="2 of 4 branches missed.">        if (authentication != null &amp;&amp; authentication.isAuthenticated) {</span>
             // Get the username
-<span class="nc" id="L61">            val student=studentRepository.findById(authentication.name.split(&quot;@&quot;)[0]).get()</span>
-<span class="nc" id="L62">            return proposalService.getProposalsByCds(student.degree!!.titleDegree!!).filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
+<span class="fc" id="L61">            val student=studentRepository.findById(authentication.name.split(&quot;@&quot;)[0]).get()</span>
+<span class="fc" id="L62">            return proposalService.getProposalsByCds(student.degree!!.titleDegree!!).filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
         }
 <span class="nc" id="L64">       else throw error(&quot;no student id found&quot;)</span>
     }

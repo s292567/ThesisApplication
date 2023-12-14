@@ -158,6 +158,20 @@ class ProposalControllerMat {
             .andExpect(status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$").value(false))
     }
+    @Test
+    @WithMockUser(username = "s654140@example.com", roles = ["Student"])
+    fun `test getProposalsBySId endpoint`() {
+
+
+
+
+
+        // Perform the request and assert the response
+        mockMvc.perform(get("/API/thesis/proposals/getProposalsBySId/{studentId}", "s654140")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk)
+
+    }
 
     @Test
     fun `test getProposalsByCds endpoint`() {
