@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Career.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.career</a> &gt; <span class="el_source">Career.kt</span></div><h1>Career.kt</h1><pre class="source lang-java linenums">package se2g12.thesisapplication.career
+
+import jakarta.persistence.*
+import se2g12.thesisapplication.student.Student
+import java.io.Serializable
+import java.util.*
+
+<span class="nc" id="L8">data class CareerId(</span>
+<span class="nc" id="L9">    val student: String? = null,</span>
+<span class="nc" id="L10">    val codCourse: String? = null</span>
+<span class="nc" id="L11">) : Serializable</span>
+
+<span class="nc" id="L13">@Entity</span>
+@IdClass(CareerId::class)
+<span class="nc" id="L15">data class Career(</span>
+<span class="nc" id="L16">    @Id</span>
+    @ManyToOne
+    @JoinColumn(name = &quot;student_id&quot;, referencedColumnName = &quot;id&quot;)
+<span class="nc" id="L19">    val student: Student? = null,</span>
+
+<span class="nc" id="L21">    @Id</span>
+    @Column(name = &quot;codCourse&quot;)
+<span class="nc" id="L23">    val codCourse: String? = null,</span>
+<span class="nc" id="L24">    val titleCourse: String? = null,</span>
+<span class="nc" id="L25">    val cfu: Int? = null,</span>
+<span class="nc" id="L26">    val grade: Int? = null,</span>
+<span class="nc" id="L27">    val date: Date? = null</span>
+<span class="nc" id="L28">)</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

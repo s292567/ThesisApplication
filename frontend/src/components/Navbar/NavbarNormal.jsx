@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -18,18 +21,18 @@ import { frontendRoutes } from "../../routes";
 import { CancelRounded } from "@mui/icons-material";
 
 // CSS SECTION
-const MyAppBar = styled(AppBar)(({ theme }) => ({
+const MyAppBar = styled(AppBar)(() => ({
   backgroundColor: "white",
 }));
 
-const MyToolbar = styled(Toolbar)(({ theme }) => ({
+const MyToolbar = styled(Toolbar)(() => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   padding: "1rem",
 }));
 
-const Logo = styled(Box)(({ theme }) => ({
+const Logo = styled(Box)(() => ({
   display: "flex",
   alignItems: "center",
   "& img": {
@@ -37,7 +40,7 @@ const Logo = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Links = styled(Box)(({ theme }) => ({
+const Links = styled(Box)(() => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
@@ -53,7 +56,7 @@ const Links = styled(Box)(({ theme }) => ({
   },
 }));
 
-const LogButton = styled(Button)(({ theme }) => ({
+const LogButton = styled(Button)(() => ({
   padding: "0.5rem 1rem",
   border: "none",
   borderRadius: "12px",
@@ -81,7 +84,7 @@ function LinkGroup() {
 }
 
 export default function NavbarNormal(){
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const location = useLocation();
   const { loggedIn, logout,login } = useUserContext();
 

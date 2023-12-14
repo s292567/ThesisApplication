@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import {Button} from "@mui/material";
 
 const myOutlineButtonStyle = (color, hoverColor) => ({

@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import {Box, Paper, Skeleton, Stack, styled } from "@mui/material";
 
 

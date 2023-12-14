@@ -26,7 +26,7 @@ function DefaultLayoutPage() {
         </MyMain>
       </main>
       <footer>
-        {user && user.role === "Professor" ? (
+        {user ? (
           <>
             <Box sx={{ padding: "2rem" }} />
             <VirtualClock />

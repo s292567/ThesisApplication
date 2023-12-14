@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecurityException.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.security</a> &gt; <span class="el_source">SecurityException.kt</span></div><h1>SecurityException.kt</h1><pre class="source lang-java linenums">package se2g12.thesisapplication.security
+
+import org.springframework.http.HttpStatus
+import org.springframework.http.ProblemDetail
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+
+
+
+@RestControllerAdvice
+<span class="fc" id="L12">class SecurityException: ResponseEntityExceptionHandler() {</span>
+    @ExceptionHandler(WrongCredentialsExceptions::class)
+    fun handleWrongCredentialsExceptions(e: WrongCredentialsExceptions) = ProblemDetail
+<span class="nc" id="L15">        .forStatusAndDetail(HttpStatus.UNAUTHORIZED,  e.message!! )</span>
+    @ExceptionHandler(UsernameAlreadyExistException::class)
+    fun handleUsernameAlreadyExist(e: UsernameAlreadyExistException) = ProblemDetail
+<span class="nc" id="L18">        .forStatusAndDetail(HttpStatus.CONFLICT,  e.message!! )</span>
+
+    @ExceptionHandler(CannotFindUsernameException::class)
+    fun handleCannotFindUsernameException(e: CannotFindUsernameException) = ProblemDetail
+<span class="nc" id="L22">        .forStatusAndDetail(HttpStatus.NOT_FOUND,  e.message!! )</span>
+
+}
+
+<span class="nc" id="L26">class WrongCredentialsExceptions(message: String?) : Throwable(message)</span>
+<span class="nc" id="L27">class UsernameAlreadyExistException(message: String?) : Throwable(message)</span>
+
+<span class="nc" id="L29">class CannotFindUsernameException(message:String?): Throwable(message)</span>
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

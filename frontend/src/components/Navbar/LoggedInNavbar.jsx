@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, {useState, useEffect} from 'react';
 import {
   AppBar,
@@ -169,6 +170,7 @@ export default function LoggedInNavbar() {
                   aria-expanded={open ? "true" : undefined}
                 >
                   <Avatar
+                      /* eslint-disable-next-line react/no-children-prop */
                     children={user ? `${user.username[0]}${user.username[1]}` : "MR"}
                     sx={{
                       bgcolor: "#007baa",
@@ -236,7 +238,6 @@ export default function LoggedInNavbar() {
 }
 
 function LinkStyled({linkTo, linkText, onClick}) {
-  console.log("into the link", linkTo, linkText, onClick);
   return (
     <Link to={linkTo} color="inherit" sx={{mx: 2}} onClick={onClick}>
       {linkText}

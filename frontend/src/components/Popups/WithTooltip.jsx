@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useRef, useEffect } from "react";
 import { Tooltip, useMediaQuery, Zoom } from "@mui/material";
 
@@ -55,7 +57,7 @@ export default function WithTooltip({ tooltipContent, children }) {
 
   return (
     <div>
-      <div onClick={handleTooltipOpen} onKeyDown={handleKeyDown} tabIndex={0}>
+      <div onClick={handleTooltipOpen} onKeyDown={handleKeyDown} role="button" tabIndex={0}>
         {
           children /** This is the component on which you are displaying the popover */
         }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProfessorController.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.professor</a> &gt; <span class="el_source">ProfessorController.kt</span></div><h1>ProfessorController.kt</h1><pre class="source lang-java linenums">package se2g12.thesisapplication.professor
+
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.*
+import se2g12.thesisapplication.proposal.*
+import se2g12.thesisapplication.teacher.TeacherRepository
+import java.util.*
+
+<span class="fc" id="L9">@RestController</span>
+@CrossOrigin
+<span class="fc" id="L11">class ProfessorController(private val proposalService: ProposalService,private val proposalRepository: ProposalRepository,private val teacherRepository: TeacherRepository) {</span>
+
+    @PostMapping(&quot;/API/thesis/proposals/{professorId}&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    fun addNewProposal(@RequestBody obj: NewProposalDTO, @PathVariable professorId:String){
+<span class="nc" id="L16">        println(obj)</span>
+<span class="nc" id="L17">        proposalService.addNewProposal(obj, professorId)</span>
+<span class="nc" id="L18">    }</span>
+    @PutMapping(&quot;/API/thesis/proposals/update/{path}&quot;)
+    //@PreAuthorize(&quot;hasRole('Professor')&quot;)
+    @ResponseStatus(HttpStatus.CREATED)
+    fun updateProposal(@PathVariable path: String, @RequestBody proposal: NewProposalDTO?) {
+<span class="nc" id="L23">        val old=proposalRepository.findById(UUID.fromString(path)).get()</span>
+<span class="nc" id="L24">        val oldName:String=old.title</span>
+<span class="nc" id="L25">        val professorId:String = old.supervisor.id!!</span>
+
+<span class="nc" id="L27">        proposalService.updateProposal(proposal!!,professorId,oldName,old)</span>
+<span class="nc" id="L28">    }</span>
+    @GetMapping(&quot;/API/thesis/proposals/getProfessorProposals/{professorId}&quot;)
+    fun getProposalByProfessorId(@PathVariable professorId:String):List&lt;ProposalDTO&gt; {
+<span class="fc" id="L31">        return proposalService.getProposalByProfessorId( professorId );</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

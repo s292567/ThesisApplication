@@ -1,4 +1,6 @@
 // SortingToolbar.jsx
+/* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -87,7 +89,7 @@ export default function SortingToolbar({ proposals, onSortedData }) {
               icon={renderSortIcon(criteria)}
               style={{
                 marginRight: { xs: "5px", md: "1rem" },
-                fontSize: { xs: "small", md: "x-large" },
+                fontSize: { xs: "small",sm:"x-large"},
               }}
               onClick={() => handleSort(criteria)}
             />

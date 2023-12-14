@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApplicationServiceImpl.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.application</a> &gt; <span class="el_source">ApplicationServiceImpl.kt</span></div><h1>ApplicationServiceImpl.kt</h1><pre class="source lang-java linenums">package se2g12.thesisapplication.application
+
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import se2g12.thesisapplication.Mail.EmailService
+import se2g12.thesisapplication.archive.Archive
+import se2g12.thesisapplication.archive.ArchiveRepository
+import se2g12.thesisapplication.proposal.ProposalRepository
+import se2g12.thesisapplication.student.StudentDTO
+import se2g12.thesisapplication.student.StudentRepository
+import se2g12.thesisapplication.student.toDTO
+import java.util.*
+
+
+<span class="fc" id="L15">@Service</span>
+@Transactional
+<span class="fc" id="L17">class ApplicationServiceImpl (</span>
+<span class="fc" id="L18">    private val applicationRepository: ApplicationRepository,</span>
+<span class="fc" id="L19">    private val proposalRepository: ProposalRepository,</span>
+<span class="fc" id="L20">    private val studentRepository: StudentRepository,</span>
+<span class="fc" id="L21">    private val archiveRepository: ArchiveRepository,</span>
+<span class="fc" id="L22">    private val emailService: EmailService</span>
+)
+    : ApplicationService {
+
+    override fun addNewApplication(newApplication: NewApplicationDTO) {
+<span class="fc" id="L27">        checkApplicationConflicts(newApplication.studentId, newApplication.proposalId)</span>
+<span class="fc" id="L28">        val student=studentRepository.findById(newApplication.studentId)</span>
+<span class="fc" id="L29">            .orElseThrow { StudentNotFoundError(&quot;Student ${newApplication.studentId} not found&quot;) }</span>
+<span class="fc" id="L30">        val proposal=proposalRepository.findById(newApplication.proposalId)</span>
+<span class="fc" id="L31">            .orElseThrow { ProposalNotFoundError(&quot;Proposal ${newApplication.proposalId} not found&quot;) }</span>
+<span class="fc" id="L32">        val application=Application(student, proposal, &quot;pending&quot;)</span>
+<span class="fc" id="L33">        applicationRepository.save(application)</span>
+<span class="fc" id="L34">        emailService.sendHtmlEmail(proposal.supervisor.email,&quot;added new application for proposal ${proposal.title}&quot;)</span>
+<span class="fc" id="L35">    }</span>
+    private fun checkApplicationConflicts(studentId: String, proposalId: UUID){
+<span class="fc bfc" id="L37" title="All 4 branches covered.">        if (applicationRepository.findByStudentIdAndStatus(studentId, &quot;accepted&quot;).isNotEmpty())</span>
+<span class="fc" id="L38">            throw ApplicationConflictError(&quot;You ($studentId) already have an accepted application.&quot;)</span>
+<span class="fc bfc" id="L39" title="All 4 branches covered.">        if (applicationRepository.findByStudentIdAndProposalIdAndStatus(studentId, proposalId, &quot;pending&quot;).isNotEmpty())</span>
+<span class="fc" id="L40">            throw ApplicationConflictError(&quot;You ($studentId) already have a pending application for this proposal.&quot; )</span>
+<span class="fc" id="L41">    }</span>
+    override fun declineApplication(applicationId: UUID) {
+<span class="fc" id="L43">        val app=getModifiableApplication(applicationId)</span>
+        //notify declined student
+<span class="fc" id="L45">        emailService.sendHtmlEmail(app.student.email,&quot;declined&quot;)</span>
+<span class="fc" id="L46">        applicationRepository.updateStatusById(applicationId, &quot;declined&quot;)</span>
+<span class="fc" id="L47">    }</span>
+
+    override fun acceptApplication(applicationId: UUID) {
+<span class="fc" id="L50">        val app= getModifiableApplication(applicationId)</span>
+<span class="fc" id="L51">        applicationRepository.updateStatusById(applicationId ,&quot;accepted&quot;)</span>
+        //notify accepted Student
+<span class="fc" id="L53">        emailService.sendHtmlEmail(app.student.email,&quot;accepted&quot;)</span>
+        // decline all student applications and notify them
+<span class="fc" id="L55">        val app2=applicationRepository.getAllApplicationsByProposalId(app.proposal.id!!)</span>
+<span class="fc" id="L56">        app2.forEach {</span>
+<span class="pc bpc" id="L57" title="3 of 6 branches missed.">            if(it.status?.compareTo(&quot;pending&quot;)==0)</span>
+<span class="fc" id="L58">                emailService.sendHtmlEmail(app.student.email,&quot;declined&quot;)</span>
+
+<span class="fc" id="L60">        }</span>
+<span class="fc" id="L61">        applicationRepository.updateStatusByStudentId(app.student.id!!, &quot;declined&quot;)</span>
+        // decline all proposal applications
+<span class="fc" id="L63">        applicationRepository.updateStatusByProposalId(app.proposal.id!!, &quot;declined&quot;)</span>
+        // archive proposal
+<span class="fc" id="L65">        archiveRepository.save(Archive(app.proposal))</span>
+<span class="fc" id="L66">    }</span>
+
+    override fun declineApplicationByProposalAndStudent(proposalId: UUID, studentId: String) {
+<span class="fc" id="L69">        try {</span>
+<span class="fc" id="L70">            val appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id</span>
+<span class="fc" id="L71">            declineApplication(appId!!)</span>
+        }
+<span class="fc" id="L73">        catch (e: NoSuchElementException){</span>
+<span class="fc" id="L74">            throw ApplicationNotFoundError(&quot;Application by student $studentId for proposal $proposalId not found&quot;)</span>
+        }
+<span class="fc" id="L76">    }</span>
+
+    override fun acceptApplicationByProposalAndStudent(proposalId: UUID, studentId: String) {
+<span class="fc" id="L79">        try {</span>
+<span class="fc" id="L80">            val appId=applicationRepository.findByProposalIdAndStudentId(proposalId, studentId).first().id!!</span>
+<span class="fc" id="L81">            acceptApplication(appId)</span>
+        }
+<span class="fc" id="L83">        catch (e: NoSuchElementException){</span>
+<span class="fc" id="L84">            throw ApplicationNotFoundError(&quot;Application by student $studentId for proposal $proposalId not found&quot;)</span>
+        }
+
+<span class="fc" id="L87">    }</span>
+
+    private fun getModifiableApplication(applicationId: UUID): Application{
+<span class="fc" id="L90">        val app= applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError(&quot;Application $applicationId not found&quot;) }</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (app.status != &quot;pending&quot;)</span>
+<span class="fc" id="L92">            throw NotModifiableApplicationError(applicationId, app.status!!)</span>
+<span class="fc" id="L93">        return app</span>
+    }
+    override fun getApplicationProposalSupervisorId(applicationId: UUID): String {
+<span class="nc" id="L96">        val app = applicationRepository.findById(applicationId).orElseThrow { ApplicationNotFoundError(&quot;Application $applicationId not found&quot;) }</span>
+<span class="nc" id="L97">        return app.proposal.supervisor.id!!</span>
+    }
+
+    /**
+     * Get a list of all students that applied to a specific proposal
+     */
+    override fun getAllApplyingStudentsForProposalById(proposalId: UUID) : List&lt;StudentDTO&gt; {
+<span class="fc" id="L104">        return studentRepository.getApplyingStudentsByProposalId(proposalId).map { it.toDTO() }</span>
+    }
+    override fun getApplicationsForStudent(studentId: String): List&lt;ApplicationDTO&gt; {
+<span class="fc" id="L107">        return applicationRepository.findByStudentId(studentId)</span>
+<span class="fc" id="L108">            .map { it.toDTO() }</span>
+    }
+
+    /**
+     * Get a list of all applications for a specific proposal
+     */
+    override fun getAllApplicationsForProposalById(proposalId: UUID) : List&lt;ApplicationDTO&gt; {
+<span class="fc" id="L115">        return applicationRepository.getAllApplicationsByProposalId(proposalId).filter { it.status==&quot;pending&quot; }</span>
+<span class="fc" id="L116">            .map { it.toDTO() }</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

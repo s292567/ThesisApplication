@@ -1,8 +1,9 @@
 // ThesesList.jsx
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import { PastelComponent, StyledPaper } from "../../components";
+import { PastelComponent, StyledPaper,ThesisDetail  } from "../../components";
 import { Box, Grid, Typography } from "@mui/material";
-import { ThesisDetail } from "../../components";
+
 
 const getStatusProperties = (status) => {
   const properties = {
@@ -15,6 +16,7 @@ const getStatusProperties = (status) => {
   return properties[status] || properties.default;
 };
 
+// eslint-disable-next-line react/prop-types
 export default function StudentApplications({ applications }) {
   const [detailOpen, setDetailOpen] = useState(false);
   const [selectedThesis, setSelectedThesis] = useState(null);
@@ -68,6 +70,7 @@ export default function StudentApplications({ applications }) {
             </Grid>
           </Grid>
 
+            {/* eslint-disable-next-line react/prop-types */}
           {applications.map((application) => {
             const statusProperties = getStatusProperties(application.status);
 
@@ -88,7 +91,7 @@ export default function StudentApplications({ applications }) {
                       <Typography
                         variant="h4"
                         mb={2}
-                        sx={{ color: "#2f1c6a", fontWeight: "bold" }}
+                        sx={{ color: "#2f1c6a", fontWeight: "bold", marginRight: "1rem" }}
                       >
                         {application.proposal.title}
                       </Typography>

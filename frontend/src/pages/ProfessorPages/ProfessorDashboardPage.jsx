@@ -1,6 +1,6 @@
 // ProfessorDashboardPage.jsx
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Grid, Divider } from "@mui/material";
+import { Box, Grid, Divider } from "@mui/material";
 import {
   ThesesList,
   SkeletonThesisList,

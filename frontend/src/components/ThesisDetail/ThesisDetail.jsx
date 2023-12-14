@@ -1,5 +1,5 @@
 // ThesisDetail.jsx
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useUserContext} from "../../contexts";
 import {
   Dialog,
@@ -16,17 +16,14 @@ import {useLocation} from "react-router-dom";
 import {Close} from "@mui/icons-material";
 import {PastelComponent, WarningPopup} from "../index";
 import {frontendRoutes} from "../../routes";
-import {applyToProposal} from "../../api";
+import {applyToProposal, getThesisStatusById} from "../../api";
 
 export default function ThesisDetail({thesis, open, handleClose}) {
   const {userId, user} = useUserContext();
-
-  /// with the following state we can check if the student has already applied to the thesis or not
-  /// and show the correct button, and this information must be retrieved from the backend
-  const [alreadyApplied, setAlreadyApplied] = useState(false); // HERE INSTEAD OF FALSE THERE WILL BE THE THESIS.STATUS
-  const [warningOpen, setWarningOpen] = useState(false);
-
   const location = useLocation();
+
+  const [alreadyApplied, setAlreadyApplied] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
 
   const formatFullName = (person) => `${person.name} ${person.surname}`;
 
@@ -45,6 +42,23 @@ export default function ThesisDetail({thesis, open, handleClose}) {
       throw new Error(error.message || "Failed to apply to the thesis.");
     }
   };
+
+  useEffect(() => {
+    const getThesisStatus = async (proposalId) => {
+      try {
+        const status = await getThesisStatusById(proposalId);
+        console.log("status", status);
+        console.log("thesis", thesis.id);
+        setAlreadyApplied(status);
+      } catch (error) {
+        console.error("Failed to retrieve proposal status:", error);
+        // Throw an error with a message to be caught and displayed by the Snackbar
+        throw new Error(error.message || "Failed to retrieve proposal status.");
+      }
+    };
+
+    thesis?.id && user.role === "Student" && getThesisStatus(thesis.id);
+  }, []);
 
   if (!thesis) return null;
 

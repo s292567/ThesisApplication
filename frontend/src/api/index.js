@@ -2,8 +2,7 @@
 import { 
     getAllProposals, 
     GetProposalsByCds, 
-    getProposalsByCds, 
-    searchProposals, 
+    getProposalsByCds,
     insertProposal, 
     applyToProposal,
     getProposalsByProfessorId, 
@@ -11,6 +10,7 @@ import {
     copyProposalById,
     updateProposal,
     getProposalsByStudentId,
+    getThesisStatusById,
 } from './API_proposals.js';
 
 import {
@@ -33,9 +33,13 @@ import {
     getDistinctKeywords,
     getDistinctTypes,
     getDistinctLevels,
-
+    searchProposals,
 } from './API_search.js';
 
+import {
+    getVirtualClock,
+    setVirtualClock,
+}from './API_Virtual_Clock.js';
 
 // Export all the API functions and the axios instance
 export {
@@ -49,6 +53,7 @@ export {
     getProposalsByStudentId,
     deleteProposalById,
     copyProposalById,
+    getThesisStatusById,
 
     axiosInstance,
     getProposalsByProfessorId,
@@ -63,6 +68,11 @@ export {
     getDistinctLevels,
 
     loginApi, 
+
+    getVirtualClock,
+    setVirtualClock,
+
     getAllApplicationsForLoggedInStudent,
     getProfileApi
+
 };

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JwtAuthConverterProperties.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ThesisApplication</a> &gt; <a href="index.source.html" class="el_package">se2g12.thesisapplication.security</a> &gt; <span class="el_source">JwtAuthConverterProperties.kt</span></div><h1>JwtAuthConverterProperties.kt</h1><pre class="source lang-java linenums">package se2g12.thesisapplication.security
+
+
+import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.context.annotation.Configuration
+import org.springframework.validation.annotation.Validated
+
+
+
+<span class="fc" id="L10">@Validated</span>
+@Configuration
+@ConfigurationProperties(prefix = &quot;jwt.auth.converter&quot;)
+<span class="fc" id="L13">class JwtAuthConverterProperties {</span>
+    private var resourceId: String? = null
+    private var principalAttribute: String? = null
+    fun getPrincipalAttribute():String?{
+<span class="nc" id="L17">        return this.principalAttribute</span>
+    }
+    fun setPrincipalAttribute(principalAttribute:String){
+<span class="fc" id="L20">        this.principalAttribute=principalAttribute</span>
+<span class="fc" id="L21">    }</span>
+    fun setResourceId(resourceId:String){
+<span class="fc" id="L23">        this.resourceId=resourceId</span>
+<span class="fc" id="L24">    }</span>
+    fun getResourceId():String?{
+<span class="nc" id="L26">        return this.resourceId</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

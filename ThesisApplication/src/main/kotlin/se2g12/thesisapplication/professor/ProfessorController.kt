@@ -1,7 +1,6 @@
 package se2g12.thesisapplication.professor
 
 import org.springframework.http.HttpStatus
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import se2g12.thesisapplication.proposal.*
 import se2g12.thesisapplication.teacher.TeacherRepository
@@ -21,10 +20,9 @@ class ProfessorController(private val proposalService: ProposalService,private v
     //@PreAuthorize("hasRole('Professor')")
     @ResponseStatus(HttpStatus.CREATED)
     fun updateProposal(@PathVariable path: String, @RequestBody proposal: NewProposalDTO?) {
-        var old=proposalRepository.findById(UUID.fromString(path)).get()
-        var professorId:String
-        var oldName:String=old.toDTO().title
-        professorId=old.toDTO().supervisor.id!!
+        val old=proposalRepository.findById(UUID.fromString(path)).get()
+        val oldName:String=old.title
+        val professorId:String = old.supervisor.id!!
 
         proposalService.updateProposal(proposal!!,professorId,oldName,old)
     }

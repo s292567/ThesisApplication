@@ -1,4 +1,6 @@
 // WarningPopup.jsx
+/* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useCallback } from "react";
 import {
   Snackbar,
@@ -16,6 +18,7 @@ import { WarningRounded } from "@mui/icons-material";
 import { PastelComponent } from "../index.js";
 
 export default function WarningPopup({
+
   warningOpen, // useState to manage the open/close state of the popup
   setWarningOpen, // useState to manage the open/close state of the popup
   handleApplied, // function to be called when the user clicks on "yes" (returns a promise)
@@ -131,7 +134,7 @@ export default function WarningPopup({
   );
 }
 
-const MyDialog = styled(Dialog)(({ theme }) => ({
+const MyDialog = styled(Dialog)(() => ({
   ".MuiPaper-root": {
     borderRadius: "20px",
     padding: "2rem",

@@ -76,8 +76,8 @@ sections:
   
 ## QUALITY MEASURES 
 
-![report](retrospective_2_1.jpg.jpg)
-![report](restrospective_2_2.jpg.jpg)
+![report](retrospective_2_1.jpg)
+![report](restrospective_2_2.jpg)
 
 - Unit Testing:
   - Total hours estimated
