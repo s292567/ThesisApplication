@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
     @ExceptionHandler(ProposalBodyError::class)
     fun proposalBodyError(e : ProposalBodyError) = ProblemDetail
-<span class="fc" id="L14">        .forStatusAndDetail(HttpStatus.BAD_REQUEST, e.message!!)</span>
+<span class="nc" id="L14">        .forStatusAndDetail(HttpStatus.BAD_REQUEST, e.message!!)</span>
     @ExceptionHandler(NotFound::class)
     fun notFound(e : NotFound) = ProblemDetail
 <span class="nc" id="L17">        .forStatusAndDetail(HttpStatus.NOT_FOUND, e.message!!)</span>

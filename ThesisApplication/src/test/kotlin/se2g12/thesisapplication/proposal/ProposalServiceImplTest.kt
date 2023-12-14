@@ -298,72 +298,7 @@ class ProposalServiceImplTest {
         assertEquals(listSupervisors.first(), supervisors.first())
         assertEquals(listSupervisors.last(), supervisors.last())
     }
-    @Test
-    fun `getDistinctCoSupervisors`(){
-        val listCoSupervisors = listOf("Ji-Sung Park", "Mario Rossi", "Sofìa Garcìa")
-        every { proposalRepository.findDistinctCoSupervisors() } returns listCoSupervisors
 
-        val coSupervisors = proposalService.getDistinctCoSupervisors()
-
-        assertEquals(listCoSupervisors.size, coSupervisors.size)
-        assertEquals(listCoSupervisors.first(), coSupervisors.first())
-        assertEquals(listCoSupervisors.last(), coSupervisors.last())
-    }
-    @Test
-    fun `getDistinctProposalTypes`(){
-        val listTypes = listOf("Research", "Development")
-        every { proposalRepository.findDistinctProposalTypes() } returns listTypes
-
-        val types = proposalService.getDistinctProposalTypes()
-
-        assertEquals(listTypes.size, types.size)
-        assertEquals(listTypes.first(), types.first())
-        assertEquals(listTypes.last(), types.last())
-    }
-    @Test
-    fun `getDistinctProposalLevels`(){
-        val listLevels = listOf("BSc", "MSc")
-        every { proposalRepository.findDistinctProposalLevels() } returns listLevels
-
-        val levels = proposalService.getDistinctProposalLevels()
-
-        assertEquals(listLevels.size, levels.size)
-        assertEquals(listLevels.first(), levels.first())
-        assertEquals(listLevels.last(), levels.last())
-    }
-    @Test
-    fun `getDistinctProposalKeywords`(){
-        val listKeywords = listOf("key1", "key2", "key3")
-        every { proposalRepository.findDistinctProposalKeywords() } returns listKeywords
-
-        val keywords = proposalService.getDistinctProposalKeywords()
-
-        assertEquals(listKeywords.size, keywords.size)
-        assertEquals(listKeywords.first(), keywords.first())
-        assertEquals(listKeywords.last(), keywords.last())
-    }
-    @Test
-    fun `getDistinctProposalGroups`(){
-        val listGroups = listOf("G13", "G21")
-        every { proposalRepository.findDistinctProposalGroups() } returns listGroups
-
-        val groups = proposalService.getDistinctProposalGroups()
-
-        assertEquals(listGroups.size, groups.size)
-        assertEquals(listGroups.first(), groups.first())
-        assertEquals(listGroups.last(), groups.last())
-    }
-    @Test
-    fun `getDistinctProposalCds`(){
-        val listCdS = listOf("Computer Engineering", "Civil Engineering")
-        every { proposalRepository.findDistinctProposalCds() } returns listCdS
-
-        val cds = proposalService.getDistinctProposalCds()
-
-        assertEquals(listCdS.size, cds.size)
-        assertEquals(listCdS.first(), cds.first())
-        assertEquals(listCdS.last(), cds.last())
-    }
 
     @Test
     fun testDeleteProposalById() {

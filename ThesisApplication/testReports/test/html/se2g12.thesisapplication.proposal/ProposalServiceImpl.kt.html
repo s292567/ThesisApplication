@@ -185,11 +185,11 @@ import java.util.*
     }
 
     override fun findDistinctCoSupervisors(): List&lt;String&gt; {
-<span class="fc" id="L188">        return getAllProposals().flatMap { it.coSupervisors.orEmpty() }.distinct()</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        return getAllProposals().flatMap { it.coSupervisors.orEmpty() }.distinct()</span>
     }
 
     override fun findDistinctProposalTypes(): List&lt;String&gt; {
-<span class="fc" id="L192">        return getAllProposals().flatMap { it.type.orEmpty() }.distinct()</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">        return getAllProposals().flatMap { it.type.orEmpty() }.distinct()</span>
     }
 
     override fun findDistinctProposalLevels(): List&lt;String&gt; {
@@ -197,15 +197,15 @@ import java.util.*
     }
 
     override fun findDistinctProposalKeywords(): List&lt;String&gt; {
-<span class="fc" id="L200">        return getAllProposals().flatMap { it.keywords.orEmpty() }.distinct()</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">        return getAllProposals().flatMap { it.keywords.orEmpty() }.distinct()</span>
     }
 
     override fun findDistinctProposalGroups(): List&lt;String&gt; {
-<span class="fc" id="L204">        return getAllProposals().flatMap { it.groups.orEmpty() }.distinct()</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">        return getAllProposals().flatMap { it.groups.orEmpty() }.distinct()</span>
     }
 
     override fun findDistinctProposalCds(): List&lt;String&gt; {
-        return getAllProposals().flatMap { it.cds.orEmpty() }.distinct()
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">        return getAllProposals().flatMap { it.cds.orEmpty() }.distinct()</span>
     }
 
 }

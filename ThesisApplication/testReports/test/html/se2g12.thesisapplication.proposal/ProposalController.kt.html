@@ -169,7 +169,7 @@ import java.util.*
 <span class="fc" id="L169">                println(&quot;Proposal Expiration: $proposalExpiration, Current Date: $currentDate, End Date Value: $endDateValue&quot;)</span>
 
 <span class="pc bpc" id="L171" title="1 of 2 branches missed.">                if (endDateValue != null) {</span>
-<span class="pc bpc" id="L172" title="1 of 4 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate &amp;&amp; proposalExpiration &lt;= endDateValue</span>
+<span class="pc bpc" id="L172" title="2 of 4 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate &amp;&amp; proposalExpiration &lt;= endDateValue</span>
                 } else {
                     // If endDate is null, there's no upper limit for the expiration date
 <span class="nc bnc" id="L175" title="All 2 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate</span>
@@ -222,35 +222,35 @@ import java.util.*
 
     @GetMapping(&quot;/API/thesis/proposals/coSupervisors&quot;)
     fun getDistinctCoSupervisors(): List&lt;String&gt; {
-<span class="nc" id="L225">        return proposalService.findDistinctCoSupervisors()</span>
-<span class="nc" id="L226">    }</span>
-<span class="nc" id="L227"></span>
+<span class="fc" id="L225">        return proposalService.findDistinctCoSupervisors()</span>
+    }
+
     @GetMapping(&quot;/API/thesis/proposals/types&quot;)
     fun getDistinctProposalTypes(): List&lt;String&gt; {
-        return proposalService.findDistinctProposalTypes()
+<span class="fc" id="L230">        return proposalService.findDistinctProposalTypes()</span>
     }
-<span class="nc" id="L232"></span>
-<span class="nc" id="L233">    @GetMapping(&quot;/API/thesis/proposals/levels&quot;)</span>
-<span class="nc" id="L234">    fun getDistinctProposalLevels(): List&lt;String&gt; {</span>
-        return proposalService.findDistinctProposalLevels()
+
+    @GetMapping(&quot;/API/thesis/proposals/levels&quot;)
+    fun getDistinctProposalLevels(): List&lt;String&gt; {
+<span class="fc" id="L235">        return proposalService.findDistinctProposalLevels()</span>
     }
 
     @GetMapping(&quot;/API/thesis/proposals/keywords&quot;)
-<span class="fc" id="L239">    fun getDistinctProposalKeywords(): List&lt;String&gt; {</span>
-        return proposalService.findDistinctProposalKeywords()
+    fun getDistinctProposalKeywords(): List&lt;String&gt; {
+<span class="fc" id="L240">        return proposalService.findDistinctProposalKeywords()</span>
     }
 
     @GetMapping(&quot;/API/thesis/proposals/groups&quot;)
-<span class="nc" id="L244">    fun getDistinctProposalGroups(): List&lt;String&gt; {</span>
-<span class="nc" id="L245">        return proposalService.findDistinctProposalGroups()</span>
-<span class="nc" id="L246">    }</span>
+    fun getDistinctProposalGroups(): List&lt;String&gt; {
+<span class="fc" id="L245">        return proposalService.findDistinctProposalGroups()</span>
+    }
 
     @GetMapping(&quot;/API/thesis/proposals/degrees&quot;)
     fun getDistinctProposalCds(): List&lt;String&gt; {
-        return proposalService.findDistinctProposalCds()
-<span class="nc" id="L251">    }</span>
-<span class="nc" id="L252"></span>
-<span class="nc" id="L253"></span>
+<span class="fc" id="L250">        return proposalService.findDistinctProposalCds()</span>
+    }
+
+
 }
 
 

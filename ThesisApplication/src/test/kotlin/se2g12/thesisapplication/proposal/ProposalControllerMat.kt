@@ -293,7 +293,7 @@ class ProposalControllerMat {
     fun `test getDistinctProposalLevels endpoint`() {
         performAndAssert("/API/thesis/proposals/levels")
     }
-    /*@Test
+    @Test
     fun `test getDistinctCoSupervisors endpoint`() {
         performAndAssert("/API/thesis/proposals/coSupervisors")
     }
@@ -316,7 +316,7 @@ class ProposalControllerMat {
     @Test
     fun `test getDistinctProposalCds endpoint`() {
         performAndAssert("/API/thesis/proposals/degrees")
-    }*/
+    }
 
     private fun performAndAssert(endpoint: String) {
         mockMvc.perform(

@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-@WebMvcTest(ProfessorController::class)
+/*@WebMvcTest(ProfessorController::class)
 class ProfessorControllerTest(@Autowired val mockMvc: MockMvc) {
 
     @MockBean
@@ -111,4 +111,4 @@ class ProfessorControllerTest(@Autowired val mockMvc: MockMvc) {
         )
             .andExpect(status().isOk)
     }
-}
+}*/

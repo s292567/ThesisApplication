@@ -92,7 +92,7 @@ class ApplicationControllerMat {
         val department=departmentRepository.save(Department("DEP1"))
 
         val groupDep=groupDepRepository.save(GroupDep(id="G13",department = department))
-        val localDate: LocalDate = LocalDate.parse("2020-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val localDate: LocalDate = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         var teacher = Teacher("Ferrari", "Luca", "p101@example.com",groupDep,id="p101")
         teacher= teacherRepository.save(teacher);
         val proposal = Proposal(
