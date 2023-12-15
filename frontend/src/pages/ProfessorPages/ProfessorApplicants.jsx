@@ -53,6 +53,8 @@ export default function ProfessorApplicants({
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
+  const scale = isSmallScreen ? 0.8 : 1;
+
   const handleApplied = async () => {
     try {
       if (action === "accept") {
@@ -222,6 +224,7 @@ export default function ProfessorApplicants({
         }}
       >
         <Grid container direction="column" justifyContent="center" spacing={3}>
+          {/* ITERATIONS OVER THE ARRAYS TO DISPLAY THE "COMPONENT" */}
           {(groupedByStudentArray || groupedByProposalArray).map((item) => (
             <Grid
               container
@@ -229,7 +232,10 @@ export default function ProfessorApplicants({
               justifyContent="center"
               key={groupedByStudentArray ? item.student.id : item.proposal.id}
             >
-              <Grid item xs={10} sm={10} md={10} lg={8} xl={6}>
+              <Grid item xs={10} sm={10} md={10} lg={8} xl={8}>
+                {/**
+                 * ACTUAL COMPONENT WITH INSIDE THE INFORMATIONS 
+                 */}
                 <Card
                   variant="outlined"
                   sx={{
@@ -252,8 +258,8 @@ export default function ProfessorApplicants({
                       groupedByStudentArray ? (
                         <>
                           <Typography
-                            variant="h4"
                             sx={{
+                              fontSize: `${scale*2}rem`,
                               fontWeight: "bold",
                               marginRight: "1rem",
                               color: "#2f1c6a",
@@ -261,7 +267,7 @@ export default function ProfessorApplicants({
                           >
                             {item.student.name + " " + item.student.surname}
                           </Typography>
-                          <Typography variant="body1">{`${item.student.email} - ${item.student.codDegree}`}</Typography>
+                          <Typography sx={{fontSize: `${scale*1.1}rem`, }}>{`${item.student.email} - ${item.student.codDegree}`}</Typography>
                         </>
                       ) : (
                         <>
@@ -274,8 +280,8 @@ export default function ProfessorApplicants({
                             }
                             children={
                               <Typography
-                                variant="h4"
                                 sx={{
+                                  fontSize: `${scale*2.3}rem`,
                                   fontWeight: "bold",
                                   color: "#2f1c6a",
                                   marginRight: "1rem",
@@ -376,6 +382,7 @@ export default function ProfessorApplicants({
             </Grid>
           ))}
         </Grid>
+        
         <WarningPopup
           warningOpen={warningOpen}
           setWarningOpen={setWarningOpen}
