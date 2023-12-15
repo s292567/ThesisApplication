@@ -72,16 +72,16 @@ sections:
       27 hours
 
 - Code review
-    - Total hours estimated
-    - Total hours spent
+    - Total hours estimated 1 hr
+    - Total hours spent 1 hr
 - Technical Debt management:
-  - Total hours estimated 
-  - Total hours spent
-  - Hours estimated for remediation by SonarQube
-  - Hours estimated for remediation by SonarQube only for the selected and planned issues 
-  - Hours spent on remediation 
-  - debt ratio (as reported by SonarQube under "Measures-Maintainability")
-  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability )
+  - Total hours estimated 3 hr
+  - Total hours spent 3 hr
+  - Hours estimated for remediation by SonarQube 2hr
+  - Hours estimated for remediation by SonarQube only for the selected and planned issues 1hr
+  - Hours spent on remediation 2 hr
+  - debt ratio (as reported by SonarQube under "Measures-Maintainability") 0.6%
+  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability ) 0 bugs, 0 Vulnerabilities, 38 code smells
   
 
 
