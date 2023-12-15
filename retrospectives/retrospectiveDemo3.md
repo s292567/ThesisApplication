@@ -31,14 +31,15 @@ sections:
 
 ### Detailed statistics
 
-| Story | # Tasks  | Points | Hours est. | Hours actual |
-|-------|----------|--------|------------|--------------|
-| #2    | 3        |  8     |     4 hours|   1 week  1 days 4 hour 30 minutes |
-| #9    | 2        |  5     |     5 hours|   2 hours    |
-| #10   | 3        |  3     |   1 day  1 hours |      7 hours |
-| #11   | 4        | 5      |   1 day 6 hours |        6 hours  30 minutes|
-| #14   | 1        | 5      |     2 hours |    2 hours|
-| #15   | 1        | 3      | 2 hours    | 2 hours |
+| Story | # Tasks | Points | Hours est.     | Hours actual                     |
+|-------|---------|--------|----------------|----------------------------------|
+| #0    | 27      | -      | 11 days        | 9 days 7 hours 35 minutes        |
+| #2    | 3       | 8      | 4 hours        | 1 week  1 days 4 hour 30 minutes |
+| #9    | 2       | 5      | 5 hours        | 2 hours                          |
+| #10   | 3       | 3      | 1 day  1 hours | 7 hours                          |
+| #11   | 4       | 5      | 1 day 6 hours  | 6 hours  30 minutes              |
+| #14   | 1       | 5      | 2 hours        | 2 hours                          |
+| #15   | 1       | 3      | 2 hours        | 2 hours                          |
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)

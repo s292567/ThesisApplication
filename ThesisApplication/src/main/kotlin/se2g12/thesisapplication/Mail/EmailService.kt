@@ -28,7 +28,7 @@ class EmailService {
         val message: MimeMessage = mailSender!!.createMimeMessage()
         message.setFrom(InternetAddress("noreply.se2g12@gmail.com"))
         if (to!!.contains("example.com"))
-            message.setRecipients(MimeMessage.RecipientType.TO, "mfontana413@gmail.com")
+            message.setRecipients(MimeMessage.RecipientType.TO, "noreply.se2g12@gmail.com")
         else
             message.setRecipients(MimeMessage.RecipientType.TO, to)
         val bool=status.contains("added new application")
