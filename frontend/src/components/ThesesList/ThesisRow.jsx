@@ -5,6 +5,7 @@ import {
   Delete,
   EditNoteRounded,
   ContentCopyOutlined,
+  ArchiveRounded,
 } from "@mui/icons-material";
 import {
   PastelComponent,
@@ -22,6 +23,7 @@ export default function ThesisRow({
   onDelete = (id) => {},
   onCopy = (id) => {},
   onEdit = () => {},
+  onArchive = () => {},
 }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -29,6 +31,7 @@ export default function ThesisRow({
   const [detailOpen, setDetailOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false); // EDIT MODAL
   const [warningOpen, setWarningOpen] = useState(false); // DELETE MODAL
+  const [warningMsg, setWarningMsg] = useState(""); 
 
   const [actionType, setActionType] = useState(""); // New state to track the action type
 
@@ -36,6 +39,13 @@ export default function ThesisRow({
 
   const handleAction = (type) => {
     setActionType(type);
+    if (type === "delete") {
+      setWarningMsg("Are you sure you want to delete this thesis?");
+    } else if (type === "copy") {
+      setWarningMsg("Are you sure you want to copy this thesis?");
+    } else if (type === "archive") {
+      setWarningMsg("Are you sure you want to archive this thesis?");
+    }
     setWarningOpen(true);
   };
 
@@ -44,8 +54,10 @@ export default function ThesisRow({
       onDelete(thesis.id);
     } else if (actionType === "copy") {
       onCopy(thesis.id);
+    } else if (actionType === "archive") {
+      onArchive(thesis.id);
     }
-  };
+  }; 
 
   const handleOpenDetail = () => {
     setDetailOpen(true);
@@ -55,9 +67,7 @@ export default function ThesisRow({
     setDetailOpen(false);
   };
 
-  const enableActions = () => {
-    return user.role === "Professor" && actions;
-  };
+  const enableActions = user.role === "Professor" && actions;
 
   return (
     <>
@@ -92,7 +102,7 @@ export default function ThesisRow({
               handleOpenDetail();
             }}
           />
-          {enableActions() ? (
+          {enableActions ? (
             <>
               <PastelComponent
                 textColor={"white"}
@@ -118,6 +128,18 @@ export default function ThesisRow({
                 }}
               />
               <Box sx={{ display: "flex", flexDirection: "row", gap: "15px" }}>
+                
+                <PastelComponent
+                  bgColor={"darkblue"}
+                  icon={<ArchiveRounded fontSize="large" sx={{ marginTop: "3px" }} />}
+                  textColor={"white"}
+                  style={{ width: "auto", height: "55px", borderRadius: "8px" }}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    /// ARCHIVE FUNCTION
+                    handleAction("archive");
+                  }}
+                />
                 <PastelComponent
                   bgColor={"#63ce78"}
                   icon={
@@ -170,6 +192,7 @@ export default function ThesisRow({
           open={detailOpen}
           handleClose={handleCloseDetail}
           thesis={thesis}
+          onEdit={enableActions ? onEdit : null}
         />
       ) : null}
 
@@ -178,11 +201,7 @@ export default function ThesisRow({
        */}
       {user.role === "Professor" && actions ? (
         <WarningPopup
-          warningMessage={
-            actionType === "delete"
-              ? "Are you sure you want to delete this thesis?"
-              : "Are you sure you want to copy this thesis?"
-          }
+          warningMessage={warningMsg}
           warningOpen={warningOpen}
           setWarningOpen={setWarningOpen}
           handleApplied={handleApplied}

@@ -13,30 +13,41 @@ import {
   Grid,
 } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import { Close } from "@mui/icons-material";
-import { ApplyToThesisPopup, PastelComponent, WarningPopup } from "../index";
+import { Close, EditNoteRounded } from "@mui/icons-material";
+import {
+  ApplyToThesisPopup,
+  PastelComponent,
+  ThesisForm,
+  WarningPopup,
+} from "../index";
 import { frontendRoutes } from "../../routes";
 import { applyToProposal, getThesisStatusById } from "../../api";
 
-export default function ThesisDetail({ thesis, open, handleClose }) {
+export default function ThesisDetail({
+  thesis,
+  open,
+  handleClose,
+  onEdit = () => {},
+}) {
   const { userId, user } = useUserContext();
   const location = useLocation();
 
   const [alreadyApplied, setAlreadyApplied] = useState(false);
-  const [appliedMsg, setAppliedMsg] = useState("apllied"); 
+  const [appliedMsg, setAppliedMsg] = useState("apllied");
   const [warningOpen, setWarningOpen] = useState(false);
+
+  const [editOpen, setEditOpen] = useState(false); // EDIT MODAL
 
   const formatFullName = (person) => `${person.name} ${person.surname}`;
 
-  const handleApplying = async (file=null) => {
+  const handleApplying = async (file = null) => {
     try {
       await applyToProposal({
         studentId: userId,
         proposalId: thesis.id,
       });
       setAlreadyApplied(true);
-      if(file !== null)
-        setAppliedMsg("applied with CV");
+      if (file !== null) setAppliedMsg("applied with CV");
       // Return a success message
       return "You have successfully applied to this thesis!";
     } catch (error) {
@@ -53,8 +64,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
         console.log("status", status);
         setAlreadyApplied(status ? true : false);
         /// TODOS: change the function from the be so that if there is a cv it's returning "cv" and not only true
-        if(status === "cv")
-          setAppliedMsg("applied with cv");
+        if (status === "cv") setAppliedMsg("applied with cv");
       } catch (error) {
         console.error("Failed to retrieve proposal status:", error);
         // Throw an error with a message to be caught and displayed by the Snackbar
@@ -127,6 +137,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
+              alignItems: "flex-start",
             }}
           >
             <Box>
@@ -137,6 +148,37 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
                 {thesis.keywords.join(", ")}
               </Typography>
             </Box>
+
+            {onEdit ? (
+              <>
+                <PastelComponent
+                  bgColor={"#63ce78"}
+                  textColor={"white"}
+                  text="Edit thesis"
+                  style={{ width: "auto", height: "45px", borderRadius: "8px" }}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    /// EDIT FUNCTION
+                    setEditOpen(true);
+                  }}
+                />
+                {/**
+                 * EDIT MODAL WITH THE FORM
+                 */}
+                {editOpen ? (
+                  <ThesisForm
+                    open={editOpen}
+                    onClose={() => {
+                      setEditOpen(false);
+                      handleClose();
+                    }}
+                    onSubmit={onEdit}
+                    thesis={thesis}
+                  />
+                ) : null}
+              </>
+            ) : null}
+
             {/**
              * APPLY BUTTON SECTION
              */}

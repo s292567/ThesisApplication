@@ -10,6 +10,7 @@ export default function ThesesList({
   handleDelete = () => {},
   handleCopy = () => {},
   handleEdit = () => {},
+  handleArchive = () => {},
 }) {
   const location = useLocation();
   const { homeRoute } = useUserContext();
@@ -38,6 +39,7 @@ export default function ThesesList({
                   onDelete={handleDelete}
                   onCopy={handleCopy}
                   onEdit={handleEdit}
+                  onArchive={handleArchive}
                 />
               </Grid>
             </Grid>

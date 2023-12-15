@@ -21,7 +21,6 @@ import {
   insertProposal,
   getProposalsByStudentId,
   getProposalsByProfessorId,
-
 } from "../../api";
 import { Add } from "@mui/icons-material";
 
@@ -81,7 +80,10 @@ export default function ThesesPage() {
   const handleResearch = useCallback(async (filters, searchQuery) => {
     try {
       // Call the API with filters and search query
-      const thesisData = await searchProposals({...filters, queryString: searchQuery});
+      const thesisData = await searchProposals({
+        ...filters,
+        queryString: searchQuery,
+      });
       setSortedThesisData(thesisData);
     } catch (error) {
       console.error("Error while fetching filtered data:", error);
@@ -174,6 +176,24 @@ export default function ThesesPage() {
     [userId, sortedThesisData]
   );
 
+  const handleArchive = useCallback(
+    async (id) => {
+      try {
+        // Call API to archive the thesis
+        // await archiveProposal(id);
+
+        // Remove the thesis from the sortedThesisData array
+        const updatedThesisData = sortedThesisData.filter(
+          (thesis) => thesis.id !== id
+        );
+        reapplySorting(updatedThesisData); // Reapply sorting to the updated list
+      } catch (error) {
+        console.error("Failed to archive proposal:", error);
+      }
+    },
+    [sortedThesisData]
+  );
+
   return (
     <>
       <SectionTitle
@@ -217,12 +237,17 @@ export default function ThesesPage() {
             proposals={sortedThesisData}
             onSortedData={handleSortedData}
           />
-          <ThesesList
-            thesesData={sortedThesisData}
-            handleDelete={handleDelete}
-            handleCopy={handleCopy}
-            handleEdit={handleEdit}
-          />
+          {user.role === "Professor" ? (
+            <ThesesList
+              thesesData={sortedThesisData}
+              handleDelete={handleDelete}
+              handleCopy={handleCopy}
+              handleEdit={handleEdit}
+              handleArchive={handleArchive}
+            />
+          ) : (
+            <ThesesList thesesData={sortedThesisData} />
+          )}
         </>
       )}
     </>
