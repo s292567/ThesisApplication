@@ -47,7 +47,7 @@ sections:
 - Hours per task (average, standard deviation)
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1
 ![report](retrospective_3_1.png)
-![report](restrospective_3_2.png)
+![report](retrospective_3_2.png)
   
 ## QUALITY MEASURES 
 
