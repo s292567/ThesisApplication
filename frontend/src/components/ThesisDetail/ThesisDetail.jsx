@@ -23,6 +23,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
   const location = useLocation();
 
   const [alreadyApplied, setAlreadyApplied] = useState(false);
+  const [appliedMsg, setAppliedMsg] = useState("apllied"); 
   const [warningOpen, setWarningOpen] = useState(false);
 
   const formatFullName = (person) => `${person.name} ${person.surname}`;
@@ -34,6 +35,8 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
         proposalId: thesis.id,
       });
       setAlreadyApplied(true);
+      if(file !== null)
+        setAppliedMsg("applied with CV");
       // Return a success message
       return "You have successfully applied to this thesis!";
     } catch (error) {
@@ -48,8 +51,10 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
       try {
         const status = await getThesisStatusById(proposalId);
         console.log("status", status);
-        console.log("thesis", thesis.id);
-        setAlreadyApplied(status);
+        setAlreadyApplied(status ? true : false);
+        /// TODOS: change the function from the be so that if there is a cv it's returning "cv" and not only true
+        if(status === "cv")
+          setAppliedMsg("applied with cv");
       } catch (error) {
         console.error("Failed to retrieve proposal status:", error);
         // Throw an error with a message to be caught and displayed by the Snackbar
@@ -150,18 +155,6 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
                       fontSize: "1.2rem",
                     }}
                   />
-                  {/**
-                   * WARNING POPUP
-                  <WarningPopup
-                    warningOpen={warningOpen}
-                    setWarningOpen={setWarningOpen}
-                    handleApplied={handleApplied}
-                    warningMessage={"Are you sure you want to apply?"}
-                  />
-                  */}
-                  {/**
-                   * IT MUST BE A WARNING POPUP BUT WITHIN IT THE POSSIBILITY TO ALSO ADD A CV
-                   */}
                   <ApplyToThesisPopup
                     open={warningOpen}
                     onClose={() => setWarningOpen(false)}
@@ -170,7 +163,7 @@ export default function ThesisDetail({ thesis, open, handleClose }) {
                 </>
               ) : (
                 <PastelComponent
-                  text={"applied"}
+                  text={appliedMsg}
                   textColor={"white"}
                   bgColor={"#63CE78"}
                   style={{

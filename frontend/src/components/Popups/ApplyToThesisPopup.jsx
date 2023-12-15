@@ -10,16 +10,23 @@ import {
   Typography,
   IconButton,
   Box,
+  styled,
+  Paper,
+  useMediaQuery,
 } from "@mui/material";
 import {
   CloudUploadOutlined,
-  Check as CheckIcon,
+  CheckRounded as CheckIcon,
   Close as CloseIcon,
 } from "@mui/icons-material";
 import { useDropzone } from "react-dropzone";
+import { PastelComponent } from "../index";
 
 export default function ApplyToThesisPopup({ open, onClose, handleAppling }) {
   const [file, setFile] = useState(null);
+
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  const scale = isMobile ? 0.7 : 1;
 
   const onDrop = useCallback((acceptedFiles) => {
     // Check if the first file in the acceptedFiles array is a PDF
@@ -47,7 +54,7 @@ export default function ApplyToThesisPopup({ open, onClose, handleAppling }) {
 
   const handleApply = () => {
     // Logic to handle apply with or without CV
-    // handleAppling(file);
+    handleAppling(file);
     onClose();
   };
 
@@ -60,65 +67,132 @@ export default function ApplyToThesisPopup({ open, onClose, handleAppling }) {
     <Dialog
       open={open}
       onClose={onClose}
-      sx={{ "& .MuiDialog-paper": { borderRadius: "18px", border: 0 } }}
+      sx={{
+        "& .MuiDialog-paper": {
+          borderRadius: "18px",
+          border: 0,
+          padding: "1rem",
+        },
+      }}
     >
-      <DialogTitle>Are you sure you want to <b>apply</b> to <b>this thesis</b>?</DialogTitle>
-      <Divider variant="middle" />
+      <DialogTitle sx={{ padding: "1rem" }}>
+        <Typography gutterBottom mb={2} sx={{ fontSize: `${scale*2}rem` }}>
+          Are you sure you want to <b>apply</b> to <b>this thesis</b>?
+        </Typography>
+      </DialogTitle>
+
+      <StyledDivider />
+
       <DialogContent>
-        <Box>
-          <Typography variant="body1" gutterBottom>
+        <Paper
+          sx={{
+            padding: "1rem",
+            paddingTop: "1.5rem",
+            borderRadius: "18px",
+            border: "none",
+            backgroundColor: "whitesmoke",
+          }}
+          elevation={0}
+        >
+          <Typography
+            gutterBottom
+            sx={{
+              marginLeft: "1rem",
+              color: "#4F709C",
+              fontWeight: "bold",
+              fontSize: "1rem",
+            }}
+          >
             Upload a CV (optional):
           </Typography>
+
           {!file ? (
-            <Box
+            <FileWrapper
               {...getRootProps()}
-              sx={{
-                border: "2px dashed grey",
-                borderRadius: "12px",
-                padding: "20px",
-                textAlign: "center",
-                cursor: "pointer",
-                margin: "1rem",
-                paddingY: "2rem",
-              }}
             >
               <input {...getInputProps()} />
-              <CloudUploadOutlined style={{ fontSize: "50px" }} />
-              <Typography variant="body2">
+              <CloudUploadOutlined style={{ fontSize: "50px", color: "#4F709C" }} />
+              <Typography sx={{fontSize: "1rem", color: "#4F709C"}}>
                 Drag and drop file here
                 <br />
                 or click to select it
               </Typography>
-            </Box>
+            </FileWrapper>
           ) : (
-            <div
-              style={{
+            <Box
+              sx={{
+                border: "none",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent: "flex-start",
+                gap: "5px",
               }}
             >
-              <CheckIcon color="success" />
-              <Typography
-                variant="body2"
-                style={{ flexGrow: 1, marginLeft: 8 }}
+              <FileWrapper
+                sx={{
+                  border: "none",
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "10px",
+                  cursor: "default",
+                }}
               >
-                {file.name}
-              </Typography>
+                <CheckIcon sx={{fontWeight: "bold", color: "darkblue"}}/>
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    color: "darkblue",
+                    marginRight: "1rem",
+                  }}
+                >
+                  {file.name}
+                </Typography>
+              </FileWrapper>
+
               <IconButton onClick={handleRemoveFile}>
-                <CloseIcon />
+                <CloseIcon sx={{ color: "darkred" }} />
               </IconButton>
-            </div>
+            </Box>
           )}
-        </Box>
+        </Paper>
       </DialogContent>
-      <Divider variant="middle" />
-      <DialogActions sx={{justifyContent: "center"}}>
-        <Button onClick={handleApply}>
-          {file ? "Applying with CV" : "Apply"}
-        </Button>
-        <Button onClick={handleGoBack}>Go Back</Button>
+
+      <DialogActions sx={{ justifyContent: "flex-start", marginLeft: "2rem", gap: "20px"}}>
+        
+        <PastelComponent
+          bgColor={"#2192FF"}
+          textColor={"white"}
+          text={file ? "applying with CV" : "apply without CV"}
+          onClick={handleApply}
+          style={{paddingX: "1rem", paddingY: "0.6rem", borderRadius: "15px"}}
+         />
+        
+        <PastelComponent
+          bgColor={"#ED174F"}
+          textColor={"white"}
+          text={"go back"}
+          onClick={handleGoBack}
+          style={{paddingX: "1rem", paddingY: "0.6rem", borderRadius: "15px"}}
+        />
       </DialogActions>
     </Dialog>
   );
 }
+
+const StyledDivider = styled(Divider)({
+  width: "80%",
+  marginLeft: "10%",
+  marginBottom: "1rem",
+});
+
+const FileWrapper = styled(Paper)({
+  border: "2px dashed #4F709C",
+  backgroundColor: "#d1e3f9",
+  borderRadius: "18px",
+  padding: "20px",
+  textAlign: "center",
+  cursor: "pointer",
+  margin: "1rem",
+  paddingY: "2rem",
+});
