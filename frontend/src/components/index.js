@@ -36,6 +36,8 @@ import CustomAutocomplete from "./GeneralComponents/CustomAutocomplete.jsx";
 
 import ApplyToThesisPopup from "./Popups/ApplyToThesisPopup.jsx";
 
+import PdfViewerModal from "./GeneralComponents/PdfViewerModal.jsx";
+
 export {
     Navbar,
     LoggedInNavbar,
@@ -56,6 +58,8 @@ export {
     NoDataDisplayed,
     
     Searchbar,
+
+    PdfViewerModal,
 
     SectionTitle,
     StyledPaper,

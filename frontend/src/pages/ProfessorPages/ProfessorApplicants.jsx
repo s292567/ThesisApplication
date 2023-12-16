@@ -23,10 +23,16 @@ import {
   InfoRounded,
   KeyboardArrowDownRounded,
   KeyboardArrowUpRounded,
+  TextSnippetRounded,
 } from "@mui/icons-material";
 
-import { PastelComponent, ThesisRow } from "../../components";
-import { WarningPopup, WithTooltip } from "../../components";
+import {
+  PastelComponent,
+  ThesisRow,
+  WarningPopup,
+  WithTooltip,
+  PdfViewerModal,
+} from "../../components";
 import {
   acceptApplication,
   declineApplication,
@@ -48,6 +54,7 @@ export default function ProfessorApplicants({
   const { userId } = useUserContext();
   const [warningOpen, setWarningOpen] = useState(false);
   const [msgWarning, setMsgWarning] = useState("");
+  const [openPdfViewer, setOpenPdfViewer] = useState(false);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -59,19 +66,11 @@ export default function ProfessorApplicants({
     try {
       if (action === "accept") {
         await acceptApplication(IDs.proposalId, IDs.studentId, userId);
-        onApplicationStatusChange(
-          IDs.proposalId,
-          IDs.studentId,
-          "accept"
-        );
+        onApplicationStatusChange(IDs.proposalId, IDs.studentId, "accept");
         return "Application successfully ACCEPTED.";
       } else if (action === "decline") {
         await declineApplication(IDs.proposalId, IDs.studentId, userId);
-        onApplicationStatusChange(
-          IDs.proposalId,
-          IDs.studentId,
-          "decline"
-        );
+        onApplicationStatusChange(IDs.proposalId, IDs.studentId, "decline");
         return "Application successfully DECLINED.";
       }
     } catch (error) {
@@ -111,10 +110,11 @@ export default function ProfessorApplicants({
           <TableCell>Student Name</TableCell>
         )}
         {(!isSmallScreen || isMediumScreen) && !groupedByStudentArray && (
-          <TableCell>Student Email</TableCell>
-        )}
-        {!isSmallScreen && !isMediumScreen && !groupedByStudentArray && (
-          <TableCell>Student Degree</TableCell>
+          <>
+            <TableCell>Student Email</TableCell>
+            <TableCell>Student Degree</TableCell>
+            <TableCell>Student Curriculum</TableCell>
+          </>
         )}
         {actions ? <TableCell>Status</TableCell> : null}
       </TableRow>
@@ -168,6 +168,9 @@ export default function ProfessorApplicants({
 
           {(!isSmallScreen || isMediumScreen) && !isStudentGrouping && (
             <TableCell>{item.email}</TableCell>
+          )}
+          {!isSmallScreen && !isMediumScreen && !isStudentGrouping && (
+            <TableCell>{item.codDegree}</TableCell>
           )}
           {!isSmallScreen && !isMediumScreen && !isStudentGrouping && (
             <TableCell>{item.codDegree}</TableCell>
@@ -232,9 +235,9 @@ export default function ProfessorApplicants({
               justifyContent="center"
               key={groupedByStudentArray ? item.student.id : item.proposal.id}
             >
-              <Grid item xs={10} sm={10} md={10} lg={8} xl={8}>
+              <Grid item xs={10} sm={10} md={12} lg={10} xl={8}>
                 {/**
-                 * ACTUAL COMPONENT WITH INSIDE THE INFORMATIONS 
+                 * ACTUAL COMPONENT WITH INSIDE THE INFORMATIONS
                  */}
                 <Card
                   variant="outlined"
@@ -259,7 +262,7 @@ export default function ProfessorApplicants({
                         <>
                           <Typography
                             sx={{
-                              fontSize: `${scale*2}rem`,
+                              fontSize: `${scale * 2}rem`,
                               fontWeight: "bold",
                               marginRight: "1rem",
                               color: "#2f1c6a",
@@ -267,7 +270,44 @@ export default function ProfessorApplicants({
                           >
                             {item.student.name + " " + item.student.surname}
                           </Typography>
-                          <Typography sx={{fontSize: `${scale*1.1}rem`, }}>{`${item.student.email} - ${item.student.codDegree}`}</Typography>
+                          <Typography
+                            sx={{ fontSize: `${scale * 1.1}rem` }}
+                          >{`${item.student.email} - ${item.student.codDegree}`}</Typography>
+
+                          {/* Display the cv only if present */}
+                          {item.student.cv ? (
+                            <>
+                              <PastelComponent
+                                bgColor="#94a6f3"
+                                textColor="white"
+                                text="cv: "
+                                fontSize="medium"
+                                icon={
+                                  <TextSnippetRounded
+                                    sx={{ marginTop: "-4px" }}
+                                  />
+                                }
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row-reverse",
+                                  gap: "5px",
+                                  marginTop: "1rem",
+                                }}
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  /// open CV
+                                  setOpenPdfViewer(true);
+                                }}
+                              />
+                              {openPdfViewer ? (
+                                <PdfViewerModal
+                                  open={openPdfViewer}
+                                  onClose={() => setOpenPdfViewer(false)}
+                                  file={item.student.cv}
+                                />
+                              ) : null}
+                            </>
+                          ) : null}
                         </>
                       ) : (
                         <>
@@ -281,7 +321,7 @@ export default function ProfessorApplicants({
                             children={
                               <Typography
                                 sx={{
-                                  fontSize: `${scale*2.3}rem`,
+                                  fontSize: `${scale * 2.3}rem`,
                                   fontWeight: "bold",
                                   color: "#2f1c6a",
                                   marginRight: "1rem",
@@ -382,7 +422,7 @@ export default function ProfessorApplicants({
             </Grid>
           ))}
         </Grid>
-        
+
         <WarningPopup
           warningOpen={warningOpen}
           setWarningOpen={setWarningOpen}

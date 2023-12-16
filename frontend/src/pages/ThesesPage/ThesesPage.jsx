@@ -201,32 +201,34 @@ export default function ThesesPage() {
         style={{ marginTop: "7rem", marginBottom: 0 }}
       />
       <Searchbar handleResearch={handleResearch} clearSearch={clearSearch} />
-      {user.role === "Professor" ? (
-        <>
-          <PastelComponent
-            bgColor={"#687EFF"}
-            textColor={"white"}
-            text={"Thesis"}
-            icon={<Add sx={{ marginTop: "-2px" }} />}
-            onClick={() => setNewThesisOpen(true)}
-            style={{
-              zIndex: "10",
-              position: "absolute",
-              top: { xs: "14%", sm: "18rem" },
-              right: "5%",
-              fontSize: "x-large",
-              paddingRight: "1.5rem",
-            }}
-          />
-          {newThesisOpen ? (
-            <ThesisForm
-              open={newThesisOpen}
-              onClose={() => setNewThesisOpen(false)}
-              onSubmit={handleNewThesis}
-            />
-          ) : null}
-        </>
+
+      <PastelComponent
+        bgColor={"#687EFF"}
+        textColor={"white"}
+        text={user.role === "Professor" ? "Thesis" : "Request Thesis"}
+        icon={<Add sx={{ marginTop: "-2px" }} />}
+        onClick={() => setNewThesisOpen(true)}
+        style={{
+          zIndex: "10",
+          position: "absolute",
+          top: { xs: "14%", sm: "18rem" },
+          right: "5%",
+          fontSize: "x-large",
+          paddingRight: "1.5rem",
+        }}
+      />
+      {newThesisOpen ? (
+        user.role === "Professor" ? (
+        <ThesisForm
+          open={newThesisOpen}
+          onClose={() => setNewThesisOpen(false)}
+          onSubmit={handleNewThesis}
+        />) : 
+          user.role === "Student" ? (
+            {/* Start request Thesis Form */}
+          ) : null
       ) : null}
+
       {isLoading ? (
         <SkeletonThesisList count={3} />
       ) : sortedThesisData && sortedThesisData.length === 0 ? (
