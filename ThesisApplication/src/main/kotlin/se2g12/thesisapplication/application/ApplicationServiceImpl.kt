@@ -37,7 +37,7 @@ class ApplicationServiceImpl (
             .orElseThrow { StudentNotFoundError("Student ${newApplication.studentId} not found") }
         val proposal=proposalRepository.findById(newApplication.proposalId)
             .orElseThrow { ProposalNotFoundError("Proposal ${newApplication.proposalId} not found") }
-        val application=Application(student, proposal, "pending",file)
+        val application=Application(student, proposal, "pending",file, newApplication.file?.name)
         applicationRepository.save(application)
         emailService.sendHtmlEmail(proposal.supervisor.email,"added new application for proposal ${proposal.title}")
     }

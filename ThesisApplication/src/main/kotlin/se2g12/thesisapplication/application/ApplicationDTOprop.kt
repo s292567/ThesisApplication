@@ -7,6 +7,8 @@ data class ApplicationDTOprop (
     var id: UUID?,
     var studentId:String?,
     var proposal: ProposalDTO,
-    var status: String?
+    var status: String?,
+    var fileId:UUID?=null,
+    var fileName:String?=null
 )
 

@@ -12,6 +12,10 @@ class FileServiceImpl(private val fileRepository: FileRepository) : FileService 
         return fileRepository.save(toAdd).fileId!!
     }
 
+    override fun getName(fileID: UUID): String {
+        return fileRepository.getReferenceById(fileID).fileName
+    }
+
     override fun getFileByID(fileID: UUID): File {
         return fileRepository.getReferenceById(fileID)
     }

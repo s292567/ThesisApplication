@@ -57,7 +57,7 @@ class ApplicationController( private val applicationService: ApplicationService,
     @PreAuthorize("hasRole('Student')")
     fun getApplicationsForLoggedInStudent(@PathVariable studentId: String): List<ApplicationDTOprop> {
         return applicationService.getApplicationsForStudent(studentId).map{
-            ApplicationDTOprop(id=it.id,studentId=it.studentId, proposal = proposalRepository.getReferenceById(it.proposalId!!).toDTO(), status = it.status)
+            ApplicationDTOprop(id=it.id,studentId=it.studentId, proposal = proposalRepository.getReferenceById(it.proposalId!!).toDTO(), status = it.status,fileId = it.fileId,fileName=it.fileName)
         }
     }
 }

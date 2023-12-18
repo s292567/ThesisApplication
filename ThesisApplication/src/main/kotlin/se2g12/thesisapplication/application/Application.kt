@@ -19,7 +19,8 @@ data class Application(
     val proposal: Proposal,
 
     val status: String?="pending",
- val fileID:UUID?=null
+ val fileID:UUID?=null,
+        val fileName:String?=null
 ){
     @Id
     @GeneratedValue(generator = "uuid2")
