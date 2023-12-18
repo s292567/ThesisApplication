@@ -5,6 +5,9 @@ import org.springframework.transaction.annotation.Transactional
 import se2g12.thesisapplication.Mail.EmailService
 import se2g12.thesisapplication.archive.Archive
 import se2g12.thesisapplication.archive.ArchiveRepository
+import se2g12.thesisapplication.file.File
+import se2g12.thesisapplication.file.FileDTO
+import se2g12.thesisapplication.file.FileService
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.student.StudentDTO
 import se2g12.thesisapplication.student.StudentRepository
@@ -19,17 +22,22 @@ class ApplicationServiceImpl (
     private val proposalRepository: ProposalRepository,
     private val studentRepository: StudentRepository,
     private val archiveRepository: ArchiveRepository,
-    private val emailService: EmailService
+    private val emailService: EmailService,
+        private val fileService: FileService
 )
     : ApplicationService {
 
     override fun addNewApplication(newApplication: NewApplicationDTO) {
+        var file:UUID?=null
+        if(newApplication.file!=null)
+        file=fileService.addFile(newApplication.file!!)
+
         checkApplicationConflicts(newApplication.studentId, newApplication.proposalId)
         val student=studentRepository.findById(newApplication.studentId)
             .orElseThrow { StudentNotFoundError("Student ${newApplication.studentId} not found") }
         val proposal=proposalRepository.findById(newApplication.proposalId)
             .orElseThrow { ProposalNotFoundError("Proposal ${newApplication.proposalId} not found") }
-        val application=Application(student, proposal, "pending")
+        val application=Application(student, proposal, "pending",file)
         applicationRepository.save(application)
         emailService.sendHtmlEmail(proposal.supervisor.email,"added new application for proposal ${proposal.title}")
     }
