@@ -41,9 +41,6 @@ sections:
 | #0     |    2    |    0   |   1 day 6 hours   |   2 days 1 hour 25 minutes |
 | #1     |    3    |    3   |   3 days   |   4 days 2 hours            |
 | #3     |    2    |    3   |   2 days   |   2 days 4 hours 20 minutes  |
-
-#### Time Report (Youtrack)
-![report](retrospective_image.jpg)
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
