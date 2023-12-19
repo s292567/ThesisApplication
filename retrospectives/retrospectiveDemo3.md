@@ -49,7 +49,7 @@ sections:
   - Sonarcloud
   - Virtual Clock
 - Hours per task (average, standard deviation)  16.08, 26.21
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1  0.04
   
 ## QUALITY MEASURES 
 
