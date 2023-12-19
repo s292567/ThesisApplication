@@ -43,7 +43,7 @@ sections:
 | #3     |    2    |    3   |   2 days   |   2 days 4 hours 20 minutes  |
    
 
-> place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
+- place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 	-Create dummy data and docker image
 	-Create design components
 - Hours per task average, standard deviation (estimate and actual)
