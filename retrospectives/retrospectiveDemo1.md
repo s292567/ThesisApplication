@@ -20,7 +20,7 @@ sections:
 6 out of 14
 
 - Nr of hours planned vs. spent (as a team)
- 70hours out of 114hours 
+ 70hours spent out of 114hours planned
 
 **Remember**a story is done ONLY if it fits the Definition of Done:
  
@@ -38,17 +38,21 @@ sections:
 
 | Story  | # Tasks | Points | Hours est. | Hours actual                |
 |--------|---------|--------|------------|-----------------------------|
+| #0     |    2    |    0   |   1 day 6 hours   |   2 days 1 hour 25 minutes |
 | #1     |    3    |    3   |   3 days   |   4 days 2 hours            |
-| #3     |    2    |    3   |   2 days   |   2 days 4 hours 20minutes  |
+| #3     |    2    |    3   |   2 days   |   2 days 4 hours 20 minutes  |
 
 #### Time Report (Youtrack)
 ![report](retrospective_image.jpg)
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
-
+	-Create dummy data and docker image
+	-Create design components
 - Hours per task average, standard deviation (estimate and actual)
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1
+	- Estimate: 7.7, 0.7
+ 	- Actual: 10.25, 2.6 	
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1   0.63
 
   
 ## QUALITY MEASURES 
