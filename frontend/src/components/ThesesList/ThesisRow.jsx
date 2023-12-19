@@ -193,6 +193,9 @@ export default function ThesisRow({
           handleClose={handleCloseDetail}
           thesis={thesis}
           onEdit={enableActions ? onEdit : null}
+          onDelete={enableActions ? onDelete : null}
+          onCopy={enableActions ? onCopy : null}
+          onArchive={enableActions ? onArchive : null}
         />
       ) : null}
 

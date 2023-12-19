@@ -113,8 +113,11 @@ export default function ProfessorApplicants({
           <>
             <TableCell>Student Email</TableCell>
             <TableCell>Student Degree</TableCell>
-            <TableCell>Student Curriculum</TableCell>
           </>
+        )}
+        {/** THIS WILL BE THE FIELD FOR THE STUDENT CV */}
+        {!isSmallScreen && !isMediumScreen && !isStudentGrouping && (
+          <TableCell>Student Curriculum</TableCell>
         )}
         {actions ? <TableCell>Status</TableCell> : null}
       </TableRow>
@@ -172,6 +175,7 @@ export default function ProfessorApplicants({
           {!isSmallScreen && !isMediumScreen && !isStudentGrouping && (
             <TableCell>{item.codDegree}</TableCell>
           )}
+          {/** THIS WILL BE THE FIELD FOR THE STUDENT CV */}
           {!isSmallScreen && !isMediumScreen && !isStudentGrouping && (
             <TableCell>{item.codDegree}</TableCell>
           )}
