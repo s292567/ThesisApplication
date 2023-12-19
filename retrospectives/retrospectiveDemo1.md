@@ -43,9 +43,7 @@ sections:
 | #3     |    2    |    3   |   2 days   |   2 days 4 hours 20 minutes  |
    
 
-- place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
-	-Create dummy data and docker image
-	-Create design components
+>place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 - Hours per task average, standard deviation (estimate and actual)
 	- Estimate: 7.7, 0.7
  	- Actual: 10.25, 2.6 	
