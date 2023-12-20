@@ -30,10 +30,10 @@ export default function ThesisDetail({
   thesis,
   open,
   handleClose,
-  onEdit = () => {},
-  onDelete = () => {},
-  onArchive = () => {},
-  onCopy = () => {},
+  onEdit = null,
+  onDelete = null,
+  onArchive = null,
+  onCopy = null,
 }) {
   const { userId, user } = useUserContext();
   const location = useLocation();
@@ -105,8 +105,7 @@ export default function ThesisDetail({
   useEffect(() => {
     const getThesisStatus = async (proposalId) => {
       try {
-        const status = await getThesisStatusById(proposalId);
-        console.log("status", status);
+        const status = await getThesisStatusById(proposalId); 
         setAlreadyApplied(status ? true : false);
         /// TODOS: change the function from the be so that if there is a cv it's returning "cv" and not only true
         if (status === "cv") setAppliedMsg("applied with cv");
@@ -194,7 +193,7 @@ export default function ThesisDetail({
               </Typography>
             </Box>
 
-            {onEdit || onDelete || onArchive || onCopy ? (
+            {onEdit !== null ? (
               <>
                 <Tooltip title="Multiple actions" placement="top">
                   <IconButton
