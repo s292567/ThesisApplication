@@ -12,5 +12,7 @@
     "professorDashboard": "/professorDashboard",
 
     "pageNotFound": "/pageNotFound",
-    "studentApplications": "/myApplications"
+    "studentApplications": "/myApplications",
+    "SecretaryDashboard": "/SecretaryDashboard",
+    "NewProposals": "/NewProposals"
 }

@@ -14,6 +14,8 @@ import RefreshComponentPage from "./DefaultLayoutPage/RefreshComponentPage.jsx";
 import ThesesPage from "./ThesesPage/ThesesPage.jsx";
 
 import StudentApplicationsPage from "./studentPages/StudentApplicationsPage.jsx";
+import SecretaryPage from "./SecretaryPage/SecretaryPage.jsx";
+import NewProposalPage from "./ProfessorPages/NewProposalPage.jsx";
 
 export {
     DefaultLayoutPage,
@@ -30,4 +32,6 @@ export {
 
     ThesesPage,
     StudentApplicationsPage,
+    SecretaryPage,
+    NewProposalPage
 }
