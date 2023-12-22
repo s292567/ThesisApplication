@@ -11,9 +11,12 @@ import {
   Typography,
   Box,
   Grid,
+  Menu,
+  MenuItem,
+  Tooltip,
 } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import { Close, EditNoteRounded } from "@mui/icons-material";
+import { ArchiveRounded, Close, ContentCopyOutlined, Delete, EditNoteRounded, MoreHorizRounded } from "@mui/icons-material";
 import {
   ApplyToThesisPopup,
   PastelComponent,
@@ -27,19 +30,61 @@ export default function ThesisDetail({
   thesis,
   open,
   handleClose,
-  onEdit = () => {},
+  onEdit = null,
+  onDelete = null,
+  onArchive = null,
+  onCopy = null,
 }) {
   const { userId, user } = useUserContext();
   const location = useLocation();
 
   const [alreadyApplied, setAlreadyApplied] = useState(false);
-  const [appliedMsg, setAppliedMsg] = useState("apllied");
+  const [appliedMsg, setAppliedMsg] = useState("applied");
   const [warningOpen, setWarningOpen] = useState(false);
-
+  
+  const [warningMsg, setWarningMsg] = useState("");
+  const [generalWarningOpen, setGeneralWarningOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false); // EDIT MODAL
+  const [actionType, setActionType] = useState(""); // New state to track the action type
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
+
+  const handleClickMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (action) => {
+    handleCloseMenu();
+    setActionType(action);
+    if (action === "edit") {
+      setEditOpen(true);
+      return;
+    } else if (action === "delete") {
+      setWarningMsg("Are you sure you want to delete this thesis?");
+    } else if (action === "copy") {
+      setWarningMsg("Are you sure you want to copy this thesis?");
+    } else if (action === "archive") {
+      setWarningMsg("Are you sure you want to archive this thesis?");
+    }
+    setGeneralWarningOpen(true);
+  };
+
+  const handleApplied = () => {
+    if (actionType === "delete") {
+      onDelete(thesis.id);
+    } else if (actionType === "copy") {
+      onCopy(thesis.id);
+    } else if (actionType === "archive") {
+      onArchive(thesis.id);
+    }
+  }; 
 
   const formatFullName = (person) => `${person.name} ${person.surname}`;
-
   const handleApplying = async (file = null) => {
     try {
       await applyToProposal({
@@ -60,8 +105,7 @@ export default function ThesisDetail({
   useEffect(() => {
     const getThesisStatus = async (proposalId) => {
       try {
-        const status = await getThesisStatusById(proposalId);
-        console.log("status", status);
+        const status = await getThesisStatusById(proposalId); 
         setAlreadyApplied(status ? true : false);
         /// TODOS: change the function from the be so that if there is a cv it's returning "cv" and not only true
         if (status === "cv") setAppliedMsg("applied with cv");
@@ -149,19 +193,42 @@ export default function ThesisDetail({
               </Typography>
             </Box>
 
-            {onEdit ? (
+            {onEdit !== null ? (
               <>
-                <PastelComponent
-                  bgColor={"#63ce78"}
-                  textColor={"white"}
-                  text="Edit thesis"
-                  style={{ width: "auto", height: "45px", borderRadius: "8px" }}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    /// EDIT FUNCTION
-                    setEditOpen(true);
-                  }}
-                />
+                <Tooltip title="Multiple actions" placement="top">
+                  <IconButton
+                    aria-label="more"
+                    aria-controls="long-menu"
+                    aria-haspopup="true"
+                    onClick={handleClickMenu}
+                  >
+                    <MoreHorizRounded
+                      fontSize="large"
+                      sx={{ color: "darkblue" }}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  id="long-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={openMenu}
+                  onClose={handleCloseMenu}
+                  sx={{"& .MuiMenuItem-root": {color: "darkblue", padding: "1rem", paddingX: "2rem", paddingRight: "3rem"} }}
+                >
+                  <MenuItem onClick={() => handleMenuItemClick("archive")}>
+                    <ArchiveRounded sx={{marginRight: "1rem"}}/> Archive
+                  </MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("edit")}>
+                    <EditNoteRounded sx={{marginRight: "1rem"}}/> Edit
+                  </MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("copy")}>
+                    <ContentCopyOutlined sx={{marginRight: "1rem"}}/> Copy
+                  </MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("delete")}>
+                    <Delete sx={{marginRight: "1rem"}}/>Delete
+                  </MenuItem>
+                </Menu>
                 {/**
                  * EDIT MODAL WITH THE FORM
                  */}
@@ -321,6 +388,15 @@ export default function ThesisDetail({
           </Paper>
         </DialogContent>
       </Dialog>
+
+      {user.role === "Professor" ? (
+        <WarningPopup
+          warningMessage={warningMsg}
+          warningOpen={generalWarningOpen}
+          setWarningOpen={setGeneralWarningOpen}
+          handleApplied={handleApplied}
+        />
+      ) : null}
     </>
   );
 }

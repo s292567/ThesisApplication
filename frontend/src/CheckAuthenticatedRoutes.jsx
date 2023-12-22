@@ -14,6 +14,9 @@ import {
     ThesesPage, ProfessorApplicantsPage,
     StudentApplicationsPage,
     RefreshComponentPage,
+    SecretaryPage,
+    NewProposalPage
+
 } from "./pages";
 
 import {frontendRoutes as routes} from "./routes";
@@ -59,7 +62,14 @@ const CheckAuthenticatedRoutes = () => {
                             path={routes.studentApplications}
                             element={<StudentApplicationsPage/>}
                         />
-
+                        <Route
+                            path={routes.SecretaryDashboard}
+                            element={<SecretaryPage/>}
+                        />
+                        <Route
+                            path={routes.NewProposals}
+                            element={<NewProposalPage/>}
+                        />
 
                     </>
                 )}

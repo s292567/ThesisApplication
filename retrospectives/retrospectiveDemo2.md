@@ -68,16 +68,12 @@ sections:
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 
 
-- Hours per task average, standard deviation (estimate and actual)
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1
-        80/ 109.75 - 1 = -0.99
+- Hours per task average, standard deviation (estimate and actual) 18.3, 12.46
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1  80/ 109.75 - 1 = -0.99
 
 
   
-## QUALITY MEASURES 
-
-![report](retrospective_2_1.jpg)
-![report](restrospective_2_2.jpg)
+## QUALITY MEASURES
 
 - Unit Testing:
   - Total hours estimated 4 hours
