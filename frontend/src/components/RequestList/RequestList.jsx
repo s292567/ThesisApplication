@@ -17,6 +17,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import { tooltipClasses } from '@mui/material/Tooltip';
 import {useUserContext} from "../../contexts/index.js";
+import {updateRequestStatus} from "../../api/API_requests.js";
 
 
 
@@ -34,33 +35,34 @@ const CustomWidthTooltip = styled(({ className, ...props }) => (
     },
 });
 
-const thesisData = [
+const fakeRequestData = [
     {
         id: 1,
         title: "Thesis Title 1",
         description: "Thesis Description 1",
-        supervisor: "Supervisor 1",
-        Requestedby:"Romina Nemati",
-        Email:"s309760@example"
+        supervisor: {name:"Supervisor", surname: "1"},
+        coSupervisors: [],
+        student: {name:"Romina", surname: "Nemati", email: "s309760@example.com"}
     },
     {
         id: 2,
         title: "Thesis Title 2",
         description: "Thesis Description 2",
-        supervisor: "Supervisor 2",
-        cosupervisor: "Cosupervisor 2",
-        Requestedby:"Romina Nemati",
-        Email:"s309760@example"
+        supervisor: {name:"Supervisor", surname: "1"},
+        coSupervisors: ["Cosupervisor 2"],
+        student: {name:"Lara", surname: "Moresco", email: "s320153@example.com"}
     },
     // Add more data as needed
 ];
 
-export default function RequestList() {
+export default function RequestList({requests, refreshList}) {
     const [expanded, setExpanded] = useState(false);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("md"));
     const [warningOpen, setWarningOpen] = useState(false);
     const [msgWarning, setMsgWarning] = useState("");
+    const [status, setStatus] =useState("")
+    const [requestId, setRequestId] = useState("")
     const { user } = useUserContext();
 
     const handleChange = (panel) => (event, isExpanded) => {
@@ -68,18 +70,28 @@ export default function RequestList() {
     };
 
     const handleAccept = (requestId) => {
+        setStatus("accepted")
+        setRequestId(requestId)
         setMsgWarning("Are you sure you want to Accept this Request?");
         setWarningOpen(true);
     };
 
     const handleDecline = (requestId) => {
+        setStatus("rejected")
+        setRequestId(requestId)
         setMsgWarning("Are you sure you want to Decline this Request?");
         setWarningOpen(true);
     };
     const handleChangeRequest = (requestId) => {
+        setStatus("change request")
+        setRequestId(requestId)
         setMsgWarning("Are you sure you want to Change this Request?");
         setWarningOpen(true);
     };
+    const handleChangeRequestStatus = ()=>{
+        updateRequestStatus({requestId:requestId, status: status})
+            .then((_)=>refreshList())
+    }
 
     return (
         <>
@@ -94,7 +106,7 @@ export default function RequestList() {
                 }}
             >
                 <Grid container direction="column" justifyContent="center" spacing={3}>
-                    {thesisData.map(({ id, title, description, supervisor, cosupervisor, Requestedby,Email }) => (
+                    {requests.map(({ id, title, description, supervisor, coSupervisors, student }) => (
                         <Grid key={id} item xs={10} sm={10} md={8} lg={6} xl={5}>
 
                             <Accordion
@@ -154,8 +166,8 @@ export default function RequestList() {
                                             <CustomWidthTooltip
                                                 title={
                                                 <div>
-                                                        <Typography variant="body1">{` ${Requestedby}`}</Typography>
-                                                        <Typography variant="body1">{` ${Email}`}</Typography>
+                                                        <Typography variant="body1">{` ${student.name} ${student.surname}`}</Typography>
+                                                        <Typography variant="body1">{` ${student.email}`}</Typography>
                                                     </div>
 
                                                 }
@@ -179,12 +191,12 @@ export default function RequestList() {
                                         {user.role !== 'Professor' && (
                                         <Typography variant="body1" mb={2} sx={{ marginRight: "1rem" }}>
                                             <span style={{ fontWeight: "bold" }}>Supervisor:</span>
-                                            <span style={{ marginRight: "2rem" }}  > {supervisor}</span>
+                                            <span style={{ marginRight: "2rem" }}  > {supervisor.name} {supervisor.surname}</span>
                                         </Typography>
                                         )}
-                                        {cosupervisor && (
+                                        {coSupervisors.length>0 && (
                                             <Typography variant="body1" mb={2} sx={{ marginRight: "1rem" }}>
-                                                <span style={{ fontWeight: "bold" }}>Cosupervisor:</span> {cosupervisor}
+                                                <span style={{ fontWeight: "bold" }}>Co-supervisors:</span> {coSupervisors.join(", ")}
                                             </Typography>
                                         )}
                                     </Box>
@@ -234,6 +246,7 @@ export default function RequestList() {
                     warningOpen={warningOpen}
                     setWarningOpen={setWarningOpen}
                     warningMessage={msgWarning}
+                    handleApplied={handleChangeRequestStatus}
                 />
             </Box>
         </>
