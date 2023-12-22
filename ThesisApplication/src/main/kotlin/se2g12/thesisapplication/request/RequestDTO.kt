@@ -16,12 +16,17 @@ class RequestDTO (
 
 )
 fun Request.toDTO():RequestDTO{
+    val coSups: List<String> = if (this.coSupervisors.isBlank()){
+        emptyList()
+    }else{
+        this.coSupervisors.split(",",", ")
+    }
     return RequestDTO(
         this.id!!,
         this.student.toDTO(),
         this.title,
         this.description,
         this.supervisor,
-        this.coSupervisors.split(",",", ")
+        coSups
     )
 }

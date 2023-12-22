@@ -1,9 +1,11 @@
 package se2g12.thesisapplication.request
 
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
+@Transactional
 class RequestServiceImpl(private val requestRepository: RequestRepository): RequestService {
 
     override fun getAllRequests():List<RequestDTO> {

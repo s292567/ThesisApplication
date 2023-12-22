@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController
 class RequestController(private val requestService: RequestService) {
 
     @GetMapping("/API/thesis/requests")
-    @PreAuthorize("hasRole('Secretary')")
+//    @PreAuthorize("hasRole('Secretary')")
     fun getAllPendingRequests():List<RequestDTO>{
         return requestService.getAllPendingRequestsForSecretary()
     }
 
     @PatchMapping("/API/thesis/requests")
-    @PreAuthorize("hasRole('Secretary')")
+//    @PreAuthorize("hasRole('Secretary')")
     fun setSecretaryStatus(@RequestBody request: RequestStatusDTO){
         requestService.setRequestSecretaryStatus(request.requestId, request.status)
     }
