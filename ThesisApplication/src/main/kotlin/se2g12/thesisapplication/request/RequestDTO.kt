@@ -19,7 +19,7 @@ fun Request.toDTO():RequestDTO{
     val coSups: List<String> = if (this.coSupervisors.isBlank()){
         emptyList()
     }else{
-        this.coSupervisors.split(",",", ")
+        this.coSupervisors.split(", ",",")
     }
     return RequestDTO(
         this.id!!,

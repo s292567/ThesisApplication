@@ -89,16 +89,6 @@ export default function RequestList({requests, refreshList}) {
         setWarningOpen(true);
     };
     const handleChangeRequestStatus = ()=>{
-        /*const fetchRequests = async () => {
-            try {
-                return await getAllPendingRequests();
-            } catch (error) {
-                console.error("Failed to fetch requests:", error);
-            }
-        };
-        fetchRequests().then((data) => {
-            setRequests(data);
-        });*/
         updateRequestStatus({requestId:requestId, status: status})
             .then((_)=>refreshList())
     }
