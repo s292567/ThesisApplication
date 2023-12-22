@@ -8,16 +8,15 @@ import java.util.*
 @Transactional
 class RequestServiceImpl(private val requestRepository: RequestRepository): RequestService {
 
-    override fun getAllRequests():List<RequestDTO> {
-        return requestRepository.findAll().map { it.toDTO() }
-    }
-
     override fun getAllPendingRequestsForSecretary(): List<RequestDTO> {
         return requestRepository.findBySecretaryStatusLike("pending")
             .map { it.toDTO() }
     }
 
     override fun setRequestSecretaryStatus(requestId: UUID, status: String) {
+        val request = requestRepository.findById(requestId).orElseThrow { RequestNotFound("Request $requestId was not found") }
+        if(request.secretaryStatus != "pending")
+            throw UnmodifiableRequestStatus("Request $requestId has already status ${request.secretaryStatus}")
         // handle some possible errors, but at least first 3 letters have to be correct
         // this way it's ok both "accept" and "accepted"
         val newStatus:String = if (status.lowercase().contains("acc")){
@@ -27,6 +26,7 @@ class RequestServiceImpl(private val requestRepository: RequestRepository): Requ
         } else{
             throw InvalidRequestStatus("Request status should be `accepted` or `declined`")
         }
-        requestRepository.updateSecretaryStatusById(requestId, newStatus)
+        request.secretaryStatus = newStatus
+        requestRepository.save(request)
     }
 }
