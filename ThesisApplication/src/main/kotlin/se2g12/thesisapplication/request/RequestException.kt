@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import se2g12.thesisapplication.application.ProposalNotFoundError
 
 @RestControllerAdvice
 class RequestException {
@@ -17,8 +16,12 @@ class RequestException {
     @ExceptionHandler(RequestNotFound::class)
     fun requestNotFound(e : RequestNotFound) = ProblemDetail
         .forStatusAndDetail(HttpStatus.NOT_FOUND, e.message!!)
+    @ExceptionHandler(UnauthorizedProfessor::class)
+    fun unauthorizedProfessor(e : UnauthorizedProfessor) = ProblemDetail
+        .forStatusAndDetail(HttpStatus.FORBIDDEN, e.message!!)
 }
 
 class InvalidRequestStatus(message: String) : Throwable(message)
 class UnmodifiableRequestStatus(message: String) : Throwable(message)
 class RequestNotFound(message: String): Throwable(message)
+class UnauthorizedProfessor(message: String): Throwable(message)

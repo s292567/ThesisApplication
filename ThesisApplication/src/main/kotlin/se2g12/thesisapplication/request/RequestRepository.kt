@@ -13,4 +13,9 @@ interface RequestRepository : JpaRepository<Request, UUID> {
 
     fun findBySecretaryStatusLike(secretaryStatus: String): List<Request>
 
+    fun findBySupervisorId(supervisorId: String): List<Request>
+    fun findBySupervisorIdAndSecretaryStatusLikeAndSupervisorStatusLike(supervisorId: String,
+                                                                        secretaryStatus: String,
+                                                                        supervisorStatus: String): List<Request>
+
 }
