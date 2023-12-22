@@ -18,23 +18,17 @@ class EmailService (private val proposalRepository: ProposalRepository){
     @Autowired
     private val mailSender: JavaMailSender? = null
 
-    fun sendEmail(to: String?, subject: String?, body: String?) {
-        val message = SimpleMailMessage()
-        message.setTo(to)
-        message.subject = subject!!
-        message.text = body!!
-        mailSender!!.send(message)
-    }
 
     @Throws(MessagingException::class)
     @Async
     fun sendHtmlEmail(to: String?,application: ApplicationDTO) {
         val status=application.status
+        println(status)
         val message: MimeMessage = mailSender!!.createMimeMessage()
         message.setFrom(InternetAddress("noreply.se2g12@gmail.com"))
         if (to != null) {
             if (to.contains("example.com"))
-                message.setRecipients(MimeMessage.RecipientType.TO, "noreply.se2g12@gmail.com")
+                message.setRecipients(MimeMessage.RecipientType.TO, "mfontana413@gmail.com")
             else
                 message.setRecipients(MimeMessage.RecipientType.TO, to)
         }

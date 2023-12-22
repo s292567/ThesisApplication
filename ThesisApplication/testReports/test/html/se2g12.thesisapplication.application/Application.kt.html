@@ -16,7 +16,7 @@ import java.util.*
     @JoinColumn(name = &quot;proposal_id&quot;)
 <span class="fc" id="L17">    val proposal: Proposal,</span>
 
-<span class="fc" id="L19">    val status: String?=&quot;pending&quot;,</span>
+<span class="fc" id="L19">    var status: String?=&quot;pending&quot;,</span>
 ){
     @Id
     @GeneratedValue(generator = &quot;uuid2&quot;)

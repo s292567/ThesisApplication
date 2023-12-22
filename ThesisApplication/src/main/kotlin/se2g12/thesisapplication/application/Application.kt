@@ -16,7 +16,7 @@ data class Application(
     @JoinColumn(name = "proposal_id")
     val proposal: Proposal,
 
-    val status: String?="pending",
+    var status: String?="pending",
 ){
     @Id
     @GeneratedValue(generator = "uuid2")
