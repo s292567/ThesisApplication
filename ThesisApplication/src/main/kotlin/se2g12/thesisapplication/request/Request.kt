@@ -26,7 +26,7 @@ data class Request(
     )
     val coSupervisors: List<Teacher>*/
 //    default is pending; can be set to accepted/declined by a secretary
-    val secretaryStatus: String?="pending",
+    var secretaryStatus: String?="pending",
 //    default is pending;
 //    set to "accepted"/"declined"/"request change" by the supervisor, only after secretaryStatus is set
     val supervisorStatus: String?="pending"
