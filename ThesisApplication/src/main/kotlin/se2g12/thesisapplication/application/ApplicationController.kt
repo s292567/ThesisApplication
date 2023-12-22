@@ -20,7 +20,7 @@ class ApplicationController( private val applicationService: ApplicationService,
     fun addNewApplication(@RequestBody obj: NewApplicationDTO){
         val username=SecurityContextHolder.getContext().authentication.name
         if(username.contains(obj.studentId))
-        applicationService.addNewApplication(obj)
+            applicationService.addNewApplication(obj)
         else
             throw Exception("cant add application for other")
     }

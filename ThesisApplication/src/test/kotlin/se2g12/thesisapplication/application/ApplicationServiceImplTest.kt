@@ -10,6 +10,7 @@ import org.junit.jupiter.api.assertThrows
 import se2g12.thesisapplication.Mail.EmailService
 import se2g12.thesisapplication.archive.ArchiveRepository
 import se2g12.thesisapplication.degree.Degree
+import se2g12.thesisapplication.file.FileService
 import se2g12.thesisapplication.proposal.Proposal
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.student.Student
@@ -24,8 +25,9 @@ class ApplicationServiceImplTest {
     private val applicationRepository = mockk<ApplicationRepository>()
     private val archiveRepository = mockk<ArchiveRepository>()
     private val emailService = mockk<EmailService>()
+    private val fileService = mockk<FileService>()
 
-    private val applicationService = ApplicationServiceImpl(applicationRepository, proposalRepository, studentRepository, archiveRepository, emailService)
+    private val applicationService = ApplicationServiceImpl(applicationRepository, proposalRepository, studentRepository, archiveRepository, emailService, fileService)
     private val mockProposal = mockk<Proposal>()
     @Test
     fun `addNewApplicationSuccessful`() {

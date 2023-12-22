@@ -133,6 +133,7 @@ class ApplicationControllerMat {
         studentRepository.save(student)
         applicationRepository.save(application)
     }
+    @WithMockUser(roles = ["Student"], username = "s654140@example.com")
     @Test
     fun `test addNewApplication endpoint`() {
 
