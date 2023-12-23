@@ -51,7 +51,10 @@ export default function ApplyToThesisPopup({ open, onClose, handleAppling }) {
   const handleRemoveFile = () => {
     setFile(null);
   };
-
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setFile(file);
+  };
   const handleApply = () => {
     // Logic to handle apply with or without CV
     handleAppling(file);
@@ -107,17 +110,9 @@ export default function ApplyToThesisPopup({ open, onClose, handleAppling }) {
           </Typography>
 
           {!file ? (
-            <FileWrapper
-              {...getRootProps()}
-            >
-              <input {...getInputProps()} />
-              <CloudUploadOutlined style={{ fontSize: "50px", color: "#4F709C" }} />
-              <Typography sx={{fontSize: "1rem", color: "#4F709C"}}>
-                Drag and drop file here
-                <br />
-                or click to select it
-              </Typography>
-            </FileWrapper>
+
+              <input type="file" onChange={handleFileChange}/>
+
           ) : (
             <Box
               sx={{

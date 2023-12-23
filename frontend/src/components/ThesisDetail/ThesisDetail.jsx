@@ -40,11 +40,12 @@ export default function ThesisDetail({
 
   const formatFullName = (person) => `${person.name} ${person.surname}`;
 
-  const handleApplying = async (file = null) => {
+  const handleApplying = async (file ) => {
     try {
       await applyToProposal({
         studentId: userId,
         proposalId: thesis.id,
+        file:file
       });
       setAlreadyApplied(true);
       if (file !== null) setAppliedMsg("applied with CV");

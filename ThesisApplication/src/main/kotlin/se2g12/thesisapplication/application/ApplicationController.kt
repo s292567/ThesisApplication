@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import se2g12.thesisapplication.file.FileService
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.proposal.toDTO
@@ -15,14 +16,27 @@ import java.util.UUID
 class ApplicationController( private val applicationService: ApplicationService, private val proposalRepository: ProposalRepository) {
 
     @PostMapping("/API/thesis/proposals/apply")
-    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('Student')")
-    fun addNewApplication(@RequestBody obj: NewApplicationDTO){
-        val username=SecurityContextHolder.getContext().authentication.name
-        if(username.contains(obj.studentId))
-        applicationService.addNewApplication(obj)
-        else
-            throw Exception("cant add application for other")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun addNewApplication(
+        @RequestParam studentId: String,
+        @RequestParam proposalId: UUID,
+        @RequestParam file: MultipartFile?
+    ) {
+
+        if (file != null && !file.contentType.equals("application/pdf")) {
+            throw Exception("File must be in .pdf format")
+        }
+
+        val username = SecurityContextHolder.getContext().authentication.name
+        println(username)
+
+        if (username.contains(studentId)) {
+            val newApplicationDTO = NewApplicationDTO(studentId, proposalId, file)
+            applicationService.addNewApplication(newApplicationDTO)
+        } else {
+            throw Exception("Cannot add application for another student")
+        }
     }
 
 
