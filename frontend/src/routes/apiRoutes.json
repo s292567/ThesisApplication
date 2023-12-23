@@ -27,6 +27,7 @@
     "getDistinctKeywords": "proposals/keywords",
     "getDistinctGroups": "proposals/groups",
     "getDistinctCds": "proposals/degrees",
-    "getThesisStatusByProposalId": "proposals/statusById/"
+    "getThesisStatusByProposalId": "proposals/statusById/",
+    "getArchivedForLoggedProfessor": "/archive/getAllArchivedForLoggedInProf/"
 
 }

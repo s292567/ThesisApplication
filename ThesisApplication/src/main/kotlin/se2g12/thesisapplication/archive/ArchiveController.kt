@@ -15,9 +15,9 @@ import java.util.*
 @CrossOrigin
 class ArchiveController(private val archiveService: ArchiveService,private val proposalService: ProposalService) {
     //getArchivedPropId Test Endpoint
-    @GetMapping("/API/thesis/archive/getAllArchivedForLoggedInProf")
+    @GetMapping("/API/thesis/archive/getAllArchivedForLoggedInProf/")
     @PreAuthorize("hasRole('Professor')")
-    fun getTest(): List<ProposalDTO> {
+    fun getArchived(): List<ProposalDTO> {
         val archive=archiveService.getAll().map{it.proposal.toDTO()}
 
         val securityContext = SecurityContextHolder.getContext()
@@ -25,10 +25,9 @@ class ArchiveController(private val archiveService: ArchiveService,private val p
         val authentication = securityContext.authentication
 
 // Check if the user is authenticated
-        if (authentication != null && authentication.isAuthenticated) {
-            return proposalService.getProposalByProfessorId(authentication.name.split("@")[0]).filter{archive.contains(it)}
-        }
-        else
-            return emptyList()
+        return if (authentication != null && authentication.isAuthenticated) {
+            proposalService.getProposalByProfessorId(authentication.name.split("@")[0]).filter{archive.contains(it)}
+        } else
+            emptyList()
     }
 }
