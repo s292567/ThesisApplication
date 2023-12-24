@@ -53,7 +53,6 @@ export default function ProfessorApplicants({
   const { userId } = useUserContext();
   const [warningOpen, setWarningOpen] = useState(false);
   const [msgWarning, setMsgWarning] = useState("");
-  const [openPdfViewer, setOpenPdfViewer] = useState(false);
 
   const isSmallScreen = useMediaQuery("(max-width: 700px)");
   const isMediumScreen = useMediaQuery("(max-width: 1000px)");
@@ -114,17 +113,10 @@ export default function ProfessorApplicants({
         }}
         onClick={(event) => {
           event.stopPropagation();
-          /// open CV
-          setOpenPdfViewer(true);
+          /// DOWNLOAD CV HERE
+          
         }}
       />
-      {openPdfViewer ? (
-        <PdfViewerModal
-          open={openPdfViewer}
-          onClose={() => setOpenPdfViewer(false)}
-          file={item.cv}
-        />
-      ) : null}
     </>
   );
 
@@ -211,7 +203,9 @@ export default function ProfessorApplicants({
             <>
               <TableCell>{item.email}</TableCell>
               <TableCell>{item.codDegree}</TableCell>
-              <TableCell>{item.cv ? renderStudentCv() : "Not avaiable"}</TableCell>
+              <TableCell>
+                {item.cv ? renderStudentCv() : "Not avaiable"}
+              </TableCell>
             </>
           )}
 
@@ -298,7 +292,7 @@ export default function ProfessorApplicants({
                   <CardHeader
                     title={
                       groupedByStudentArray ? (
-                        <>
+                        <Box sx={{marginRight: "1rem"}}>
                           <Typography
                             sx={{
                               fontSize: `${scale * 2}rem`,
@@ -310,12 +304,15 @@ export default function ProfessorApplicants({
                             {item.student.name + " " + item.student.surname}
                           </Typography>
                           <Typography
-                            sx={{ fontSize: `${scale * 1.1}rem`, marginBottom: "0.5rem" }}
+                            sx={{
+                              fontSize: `${scale * 1.1}rem`,
+                              marginBottom: "0.5rem",
+                            }}
                           >{`${item.student.email} - ${item.student.codDegree}`}</Typography>
 
                           {/* Display the cv only if present */}
                           {item.student.cv ? renderStudentCv() : null}
-                        </>
+                        </Box>
                       ) : (
                         <>
                           <WithTooltip
