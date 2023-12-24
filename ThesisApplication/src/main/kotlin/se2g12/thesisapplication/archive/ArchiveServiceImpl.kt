@@ -7,4 +7,7 @@ class ArchiveServiceImpl(private val archiveRepository: ArchiveRepository):Archi
     override fun findByPropId(proposalId: UUID): List<Archive> {
         return archiveRepository.findByProposalId(proposalId)
     }
+    override fun getAll(): List<Archive> {
+        return archiveRepository.findAll()
+    }
 }
