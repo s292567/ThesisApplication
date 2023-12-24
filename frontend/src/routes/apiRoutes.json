@@ -29,7 +29,7 @@
     "getDistinctCds": "proposals/degrees",
     "getThesisStatusByProposalId": "proposals/statusById/",
 
-    "getArchivedForLoggedProfessor": "/archive/getAllArchivedForLoggedInProf/"
+    "getArchivedForLoggedProfessor": "/archive/getAllArchivedForLoggedInProf/",
 
     "allRequests": "requests"
 

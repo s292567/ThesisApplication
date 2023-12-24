@@ -18,9 +18,9 @@ data class Application(
     @JoinColumn(name = "proposal_id")
     val proposal: Proposal,
 
-    val status: String?="pending",
- val fileID:UUID?=null,
-        val fileName:String?=null
+    var status: String?="pending",
+    val fileID:UUID?=null,
+    val fileName:String?=null
 
 ){
     @Id

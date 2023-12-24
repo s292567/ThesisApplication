@@ -19,7 +19,7 @@ import java.util.*
 class FileController(private val fileService: FileService,private val applicationRepository: ApplicationRepository,val applicationService: ApplicationService,val proposalService: ProposalService) {
 
 
-    @GetMapping("/getFile/{id}")
+    @GetMapping("/API/downloadFile/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('Student')||hasRole('Professor')")
     fun getFile(@PathVariable id: UUID): ResponseEntity<ByteArrayResource> {
