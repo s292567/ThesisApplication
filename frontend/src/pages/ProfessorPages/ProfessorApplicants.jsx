@@ -1,7 +1,6 @@
 // ProfessorApplicants.jsx is the component that renders the logic for the table of applicants
 import React, { useState } from "react";
 import {
-  useTheme,
   useMediaQuery,
   Box,
   Card,
@@ -56,9 +55,8 @@ export default function ProfessorApplicants({
   const [msgWarning, setMsgWarning] = useState("");
   const [openPdfViewer, setOpenPdfViewer] = useState(false);
 
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isSmallScreen = useMediaQuery("(max-width: 700px)");
+  const isMediumScreen = useMediaQuery("(max-width: 1000px)");
 
   const scale = isSmallScreen ? 0.8 : 1;
 
@@ -100,6 +98,36 @@ export default function ProfessorApplicants({
     }));
   };
 
+  const renderStudentCv = () => (
+    <>
+      <PastelComponent
+        bgColor="#94a6f3"
+        textColor="white"
+        text="cv: "
+        fontSize="medium"
+        icon={<TextSnippetRounded sx={{ marginTop: "-4px" }} />}
+        style={{
+          display: "flex",
+          flexDirection: "row-reverse",
+          gap: "5px",
+          marginTop: "5px",
+        }}
+        onClick={(event) => {
+          event.stopPropagation();
+          /// open CV
+          setOpenPdfViewer(true);
+        }}
+      />
+      {openPdfViewer ? (
+        <PdfViewerModal
+          open={openPdfViewer}
+          onClose={() => setOpenPdfViewer(false)}
+          file={item.cv}
+        />
+      ) : null}
+    </>
+  );
+
   // Render the table head with field names based on screen size
   const renderTableHead = () => (
     <TableHead>
@@ -107,15 +135,19 @@ export default function ProfessorApplicants({
         {groupedByStudentArray ? (
           <TableCell>Proposal Title</TableCell>
         ) : (
-          <TableCell>Student Name</TableCell>
+          <TableCell>
+            {" "}
+            {isMediumScreen ? "Student Info" : "Student Name"}{" "}
+          </TableCell>
         )}
-        {(!isSmallScreen || isMediumScreen) && !groupedByStudentArray && (
+        {!isMediumScreen && !groupedByStudentArray && (
           <>
             <TableCell>Student Email</TableCell>
             <TableCell>Student Degree</TableCell>
             <TableCell>Student Curriculum</TableCell>
           </>
         )}
+
         {actions ? <TableCell>Status</TableCell> : null}
       </TableRow>
     </TableHead>
@@ -162,19 +194,27 @@ export default function ProfessorApplicants({
                 />
               </>
             ) : (
-              item.name + " " + item.surname
+              <>
+                {item.name} {item.surname}
+                {isMediumScreen ? (
+                  <Typography>
+                    {item.email} - {item.codDegree}
+                    <br />
+                    {item.cv ? renderStudentCv() : null}
+                  </Typography>
+                ) : null}
+              </>
             )}
           </TableCell>
 
-          {(!isSmallScreen || isMediumScreen) && !isStudentGrouping && (
-            <TableCell>{item.email}</TableCell>
+          {!isMediumScreen && !groupedByStudentArray && (
+            <>
+              <TableCell>{item.email}</TableCell>
+              <TableCell>{item.codDegree}</TableCell>
+              <TableCell>{item.cv ? renderStudentCv() : "Not avaiable"}</TableCell>
+            </>
           )}
-          {!isSmallScreen && !isMediumScreen && !isStudentGrouping && (
-            <TableCell>{item.codDegree}</TableCell>
-          )}
-          {!isSmallScreen && !isMediumScreen && !isStudentGrouping && (
-            <TableCell>{item.codDegree}</TableCell>
-          )}
+
           {actions ? (
             <TableCell>
               {/* Buttons or status indicators */}
@@ -253,7 +293,6 @@ export default function ProfessorApplicants({
                     "&:hover": {
                       boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.3)",
                     },
-                    cursor: "pointer",
                   }}
                 >
                   <CardHeader
@@ -271,43 +310,11 @@ export default function ProfessorApplicants({
                             {item.student.name + " " + item.student.surname}
                           </Typography>
                           <Typography
-                            sx={{ fontSize: `${scale * 1.1}rem` }}
+                            sx={{ fontSize: `${scale * 1.1}rem`, marginBottom: "0.5rem" }}
                           >{`${item.student.email} - ${item.student.codDegree}`}</Typography>
 
                           {/* Display the cv only if present */}
-                          {item.student.cv ? (
-                            <>
-                              <PastelComponent
-                                bgColor="#94a6f3"
-                                textColor="white"
-                                text="cv: "
-                                fontSize="medium"
-                                icon={
-                                  <TextSnippetRounded
-                                    sx={{ marginTop: "-4px" }}
-                                  />
-                                }
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row-reverse",
-                                  gap: "5px",
-                                  marginTop: "1rem",
-                                }}
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  /// open CV
-                                  setOpenPdfViewer(true);
-                                }}
-                              />
-                              {openPdfViewer ? (
-                                <PdfViewerModal
-                                  open={openPdfViewer}
-                                  onClose={() => setOpenPdfViewer(false)}
-                                  file={item.student.cv}
-                                />
-                              ) : null}
-                            </>
-                          ) : null}
+                          {item.student.cv ? renderStudentCv() : null}
                         </>
                       ) : (
                         <>

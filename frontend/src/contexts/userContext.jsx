@@ -27,6 +27,9 @@ const UserProvider = ({ children }) => {
         role = "Student";
       else if(tokenData.realm_access.roles.includes("Professor"))
         role = "Professor";
+      else if(tokenData.realm_access.roles.includes("Secretary"))
+        role = "Secretary";
+
       setUser({ username: tokenData.preferred_username, role: role , name: tokenData.firstName, surname: tokenData.lastName, token: token });
       setLoggedIn(true);
       if(role === "Student"){
@@ -35,7 +38,11 @@ const UserProvider = ({ children }) => {
       }else if(role === "Professor"){
         setHomeRoute(routes.professorDashboard);
         setGeneralRoutes(prev => ({...prev, theses: routes.professorTheses}));
+      }else if(role === "Secretary"){
+        setHomeRoute(routes.SecretaryDashboard);
+        setGeneralRoutes(prev => ({...prev, theses: routes.SecretaryDashboard}));
       }
+
       setJwtToken(token);
       setUserId(tokenData.preferred_username.split("@")[0]);
       localStorage.setItem("username", tokenData.preferred_username.split("@")[0]);

@@ -735,3 +735,52 @@ Response Status:
     404 Not Found: The proposal with the specified ID was not found.
     401 Unauthorized: The user is not logged in.
     500 Internal Server Error: Generic server error.
+
+# Get all pending thesis requests
+
+**GET `/API/thesis/requests`**
+
+Gets the list of all the student thesis requests that still have to be evaluated by a secretary clerk.
+- response body example:
+  ```json
+  [
+    {
+      "id":"f92b3e16-5291-44eb-ab6b-29d0ab97df9b",
+      "student":{"id":"s654140", "surname":"Davis", "name":"John", "email":"s654140@example.com"},
+      "title":"Proposed title",
+      "description":"Some description",
+      "supervisor":{"id":"p101", "surname":"Ferrari", "name":"Luca", "email":"p101@example.com"},
+      "coSupervisors":["Luca Ferrari"," Paolo Ricci"]
+    },
+    {
+      "id":"4b5df289-5fa7-4d2e-84c6-dc9ebacb5cd0",
+      "student":{"id":"s655900", "surname":"Anderson", "name":"Sophia", "email":"s655900@example.com"},
+      "title":"Proposed title number 2",
+      "description":"Some other description",
+      "supervisor":{"id":"p103", "surname":"García", "name":"Sofía", "email":"p103@example.com"},
+      "coSupervisors":[]
+    }
+  ]
+  ```
+- response status:
+  - `200 Ok`: Requests correctly retrieved
+  - `401 Unauthorized`: The user is not logged in or is not a secretary
+  - `500 Internal Server Error`: Generic server error
+
+# Change thesis requests status (accept/reject)
+
+**PATCH `/API/thesis/requests`**
+
+Changes the thesis request status (only for the secretary). The new status will be `accepted` or `rejected`
+- request body example:
+  ```json
+  {
+      "requestId":"f92b3e16-5291-44eb-ab6b-29d0ab97df9b",
+      "status": "accepted"
+   }
+  ```
+- response status:
+  - `200 Ok`: The status has been correctly modified
+  - `401 Unauthorized`: The user is not logged in or is not a secretary
+  - `422 Unprocessable Entity`: The status in the body is incorrect (accepts any word containing "acc"/"rej")
+  - `500 Internal Server Error`: Generic server error

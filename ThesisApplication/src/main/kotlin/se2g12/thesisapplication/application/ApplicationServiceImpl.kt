@@ -39,7 +39,7 @@ class ApplicationServiceImpl (
             .orElseThrow { ProposalNotFoundError("Proposal ${newApplication.proposalId} not found") }
         val application=Application(student, proposal, "pending",file, newApplication.file?.name)
         applicationRepository.save(application)
-        emailService.sendHtmlEmail(proposal.supervisor.email,"added new application for proposal ${proposal.title}")
+        emailService.sendHtmlEmail(proposal.supervisor.email,application.toDTO())
     }
     private fun checkApplicationConflicts(studentId: String, proposalId: UUID){
         if (applicationRepository.findByStudentIdAndStatus(studentId, "accepted").isNotEmpty())
@@ -50,20 +50,27 @@ class ApplicationServiceImpl (
     override fun declineApplication(applicationId: UUID) {
         val app=getModifiableApplication(applicationId)
         //notify declined student
-        emailService.sendHtmlEmail(app.student.email,"declined")
+
         applicationRepository.updateStatusById(applicationId, "declined")
+        app.status="declined"
+        emailService.sendHtmlEmail(app.student.email,app.toDTO())
     }
 
     override fun acceptApplication(applicationId: UUID) {
         val app= getModifiableApplication(applicationId)
         applicationRepository.updateStatusById(applicationId ,"accepted")
         //notify accepted Student
-        emailService.sendHtmlEmail(app.student.email,"accepted")
+        app.status="accepted"
+        emailService.sendHtmlEmail(app.student.email,app.toDTO())
         // decline all student applications and notify them
         val app2=applicationRepository.getAllApplicationsByProposalId(app.proposal.id!!)
         app2.forEach {
             if(it.status?.compareTo("pending")==0)
-                emailService.sendHtmlEmail(app.student.email,"declined")
+            {
+                if(it.id!!.compareTo(applicationId)!=0) {
+                    it.status="declined"
+                    emailService.sendHtmlEmail(app.student.email, it.toDTO())
+                }}
 
         }
         applicationRepository.updateStatusByStudentId(app.student.id!!, "declined")

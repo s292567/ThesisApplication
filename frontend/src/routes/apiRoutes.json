@@ -28,6 +28,9 @@
     "getDistinctGroups": "proposals/groups",
     "getDistinctCds": "proposals/degrees",
     "getThesisStatusByProposalId": "proposals/statusById/",
+
     "getArchivedForLoggedProfessor": "/archive/getAllArchivedForLoggedInProf/"
+
+    "allRequests": "requests"
 
 }

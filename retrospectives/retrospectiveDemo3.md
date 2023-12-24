@@ -34,7 +34,7 @@ sections:
 | Story | # Tasks | Points | Hours est.     | Hours actual                     |
 |-------|---------|--------|----------------|----------------------------------|
 | #0    | 27      | -      | 11 days        | 9 days 7 hours 35 minutes        |
-| #2    | 3       | 8      | 4 hours        | 1 week  1 days 4 hour 30 minutes |
+| #2    | 3       | 8      | 4 hours        | 1 day 5 hour 30 minutes |
 | #9    | 2       | 5      | 5 hours        | 2 hours                          |
 | #10   | 3       | 3      | 1 day  1 hours | 7 hours                          |
 | #11   | 4       | 5      | 1 day 6 hours  | 6 hours  30 minutes              |
@@ -43,11 +43,13 @@ sections:
    
 
 > place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
-
-- Hours per task (average, standard deviation)
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1
-![report](retrospective_3_1.png)
-![report](retrospective_3_2.png)
+  - Full frontend and backend testing
+  - Studying frontend testing tools
+  - Fixes and Code Review
+  - Sonarcloud
+  - Virtual Clock
+- Hours per task (average, standard deviation)  2.86, 2.7
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent -1  0.04
   
 ## QUALITY MEASURES 
 

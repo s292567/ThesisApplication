@@ -133,11 +133,17 @@ export default function LoggedInNavbar() {
                 },
               }}
             >
-              <LinkStyled linkTo={homeRoute} linkText={"Home"} onClick={() => setMobileOpen(false)}/>
-              <LinkStyled linkTo={generalRoutes.theses} linkText={"Theses"} onClick={() => setMobileOpen(false)}/>
+              <LinkStyled linkTo={homeRoute} linkText={"Home"} onClick={() => setMobileOpen(false)} />
+              {user.role !== "Secretary" && (
+                  <>
+                    <LinkStyled linkTo={generalRoutes.theses} linkText={"Theses"} onClick={() => setMobileOpen(false)} />
+                  </>
+              )}
               {user.role === "Professor" && (<>
                   <LinkStyled linkTo={frontendRoutes.professorApplicants} linkText={"Applicants"}
                               onClick={() => setMobileOpen(false)}/>
+                    <LinkStyled linkTo={frontendRoutes.NewProposals} linkText={"New Proposals"}
+                                onClick={() => setMobileOpen(false)}/>
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
               )}
@@ -146,6 +152,11 @@ export default function LoggedInNavbar() {
                               onClick={() => setMobileOpen(false)}/>
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
+              )}
+              {user.role === "Secretary" && (<>
+                    <LinkStyled linkTo={frontendRoutes.SecretaryDashboard} linkText={"Request List"}
+                                onClick={() => setMobileOpen(false)}/>
+                  </>
               )}
 
             </Links>)}
