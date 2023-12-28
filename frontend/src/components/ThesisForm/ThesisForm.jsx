@@ -381,7 +381,7 @@ export default function ThesisForm({ open, onClose, thesis = {}, onSubmit }) {
             fontSize: "medium",
           }}
         >
-          Missing fields: <b>{missingFields.join(", ")}</b>
+          Please fill in all the missing fields:  <b>{missingFields.join(", ")}</b>
         </Alert>
       </Snackbar>
     </>
