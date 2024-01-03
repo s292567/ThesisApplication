@@ -76,6 +76,51 @@ export default function ProfessorApplicants({
       throw new Error("Failed to process the application.");
     }
   };
+  const handleDownload = async () => {
+    try {
+      const apiUrl = 'http://localhost:8081/API/downloadFile/f714fd95-c0bf-4e3d-a8d6-6d0c2eef7fcf';
+
+      // Replace 'YOUR_ACCESS_TOKEN' with the actual access token or authentication credentials
+      const Token = localStorage.getItem("ROCP_token")
+      const accessToken=Token.substring(1, Token.length - 1)
+      console.log(accessToken)
+      const response = await fetch(apiUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to download file. Status code: ${response.status}`);
+      }
+
+      // Extract filename from content-disposition header or set a default name
+      let filename = 'downloaded_file.pdf';
+
+      const contentDisposition = response.headers.get('content-disposition');
+      if (contentDisposition) {
+        const match = contentDisposition.match(/filename=(.+?)(;|$)/);
+        if (match) {
+          filename = match[1].trim();
+        }
+      }
+
+      // Convert response to blob
+      const blob = await response.blob();
+
+      // Create a download link and trigger a click event
+      const downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(blob);
+      downloadLink.download = filename;
+      downloadLink.click();
+
+      console.log(`File '${filename}' downloaded successfully.`);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
 
   const handleAccept = (proposalId, studentId) => {
     setAction("accept");
@@ -118,13 +163,7 @@ export default function ProfessorApplicants({
           setOpenPdfViewer(true);
         }}
       />
-      {openPdfViewer ? (
-        <PdfViewerModal
-          open={openPdfViewer}
-          onClose={() => setOpenPdfViewer(false)}
-          file={item.cv}
-        />
-      ) : null}
+      <button onClick={handleDownload()}></button>
     </>
   );
 
@@ -211,7 +250,7 @@ export default function ProfessorApplicants({
             <>
               <TableCell>{item.email}</TableCell>
               <TableCell>{item.codDegree}</TableCell>
-              <TableCell>{item.cv ? renderStudentCv() : "Not avaiable"}</TableCell>
+              <TableCell><button onClick={handleDownload}>Download</button></TableCell>
             </>
           )}
 
