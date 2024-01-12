@@ -31,8 +31,8 @@ class RequestController(private val requestService: RequestService) {
 
     @PatchMapping("/API/thesis/requests/{professorId}")
     @PreAuthorize("hasRole('Professor')")
-    fun setSecretaryStatus(@PathVariable professorId:String, @RequestBody request: RequestStatusDTO){
-        requestService.setRequestSecretaryStatus(request.requestId, request.status)
+    fun setProfessorStatus(@PathVariable professorId:String, @RequestBody request: RequestStatusDTO){
+        requestService.setRequestSupervisorStatus(request.requestId, request.status, professorId)
     }
 
 }
