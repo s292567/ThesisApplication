@@ -1,7 +1,6 @@
 import {
   Stack,
   Box,
-  styled,
   Paper,
   Card,
   CardMedia,
@@ -11,8 +10,22 @@ import {
 
 import politoView from "../../assets/images/politoView.jpg";
 import politoBiblio from "../../assets/images/politoBiblio.jpeg";
+import { useUserContext } from "../../contexts";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function LandingPage() {
+  
+  const { user, loggedIn, homeRoute } = useUserContext();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (loggedIn) {
+      console.log("User is logged in, redirecting to home route: ", homeRoute);
+      navigate(homeRoute);
+    }
+  }, [loggedIn]);
+
   const cardData = [
     {
       image: politoBiblio,
@@ -27,6 +40,8 @@ export default function LandingPage() {
         "Immerse yourself in the vibrant campus life at Politecnico di Torino. Engage with diverse cultures and cutting-edge technology.",
     },
   ];
+
+  if(loggedIn) return <></>;
 
   return (
     <Box

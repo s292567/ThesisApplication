@@ -98,19 +98,32 @@ export const insertProposal = async (professorId, proposalData) => {
  * Apply to a thesis proposal.
  */
 export const applyToProposal = async (applicationData) => {
-  return axiosInstance
-    .post(routes.applyToProposal, applicationData)
-    .then((response) => {
-      if (response.status === 201) {
-        console.log("applyToProposal: ", response.data);
-        return response.data;
-      } else {
-        console.error("Request failed with status: ", response.status);
-      }
-    })
-    .catch((error) => {
-      console.error("Error while applying to a proposal: ", error);
+  const jwt = getJwt(); // Fetch JWT here
+  console.log(applicationData.file)
+  const formData = new FormData();
+  formData.append('studentId', applicationData.studentId);
+  formData.append('proposalId', applicationData.proposalId);
+  formData.append('file', applicationData.file);
+  try {
+    const response = await fetch("http://localhost:8081/API/thesis/proposals/apply", {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: 'Bearer ' + jwt,
+        ContentType: 'multipart/form-data'
+
+
+      },
     });
+
+    if (response.ok) {
+      return
+    } else {
+      console.error('Request failed with status:', response.status);
+    }
+  } catch (error) {
+    console.error('Error while applying to a proposal:', error);
+  }
 };
 
 /**
@@ -254,3 +267,25 @@ export const getThesisStatusById = async (proposalId) => {
       console.error("Error while retrieving proposals by professorId: ", error);
     });
 };
+export const getArchived = async () => {
+  const jwt = getJwt(); // Fetch JWT here
+
+  return axiosInstance
+      .get(routes.getArchivedForLoggedProfessor,{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + jwt,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.data;
+        } else {
+          console.error("Request failed with status: ", response.status);
+        }
+      })
+      .catch((error) => {
+        console.error("Error while retrieving archived proposals for logged professor: ", error);
+      });
+};
+

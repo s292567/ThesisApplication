@@ -5,18 +5,18 @@ import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.teacher.Teacher
 import java.util.*
 
-<span class="fc" id="L8">@Entity</span>
-<span class="fc" id="L9">data class Request(</span>
-<span class="fc" id="L10">    @ManyToOne</span>
+<span class="nc" id="L8">@Entity</span>
+<span class="nc" id="L9">data class Request(</span>
+<span class="nc" id="L10">    @ManyToOne</span>
     @JoinColumn(name = &quot;student_id&quot;)
-<span class="fc" id="L12">    val student: Student,</span>
-<span class="fc" id="L13">    val title: String,</span>
-<span class="fc" id="L14">    val description: String,</span>
-<span class="fc" id="L15">    @ManyToOne</span>
+<span class="nc" id="L12">    val student: Student,</span>
+<span class="nc" id="L13">    val title: String,</span>
+<span class="nc" id="L14">    val description: String,</span>
+<span class="nc" id="L15">    @ManyToOne</span>
     @JoinColumn(name = &quot;supervisor_id&quot;, referencedColumnName = &quot;id&quot;)
-<span class="fc" id="L17">    val supervisor: Teacher,</span>
+<span class="nc" id="L17">    val supervisor: Teacher,</span>
 //  saved as ids separeted by commas
-<span class="fc" id="L19">    val coSupervisors: String,</span>
+<span class="nc" id="L19">    val coSupervisors: String,</span>
 /*//  saved as ids in a separate table; automatically retrieved as teachers
     @ManyToMany
     @JoinTable(
@@ -26,14 +26,14 @@ import java.util.*
     )
     val coSupervisors: List&lt;Teacher&gt;*/
 //    default is pending; can be set to accepted/declined by a secretary
-<span class="fc" id="L29">    var secretaryStatus: String?=&quot;pending&quot;,</span>
+<span class="nc" id="L29">    val secretaryStatus: String?=&quot;pending&quot;,</span>
 //    default is pending;
 //    set to &quot;accepted&quot;/&quot;declined&quot;/&quot;request change&quot; by the supervisor, only after secretaryStatus is set
-<span class="pc" id="L32">    val supervisorStatus: String?=&quot;pending&quot;</span>
+<span class="nc" id="L32">    val supervisorStatus: String?=&quot;pending&quot;</span>
 
 ) {
     @Id
     @GeneratedValue(generator = &quot;uuid2&quot;)
-<span class="fc" id="L37">    val id: UUID?=null</span>
-<span class="fc" id="L38">}</span>
+<span class="nc" id="L37">    val id: UUID?=null</span>
+<span class="nc" id="L38">}</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

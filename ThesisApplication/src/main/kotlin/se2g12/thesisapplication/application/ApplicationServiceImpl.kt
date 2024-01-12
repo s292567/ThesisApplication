@@ -5,6 +5,9 @@ import org.springframework.transaction.annotation.Transactional
 import se2g12.thesisapplication.Mail.EmailService
 import se2g12.thesisapplication.archive.Archive
 import se2g12.thesisapplication.archive.ArchiveRepository
+import se2g12.thesisapplication.file.File
+import se2g12.thesisapplication.file.FileDTO
+import se2g12.thesisapplication.file.FileService
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.student.StudentDTO
 import se2g12.thesisapplication.student.StudentRepository
@@ -19,19 +22,24 @@ class ApplicationServiceImpl (
     private val proposalRepository: ProposalRepository,
     private val studentRepository: StudentRepository,
     private val archiveRepository: ArchiveRepository,
-    private val emailService: EmailService
+    private val emailService: EmailService,
+        private val fileService: FileService
 )
     : ApplicationService {
 
     override fun addNewApplication(newApplication: NewApplicationDTO) {
+        var file:UUID?=null
+        if(newApplication.file!=null)
+        file=fileService.addFile(newApplication.file!!)
+
         checkApplicationConflicts(newApplication.studentId, newApplication.proposalId)
         val student=studentRepository.findById(newApplication.studentId)
             .orElseThrow { StudentNotFoundError("Student ${newApplication.studentId} not found") }
         val proposal=proposalRepository.findById(newApplication.proposalId)
             .orElseThrow { ProposalNotFoundError("Proposal ${newApplication.proposalId} not found") }
-        val application=Application(student, proposal, "pending")
+        val application=Application(student, proposal, "pending",file, newApplication.file?.name)
         applicationRepository.save(application)
-        emailService.sendHtmlEmail(proposal.supervisor.email,"added new application for proposal ${proposal.title}")
+        emailService.sendHtmlEmail(proposal.supervisor.email,application.toDTO())
     }
     private fun checkApplicationConflicts(studentId: String, proposalId: UUID){
         if (applicationRepository.findByStudentIdAndStatus(studentId, "accepted").isNotEmpty())
@@ -42,20 +50,27 @@ class ApplicationServiceImpl (
     override fun declineApplication(applicationId: UUID) {
         val app=getModifiableApplication(applicationId)
         //notify declined student
-        emailService.sendHtmlEmail(app.student.email,"declined")
+
         applicationRepository.updateStatusById(applicationId, "declined")
+        app.status="declined"
+        emailService.sendHtmlEmail(app.student.email,app.toDTO())
     }
 
     override fun acceptApplication(applicationId: UUID) {
         val app= getModifiableApplication(applicationId)
         applicationRepository.updateStatusById(applicationId ,"accepted")
         //notify accepted Student
-        emailService.sendHtmlEmail(app.student.email,"accepted")
+        app.status="accepted"
+        emailService.sendHtmlEmail(app.student.email,app.toDTO())
         // decline all student applications and notify them
         val app2=applicationRepository.getAllApplicationsByProposalId(app.proposal.id!!)
         app2.forEach {
             if(it.status?.compareTo("pending")==0)
-                emailService.sendHtmlEmail(app.student.email,"declined")
+            {
+                if(it.id!!.compareTo(applicationId)!=0) {
+                    it.status="declined"
+                    emailService.sendHtmlEmail(app.student.email, it.toDTO())
+                }}
 
         }
         applicationRepository.updateStatusByStudentId(app.student.id!!, "declined")

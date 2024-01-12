@@ -23,11 +23,7 @@ class ProposalController(private val proposalService:ProposalService,private val
     fun getAllProposals(): List<ProposalDTO> {
         return proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
-    //getArchivedPropId Test Endpoint
-    @GetMapping("/API/thesis/test/{proposalId}")
-    fun getTest(@PathVariable proposalId: String): List<Archive> {
-        return archiveService.findByPropId(UUID.fromString(proposalId))
-    }
+
 
     @GetMapping("/API/thesis/proposals/statusById/{proposalId}")
     @PreAuthorize("hasRole('Student')")

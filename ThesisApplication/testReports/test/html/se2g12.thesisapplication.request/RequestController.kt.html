@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController
     @GetMapping(&quot;/API/thesis/requests&quot;)
     @PreAuthorize(&quot;hasRole('Secretary')&quot;)
     fun getAllPendingRequests():List&lt;RequestDTO&gt;{
-<span class="fc" id="L17">        return requestService.getAllPendingRequestsForSecretary()</span>
+<span class="nc" id="L17">        return requestService.getAllPendingRequestsForSecretary()</span>
     }
 
     @PatchMapping(&quot;/API/thesis/requests&quot;)
     @PreAuthorize(&quot;hasRole('Secretary')&quot;)
     fun setSecretaryStatus(@RequestBody request: RequestStatusDTO){
-<span class="fc" id="L23">        requestService.setRequestSecretaryStatus(request.requestId, request.status)</span>
-<span class="fc" id="L24">    }</span>
+<span class="nc" id="L23">        requestService.setRequestSecretaryStatus(request.requestId, request.status)</span>
+<span class="nc" id="L24">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

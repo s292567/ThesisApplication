@@ -8,26 +8,26 @@ import java.util.*
 @Transactional
 <span class="fc" id="L9">class RequestServiceImpl(private val requestRepository: RequestRepository): RequestService {</span>
 
+    override fun getAllRequests():List&lt;RequestDTO&gt; {
+<span class="nc" id="L12">        return requestRepository.findAll().map { it.toDTO() }</span>
+    }
+
     override fun getAllPendingRequestsForSecretary(): List&lt;RequestDTO&gt; {
-<span class="fc" id="L12">        return requestRepository.findBySecretaryStatusLike(&quot;pending&quot;)</span>
-<span class="fc" id="L13">            .map { it.toDTO() }</span>
+<span class="nc" id="L16">        return requestRepository.findBySecretaryStatusLike(&quot;pending&quot;)</span>
+<span class="nc" id="L17">            .map { it.toDTO() }</span>
     }
 
     override fun setRequestSecretaryStatus(requestId: UUID, status: String) {
-<span class="fc" id="L17">        val request = requestRepository.findById(requestId).orElseThrow { RequestNotFound(&quot;Request $requestId was not found&quot;) }</span>
-<span class="fc bfc" id="L18" title="All 2 branches covered.">        if(request.secretaryStatus != &quot;pending&quot;)</span>
-<span class="fc" id="L19">            throw UnmodifiableRequestStatus(&quot;Request $requestId has already status ${request.secretaryStatus}&quot;)</span>
         // handle some possible errors, but at least first 3 letters have to be correct
         // this way it's ok both &quot;accept&quot; and &quot;accepted&quot;
-<span class="fc bfc" id="L22" title="All 2 branches covered.">        val newStatus:String = if (status.lowercase().contains(&quot;acc&quot;)){</span>
-<span class="fc" id="L23">            &quot;accepted&quot;</span>
-<span class="fc bfc" id="L24" title="All 2 branches covered.">        } else if (status.lowercase().contains(&quot;rej&quot;)){</span>
-<span class="fc" id="L25">            &quot;rejected&quot;</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        val newStatus:String = if (status.lowercase().contains(&quot;acc&quot;)){</span>
+<span class="nc" id="L24">            &quot;accepted&quot;</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        } else if (status.lowercase().contains(&quot;rej&quot;)){</span>
+<span class="nc" id="L26">            &quot;rejected&quot;</span>
         } else{
-<span class="fc" id="L27">            throw InvalidRequestStatus(&quot;Request status should be `accepted` or `declined`&quot;)</span>
+<span class="nc" id="L28">            throw InvalidRequestStatus(&quot;Request status should be `accepted` or `declined`&quot;)</span>
         }
-<span class="fc" id="L29">        request.secretaryStatus = newStatus</span>
-<span class="fc" id="L30">        requestRepository.save(request)</span>
-<span class="fc" id="L31">    }</span>
+<span class="nc" id="L30">        requestRepository.updateSecretaryStatusById(requestId, newStatus)</span>
+<span class="nc" id="L31">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

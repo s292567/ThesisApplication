@@ -10,16 +10,8 @@ import se2g12.thesisapplication.application.ProposalNotFoundError
 <span class="fc" id="L10">class RequestException {</span>
     @ExceptionHandler(InvalidRequestStatus::class)
     fun invalidRequestStatus(e : InvalidRequestStatus) = ProblemDetail
-<span class="fc" id="L13">        .forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, e.message!!)</span>
-    @ExceptionHandler(UnmodifiableRequestStatus::class)
-    fun unmodifiableRequestStatus(e : UnmodifiableRequestStatus) = ProblemDetail
-<span class="fc" id="L16">        .forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, e.message!!)</span>
-    @ExceptionHandler(RequestNotFound::class)
-    fun requestNotFound(e : RequestNotFound) = ProblemDetail
-<span class="fc" id="L19">        .forStatusAndDetail(HttpStatus.NOT_FOUND, e.message!!)</span>
+<span class="nc" id="L13">        .forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, e.message!!)</span>
 }
 
-<span class="fc" id="L22">class InvalidRequestStatus(message: String) : Throwable(message)</span>
-<span class="fc" id="L23">class UnmodifiableRequestStatus(message: String) : Throwable(message)</span>
-<span class="fc" id="L24">class RequestNotFound(message: String): Throwable(message)</span>
+<span class="nc" id="L16">class InvalidRequestStatus(message: String) : Throwable(message)</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
