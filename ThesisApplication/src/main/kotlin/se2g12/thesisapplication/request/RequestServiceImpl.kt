@@ -33,6 +33,9 @@ class RequestServiceImpl(private val requestRepository: RequestRepository, priva
     }
 
     override fun getAllPendingRequestsForProfessor(professorId: String): List<RequestDTO> {
+        /*return requestRepository.findBySupervisorId(professorId)
+            .filter { it.secretaryStatus == "accepted" && it.supervisorStatus == "pending" }
+            .map { it.toDTO() }*/
 //        returns only requests that have been accepted by the secreatry but pending by the supervisor
         return requestRepository.findBySupervisorIdAndSecretaryStatusLikeAndSupervisorStatusLike(
             professorId, "accepted", "pending"
@@ -58,7 +61,7 @@ class RequestServiceImpl(private val requestRepository: RequestRepository, priva
         }else{
             throw InvalidRequestStatus("Request status should be `accepted`, `declined` or `change`")
         }
-        request.secretaryStatus = newStatus
+        request.supervisorStatus = newStatus
         requestRepository.save(request)
     }
 

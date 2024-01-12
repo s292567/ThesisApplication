@@ -26,7 +26,7 @@ class RequestController(private val requestService: RequestService) {
     @GetMapping("/API/thesis/requests/{professorId}")
     @PreAuthorize("hasRole('Professor')")
     fun getAllPendingRequestsByProfessor(@PathVariable professorId:String):List<RequestDTO>{
-        return requestService.getAllPendingRequestsForSecretary()
+        return requestService.getAllPendingRequestsForProfessor(professorId)
     }
 
     @PatchMapping("/API/thesis/requests/{professorId}")
