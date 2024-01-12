@@ -5,29 +5,29 @@ import se2g12.thesisapplication.student.toDTO
 import se2g12.thesisapplication.teacher.Teacher
 import java.util.UUID
 
-<span class="nc" id="L8">class RequestDTO (</span>
-<span class="nc" id="L9">    val id: UUID,</span>
-<span class="nc" id="L10">    val student: StudentDTO,</span>
-<span class="nc" id="L11">    val title: String,</span>
-<span class="nc" id="L12">    val description: String,</span>
-<span class="nc" id="L13">    val supervisor: Teacher,</span>
+<span class="fc" id="L8">class RequestDTO (</span>
+<span class="fc" id="L9">    val id: UUID,</span>
+<span class="fc" id="L10">    val student: StudentDTO,</span>
+<span class="fc" id="L11">    val title: String,</span>
+<span class="fc" id="L12">    val description: String,</span>
+<span class="fc" id="L13">    val supervisor: Teacher,</span>
     //  saved as ids separeted by commas
-<span class="nc" id="L15">    val coSupervisors: List&lt;String&gt;,</span>
+<span class="fc" id="L15">    val coSupervisors: List&lt;String&gt;,</span>
 
 )
 fun Request.toDTO():RequestDTO{
-<span class="nc bnc" id="L19" title="All 2 branches missed.">    val coSups: List&lt;String&gt; = if (this.coSupervisors.isBlank()){</span>
-<span class="nc" id="L20">        emptyList()</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">    val coSups: List&lt;String&gt; = if (this.coSupervisors.isBlank()){</span>
+<span class="fc" id="L20">        emptyList()</span>
     }else{
-<span class="nc" id="L22">        this.coSupervisors.split(&quot;, &quot;,&quot;,&quot;)</span>
+<span class="fc" id="L22">        this.coSupervisors.split(&quot;, &quot;,&quot;,&quot;)</span>
     }
-<span class="nc" id="L24">    return RequestDTO(</span>
-<span class="nc" id="L25">        this.id!!,</span>
-<span class="nc" id="L26">        this.student.toDTO(),</span>
-<span class="nc" id="L27">        this.title,</span>
-<span class="nc" id="L28">        this.description,</span>
-<span class="nc" id="L29">        this.supervisor,</span>
-<span class="nc" id="L30">        coSups</span>
+<span class="fc" id="L24">    return RequestDTO(</span>
+<span class="fc" id="L25">        this.id!!,</span>
+<span class="fc" id="L26">        this.student.toDTO(),</span>
+<span class="fc" id="L27">        this.title,</span>
+<span class="fc" id="L28">        this.description,</span>
+<span class="fc" id="L29">        this.supervisor,</span>
+<span class="fc" id="L30">        coSups</span>
     )
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
