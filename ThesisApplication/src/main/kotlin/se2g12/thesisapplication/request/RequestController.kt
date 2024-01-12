@@ -4,6 +4,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
@@ -21,6 +22,17 @@ class RequestController(private val requestService: RequestService) {
     @PreAuthorize("hasRole('Secretary')")
     fun setSecretaryStatus(@RequestBody request: RequestStatusDTO){
         requestService.setRequestSecretaryStatus(request.requestId, request.status)
+    }
+    @GetMapping("/API/thesis/requests/{professorId}")
+    @PreAuthorize("hasRole('Professor')")
+    fun getAllPendingRequestsByProfessor(@PathVariable professorId:String):List<RequestDTO>{
+        return requestService.getAllPendingRequestsForProfessor(professorId)
+    }
+
+    @PatchMapping("/API/thesis/requests/{professorId}")
+    @PreAuthorize("hasRole('Professor')")
+    fun setProfessorStatus(@PathVariable professorId:String, @RequestBody request: RequestStatusDTO){
+        requestService.setRequestSupervisorStatus(request.requestId, request.status, professorId)
     }
 
 }

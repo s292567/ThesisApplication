@@ -4,7 +4,8 @@ import java.util.UUID
 
 interface RequestService {
 
-    fun getAllRequests():List<RequestDTO>
     fun getAllPendingRequestsForSecretary():List<RequestDTO>
     fun setRequestSecretaryStatus(requestId:UUID, status: String)
+    fun getAllPendingRequestsForProfessor(professorId: String):List<RequestDTO>
+    fun setRequestSupervisorStatus(requestId:UUID, status: String, professorId: String)
 }

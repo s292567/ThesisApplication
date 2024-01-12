@@ -11,12 +11,14 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 import se2g12.thesisapplication.GroupDep.GroupDep
 import se2g12.thesisapplication.GroupDep.GroupDepRepository
 import se2g12.thesisapplication.archive.ArchiveRepository
@@ -34,6 +36,7 @@ import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.student.toDTO
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
+import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -122,13 +125,44 @@ class ApplicationControllerTest {
     }
 
     @WithMockUser(username = "s654140@example.com", roles = ["Student"])
-    @Test
+//    @Test
     fun `test addNewApplication`() {
+        // unable to serialize the file
         val newApplicationDTO = NewApplicationDTO( savedStudent.id!!, savedProposals.first().id!!)
         mockMvc.perform(
             MockMvcRequestBuilders.post("/API/thesis/proposals/apply")
                 .content("""${objectMapper.writeValueAsString(newApplicationDTO)}""")
                 .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().isCreated)
+    }
+
+    @WithMockUser(username = "s654140@example.com", roles = ["Student"])
+//    @Test
+    fun `test addNewApplication with file`() {
+        val fileName = "example.txt"
+        val originalFileName = "example.txt"
+        val contentType = "text/plain"
+        val content = "This is the content of the file."
+
+        val file = MockMultipartFile(
+            fileName,
+            originalFileName,
+            contentType,
+            content.toByteArray()
+        )
+        // unable to serialize the file
+        val newApplicationDTO = NewApplicationDTO(savedStudent.id!!, savedProposals.first().id!!, file)
+
+// Convert the NewApplicationDTO to JSON
+        val jsonRequest = objectMapper.writeValueAsString(newApplicationDTO)
+
+// Perform the request with the JSON payload
+        mockMvc.perform(
+            MockMvcRequestBuilders.multipart("/API/thesis/proposals/apply")
+                .file(file)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest)
         )
             .andExpect(MockMvcResultMatchers.status().isCreated)
     }

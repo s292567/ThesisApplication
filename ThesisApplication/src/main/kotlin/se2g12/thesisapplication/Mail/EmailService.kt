@@ -54,6 +54,6 @@ class EmailService (private val proposalRepository: ProposalRepository){
 
 
         message.setContent(htmlContent, "text/html; charset=utf-8")
-        mailSender.send(message)
+//        mailSender.send(message)
     }
 }

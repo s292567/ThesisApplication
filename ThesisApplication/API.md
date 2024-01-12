@@ -736,7 +736,7 @@ Response Status:
     401 Unauthorized: The user is not logged in.
     500 Internal Server Error: Generic server error.
 
-# Get all pending thesis requests
+# Get all pending thesis requests [Secretary]
 
 **GET `/API/thesis/requests`**
 
@@ -767,7 +767,7 @@ Gets the list of all the student thesis requests that still have to be evaluated
   - `401 Unauthorized`: The user is not logged in or is not a secretary
   - `500 Internal Server Error`: Generic server error
 
-# Change thesis requests status (accept/reject)
+# Change thesis requests status (accept/reject) [Secretary]
 
 **PATCH `/API/thesis/requests`**
 
@@ -782,5 +782,52 @@ Changes the thesis request status (only for the secretary). The new status will 
 - response status:
   - `200 Ok`: The status has been correctly modified
   - `401 Unauthorized`: The user is not logged in or is not a secretary
+  - `404 Not Found`: The thesis request was not found
   - `422 Unprocessable Entity`: The status in the body is incorrect (accepts any word containing "acc"/"rej")
+  - `500 Internal Server Error`: Generic server error
+  
+# Get all pending thesis requests [Professor]
+
+**GET `/API/thesis/requests/:professorId`**
+
+Gets the list of all the student thesis requests with the logged in professor as supervisor,
+that have been accepted by a secretary clerk but still have to be evaluated by the supervisor.
+- response body example:
+  ```json
+  [
+    {
+      "id":"f92b3e16-5291-44eb-ab6b-29d0ab97df9b",
+      "student":{"id":"s654140", "surname":"Davis", "name":"John", "email":"s654140@example.com"},
+      "title":"Proposed title",
+      "description":"Some description",
+      "supervisor":{"id":"p101", "surname":"Ferrari", "name":"Luca", "email":"p101@example.com"},
+      "coSupervisors":["Luca Ferrari"," Paolo Ricci"]
+    }
+  ]
+  ```
+- response status:
+  - `200 Ok`: Requests correctly retrieved
+  - `401 Unauthorized`: The user is not logged in or is not a professor
+  - `500 Internal Server Error`: Generic server error
+
+# Change thesis requests status (accept/reject/change) [Professor]
+
+**PATCH `/API/thesis/requests/:professorId`**
+
+Changes the thesis request status (by the professor).
+The new status will be `accepted`, `rejected` or `change requested`.
+The thesis request has to already been accepted by the secreatry.
+- request body example:
+  ```json
+  {
+      "requestId":"f92b3e16-5291-44eb-ab6b-29d0ab97df9b",
+      "status": "rejected"
+   }
+  ```
+- response status:
+  - `200 Ok`: The status has been correctly modified
+  - `401 Unauthorized`: The user is not logged in or is not a secretary
+  - `403 Forbidden`: The logged-in professor is not the thesis supervisor
+  - `404 Not Found`: The thesis request was not found
+  - `422 Unprocessable Entity`: The status is incorrect, wasn't accepted by the secretary or not pending for the professor
   - `500 Internal Server Error`: Generic server error

@@ -26,7 +26,7 @@ import java.time.LocalDate
 <span class="fc" id="L26">        var expiredList = proposalRepository.findByExpirationBefore(date)</span>
 <span class="pc bpc" id="L27" title="2 of 4 branches missed.">        if (expiredList.isNotEmpty())</span>
 <span class="fc" id="L28">            expiredList.forEach {</span>
-<span class="pc bpc" id="L29" title="1 of 2 branches missed.">                if (archiveRepository.findByProposalId(it.id!!).isEmpty())</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">                if (archiveRepository.findByProposalId(it.id!!).isEmpty())</span>
 <span class="fc" id="L30">                    archiveRepository.save(Archive(it))</span>
 <span class="fc" id="L31">            }</span>
 <span class="fc" id="L32">    }</span>

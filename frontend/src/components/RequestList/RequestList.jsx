@@ -17,7 +17,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import { tooltipClasses } from '@mui/material/Tooltip';
 import {useUserContext} from "../../contexts/index.js";
-import {updateRequestStatus} from "../../api/API_requests.js";
+import {updateRequestStatus, updateRequestSupervisorStatus} from "../../api/API_requests.js";
 
 
 
@@ -63,7 +63,7 @@ export default function RequestList({requests, refreshList}) {
     const [msgWarning, setMsgWarning] = useState("");
     const [status, setStatus] =useState("")
     const [requestId, setRequestId] = useState("")
-    const { user } = useUserContext();
+    const { user, userId } = useUserContext();
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
@@ -89,8 +89,14 @@ export default function RequestList({requests, refreshList}) {
         setWarningOpen(true);
     };
     const handleChangeRequestStatus = ()=>{
-        updateRequestStatus({requestId:requestId, status: status})
-            .then((_)=>refreshList())
+        if (user.role === 'Professor'){
+            updateRequestSupervisorStatus({requestId:requestId, status: status}, userId)
+                .then((_)=>refreshList());
+        }
+        else {
+            updateRequestStatus({requestId: requestId, status: status})
+                .then((_) => refreshList());
+        }
     }
 
     return (

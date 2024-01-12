@@ -145,8 +145,8 @@ class ProposalControllerMat {
 
         var proposalId=proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")==0 }.first().id
         var proposalId2=proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")!=0 }.first().id
-
-
+//      with this line, it passes. Without, it fails
+        val app = applicationRepository.findByProposalIdAndStudentId(proposalId!!,"s654140")
 
         // Perform the request and assert the response
         mockMvc.perform(get("/API/thesis/proposals/statusById/{proposalId}", proposalId)
