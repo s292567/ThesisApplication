@@ -33,37 +33,34 @@ import java.util.*
 <span class="fc" id="L33">    }</span>
 
     override fun getAllPendingRequestsForProfessor(professorId: String): List&lt;RequestDTO&gt; {
-        /*return requestRepository.findBySupervisorId(professorId)
-            .filter { it.secretaryStatus == &quot;accepted&quot; &amp;&amp; it.supervisorStatus == &quot;pending&quot; }
-            .map { it.toDTO() }*/
 //        returns only requests that have been accepted by the secreatry but pending by the supervisor
-<span class="nc" id="L40">        return requestRepository.findBySupervisorIdAndSecretaryStatusLikeAndSupervisorStatusLike(</span>
-<span class="nc" id="L41">            professorId, &quot;accepted&quot;, &quot;pending&quot;</span>
-<span class="nc" id="L42">            ).map { it.toDTO() }</span>
+<span class="fc" id="L37">        return requestRepository.findBySupervisorIdAndSecretaryStatusLikeAndSupervisorStatusLike(</span>
+<span class="fc" id="L38">            professorId, &quot;accepted&quot;, &quot;pending&quot;</span>
+<span class="fc" id="L39">            ).map { it.toDTO() }</span>
     }
 
     override fun setRequestSupervisorStatus(requestId: UUID, status: String, professorId: String) {
-<span class="nc" id="L46">        val request = requestRepository.findById(requestId).orElseThrow { RequestNotFound(&quot;Request $requestId was not found&quot;) }</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (request.supervisor.id != professorId)</span>
-<span class="nc" id="L48">            throw UnauthorizedProfessor(&quot;You ($professorId) are not the supervisor for this thesis request (${request.supervisor.id})&quot;)</span>
-<span class="nc bnc" id="L49" title="All 2 branches missed.">        if(request.secretaryStatus != &quot;accepted&quot;)</span>
-<span class="nc" id="L50">            throw UnmodifiableRequestStatus(&quot;Request $requestId has to be accepted by the secreatry before&quot;)</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        if(request.supervisorStatus != &quot;pending&quot;)</span>
-<span class="nc" id="L52">            throw UnmodifiableRequestStatus(&quot;Request $requestId has already status ${request.supervisorStatus}&quot;)</span>
+<span class="fc" id="L43">        val request = requestRepository.findById(requestId).orElseThrow { RequestNotFound(&quot;Request $requestId was not found&quot;) }</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (request.supervisor.id != professorId)</span>
+<span class="fc" id="L45">            throw UnauthorizedProfessor(&quot;You ($professorId) are not the supervisor for this thesis request (${request.supervisor.id})&quot;)</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if(request.secretaryStatus != &quot;accepted&quot;)</span>
+<span class="fc" id="L47">            throw UnmodifiableRequestStatus(&quot;Request $requestId has to be accepted by the secreatry before&quot;)</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if(request.supervisorStatus != &quot;pending&quot;)</span>
+<span class="fc" id="L49">            throw UnmodifiableRequestStatus(&quot;Request $requestId has already status ${request.supervisorStatus}&quot;)</span>
 
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        val newStatus:String = if (status.lowercase().contains(&quot;acc&quot;)){</span>
-<span class="nc bnc" id="L55" title="All 2 branches missed.">            request.startDate = virtualDate.getDate()?:LocalDate.now()</span>
-<span class="nc" id="L56">            &quot;accepted&quot;</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">        } else if (status.lowercase().contains(&quot;rej&quot;)){</span>
-<span class="nc" id="L58">            &quot;rejected&quot;</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        } else if (status.lowercase().contains(&quot;change&quot;)){</span>
-<span class="nc" id="L60">            &quot;change requested&quot;</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        val newStatus:String = if (status.lowercase().contains(&quot;acc&quot;)){</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">            request.startDate = virtualDate.getDate()?:LocalDate.now()</span>
+<span class="fc" id="L53">            &quot;accepted&quot;</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        } else if (status.lowercase().contains(&quot;rej&quot;)){</span>
+<span class="fc" id="L55">            &quot;rejected&quot;</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        } else if (status.lowercase().contains(&quot;change&quot;)){</span>
+<span class="fc" id="L57">            &quot;change requested&quot;</span>
         }else{
-<span class="nc" id="L62">            throw InvalidRequestStatus(&quot;Request status should be `accepted`, `declined` or `change`&quot;)</span>
+<span class="fc" id="L59">            throw InvalidRequestStatus(&quot;Request status should be `accepted`, `declined` or `change`&quot;)</span>
         }
-<span class="nc" id="L64">        request.supervisorStatus = newStatus</span>
-<span class="nc" id="L65">        requestRepository.save(request)</span>
-<span class="nc" id="L66">    }</span>
+<span class="fc" id="L61">        request.supervisorStatus = newStatus</span>
+<span class="fc" id="L62">        requestRepository.save(request)</span>
+<span class="fc" id="L63">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -26,14 +26,14 @@ import org.springframework.web.bind.annotation.RestController
     @GetMapping(&quot;/API/thesis/requests/{professorId}&quot;)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun getAllPendingRequestsByProfessor(@PathVariable professorId:String):List&lt;RequestDTO&gt;{
-<span class="nc" id="L29">        return requestService.getAllPendingRequestsForProfessor(professorId)</span>
+<span class="fc" id="L29">        return requestService.getAllPendingRequestsForProfessor(professorId)</span>
     }
 
     @PatchMapping(&quot;/API/thesis/requests/{professorId}&quot;)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun setProfessorStatus(@PathVariable professorId:String, @RequestBody request: RequestStatusDTO){
-<span class="nc" id="L35">        requestService.setRequestSupervisorStatus(request.requestId, request.status, professorId)</span>
-<span class="nc" id="L36">    }</span>
+<span class="fc" id="L35">        requestService.setRequestSupervisorStatus(request.requestId, request.status, professorId)</span>
+<span class="fc" id="L36">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
