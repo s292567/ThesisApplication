@@ -30,15 +30,15 @@ class ApplicationServiceImpl (
     override fun addNewApplication(newApplication: NewApplicationDTO) {
         var file:UUID?=null
         if(newApplication.file!=null)
-        file=fileService.addFile(newApplication.file!!)
+            file=fileService.addFile(newApplication.file!!)
 
         checkApplicationConflicts(newApplication.studentId, newApplication.proposalId)
         val student=studentRepository.findById(newApplication.studentId)
             .orElseThrow { StudentNotFoundError("Student ${newApplication.studentId} not found") }
         val proposal=proposalRepository.findById(newApplication.proposalId)
             .orElseThrow { ProposalNotFoundError("Proposal ${newApplication.proposalId} not found") }
-        val application=Application(student, proposal, "pending",file, newApplication.file?.name)
-        applicationRepository.save(application)
+        var application=Application(student, proposal, "pending",file, newApplication.file?.name)
+        application = applicationRepository.save(application)
         emailService.sendHtmlEmail(proposal.supervisor.email,application.toDTO())
     }
     private fun checkApplicationConflicts(studentId: String, proposalId: UUID){

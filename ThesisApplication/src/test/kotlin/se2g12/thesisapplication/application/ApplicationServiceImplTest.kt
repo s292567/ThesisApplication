@@ -10,6 +10,7 @@ import org.junit.jupiter.api.assertThrows
 import se2g12.thesisapplication.Mail.EmailService
 import se2g12.thesisapplication.archive.ArchiveRepository
 import se2g12.thesisapplication.degree.Degree
+import se2g12.thesisapplication.file.FileService
 import se2g12.thesisapplication.proposal.Proposal
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.student.Student
@@ -24,22 +25,35 @@ class ApplicationServiceImplTest {
     private val applicationRepository = mockk<ApplicationRepository>()
     private val archiveRepository = mockk<ArchiveRepository>()
     private val emailService = mockk<EmailService>()
+    private val fileService = mockk<FileService>()
 
-    private val applicationService = ApplicationServiceImpl(applicationRepository, proposalRepository, studentRepository, archiveRepository, emailService)
+    private val applicationService = ApplicationServiceImpl(applicationRepository, proposalRepository, studentRepository, archiveRepository, emailService, fileService)
     private val mockProposal = mockk<Proposal>()
 
-    fun `addNewApplicationSuccessful`() {
+    @Test
+    fun `addNewApplication successful`() {
         val uuid=UUID.randomUUID()
         val studentId="s123456"
         // Arrange
         val newApplication = NewApplicationDTO(studentId, uuid)
+        val dbApplication = mockk<Application>()
+        val dbStudent = mockk<Student>()
+        val dbProposal = mockk<Proposal>()
         val student = Student(surname = "Rossi", name =  "Mario")
         val supervisor = Teacher("", "", "p101@example.com")
         every { applicationRepository.findByStudentIdAndStatus(studentId, "accepted") } returns emptyList()
         every { applicationRepository.findByStudentIdAndProposalIdAndStatus(studentId,uuid, "pending") } returns emptyList()
         every { studentRepository.findById(newApplication.studentId) } returns Optional.of(student)
         every { proposalRepository.findById(newApplication.proposalId) } returns Optional.of(mockProposal)
-        every { applicationRepository.save(any()) } returns mockk()
+        every { applicationRepository.save(any()) } returns dbApplication
+        every { dbApplication.id } returns UUID.randomUUID()
+        every { dbApplication.student } returns dbStudent
+        every { dbStudent.id } returns studentId
+        every { dbApplication.proposal } returns dbProposal
+        every { dbProposal.id } returns uuid
+        every { dbApplication.status } returns "pending"
+        every { dbApplication.fileID } returns null
+        every { dbApplication.fileName } returns null
         every { mockProposal.supervisor } returns supervisor
         every { mockProposal.title } returns "Title"
         every { emailService.sendHtmlEmail(any(), any()) } returns mockk()
