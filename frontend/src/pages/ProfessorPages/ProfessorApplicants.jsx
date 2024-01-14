@@ -30,7 +30,6 @@ import {
   ThesisRow,
   WarningPopup,
   WithTooltip,
-  PdfViewerModal,
 } from "../../components";
 import {
   acceptApplication,
@@ -75,9 +74,10 @@ export default function ProfessorApplicants({
       throw new Error("Failed to process the application.");
     }
   };
-  const handleDownload = async () => {
+  
+  const handleDownload = async (fileId, fileName) => {
     try {
-      const apiUrl = 'http://localhost:8081/API/downloadFile/f714fd95-c0bf-4e3d-a8d6-6d0c2eef7fcf';
+      const apiUrl = 'http://localhost:8081/API/downloadFile/' + fileId;
 
       // Replace 'YOUR_ACCESS_TOKEN' with the actual access token or authentication credentials
       const Token = localStorage.getItem("ROCP_token")
@@ -95,7 +95,8 @@ export default function ProfessorApplicants({
       }
 
       // Extract filename from content-disposition header or set a default name
-      let filename = 'downloaded_file.pdf';
+      // let filename = 'downloaded_file.pdf';
+      let filename = fileName;
 
       const contentDisposition = response.headers.get('content-disposition');
       if (contentDisposition) {
@@ -142,7 +143,7 @@ export default function ProfessorApplicants({
     }));
   };
 
-  const renderStudentCv = () => (
+  const renderStudentCv = (fileId, fileName) => (
     <>
       <PastelComponent
         bgColor="#94a6f3"
@@ -159,12 +160,9 @@ export default function ProfessorApplicants({
         onClick={(event) => {
           event.stopPropagation();
           /// DOWNLOAD CV HERE
-          
+          handleDownload(fileId, fileName);
         }}
       />
-
-      <button onClick={handleDownload()}></button>
-
     </>
   );
 
