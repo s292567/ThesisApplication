@@ -36,4 +36,11 @@ class ProfessorController(
     fun getProposalByProfessorId(@PathVariable professorId:String):List<ProposalDTO> {
         return proposalService.getProposalByProfessorId( professorId ).filter{archiveService.findByPropId(it.id!!).isEmpty()}
     }
+    @GetMapping("/API/thesis/archive/getProfessorArchivedProposals/{professorId}")
+    fun getArchivedProposalByProfessorId(@PathVariable professorId:String):List<ProposalDTO> {
+        return proposalService.getProposalByProfessorId(professorId)
+            .filter { archiveService.findByPropId(it.id!!).isNotEmpty() }
+
+    }
+
 }
