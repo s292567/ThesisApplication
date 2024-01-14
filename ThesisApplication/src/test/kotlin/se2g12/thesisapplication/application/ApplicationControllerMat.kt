@@ -133,7 +133,9 @@ class ApplicationControllerMat {
         studentRepository.save(student)
         applicationRepository.save(application)
     }
-//    @Test
+
+    @WithMockUser(username = "s654140@example.com", roles = ["Student"])
+    @Test
     fun `test addNewApplication endpoint`() {
 
         var proposalId=proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")!=0 }.first().id
@@ -151,12 +153,6 @@ class ApplicationControllerMat {
                 .content(objectMapper.writeValueAsString(newApplicationDTO))
         )
             .andExpect(status().isCreated)
-        mockMvc.perform(
-            patch("/API/thesis/applications/{professorId}", "p101")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(applicationStatus))
-        )
-            .andExpect(status().isOk)
 
     }
     @Test

@@ -38,8 +38,8 @@ class ApplicationServiceImpl (
         val proposal=proposalRepository.findById(newApplication.proposalId)
             .orElseThrow { ProposalNotFoundError("Proposal ${newApplication.proposalId} not found") }
 
-        val application=Application(student, proposal, "pending",file, file?.let { fileService.getName(it) })
-        applicationRepository.save(application)
+        var application=Application(student, proposal, "pending",file, file?.let { fileService.getName(it) })
+        application = applicationRepository.save(application)
 
         emailService.sendHtmlEmail(proposal.supervisor.email,application.toDTO())
     }
