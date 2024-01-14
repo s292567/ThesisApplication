@@ -33,13 +33,4 @@ data class NewProposalDTO (
     var expiration : LocalDate,
     var level: String,
     var cds: List<String>
-){
-    fun checkBody(){
-        val validator: Validator = Validation.buildDefaultValidatorFactory().validator
-        val violations : Set<ConstraintViolation<NewProposalDTO>> = validator.validate(this)
-        if (violations.isNotEmpty()){
-            val message = violations.joinToString("\n") { it.message }
-            throw ProposalBodyError(message)
-        }
-    }
-}
+)

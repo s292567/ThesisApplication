@@ -16,16 +16,9 @@ data class Request(
     @ManyToOne
     @JoinColumn(name = "supervisor_id", referencedColumnName = "id")
     val supervisor: Teacher,
-//  saved as ids separeted by commas
+//  saved as name and surname separeted by commas
     val coSupervisors: String,
-/*//  saved as ids in a separate table; automatically retrieved as teachers
-    @ManyToMany
-    @JoinTable(
-        name = "request_coSuervisors",
-        joinColumns = [JoinColumn(name = "request_id")],
-        inverseJoinColumns = [JoinColumn(name = "supervisor_id")]
-    )
-    val coSupervisors: List<Teacher>*/
+
 //    default is pending; can be set to accepted/declined by a secretary
     var secretaryStatus: String?="pending",
 //    default is pending;

@@ -11,7 +11,7 @@ class RequestDTO (
     val title: String,
     val description: String,
     val supervisor: Teacher,
-    //  saved as ids separeted by commas
+    //  as name and surname separeted by commas
     val coSupervisors: List<String>,
 
 )

@@ -65,43 +65,26 @@ class RequestServiceImpl(private val requestRepository: RequestRepository, priva
         requestRepository.save(request)
     }
     // Updated RequestServiceImpl function
-    override fun addNewRequest(newRequest: RequestDTO, studentId: String) {
+    override fun addNewRequest(newRequest: NewRequestDTO, studentId: String) {
             val student = studentRepository.findById(studentId)
                 .orElseThrow { NotFound("Student $studentId not found") }
 
-            val possibleGroups: MutableList<String?> = mutableListOf(newRequest.supervisor.group?.id)
 
             // Convert coSupervisors list to a string
             val coSupervisorsString = newRequest.coSupervisors.joinToString(", ")
-
-            if (newRequest.coSupervisors.isNotEmpty()) {
-                for (coSup in newRequest.coSupervisors) {
-                    try {
-                        // Split string as: "Name Surname"
-                        val (name, surname) = coSup.split(" ")
-                        val t = teacherRepository.findByNameSurname(name, surname)
-                        if (t.isNotEmpty()) {
-                            // Internal co-supervisor
-                            possibleGroups.add(t.first().group?.id)
-                        }
-                        // else external co-sup
-                    } catch (_: IndexOutOfBoundsException) {
-                        // The name was not in the form "Name Surname"
-                    }
-                }
-            }
+            // TODO: check coSupervisors are actual teachers
+        val supervisor = teacherRepository.findById(newRequest.supervisorId)
+            .orElseThrow { NotFound("professor ${newRequest.supervisorId} not found") }
 
             val request = Request(
                 student = student,
                 title = newRequest.title,
                 description = newRequest.description,
-                supervisor = newRequest.supervisor,
+                supervisor = supervisor,
                 coSupervisors = coSupervisorsString
             )
 
             requestRepository.save(request)
         }
-
-
 
     }

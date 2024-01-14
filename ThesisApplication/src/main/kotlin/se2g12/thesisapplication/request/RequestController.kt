@@ -1,5 +1,6 @@
 package se2g12.thesisapplication.request
 
+import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
@@ -30,8 +31,9 @@ class RequestController(private val requestService: RequestService) {
         requestService.setRequestSupervisorStatus(request.requestId, request.status, professorId)
     }
     @PostMapping("/API/thesis/request/{studentId}")
-    //@PreAuthorize("hasRole('Student')")
-    fun addNewRequest(@RequestBody obj: RequestDTO, @PathVariable studentId:String){
+    @PreAuthorize("hasRole('Student')")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun addNewRequest(@RequestBody obj: NewRequestDTO, @PathVariable studentId:String){
         println(obj)
         requestService.addNewRequest(obj, studentId)
 
