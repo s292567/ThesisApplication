@@ -1,8 +1,10 @@
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {SectionTitle, SortingToolbar,} from "../../components";
 import RequestList from "../../components/RequestList/RequestList.jsx"
 import sortedThesisData from "../../components/GeneralComponents/SortingToolbar.jsx"
+import {getAllPendingRequests, getAllPendingRequestsByProfessor} from "../../api/API_requests.js";
+import {useUserContext} from "../../contexts/index.js";
 
 
 export default function NewProposalPage() {
@@ -28,7 +30,23 @@ export default function NewProposalPage() {
     //     setSortedRequest(sortedRequestTmp);
     //     setReload(!reload);
     // };
+    const { userId } = useUserContext();
+    const [requests, setRequests] = useState([])
+    const [refresh, setRefresh] = useState(false)
 
+    useEffect(() => {
+        const fetchRequests = async () => {
+            try {
+                return await getAllPendingRequestsByProfessor(userId);
+            } catch (error) {
+                console.error("Failed to fetch requests:", error);
+            }
+        };
+
+        fetchRequests().then((data) => {
+            setRequests(data);
+        });
+    },[refresh])
 
     return (
         <>
@@ -38,7 +56,7 @@ export default function NewProposalPage() {
                 {/*    proposals={requested.map((app) => app.request())}*/}
                 {/*    onSortedData={handleSortedData}*/}
                 {/*/>*/}
-                <RequestList />
+                <RequestList requests={requests} refreshList={()=>setRefresh((r)=>!r)}/>
             </>
 
 

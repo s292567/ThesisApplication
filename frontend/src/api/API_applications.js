@@ -138,14 +138,14 @@ export const getAllApplicationsDataForProfessor = async (professorId) => {
     for (const proposal of allProposals) {
       const apps = await getAllApplicationsForProposal(proposal.id);
       const studs = await getAllApplyingStudentsForProposal(proposal.id);
-      allStudents = allStudents.concat(studs);
-
+      
       if (apps.length > 0 && studs.length > 0) {
-        // Update proposalsMap
-        proposalsMap.set(proposal, studs);
-
         // Update studentsMap
         for (const stud of studs) {
+          // From the apps array, get the application object for the current student
+          // and add to the stud object inside the studs vector the updated student object with the .cv field added that contain the application field named fileId
+          stud.cv = apps.find((app) => app.studentId === stud.id).fileId;
+
           // Assume 'stud' has a unique identifier property, e.g., 'id'
           if (studentsMap.has(stud.id)) {
             // Check if the student's id is already in the map
@@ -154,6 +154,11 @@ export const getAllApplicationsDataForProfessor = async (professorId) => {
             studentsMap.set(stud.id, [proposal]);
           }
         }
+
+        // Update proposalsMap
+        proposalsMap.set(proposal, studs);
+        // Update allStudents
+        allStudents = allStudents.concat(studs);
       }
     }
 
@@ -170,6 +175,7 @@ export const getAllApplicationsDataForProfessor = async (professorId) => {
         proposals: proposals,
       })
     );
+
     return { groupedByProposals, groupedByStudents };
   } catch (error) {
     console.error("Error fetching data:", error);

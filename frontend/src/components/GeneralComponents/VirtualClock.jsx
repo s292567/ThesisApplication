@@ -16,7 +16,7 @@ import { PastelComponent } from "../index";
 import { getVirtualClock, setVirtualClock } from "../../api";
 import { useNavigate } from "react-router-dom";
 
-export default function VirtualClock({ virtualDate }) {
+export default function VirtualClock() {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -37,6 +37,9 @@ export default function VirtualClock({ virtualDate }) {
       if (minDateTmp !== null) {
         setSelectedDate(dayjs(minDateTmp));
         setMinDate(dayjs(minDateTmp));
+      }else{
+        setSelectedDate(dayjs());
+        setMinDate(dayjs());
       }
       setLoading(false);
     });

@@ -39,6 +39,7 @@ export default function ApplyToThesisPopup({ open, onClose, handleAppling }) {
     }
   }, []);
 
+  ///--------------------------------------------------------------------
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     multiple: false,
@@ -47,14 +48,17 @@ export default function ApplyToThesisPopup({ open, onClose, handleAppling }) {
       "application/pdf": [".pdf"],
     },
   });
+  ///--------------------------------------------------------------------
 
   const handleRemoveFile = () => {
     setFile(null);
   };
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setFile(file);
   };
+
   const handleApply = () => {
     // Logic to handle apply with or without CV
     handleAppling(file);
@@ -79,7 +83,7 @@ export default function ApplyToThesisPopup({ open, onClose, handleAppling }) {
       }}
     >
       <DialogTitle sx={{ padding: "1rem" }}>
-        <Typography gutterBottom mb={2} sx={{ fontSize: `${scale*2}rem` }}>
+        <Typography gutterBottom mb={2} sx={{ fontSize: `${scale * 2}rem` }}>
           Are you sure you want to <b>apply</b> to <b>this thesis</b>?
         </Typography>
       </DialogTitle>
@@ -110,9 +114,21 @@ export default function ApplyToThesisPopup({ open, onClose, handleAppling }) {
           </Typography>
 
           {!file ? (
-
-              <input type="file" onChange={handleFileChange}/>
-
+            <FileWrapper {...getRootProps()}>
+              <input
+                type="file"
+                onChange={handleFileChange}
+                {...getInputProps()}
+              />
+              <CloudUploadOutlined
+                style={{ fontSize: "50px", color: "#4F709C" }}
+              />
+              <Typography sx={{ fontSize: "1rem", color: "#4F709C" }}>
+                Drag and drop file here
+                <br />
+                or click to select it
+              </Typography>
+            </FileWrapper>
           ) : (
             <Box
               sx={{
@@ -132,7 +148,7 @@ export default function ApplyToThesisPopup({ open, onClose, handleAppling }) {
                   cursor: "default",
                 }}
               >
-                <CheckIcon sx={{fontWeight: "bold", color: "darkblue"}}/>
+                <CheckIcon sx={{ fontWeight: "bold", color: "darkblue" }} />
                 <Typography
                   sx={{
                     fontWeight: "bold",
@@ -153,22 +169,23 @@ export default function ApplyToThesisPopup({ open, onClose, handleAppling }) {
         </Paper>
       </DialogContent>
 
-      <DialogActions sx={{ justifyContent: "flex-start", marginLeft: "2rem", gap: "20px"}}>
-        
+      <DialogActions
+        sx={{ justifyContent: "flex-start", marginLeft: "2rem", gap: "20px" }}
+      >
         <PastelComponent
           bgColor={"#2192FF"}
           textColor={"white"}
           text={file ? "applying with CV" : "apply without CV"}
           onClick={handleApply}
-          style={{paddingX: "1rem", paddingY: "0.6rem", borderRadius: "15px"}}
-         />
-        
+          style={{ paddingX: "1rem", paddingY: "0.6rem", borderRadius: "15px" }}
+        />
+
         <PastelComponent
           bgColor={"#ED174F"}
           textColor={"white"}
           text={"go back"}
           onClick={handleGoBack}
-          style={{paddingX: "1rem", paddingY: "0.6rem", borderRadius: "15px"}}
+          style={{ paddingX: "1rem", paddingY: "0.6rem", borderRadius: "15px" }}
         />
       </DialogActions>
     </Dialog>

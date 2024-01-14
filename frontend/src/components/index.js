@@ -22,6 +22,7 @@ import SectionTitle from "./GeneralComponents/SectionTitle.jsx";
 import StyledPaper from "./GeneralComponents/StyledPaper.jsx";
 
 import ThesisForm from "./ThesisForm/ThesisForm.jsx";
+import RequestThesisForm from "./ThesisForm/RequestThesisForm.jsx";
 
 import SortingToolbar from "./GeneralComponents/SortingToolbar.jsx";
 import { sortThesisData } from "./GeneralComponents/SortingToolbar.jsx";
@@ -47,6 +48,8 @@ export {
     ThesesList,
     ThesisRow,
     ThesisForm,
+    RequestThesisForm,
+
     CustomAutocomplete,
 
     ApplyToThesisPopup,

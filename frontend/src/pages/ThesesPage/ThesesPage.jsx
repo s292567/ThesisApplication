@@ -11,6 +11,7 @@ import {
   NoDataDisplayed,
   PastelComponent,
   ThesisForm,
+  RequestThesisForm,
 } from "../../components";
 import { useUserContext } from "../../contexts/index.js";
 import {
@@ -176,6 +177,18 @@ export default function ThesesPage() {
     [userId, sortedThesisData]
   );
 
+  const handleNewRequestThesis = useCallback(
+    async (newThesis) => {
+      try {
+        // Call API to create the thesis
+        // await insertRequestThesis(userId, newThesis);
+      } catch (error) {
+        console.error("Failed to create proposal:", error);
+      }
+    },
+    [userId]
+  );
+
   const handleArchive = useCallback(
     async (id) => {
       try {
@@ -198,7 +211,7 @@ export default function ThesesPage() {
     <>
       <SectionTitle
         text={"Theses: "}
-        style={{ marginTop: "7rem", marginBottom: 0 }}
+        style={{ marginTop: "10rem", marginBottom: 0 }}
       />
       <Searchbar handleResearch={handleResearch} clearSearch={clearSearch} />
 
@@ -225,7 +238,11 @@ export default function ThesesPage() {
           onSubmit={handleNewThesis}
         />) : 
           user.role === "Student" ? (
-            {/* Start request Thesis Form */}
+            <RequestThesisForm 
+              open={newThesisOpen}
+              onClose={() => setNewThesisOpen(false)}
+              onSubmit={handleNewRequestThesis}
+            />
           ) : null
       ) : null}
 

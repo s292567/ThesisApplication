@@ -13,8 +13,9 @@ interface RequestRepository : JpaRepository<Request, UUID> {
 
     fun findBySecretaryStatusLike(secretaryStatus: String): List<Request>
 
-    @Modifying
-    @Query("UPDATE Request r SET r.secretaryStatus = :newStatus WHERE r.id = :id")
-    fun updateSecretaryStatusById(@Param("id") id: UUID, @Param("newStatus") newStatus: String)
+    fun findBySupervisorId(supervisorId: String): List<Request>
+    fun findBySupervisorIdAndSecretaryStatusLikeAndSupervisorStatusLike(supervisorId: String,
+                                                                        secretaryStatus: String,
+                                                                        supervisorStatus: String): List<Request>
 
 }

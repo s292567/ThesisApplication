@@ -4,24 +4,36 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
-<span class="fc" id="L10">@RestController</span>
+<span class="fc" id="L11">@RestController</span>
 @CrossOrigin
-<span class="fc" id="L12">class RequestController(private val requestService: RequestService) {</span>
+<span class="fc" id="L13">class RequestController(private val requestService: RequestService) {</span>
 
     @GetMapping(&quot;/API/thesis/requests&quot;)
     @PreAuthorize(&quot;hasRole('Secretary')&quot;)
     fun getAllPendingRequests():List&lt;RequestDTO&gt;{
-<span class="nc" id="L17">        return requestService.getAllPendingRequestsForSecretary()</span>
+<span class="fc" id="L18">        return requestService.getAllPendingRequestsForSecretary()</span>
     }
 
     @PatchMapping(&quot;/API/thesis/requests&quot;)
     @PreAuthorize(&quot;hasRole('Secretary')&quot;)
     fun setSecretaryStatus(@RequestBody request: RequestStatusDTO){
-<span class="nc" id="L23">        requestService.setRequestSecretaryStatus(request.requestId, request.status)</span>
-<span class="nc" id="L24">    }</span>
+<span class="fc" id="L24">        requestService.setRequestSecretaryStatus(request.requestId, request.status)</span>
+<span class="fc" id="L25">    }</span>
+    @GetMapping(&quot;/API/thesis/requests/{professorId}&quot;)
+    @PreAuthorize(&quot;hasRole('Professor')&quot;)
+    fun getAllPendingRequestsByProfessor(@PathVariable professorId:String):List&lt;RequestDTO&gt;{
+<span class="fc" id="L29">        return requestService.getAllPendingRequestsForProfessor(professorId)</span>
+    }
+
+    @PatchMapping(&quot;/API/thesis/requests/{professorId}&quot;)
+    @PreAuthorize(&quot;hasRole('Professor')&quot;)
+    fun setProfessorStatus(@PathVariable professorId:String, @RequestBody request: RequestStatusDTO){
+<span class="fc" id="L35">        requestService.setRequestSupervisorStatus(request.requestId, request.status, professorId)</span>
+<span class="fc" id="L36">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

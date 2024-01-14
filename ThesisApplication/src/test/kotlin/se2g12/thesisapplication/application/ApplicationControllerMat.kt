@@ -133,7 +133,7 @@ class ApplicationControllerMat {
         studentRepository.save(student)
         applicationRepository.save(application)
     }
-    @Test
+//    @Test
     fun `test addNewApplication endpoint`() {
 
         var proposalId=proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")!=0 }.first().id

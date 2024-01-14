@@ -26,7 +26,6 @@ export const getAllPendingRequests = async () => {
     })
     .then((response) => {
       if (response.status === 200) {
-        console.log("getAllRequests: ", response.data);
         return response.data;
       } else {
         console.error("Request failed with status: ", response.status);
@@ -55,14 +54,56 @@ export const updateRequestStatus = async (requestData) => {
     })
     .then((response) => {
       if (response.status === 200) {
-        console.log("Request updated");
+        console.log("Request status updated");
       } else {
         console.error("Request failed with status: ", response.status);
       }
     })
     .catch((error) => {
-      console.error("Error while updating a proposal: ", error);
+      console.error("Error while updating a proposal request: ", error);
     });
 };
 
+export const getAllPendingRequestsByProfessor = async (professorId) => {
+  const jwt = getJwt(); // Fetch JWT here
 
+  return axiosInstance
+      .get(`${routes.allRequests}/${professorId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + jwt,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.data;
+        } else {
+          console.error("Request failed with status: ", response.status);
+        }
+      })
+      .catch((error) => {
+        console.error("Error while retrieving all proposals: ", error);
+      });
+};
+
+export const updateRequestSupervisorStatus = async (requestData, professorId) => {
+  const jwt = getJwt(); // Fetch JWT here
+
+  return axiosInstance
+      .patch(`${routes.allRequests}/${professorId}`, requestData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + jwt,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Request status updated");
+        } else {
+          console.error("Request failed with status: ", response.status);
+        }
+      })
+      .catch((error) => {
+        console.error("Error while updating a proposal request: ", error);
+      });
+};
