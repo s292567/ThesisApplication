@@ -37,8 +37,10 @@ class ApplicationServiceImpl (
             .orElseThrow { StudentNotFoundError("Student ${newApplication.studentId} not found") }
         val proposal=proposalRepository.findById(newApplication.proposalId)
             .orElseThrow { ProposalNotFoundError("Proposal ${newApplication.proposalId} not found") }
-        var application=Application(student, proposal, "pending",file, newApplication.file?.name)
-        application = applicationRepository.save(application)
+
+        val application=Application(student, proposal, "pending",file, file?.let { fileService.getName(it) })
+        applicationRepository.save(application)
+
         emailService.sendHtmlEmail(proposal.supervisor.email,application.toDTO())
     }
     private fun checkApplicationConflicts(studentId: String, proposalId: UUID){
