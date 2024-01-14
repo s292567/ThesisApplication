@@ -124,18 +124,7 @@ class ApplicationControllerTest {
         // applicationRepository.save(application)
     }
 
-    @WithMockUser(username = "s654140@example.com", roles = ["Student"])
-    @Test
-    fun `test addNewApplication`() {
-        // unable to serialize the file
-        val newApplicationDTO = NewApplicationDTO( savedStudent.id!!, savedProposals.first().id!!)
-        mockMvc.perform(
-            MockMvcRequestBuilders.post("/API/thesis/proposals/apply")
-                .content("""${objectMapper.writeValueAsString(newApplicationDTO)}""")
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-            .andExpect(MockMvcResultMatchers.status().isCreated)
-    }
+
 
 
     @WithMockUser(username = "p101@example.com", roles = ["Professor"])

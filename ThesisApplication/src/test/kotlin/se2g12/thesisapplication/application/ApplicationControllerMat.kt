@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.test.context.support.WithMockUser
@@ -24,6 +25,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
@@ -140,20 +142,21 @@ class ApplicationControllerMat {
 
         var proposalId=proposalRepository.findAll().filter { it.title.compareTo("Sample Proposal Late")!=0 }.first().id
 
-        // Mock data
-        val newApplicationDTO = NewApplicationDTO("s654140",proposalId!!)
-        val applicationStatus=ApplicationStatus("s654140",proposalId,"accepted")
+        val studentId = "s654140"
+        val file = MockMultipartFile("file", "test.pdf", "application/pdf", "file content".toByteArray())
+
+
         // Mocking authentication
 
 
         // Perform the request and assert the response
         mockMvc.perform(
-            post("/API/thesis/proposals/apply")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(newApplicationDTO))
+            MockMvcRequestBuilders.multipart("/API/thesis/proposals/apply")
+                .file(file)
+                .param("proposalId", proposalId.toString())
+                .param("studentId", studentId)
         )
-            .andExpect(status().isCreated)
-
+            .andExpect(MockMvcResultMatchers.status().isCreated)
     }
     @Test
     @WithMockUser(username = "p101@example.com", roles = ["Professor"])

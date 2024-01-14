@@ -5,10 +5,10 @@ import java.util.*
 <span class="fc" id="L5">@Service</span>
 <span class="fc" id="L6">class ArchiveServiceImpl(private val archiveRepository: ArchiveRepository):ArchiveService {</span>
     override fun findByPropId(proposalId: UUID): List&lt;Archive&gt; {
-<span class="fc" id="L8">        return archiveRepository.findByProposalId(proposalId)</span>
+<span class="nc" id="L8">        return archiveRepository.findByProposalId(proposalId)</span>
     }
     override fun getAll(): List&lt;Archive&gt; {
-<span class="fc" id="L11">        return archiveRepository.findAll()</span>
+<span class="nc" id="L11">        return archiveRepository.findAll()</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

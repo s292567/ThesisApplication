@@ -19,8 +19,9 @@ class ApplicationController( private val applicationService: ApplicationService,
     @PreAuthorize("hasRole('Student')")
     @ResponseStatus(HttpStatus.CREATED)
     fun addNewApplication(
-        @RequestBody newApplicationDTO: NewApplicationDTO
+        @RequestParam proposalId: UUID,@RequestParam studentId: String,@RequestParam file:MultipartFile
     ) {
+        val newApplicationDTO=NewApplicationDTO(studentId,proposalId, file)
 
         if (newApplicationDTO.file != null && !newApplicationDTO.file!!.contentType.equals("application/pdf")) {
             throw Exception("File must be in .pdf format")
