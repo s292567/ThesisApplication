@@ -75,7 +75,7 @@ export default function ProfessorApplicants({
     }
   };
   
-  const handleDownload = async (fileId, fileName) => {
+  const handleDownload = async (fileId) => {
     try {
       const apiUrl = 'http://localhost:8081/API/downloadFile/' + fileId;
 
@@ -143,7 +143,7 @@ export default function ProfessorApplicants({
     }));
   };
 
-  const renderStudentCv = (fileId, fileName) => (
+  const renderStudentCv = (fileId) => (
     <>
       <PastelComponent
         bgColor="#94a6f3"
@@ -160,7 +160,7 @@ export default function ProfessorApplicants({
         onClick={(event) => {
           event.stopPropagation();
           /// DOWNLOAD CV HERE
-          handleDownload(fileId, fileName);
+          handleDownload(fileId);
         }}
       />
     </>
