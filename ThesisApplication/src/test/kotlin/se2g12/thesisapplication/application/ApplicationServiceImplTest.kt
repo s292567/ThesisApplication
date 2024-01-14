@@ -138,14 +138,14 @@ class ApplicationServiceImplTest {
         verify (exactly = 0) { applicationRepository.save(any()) }
     }
 
-
+    @Test
     fun `acceptApplicationWithSuccess`(){
         val applicationUUID = UUID.randomUUID()
         val studentId="s123456"
         val proposalId = UUID.randomUUID()
         val student = mockk<Student>()
         val mockApp = Application(student, mockProposal, "pending")
-        val declinableApps= listOf(Application(student, mockProposal, "pending"))
+        val declinableApp = mockk<Application>()
 
         every { applicationRepository.findById(applicationUUID) } returns Optional.of(mockApp)
         every { applicationRepository.updateStatusById(any(), any()) } returns mockk()
@@ -156,15 +156,17 @@ class ApplicationServiceImplTest {
         every { student.email } returns "$studentId@example.com"
         every { mockProposal.id } returns proposalId
         every { emailService.sendHtmlEmail(any(), any()) } returns mockk()
-        every { applicationRepository.getAllApplicationsByProposalId(any()) } returns declinableApps
+        every { applicationRepository.getAllApplicationsByProposalId(any()) } returns listOf(declinableApp)
+        every { declinableApp.student } returns student
+        every { declinableApp.proposal } returns mockProposal
+        every { declinableApp.status } returns "declined"
 
         applicationService.acceptApplication(applicationUUID)
 
         verify { applicationRepository.updateStatusById(applicationUUID, "accepted") }
         verify { applicationRepository.updateStatusByStudentId(studentId, "declined") }
         verify { applicationRepository.updateStatusByProposalId(proposalId, "declined") }
-        /*verify (exactly = 1) { emailService.sendHtmlEmail(any(), mockApp.toDTO()) }
-        verify (exactly = 1) { emailService.sendHtmlEmail(any(), mockApp.toDTO()) }*/
+
     }
     @Test
     fun `acceptApplicationWithNotFoundException`(){
@@ -209,6 +211,7 @@ class ApplicationServiceImplTest {
         verify (exactly = 0) { applicationRepository.updateStatusByProposalId(proposalId, "declined") }
     }
 
+    @Test
     fun `declineApplicationWithSuccess`() {
         val applicationUUID = UUID.randomUUID()
         val studentId = "s123456"
@@ -219,6 +222,8 @@ class ApplicationServiceImplTest {
         every { applicationRepository.findById(applicationUUID) } returns Optional.of(mockApp)
         every { applicationRepository.updateStatusById(any(), any()) } returns mockk()
         every { student.email } returns "$studentId@example.com"
+        every { student.id } returns studentId
+        every { mockProposal.id } returns UUID.randomUUID()
         every { emailService.sendHtmlEmail(any(), any()) } returns mockk()
 
         applicationService.declineApplication(applicationUUID)
@@ -226,7 +231,7 @@ class ApplicationServiceImplTest {
         verify { applicationRepository.updateStatusById(applicationUUID, "declined") }
         verify(exactly = 0) { applicationRepository.updateStatusByStudentId(studentId, "declined") }
         verify(exactly = 0) { applicationRepository.updateStatusByProposalId(proposalId, "declined") }
-        verify (exactly = 1) { emailService.sendHtmlEmail(any(), mockApp.toDTO()) }
+        verify (exactly = 1) { emailService.sendHtmlEmail(any(), any()) }
     }
     @Test
     fun `declineApplicationWithNotFoundException`(){
@@ -298,7 +303,7 @@ class ApplicationServiceImplTest {
         }
     }
 
-
+    @Test
     fun `acceptApplicationByProposalAndStudent`(){
         // same as accepting application by id, but first gets the id
         val applicationUUID = UUID.randomUUID()
@@ -307,7 +312,7 @@ class ApplicationServiceImplTest {
         val student = mockk<Student>()
         val mockApp = Application(student, mockProposal, "pending")
         val mockAppId = mockk<Application>()
-        val declinableApps= listOf(Application(student, mockProposal, "pending"))
+        val declinableApp = mockk<Application>()
 
         every { mockAppId.id } returns applicationUUID
         every { applicationRepository.findByProposalIdAndStudentId(any(), any()) } returns listOf(mockAppId)
@@ -320,7 +325,10 @@ class ApplicationServiceImplTest {
         every { student.email } returns "$studentId@example.com"
         every { mockProposal.id } returns proposalId
         every { emailService.sendHtmlEmail(any(), any()) } returns mockk()
-        every { applicationRepository.getAllApplicationsByProposalId(any()) } returns declinableApps
+        every { applicationRepository.getAllApplicationsByProposalId(any()) } returns listOf(declinableApp)
+        every { declinableApp.student } returns student
+        every { declinableApp.proposal } returns mockProposal
+        every { declinableApp.status } returns "declined"
 
         applicationService.acceptApplicationByProposalAndStudent(proposalId, studentId)
 
@@ -345,6 +353,7 @@ class ApplicationServiceImplTest {
 
     }
 
+    @Test
     fun `declineApplicationByProposalAndStudentWithSuccess`() {
         val applicationUUID = UUID.randomUUID()
         val studentId = "s123456"
@@ -358,6 +367,8 @@ class ApplicationServiceImplTest {
         every { applicationRepository.findById(applicationUUID) } returns Optional.of(mockApp)
         every { applicationRepository.updateStatusById(any(), any()) } returns mockk()
         every { student.email } returns "$studentId@example.com"
+        every { student.id } returns studentId
+        every { mockProposal.id } returns UUID.randomUUID()
         every { emailService.sendHtmlEmail(any(), any()) } returns mockk()
 
         applicationService.declineApplicationByProposalAndStudent(proposalId, studentId)

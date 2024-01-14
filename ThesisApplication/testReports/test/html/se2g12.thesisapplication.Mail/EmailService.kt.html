@@ -34,13 +34,13 @@ import se2g12.thesisapplication.proposal.ProposalService
         }
 <span class="fc" id="L35">        val bool=status!!.contains(&quot;pending&quot;)</span>
 <span class="fc" id="L36">        var htmlContent:String=&quot;&quot;</span>
-<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if(bool)</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if(bool)</span>
         {
-<span class="nc" id="L39">            message.subject=&quot;New application on ${proposalRepository.findById(application.proposalId!!).get().title}&quot;</span>
-<span class="nc bnc" id="L40" title="All 2 branches missed.">            if (to != null) {</span>
-<span class="nc" id="L41">                htmlContent =  &quot;&lt;h1&gt;Dear ${to.split(&quot;@&quot;)[0]}&lt;/h1&gt;&quot; +&quot;&lt;p&gt;Your thesis ${proposalRepository.findById(</span>
-<span class="nc" id="L42">                    application.proposalId!!</span>
-<span class="nc" id="L43">                ).get().title} has received an application&lt;/p&gt;&quot;</span>
+<span class="fc" id="L39">            message.subject=&quot;New application on ${proposalRepository.findById(application.proposalId!!).get().title}&quot;</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">            if (to != null) {</span>
+<span class="fc" id="L41">                htmlContent =  &quot;&lt;h1&gt;Dear ${to.split(&quot;@&quot;)[0]}&lt;/h1&gt;&quot; +&quot;&lt;p&gt;Your thesis ${proposalRepository.findById(</span>
+<span class="fc" id="L42">                    application.proposalId!!</span>
+<span class="fc" id="L43">                ).get().title} has received an application&lt;/p&gt;&quot;</span>
             }
         }
         else {

@@ -19,20 +19,17 @@ class ApplicationController( private val applicationService: ApplicationService,
     @PreAuthorize("hasRole('Student')")
     @ResponseStatus(HttpStatus.CREATED)
     fun addNewApplication(
-        @RequestParam studentId: String,
-        @RequestParam proposalId: UUID,
-        @RequestParam file: MultipartFile?
+        @RequestBody newApplicationDTO: NewApplicationDTO
     ) {
 
-        if (file != null && !file.contentType.equals("application/pdf")) {
+        if (newApplicationDTO.file != null && !newApplicationDTO.file!!.contentType.equals("application/pdf")) {
             throw Exception("File must be in .pdf format")
         }
 
         val username = SecurityContextHolder.getContext().authentication.name
         println(username)
 
-        if (username.contains(studentId)) {
-            val newApplicationDTO = NewApplicationDTO(studentId, proposalId, file)
+        if (username.contains(newApplicationDTO.studentId)) {
             applicationService.addNewApplication(newApplicationDTO)
         } else {
             throw Exception("Cannot add application for another student")

@@ -30,7 +30,6 @@ import {
   ThesisRow,
   WarningPopup,
   WithTooltip,
-  PdfViewerModal,
 } from "../../components";
 import {
   acceptApplication,
@@ -75,9 +74,10 @@ export default function ProfessorApplicants({
       throw new Error("Failed to process the application.");
     }
   };
-  const handleDownload = async () => {
+  
+  const handleDownload = async (fileId) => {
     try {
-      const apiUrl = 'http://localhost:8081/API/downloadFile/f714fd95-c0bf-4e3d-a8d6-6d0c2eef7fcf';
+      const apiUrl = 'http://localhost:8081/API/downloadFile/' + fileId;
 
       // Replace 'YOUR_ACCESS_TOKEN' with the actual access token or authentication credentials
       const Token = localStorage.getItem("ROCP_token")
@@ -94,27 +94,17 @@ export default function ProfessorApplicants({
         throw new Error(`Failed to download file. Status code: ${response.status}`);
       }
 
-      // Extract filename from content-disposition header or set a default name
-      let filename = 'downloaded_file.pdf';
-
-      const contentDisposition = response.headers.get('content-disposition');
-      if (contentDisposition) {
-        const match = contentDisposition.match(/filename=(.+?)(;|$)/);
-        if (match) {
-          filename = match[1].trim();
-        }
-      }
-
+      let fileName = fileId;
       // Convert response to blob
       const blob = await response.blob();
 
       // Create a download link and trigger a click event
       const downloadLink = document.createElement('a');
       downloadLink.href = window.URL.createObjectURL(blob);
-      downloadLink.download = filename;
+      downloadLink.download = fileName;
       downloadLink.click();
 
-      console.log(`File '${filename}' downloaded successfully.`);
+      console.log(`File '${fileName}' downloaded successfully.`);
     } catch (error) {
       console.error(error.message);
     }
@@ -142,7 +132,7 @@ export default function ProfessorApplicants({
     }));
   };
 
-  const renderStudentCv = () => (
+  const renderStudentCv = (fileId) => (
     <>
       <PastelComponent
         bgColor="#94a6f3"
@@ -159,12 +149,9 @@ export default function ProfessorApplicants({
         onClick={(event) => {
           event.stopPropagation();
           /// DOWNLOAD CV HERE
-          
+          handleDownload(fileId);
         }}
       />
-
-      <button onClick={handleDownload()}></button>
-
     </>
   );
 
