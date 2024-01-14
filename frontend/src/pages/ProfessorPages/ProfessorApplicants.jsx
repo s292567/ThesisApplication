@@ -94,28 +94,17 @@ export default function ProfessorApplicants({
         throw new Error(`Failed to download file. Status code: ${response.status}`);
       }
 
-      // Extract filename from content-disposition header or set a default name
-      // let filename = 'downloaded_file.pdf';
-      let filename = fileName;
-
-      const contentDisposition = response.headers.get('content-disposition');
-      if (contentDisposition) {
-        const match = contentDisposition.match(/filename=(.+?)(;|$)/);
-        if (match) {
-          filename = match[1].trim();
-        }
-      }
-
+      let fileName = fileId;
       // Convert response to blob
       const blob = await response.blob();
 
       // Create a download link and trigger a click event
       const downloadLink = document.createElement('a');
       downloadLink.href = window.URL.createObjectURL(blob);
-      downloadLink.download = filename;
+      downloadLink.download = fileName;
       downloadLink.click();
 
-      console.log(`File '${filename}' downloaded successfully.`);
+      console.log(`File '${fileName}' downloaded successfully.`);
     } catch (error) {
       console.error(error.message);
     }
