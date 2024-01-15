@@ -2,8 +2,6 @@ package se2g12.thesisapplication.request
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import jakarta.persistence.EntityManager
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
@@ -16,24 +14,20 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.transaction.annotation.Transactional
 import se2g12.thesisapplication.GroupDep.GroupDep
 import se2g12.thesisapplication.GroupDep.GroupDepRepository
-import se2g12.thesisapplication.date.Date
 import se2g12.thesisapplication.degree.Degree
 import se2g12.thesisapplication.degree.DegreeRepository
 import se2g12.thesisapplication.department.Department
 import se2g12.thesisapplication.department.DepartmentRepository
+import se2g12.thesisapplication.requestChange.RequestChangeRepository
 import se2g12.thesisapplication.student.Student
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.Teacher
 import se2g12.thesisapplication.teacher.TeacherRepository
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 @SpringBootTest
@@ -62,6 +56,8 @@ class RequestControllerTest {
     lateinit var groupDepRepository: GroupDepRepository
     @Autowired
     lateinit var degreeRepository: DegreeRepository
+    @Autowired
+    lateinit var requestChangeRepository: RequestChangeRepository
 
     lateinit var savedRequests: List<Request>
     lateinit var savedAcceptedRequests: List<Request>
@@ -247,18 +243,86 @@ class RequestControllerTest {
     @Transactional
     fun `test request change by professor`() {
         val requestId=savedAcceptedRequests[0].id!!
-        val requestStatus = RequestStatusDTO(requestId, "change requested")
+        val textInfoChange = "The title should be changed."
+        val requestChangeInfo = ChangeInfoDTO(requestId, textInfoChange)
         mockMvc.perform(
-            patch("/API/thesis/requests/{professorId}", "p101")
-                .content("""${objectMapper.writeValueAsString(requestStatus)}""")
+            post("/API/thesis/requests/{professorId}/change", "p101")
+                .content("""${objectMapper.writeValueAsString(requestChangeInfo)}""")
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk)
         // assert the status has been changed
         val updatedRequest = requestRepository.findById(requestId).get()
         assertEquals("change requested", updatedRequest.supervisorStatus)
+        val changeInfo = requestChangeRepository.findAll().first()
+        assertEquals(requestId, changeInfo.request.id)
+        assertEquals(textInfoChange, changeInfo.info)
     }
+    @WithMockUser(roles = ["Professor"])
+    @Test
+    fun `test request change by professor, request not found`() {
+        val validIds:List<UUID> = savedRequests.map { it.id!! }
+        var requestId:UUID
+        // make sure the ID is not a valid one
+        do {
+            requestId=UUID.randomUUID()
+        }while (validIds.contains(requestId))
+        val textInfoChange = "The title should be changed."
+        val requestChangeInfo = ChangeInfoDTO(requestId, textInfoChange)
+        mockMvc.perform(
+            post("/API/thesis/requests/{professorId}/change", "p101")
+                .content("""${objectMapper.writeValueAsString(requestChangeInfo)}""")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isNotFound)
 
+        assert(requestChangeRepository.findAll().isEmpty())
+    }
+    @WithMockUser(roles = ["Professor"])
+    @Test
+    fun `test request change by professor, professor not supervisor`() {
+        val requestId=savedAcceptedRequests[0].id!!
+        val textInfoChange = "The title should be changed."
+        val requestChangeInfo = ChangeInfoDTO(requestId, textInfoChange)
+        mockMvc.perform(
+            post("/API/thesis/requests/{professorId}/change", "p103")
+                .content("""${objectMapper.writeValueAsString(requestChangeInfo)}""")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isForbidden)
+
+        assert(requestChangeRepository.findAll().isEmpty())
+    }
+    @WithMockUser(roles = ["Professor"])
+    @Test
+    fun `test request change by professor, not accepted by secretary`() {
+        val requestId=savedRequests[2].id!!
+        val textInfoChange = "The title should be changed."
+        val requestChangeInfo = ChangeInfoDTO(requestId, textInfoChange)
+        mockMvc.perform(
+            post("/API/thesis/requests/{professorId}/change", "p103")
+                .content("""${objectMapper.writeValueAsString(requestChangeInfo)}""")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isUnprocessableEntity)
+
+        assert(requestChangeRepository.findAll().isEmpty())
+    }
+    @WithMockUser(roles = ["Professor"])
+    @Test
+    fun `test request change by professor, not pending`() {
+        val requestId=savedAcceptedRequests[2].id!!
+        val textInfoChange = "The title should be changed."
+        val requestChangeInfo = ChangeInfoDTO(requestId, textInfoChange)
+        mockMvc.perform(
+            post("/API/thesis/requests/{professorId}/change", "p103")
+                .content("""${objectMapper.writeValueAsString(requestChangeInfo)}""")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isUnprocessableEntity)
+
+        assert(requestChangeRepository.findAll().isEmpty())
+    }
     @WithMockUser(roles = ["Professor"])
     @Test
     fun `test incorrect status by professor`() {
