@@ -9,4 +9,6 @@ interface RequestService {
     fun getAllPendingRequestsForProfessor(professorId: String):List<RequestDTO>
     fun setRequestSupervisorStatus(requestId:UUID, status: String, professorId: String)
     fun addNewRequest(newRequest: NewRequestDTO, studentId: String)
+
+    fun addRequestChangeInfo(info: ChangeInfoDTO, professorId: String)
 }
