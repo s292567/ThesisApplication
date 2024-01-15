@@ -22,7 +22,6 @@ export default function SecretaryPage() {
                 console.error("Failed to fetch requests:", error);
             }
         };
-
         fetchRequests().then((data) => {
             setRequests(data);
         });
@@ -37,8 +36,6 @@ export default function SecretaryPage() {
             <>
                 <RequestList requests={requests} refreshList={()=>setRefresh((r)=>!r)}/>
             </>
-
-
         </>
     );
 }
