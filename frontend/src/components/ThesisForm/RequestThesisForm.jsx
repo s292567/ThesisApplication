@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import {
   Dialog,
   IconButton,
-  Paper,
   Snackbar,
   Alert,
   styled,
@@ -11,10 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
+
 import { PastelComponent, CustomAutocomplete } from "../index";
 
 import {
@@ -29,7 +25,6 @@ export default function RequestThesisForm({ open, onClose, onSubmit }) {
     description: "",
     supervisor: null,
     cosupervisors: [],
-    approvalDate: dayjs(),
   });
 
   const [loading, setLoading] = useState(true);
@@ -52,10 +47,6 @@ export default function RequestThesisForm({ open, onClose, onSubmit }) {
     };
     fetchData();
   }, []);
-
-  const handleDateChange = (newValue) => {
-    setFormData({ ...formData, approvalDate: newValue });
-  };
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -119,27 +110,6 @@ export default function RequestThesisForm({ open, onClose, onSubmit }) {
           <CircularProgress />
         ) : (
           <>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Approval Date"
-                name="approvalDate"
-                value={formData.approvalDate}
-                onChange={handleDateChange}
-                renderInput={(params) => <TextField {...params} />}
-                minDate={dayjs()}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    backgroundColor: "white",
-                    borderRadius: "12px",
-                    width: { xs: "50%", md: "25%" },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#2192FF",
-                    },
-                  },
-                }}
-              />
-            </LocalizationProvider>
-
             <StyledTextField
               fullWidth
               name="title"
