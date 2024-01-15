@@ -17,15 +17,19 @@ class ArchiveController(private val archiveService: ArchiveService,private val p
     @PreAuthorize("hasRole('Professor')")
     fun getArchived(): List<ProposalDTO> {
         val archive=archiveService.getAll().map{it.proposal.toDTO()}
-
-        val securityContext = SecurityContextHolder.getContext()
+            val securityContext = SecurityContextHolder.getContext()
 // Get the authentication object from the security context
-        val authentication = securityContext.authentication
+            val authentication = securityContext.authentication
+
+            val profThesis =proposalService.getProposalByProfessorId(authentication.name.split("@")[0])
+
+
 
 // Check if the user is authenticated
         return if (authentication != null && authentication.isAuthenticated) {
-            proposalService.getProposalByProfessorId(authentication.name.split("@")[0]).filter{archive.contains(it)}
-        } else
+            archive.filter { profThesis.contains(it) }
+        }
+        else
             emptyList()
     }
     @PostMapping("/API/thesis/archive/{proposalId}")
