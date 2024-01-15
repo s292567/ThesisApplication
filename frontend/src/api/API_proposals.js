@@ -267,6 +267,7 @@ export const getThesisStatusById = async (proposalId) => {
       console.error("Error while retrieving proposals by professorId: ", error);
     });
 };
+
 export const getArchived = async () => {
   const jwt = getJwt(); // Fetch JWT here
 
