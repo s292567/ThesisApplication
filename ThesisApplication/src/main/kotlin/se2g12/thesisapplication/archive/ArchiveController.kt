@@ -2,10 +2,8 @@ package se2g12.thesisapplication.archive
 
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import se2g12.thesisapplication.application.ApplicationService
 import se2g12.thesisapplication.proposal.ProposalDTO
 import se2g12.thesisapplication.proposal.ProposalService
 import se2g12.thesisapplication.proposal.toDTO
@@ -13,7 +11,7 @@ import java.util.*
 
 @RestController
 @CrossOrigin
-class ArchiveController(private val archiveService: ArchiveService,private val proposalService: ProposalService) {
+class ArchiveController(private val archiveService: ArchiveService,private val proposalService: ProposalService, private val applicationService: ApplicationService) {
     //getArchivedPropId Test Endpoint
     @GetMapping("/API/thesis/archive/getAllArchivedForLoggedInProf/")
     @PreAuthorize("hasRole('Professor')")
@@ -29,5 +27,17 @@ class ArchiveController(private val archiveService: ArchiveService,private val p
             proposalService.getProposalByProfessorId(authentication.name.split("@")[0]).filter{archive.contains(it)}
         } else
             emptyList()
+    }
+    @PostMapping("/API/thesis/archive/{proposalId}")
+    @PreAuthorize("hasRole('Professor')")
+    fun archiveProposal(@PathVariable proposalId: UUID) {
+        // Retrieve the proposal by ID
+        val proposal = proposalService.getProposalById(proposalId)
+
+        // Archive the proposal
+        archiveService.archiveProposal(proposal)
+
+        // Delete all related applications
+        applicationService.deleteApplicationsByProposalId(proposalId)
     }
 }

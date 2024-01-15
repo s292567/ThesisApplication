@@ -133,4 +133,9 @@ class ApplicationServiceImpl (
             .map { it.toDTO() }
     }
 
+    override fun deleteApplicationsByProposalId(proposalId: UUID) {
+        val applications = applicationRepository.findByProposalId(proposalId)
+        applicationRepository.deleteAll(applications)
+    }
+
 }

@@ -7,6 +7,7 @@ interface ProposalService {
     fun updateProposal(newProposal: NewProposalDTO,professorId : String,oldName:String,old: Proposal):ProposalDTO
     fun addNewProposal(newProposal: NewProposalDTO, professorId: String)
     fun getAllProposals(): List<ProposalDTO>
+    fun getProposalById(proposalId: UUID): Proposal
     fun getProposalsByCds(cds: String): List<ProposalDTO>
     fun searchProposals(query: String): List<ProposalDTO>
     fun deleteProposalById(proposalId: UUID)
