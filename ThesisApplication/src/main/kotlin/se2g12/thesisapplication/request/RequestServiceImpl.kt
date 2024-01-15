@@ -62,10 +62,8 @@ class RequestServiceImpl(private val requestRepository: RequestRepository,
             "accepted"
         } else if (status.lowercase().contains("rej")){
             "rejected"
-        } else if (status.lowercase().contains("change")){
-            "change requested"
-        }else{
-            throw InvalidRequestStatus("Request status should be `accepted`, `declined` or `change`")
+        } else{
+            throw InvalidRequestStatus("Request status should be `accepted` or `declined`")
         }
         request.supervisorStatus = newStatus
         requestRepository.save(request)
@@ -107,6 +105,8 @@ class RequestServiceImpl(private val requestRepository: RequestRepository,
             throw UnmodifiableRequestStatus("Request ${info.requestId} has already status ${request.supervisorStatus}")
 
         //4. save info
+        request.supervisorStatus = "change requested"
+        requestRepository.save(request)
         requestChangeService.addRequestChange(request, info.info)
     }
 

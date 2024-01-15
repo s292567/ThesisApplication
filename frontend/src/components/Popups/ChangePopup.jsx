@@ -42,7 +42,7 @@ import { PastelComponent } from "../index.js";
                 setSnackbarMessage("You should fill here!");
                 setSnackbarSeverity("error");
             } else {
-                const message = await handleApplied();
+                const message = await handleApplied(changeDescription);
                 setSnackbarMessage(message || "Success!");
                 setSnackbarSeverity("success");
                 setChangeOpen(false);
@@ -60,6 +60,10 @@ import { PastelComponent } from "../index.js";
          setChangeDescription(event.target.value);
          setError(false);
      };
+     const closePopup=()=>{
+         setChangeDescription('');
+         setChangeOpen(false);
+     }
 
     return (
         <>
@@ -89,10 +93,11 @@ import { PastelComponent } from "../index.js";
                 <MyDialog
                     key="childModal"
                     open={changeOpen}
-                    onClose={() => setChangeOpen(false)}
+                    onClose={() => closePopup()}
                     aria-labelledby="change-modal"
                     aria-describedby="change-modal-description"
-                    maxWidth="md"
+                    fullWidth
+                    maxWidth="sm"
                     keepMounted={true}
                     justifycontent="center"
                 >
@@ -127,7 +132,7 @@ import { PastelComponent } from "../index.js";
                             color="success"
                             value={changeDescription}
                             onChange={handleInputChange}
-
+                            multiline={true}
                             style={{marginTop:"25px", marginBottom:"20px",borderWidth: "10px" }}
                         />
                         <Box
@@ -151,11 +156,11 @@ import { PastelComponent } from "../index.js";
                             <PastelComponent
                                 bgColor="#ED174F"
                                 textColor="white"
-                                text="Cancle"
+                                text="Cancel"
                                 fontSize="medium"
                                 style={{ width: "100px" }}
                                 onClick={() => {
-                                    setChangeOpen(false);
+                                    closePopup();
                                 }}
                             />
                         </Box>

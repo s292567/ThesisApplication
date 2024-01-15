@@ -17,7 +17,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import { tooltipClasses } from '@mui/material/Tooltip';
 import {useUserContext} from "../../contexts/index.js";
-import {updateRequestStatus, updateRequestSupervisorStatus} from "../../api/API_requests.js";
+import {sendRequestChange, updateRequestStatus, updateRequestSupervisorStatus} from "../../api/API_requests.js";
 import ChangePopup from "../Popups/ChangePopup.jsx";
 
 
@@ -100,6 +100,13 @@ export default function RequestList({requests, refreshList}) {
         }
     }
 
+    const handleRequestInfoChange = (text)=>{
+        if (user.role === 'Professor'){
+            if (status === "change request")
+                sendRequestChange({requestId:requestId, info: text}, userId)
+                    .then((_)=>refreshList());
+        }
+    }
     return (
         <>
             <Box
@@ -258,7 +265,7 @@ export default function RequestList({requests, refreshList}) {
                 <ChangePopup
                     changeOpen={changeOpen}
                     setChangeOpen={setChangeOpen}
-                    handleApplied={handleChangeRequestStatus}
+                    handleApplied={handleRequestInfoChange}
                 />
             </Box>
         </>
