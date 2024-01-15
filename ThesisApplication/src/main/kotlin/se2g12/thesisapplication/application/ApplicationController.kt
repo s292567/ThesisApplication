@@ -19,7 +19,7 @@ class ApplicationController( private val applicationService: ApplicationService,
     @PreAuthorize("hasRole('Student')")
     @ResponseStatus(HttpStatus.CREATED)
     fun addNewApplication(
-        @RequestParam proposalId: UUID,@RequestParam studentId: String,@RequestParam file:MultipartFile
+        @RequestParam proposalId: UUID,@RequestParam studentId: String,@RequestParam file:MultipartFile?
     ) {
         val newApplicationDTO=NewApplicationDTO(studentId,proposalId, file)
 
