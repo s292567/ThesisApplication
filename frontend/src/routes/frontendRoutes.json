@@ -5,6 +5,7 @@
     "professorNewThesis": "/professorDashboard/addNewThesis/",
     "professorTheses": "/professorDashboard/thesisList/",
     "professorApplicants": "/professorDashboard/applicantsList/",
+    "professorArchivedTheses": "/professorDashboard/archivedTheses/",
 
     "studentTheses": "/studentDashboard/thesisList/",
 
@@ -15,4 +16,5 @@
     "studentApplications": "/myApplications",
     "SecretaryDashboard": "/SecretaryDashboard",
     "NewProposals": "/NewProposals"
+
 }

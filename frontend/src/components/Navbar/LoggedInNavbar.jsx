@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,26 +13,23 @@ import {
   MenuItem,
   Avatar,
   ListItemIcon,
-  Divider, Tooltip,
-} from '@mui/material';
-import {
-  Logout,
-  DragHandleRounded,
-  CancelRounded,
-} from '@mui/icons-material';
-import {Link} from 'react-router-dom';
+  Divider,
+  Tooltip,
+} from "@mui/material";
+import { Logout, DragHandleRounded, CancelRounded } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
-import politoLogo from '../../assets/images/politoLogo.png';
-import {useUserContext} from "../../contexts";
-import {frontendRoutes} from "../../routes/index.js";
+import politoLogo from "../../assets/images/politoLogo.png";
+import { useUserContext } from "../../contexts";
+import { frontendRoutes } from "../../routes/index.js";
 
-const MyToolbar = styled(Toolbar)(({theme}) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  backgroundColor: '#003366',
-  color: 'white',
-  [theme.breakpoints.down('sm')]: {
-    padding: '0 8px',
+const MyToolbar = styled(Toolbar)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  backgroundColor: "#003366",
+  color: "white",
+  [theme.breakpoints.down("sm")]: {
+    padding: "0 8px",
   },
 }));
 
@@ -43,19 +40,18 @@ const Icons = styled(Box)({
 });
 
 const Links = styled(Box)({
-  display: 'flex',
-  alignItems: 'center',
+  display: "flex",
+  alignItems: "center",
   flexGrow: 1,
   gap: "10px",
 });
 
-
 export default function LoggedInNavbar() {
   const theme = useTheme();
 
-  const {logout, homeRoute, user, generalRoutes} = useUserContext();
+  const { logout, homeRoute, user, generalRoutes } = useUserContext();
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [mobileOpen, setMobileOpen] = useState(false);
   useEffect(() => {
     if (!isMobile && mobileOpen) {
@@ -80,10 +76,10 @@ export default function LoggedInNavbar() {
        */}
       {!isMobile && (
         <AppBar position="static" color="default" elevation={0}>
-          <Divider sx={{backgroundColor: "#003366", padding: "0.5rem"}}/>
-          <Toolbar sx={{padding: "1rem"}}>
-            <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'center'}}>
-              <img src={politoLogo} alt="Politecnico Di Torino" height="110"/>
+          <Divider sx={{ backgroundColor: "#003366", padding: "0.5rem" }} />
+          <Toolbar sx={{ padding: "1rem" }}>
+            <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
+              <img src={politoLogo} alt="Politecnico Di Torino" height="110" />
             </Box>
             <Typography variant="h4" component="div" color={"#003366"}>
               THESIS @POLITO
@@ -94,7 +90,13 @@ export default function LoggedInNavbar() {
       {/**
        * TOP SECTION OF THE NAVBAR
        */}
-      <AppBar position="sticky" sx={{height: mobileOpen ? "100vh" : "auto", backgroundColor: '#003366'}}>
+      <AppBar
+        position="sticky"
+        sx={{
+          height: mobileOpen ? "100vh" : "auto",
+          backgroundColor: "#003366",
+        }}
+      >
         <MyToolbar
           sx={{
             flexDirection: mobileOpen ? "column" : "row",
@@ -102,12 +104,17 @@ export default function LoggedInNavbar() {
         >
           {isMobile && mobileOpen && (
             <IconButton
-              sx={{position: "absolute", top: "8rem", right: "1rem", "&:hover": {backgroundColor: "#007baa"}}}
+              sx={{
+                position: "absolute",
+                top: "8rem",
+                right: "1rem",
+                "&:hover": { backgroundColor: "#007baa" },
+              }}
               onClick={() => {
                 setMobileOpen(!mobileOpen);
               }}
             >
-              <CancelRounded fontSize="large" sx={{color: "white"}}/>
+              <CancelRounded fontSize="large" sx={{ color: "white" }} />
             </IconButton>
           )}
           {((isMobile && mobileOpen) || !isMobile) && (
@@ -119,9 +126,9 @@ export default function LoggedInNavbar() {
                   marginBottom: mobileOpen ? "2.0rem" : "0rem",
                   alignSelf: mobileOpen ? "flex-start" : "center",
                   fontSize: mobileOpen ? "x-large" : "medium",
-                  fontWeight: 'bold',
-                  textDecoration: 'none',
-                  color: 'white',
+                  fontWeight: "bold",
+                  textDecoration: "none",
+                  color: "white",
                   marginRight: mobileOpen ? "0rem" : "2rem",
                 },
                 "& a:hover": {
@@ -129,45 +136,77 @@ export default function LoggedInNavbar() {
                   borderRadius: mobileOpen ? "12px" : "0px",
                   padding: mobileOpen ? "0.5rem" : "0rem",
                   width: mobileOpen ? "90%" : "auto",
-                  color: mobileOpen ? "white" : "#a3c5e3"
+                  color: mobileOpen ? "white" : "#a3c5e3",
                 },
               }}
             >
-              <LinkStyled linkTo={homeRoute} linkText={"Home"} onClick={() => setMobileOpen(false)} />
+              <LinkStyled
+                linkTo={homeRoute}
+                linkText={"Home"}
+                onClick={() => setMobileOpen(false)}
+              />
               {user.role !== "Secretary" && (
-                  <>
-                    <LinkStyled linkTo={generalRoutes.theses} linkText={"Theses"} onClick={() => setMobileOpen(false)} />
-                  </>
+                <>
+                  <LinkStyled
+                    linkTo={generalRoutes.theses}
+                    linkText={"Theses"}
+                    onClick={() => setMobileOpen(false)}
+                  />
+                </>
               )}
-              {user.role === "Professor" && (<>
-                  <LinkStyled linkTo={frontendRoutes.professorApplicants} linkText={"Applicants"}
-                              onClick={() => setMobileOpen(false)}/>
-                    <LinkStyled linkTo={frontendRoutes.NewProposals} linkText={"New Proposals"}
-                                onClick={() => setMobileOpen(false)}/>
+              {user.role === "Professor" && (
+                <>
+                  <LinkStyled
+                    linkTo={frontendRoutes.professorApplicants}
+                    linkText={"Applicants"}
+                    onClick={() => setMobileOpen(false)}
+                  />
+                  <LinkStyled
+                    linkTo={frontendRoutes.NewProposals}
+                    linkText={"Requested Theses"}
+                    onClick={() => setMobileOpen(false)}
+                  />
+                  <LinkStyled
+                    linkTo={frontendRoutes.professorArchivedTheses}
+                    linkText={"Archived Theses"}
+                    onClick={() => setMobileOpen(false)}
+                  />
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
               )}
-              {user.role === "Student" && (<>
-                  <LinkStyled linkTo={frontendRoutes.studentApplications} linkText={"Applications"}
-                              onClick={() => setMobileOpen(false)}/>
+              {user.role === "Student" && (
+                <>
+                  <LinkStyled
+                    linkTo={frontendRoutes.studentApplications}
+                    linkText={"Applications"}
+                    onClick={() => setMobileOpen(false)}
+                  />
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
               )}
-              {user.role === "Secretary" && (<>
-                    <LinkStyled linkTo={frontendRoutes.SecretaryDashboard} linkText={"Request List"}
-                                onClick={() => setMobileOpen(false)}/>
-                  </>
+              {user.role === "Secretary" && (
+                <>
+                  <LinkStyled
+                    linkTo={frontendRoutes.SecretaryDashboard}
+                    linkText={"Request List"}
+                    onClick={() => setMobileOpen(false)}
+                  />
+                </>
               )}
-
-            </Links>)}
+            </Links>
+          )}
           {isMobile && !mobileOpen && (
             <IconButton
               aria-label="open drawer"
               onClick={() => setMobileOpen(!mobileOpen)}
-              sx={{borderRadius: "12px", "&:hover": {backgroundColor: "#007baa"}, height: "maxHeight"}}
+              sx={{
+                borderRadius: "12px",
+                "&:hover": { backgroundColor: "#007baa" },
+                height: "maxHeight",
+              }}
               variant="contained"
             >
-              <DragHandleRounded fontSize="medium" sx={{color: "white"}}/>
+              <DragHandleRounded fontSize="medium" sx={{ color: "white" }} />
             </IconButton>
           )}
           <Icons>
@@ -181,8 +220,10 @@ export default function LoggedInNavbar() {
                   aria-expanded={open ? "true" : undefined}
                 >
                   <Avatar
-                      /* eslint-disable-next-line react/no-children-prop */
-                    children={user ? `${user.username[0]}${user.username[1]}` : "MR"}
+                    /* eslint-disable-next-line react/no-children-prop */
+                    children={
+                      user ? `${user.username[0]}${user.username[1]}` : "MR"
+                    }
                     sx={{
                       bgcolor: "#007baa",
                       padding: isMobile ? "0.2rem" : "0.5rem",
@@ -190,7 +231,8 @@ export default function LoggedInNavbar() {
                     }}
                   />
                 </IconButton>
-              </Tooltip>)}
+              </Tooltip>
+            )}
           </Icons>
         </MyToolbar>
         <Menu
@@ -226,32 +268,33 @@ export default function LoggedInNavbar() {
               zIndex: 0,
             },
           }}
-          transformOrigin={{horizontal: "right", vertical: "top"}}
-          anchorOrigin={{horizontal: "right", vertical: "bottom"}}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
           <MenuItem>
-            <Avatar/> Profile
+            <Avatar /> Profile
           </MenuItem>
-          <Divider/>
-          <MenuItem onClick={() => {
-            logout()
-          }}>
+          <Divider />
+          <MenuItem
+            onClick={() => {
+              logout();
+            }}
+          >
             <ListItemIcon>
-              <Logout fontSize="small" color="error"/>
+              <Logout fontSize="small" color="error" />
             </ListItemIcon>
             Logout
           </MenuItem>
         </Menu>
       </AppBar>
-
     </>
   );
 }
 
-function LinkStyled({linkTo, linkText, onClick}) {
+function LinkStyled({ linkTo, linkText, onClick }) {
   return (
-    <Link to={linkTo} color="inherit" sx={{mx: 2}} onClick={onClick}>
+    <Link to={linkTo} color="inherit" sx={{ mx: 2 }} onClick={onClick}>
       {linkText}
     </Link>
-  )
+  );
 }
