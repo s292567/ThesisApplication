@@ -32,6 +32,8 @@
 
     "getArchivedForLoggedProfessor": "/archive/getAllArchivedForLoggedInProf/",
 
-    "allRequests": "requests"
+    "allRequests": "requests",
+    "archiveProposal": "archive/",
+    "addThesisRequest": "requests/"
 
 }

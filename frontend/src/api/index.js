@@ -11,7 +11,9 @@ import {
     updateProposal,
     getProposalsByStudentId,
     getThesisStatusById,
-    getArchived
+    getArchived,
+    archiveProposal,
+    addThesisRequest,
 } from './API_proposals.js';
 
 import {
@@ -58,6 +60,8 @@ export {
     copyProposalById,
     getThesisStatusById,
     getArchived,
+    archiveProposal,
+    addThesisRequest,
 
     axiosInstance,
     getProposalsByProfessorId,

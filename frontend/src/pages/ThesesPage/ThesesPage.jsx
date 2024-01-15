@@ -22,6 +22,8 @@ import {
   insertProposal,
   getProposalsByStudentId,
   getProposalsByProfessorId,
+  archiveProposal,
+  addThesisRequest,
 } from "../../api";
 import { Add } from "@mui/icons-material";
 
@@ -181,7 +183,7 @@ export default function ThesesPage() {
     async (newThesis) => {
       try {
         // Call API to create the thesis
-        // await insertRequestThesis(userId, newThesis);
+        await addThesisRequest(userId, newThesis);
       } catch (error) {
         console.error("Failed to create proposal:", error);
       }
@@ -193,7 +195,7 @@ export default function ThesesPage() {
     async (id) => {
       try {
         // Call API to archive the thesis
-        // await archiveProposal(id);
+        await archiveProposal(id);
 
         // Remove the thesis from the sortedThesisData array
         const updatedThesisData = sortedThesisData.filter(

@@ -290,3 +290,46 @@ export const getArchived = async () => {
       });
 };
 
+export const archiveProposal = async (proposalId) => {
+  const jwt = getJwt(); // Fetch JWT here
+
+  return axiosInstance
+      .post(routes.archiveProposal + proposalId,{},{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + jwt,
+        },
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          return response.data;
+        } else {
+          console.error("Request failed with status: ", response.status);
+        }
+      })
+      .catch((error) => {
+        console.error("Error while archiving proposal: ", error);
+      });
+};
+
+export const addThesisRequest = async (proposalId, studentId) => {
+  const jwt = getJwt(); // Fetch JWT here
+
+  return axiosInstance
+      .post(routes.addThesisRequest + proposalId + "/" + studentId,{},{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + jwt,
+        },
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          return response.data;
+        } else {
+          console.error("Request failed with status: ", response.status);
+        }
+      })
+      .catch((error) => {
+        console.error("Error while adding thesis request: ", error);
+      });
+};
