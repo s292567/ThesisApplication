@@ -88,7 +88,6 @@ export const getAllPendingRequestsByProfessor = async (professorId) => {
 
 export const updateRequestSupervisorStatus = async (requestData, professorId) => {
   const jwt = getJwt(); // Fetch JWT here
-
   return axiosInstance
       .patch(`${routes.allRequests}/${professorId}`, requestData, {
         headers: {
@@ -106,4 +105,24 @@ export const updateRequestSupervisorStatus = async (requestData, professorId) =>
       .catch((error) => {
         console.error("Error while updating a proposal request: ", error);
       });
+};
+export const sendRequestChange = async (requestData, professorId) => {
+    const jwt = getJwt(); // Fetch JWT here
+    return axiosInstance
+        .post(`${routes.allRequests}/${professorId}/change`, requestData, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + jwt,
+            },
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                console.log("Requested changes saved");
+            } else {
+                console.error("Request failed with status: ", response.status);
+            }
+        })
+        .catch((error) => {
+            console.error("Error while saving the proposal requested changes: ", error);
+        });
 };

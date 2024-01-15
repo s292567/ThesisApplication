@@ -38,5 +38,10 @@ class RequestController(private val requestService: RequestService) {
         requestService.addNewRequest(obj, studentId)
 
     }
+    @PostMapping("/API/thesis/requests/{professorId}/change")
+    @PreAuthorize("hasRole('Professor')")
+    fun setRequestChange(@PathVariable professorId:String, @RequestBody info: ChangeInfoDTO){
+        requestService.addRequestChangeInfo(info, professorId)
+    }
 
 }

@@ -4,6 +4,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Service
 import se2g12.thesisapplication.date.Date
 import se2g12.thesisapplication.proposal.NotFound
+import se2g12.thesisapplication.requestChange.RequestChangeService
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.time.LocalDate
@@ -11,7 +12,12 @@ import java.util.*
 
 @Service
 @Transactional
-class RequestServiceImpl(private val requestRepository: RequestRepository, private val studentRepository: StudentRepository, private val teacherRepository: TeacherRepository, private val virtualDate: Date): RequestService {
+class RequestServiceImpl(private val requestRepository: RequestRepository,
+                         private val studentRepository: StudentRepository,
+                         private val teacherRepository: TeacherRepository,
+                         private val virtualDate: Date,
+                         private val requestChangeService: RequestChangeService
+    ): RequestService {
 
     override fun getAllPendingRequestsForSecretary(): List<RequestDTO> {
         return requestRepository.findBySecretaryStatusLike("pending")
@@ -56,10 +62,8 @@ class RequestServiceImpl(private val requestRepository: RequestRepository, priva
             "accepted"
         } else if (status.lowercase().contains("rej")){
             "rejected"
-        } else if (status.lowercase().contains("change")){
-            "change requested"
-        }else{
-            throw InvalidRequestStatus("Request status should be `accepted`, `declined` or `change`")
+        } else{
+            throw InvalidRequestStatus("Request status should be `accepted` or `declined`")
         }
         request.supervisorStatus = newStatus
         requestRepository.save(request)
@@ -87,4 +91,23 @@ class RequestServiceImpl(private val requestRepository: RequestRepository, priva
             requestRepository.save(request)
         }
 
+    override fun addRequestChangeInfo(info: ChangeInfoDTO, professorId: String) {
+        //1. Retrieve request
+        val request= requestRepository.findById(info.requestId)
+            .orElseThrow { NotFound("Request ${info.requestId} not found") }
+        //2. check you are the supervisor
+        if (request.supervisor.id != professorId)
+            throw UnauthorizedProfessor("You ($professorId) are not the supervisor for this thesis request (${request.supervisor.id})")
+        //3. check it's accepted by secretary and still pending
+        if(request.secretaryStatus != "accepted")
+            throw UnmodifiableRequestStatus("Request ${info.requestId} has to be accepted by the secreatry before")
+        if(request.supervisorStatus != "pending")
+            throw UnmodifiableRequestStatus("Request ${info.requestId} has already status ${request.supervisorStatus}")
+
+        //4. save info
+        request.supervisorStatus = "change requested"
+        requestRepository.save(request)
+        requestChangeService.addRequestChange(request, info.info)
     }
+
+}
