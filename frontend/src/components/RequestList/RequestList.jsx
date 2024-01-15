@@ -12,12 +12,13 @@ import {
     useMediaQuery, styled,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { PastelComponent, WarningPopup } from "../../components";
+import { PastelComponent, WarningPopup} from "../../components";
 import InfoIcon from '@mui/icons-material/Info';
 import Tooltip from '@mui/material/Tooltip';
 import { tooltipClasses } from '@mui/material/Tooltip';
 import {useUserContext} from "../../contexts/index.js";
 import {updateRequestStatus, updateRequestSupervisorStatus} from "../../api/API_requests.js";
+import ChangePopup from "../Popups/ChangePopup.jsx";
 
 
 
@@ -60,6 +61,7 @@ export default function RequestList({requests, refreshList}) {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("md"));
     const [warningOpen, setWarningOpen] = useState(false);
+    const [changeOpen,setChangeOpen]=useState(false);
     const [msgWarning, setMsgWarning] = useState("");
     const [status, setStatus] =useState("")
     const [requestId, setRequestId] = useState("")
@@ -85,8 +87,7 @@ export default function RequestList({requests, refreshList}) {
     const handleChangeRequest = (requestId) => {
         setStatus("change request")
         setRequestId(requestId)
-        setMsgWarning("Are you sure you want to Change this Request?");
-        setWarningOpen(true);
+        setChangeOpen(true);
     };
     const handleChangeRequestStatus = ()=>{
         if (user.role === 'Professor'){
@@ -166,7 +167,7 @@ export default function RequestList({requests, refreshList}) {
                                     <div>
                                         <div style={{ display: 'flex', alignItems: 'center'}} >
 
-                                            <Typography variant="h4" sx={{ color: "#301c6e", fontWeight: "bold", marginBottom: "0.5rem", ...(isMobile && { fontSize: "1.5rem" }) }}>
+                                            <Typography  sx={{ fontSize:"27px",color: "#301c6e", fontWeight: "bold", marginBottom: "0.5rem",flex: 1, ...(isMobile && { fontSize: "1.5rem" }) }}>
                                                 {title}
                                             </Typography>
                                             <CustomWidthTooltip
@@ -252,6 +253,11 @@ export default function RequestList({requests, refreshList}) {
                     warningOpen={warningOpen}
                     setWarningOpen={setWarningOpen}
                     warningMessage={msgWarning}
+
+                />
+                <ChangePopup
+                    changeOpen={changeOpen}
+                    setChangeOpen={setChangeOpen}
                     handleApplied={handleChangeRequestStatus}
                 />
             </Box>

@@ -133,16 +133,17 @@ export default function LoggedInNavbar() {
                 },
               }}
             >
-              <LinkStyled linkTo={homeRoute} linkText={"Home"} onClick={() => setMobileOpen(false)} />
+
               {user.role !== "Secretary" && (
                   <>
+                    <LinkStyled linkTo={homeRoute} linkText={"Home"} onClick={() => setMobileOpen(false)} />
                     <LinkStyled linkTo={generalRoutes.theses} linkText={"Theses"} onClick={() => setMobileOpen(false)} />
                   </>
               )}
               {user.role === "Professor" && (<>
                   <LinkStyled linkTo={frontendRoutes.professorApplicants} linkText={"Applicants"}
                               onClick={() => setMobileOpen(false)}/>
-                    <LinkStyled linkTo={frontendRoutes.NewProposals} linkText={"New Proposals"}
+                    <LinkStyled linkTo={frontendRoutes.NewProposals} linkText={"New Requests"}
                                 onClick={() => setMobileOpen(false)}/>
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>

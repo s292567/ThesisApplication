@@ -50,7 +50,7 @@ export default function NewProposalPage() {
 
     return (
         <>
-            <SectionTitle text={"New Proposals:"} />
+            <SectionTitle text={"New Requests:"} />
             <>
                 {/*<SortingToolbar*/}
                 {/*    proposals={requested.map((app) => app.request())}*/}
