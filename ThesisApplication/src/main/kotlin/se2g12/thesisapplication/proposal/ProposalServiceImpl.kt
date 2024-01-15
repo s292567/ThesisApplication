@@ -19,7 +19,6 @@ class ProposalServiceImpl(
     private val studentRepository: StudentRepository,
     private val groupDepRepository: GroupDepRepository,
     private val applicationRepository: ApplicationRepository,
-    private val degreeRepository: DegreeRepository
 )
     :ProposalService {
     override fun getProposalByProfessorId(supervisorId: String): List<ProposalDTO> {
