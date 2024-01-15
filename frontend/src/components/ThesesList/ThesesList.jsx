@@ -35,7 +35,7 @@ export default function ThesesList({
                 <ThesisRow
                   key={thesis.id}
                   thesis={thesis}
-                  actions={location.pathname !== homeRoute && location.pathname !== frontendRoutes.archivedTheses}
+                  actions={location.pathname !== homeRoute || location.pathname !== frontendRoutes.archivedTheses}
                   onDelete={handleDelete}
                   onCopy={handleCopy}
                   onEdit={handleEdit}
