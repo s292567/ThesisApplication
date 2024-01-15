@@ -300,7 +300,7 @@ class RequestControllerTest {
         val textInfoChange = "The title should be changed."
         val requestChangeInfo = ChangeInfoDTO(requestId, textInfoChange)
         mockMvc.perform(
-            post("/API/thesis/requests/{professorId}/change", "p103")
+            post("/API/thesis/requests/{professorId}/change", "p101")
                 .content("""${objectMapper.writeValueAsString(requestChangeInfo)}""")
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -315,7 +315,7 @@ class RequestControllerTest {
         val textInfoChange = "The title should be changed."
         val requestChangeInfo = ChangeInfoDTO(requestId, textInfoChange)
         mockMvc.perform(
-            post("/API/thesis/requests/{professorId}/change", "p103")
+            post("/API/thesis/requests/{professorId}/change", "p101")
                 .content("""${objectMapper.writeValueAsString(requestChangeInfo)}""")
                 .contentType(MediaType.APPLICATION_JSON)
         )
