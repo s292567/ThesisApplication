@@ -19,59 +19,57 @@ import java.util.UUID
     @PreAuthorize(&quot;hasRole('Student')&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     fun addNewApplication(
-        @RequestParam studentId: String,
-        @RequestParam proposalId: UUID,
-        @RequestParam file: MultipartFile?
+        @RequestParam proposalId: UUID,@RequestParam studentId: String,@RequestParam file:MultipartFile
     ) {
+<span class="fc" id="L24">        val newApplicationDTO=NewApplicationDTO(studentId,proposalId, file)</span>
 
-<span class="nc bnc" id="L27" title="All 4 branches missed.">        if (file != null &amp;&amp; !file.contentType.equals(&quot;application/pdf&quot;)) {</span>
-<span class="nc" id="L28">            throw Exception(&quot;File must be in .pdf format&quot;)</span>
+<span class="pc bpc" id="L26" title="2 of 4 branches missed.">        if (newApplicationDTO.file != null &amp;&amp; !newApplicationDTO.file!!.contentType.equals(&quot;application/pdf&quot;)) {</span>
+<span class="nc" id="L27">            throw Exception(&quot;File must be in .pdf format&quot;)</span>
         }
 
-<span class="nc" id="L31">        val username = SecurityContextHolder.getContext().authentication.name</span>
-<span class="nc" id="L32">        println(username)</span>
+<span class="fc" id="L30">        val username = SecurityContextHolder.getContext().authentication.name</span>
+<span class="fc" id="L31">        println(username)</span>
 
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (username.contains(studentId)) {</span>
-<span class="nc" id="L35">            val newApplicationDTO = NewApplicationDTO(studentId, proposalId, file)</span>
-<span class="nc" id="L36">            applicationService.addNewApplication(newApplicationDTO)</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        if (username.contains(newApplicationDTO.studentId)) {</span>
+<span class="fc" id="L34">            applicationService.addNewApplication(newApplicationDTO)</span>
         } else {
-<span class="nc" id="L38">            throw Exception(&quot;Cannot add application for another student&quot;)</span>
+<span class="nc" id="L36">            throw Exception(&quot;Cannot add application for another student&quot;)</span>
         }
-<span class="nc" id="L40">    }</span>
+<span class="fc" id="L38">    }</span>
 
 
 
     @PatchMapping(&quot;/API/thesis/applications/{professorId}&quot;)
     fun updateApplication(@PathVariable professorId: String, @RequestBody application: ApplicationStatus){
-<span class="fc" id="L46">        updateApplicationByProposalAndStudent(application)</span>
-<span class="fc" id="L47">    }</span>
+<span class="nc" id="L44">        updateApplicationByProposalAndStudent(application)</span>
+<span class="nc" id="L45">    }</span>
 
     private fun updateApplicationByProposalAndStudent(application: ApplicationStatus){
 
 
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (application.status == &quot;accepted&quot;) {</span>
-<span class="nc" id="L53">            applicationService.acceptApplicationByProposalAndStudent(application.proposalId, application.studentId)</span>
-<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        }else if (application.status == &quot;declined&quot;) {</span>
-<span class="fc" id="L55">            applicationService.declineApplicationByProposalAndStudent(application.proposalId, application.studentId)</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (application.status == &quot;accepted&quot;) {</span>
+<span class="nc" id="L51">            applicationService.acceptApplicationByProposalAndStudent(application.proposalId, application.studentId)</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        }else if (application.status == &quot;declined&quot;) {</span>
+<span class="nc" id="L53">            applicationService.declineApplicationByProposalAndStudent(application.proposalId, application.studentId)</span>
         }
-<span class="fc" id="L57">    }</span>
+<span class="nc" id="L55">    }</span>
     @GetMapping(&quot;/API/thesis/applications/students&quot;)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun getAllApplyingStudentsForProposal(@RequestParam proposalId: UUID) : List&lt;StudentDTO&gt; {
-<span class="fc" id="L61">        return applicationService.getAllApplyingStudentsForProposalById(UUID.fromString(proposalId.toString()))</span>
+<span class="nc" id="L59">        return applicationService.getAllApplyingStudentsForProposalById(UUID.fromString(proposalId.toString()))</span>
     }
 
     @GetMapping(&quot;/API/thesis/applications/by&quot;)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun getAllApplicationsForProposal(@RequestParam proposalId: UUID) : List&lt;ApplicationDTO&gt; {
-<span class="fc" id="L67">        return applicationService.getAllApplicationsForProposalById(UUID.fromString(proposalId.toString()))</span>
+<span class="nc" id="L65">        return applicationService.getAllApplicationsForProposalById(UUID.fromString(proposalId.toString()))</span>
     }
 
     @GetMapping(&quot;/API/thesis/applications/student/{studentId}&quot;)
     @PreAuthorize(&quot;hasRole('Student')&quot;)
     fun getApplicationsForLoggedInStudent(@PathVariable studentId: String): List&lt;ApplicationDTOprop&gt; {
-<span class="fc" id="L73">        return applicationService.getApplicationsForStudent(studentId).map{</span>
-<span class="fc" id="L74">            ApplicationDTOprop(id=it.id,studentId=it.studentId, proposal = proposalRepository.getReferenceById(it.proposalId!!).toDTO(), status = it.status,fileId = it.fileId,fileName=it.fileName)</span>
+<span class="nc" id="L71">        return applicationService.getApplicationsForStudent(studentId).map{</span>
+<span class="nc" id="L72">            ApplicationDTOprop(id=it.id,studentId=it.studentId, proposal = proposalRepository.getReferenceById(it.proposalId!!).toDTO(), status = it.status,fileId = it.fileId,fileName=it.fileName)</span>
         }
     }
 }

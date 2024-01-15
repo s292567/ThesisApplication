@@ -19,7 +19,6 @@ class ProposalServiceImpl(
     private val studentRepository: StudentRepository,
     private val groupDepRepository: GroupDepRepository,
     private val applicationRepository: ApplicationRepository,
-    private val degreeRepository: DegreeRepository
 )
     :ProposalService {
     override fun getProposalByProfessorId(supervisorId: String): List<ProposalDTO> {
@@ -156,6 +155,11 @@ class ProposalServiceImpl(
     override fun getAllProposals(): List<ProposalDTO> {
         return proposalRepository.findAll().map { it.toDTO() }
     }
+    override fun getProposalById(proposalId: UUID): Proposal {
+        return proposalRepository.findById(proposalId)
+            .orElseThrow { ProposalNotFoundException("Proposal with ID $proposalId not found") }
+    }
+    class ProposalNotFoundException(message: String) : RuntimeException(message)
 
     //getByCds
     override fun getProposalsByCds(cds: String): List<ProposalDTO> {

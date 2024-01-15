@@ -18,15 +18,15 @@ import java.util.*
     @GetMapping(&quot;/API/thesis/archive/getAllArchivedForLoggedInProf/&quot;)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun getArchived(): List&lt;ProposalDTO&gt; {
-<span class="fc" id="L21">        val archive=archiveService.getAll().map{it.proposal.toDTO()}</span>
+<span class="nc" id="L21">        val archive=archiveService.getAll().map{it.proposal.toDTO()}</span>
 
-<span class="fc" id="L23">        val securityContext = SecurityContextHolder.getContext()</span>
+<span class="nc" id="L23">        val securityContext = SecurityContextHolder.getContext()</span>
 // Get the authentication object from the security context
-<span class="fc" id="L25">        val authentication = securityContext.authentication</span>
+<span class="nc" id="L25">        val authentication = securityContext.authentication</span>
 
 // Check if the user is authenticated
-<span class="pc bpc" id="L28" title="2 of 4 branches missed.">        return if (authentication != null &amp;&amp; authentication.isAuthenticated) {</span>
-<span class="fc" id="L29">            proposalService.getProposalByProfessorId(authentication.name.split(&quot;@&quot;)[0]).filter{archive.contains(it)}</span>
+<span class="nc bnc" id="L28" title="All 4 branches missed.">        return if (authentication != null &amp;&amp; authentication.isAuthenticated) {</span>
+<span class="nc" id="L29">            proposalService.getProposalByProfessorId(authentication.name.split(&quot;@&quot;)[0]).filter{archive.contains(it)}</span>
         } else
 <span class="nc" id="L31">            emptyList()</span>
     }

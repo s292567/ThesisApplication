@@ -17,7 +17,5 @@ data class Teacher(
     @JoinColumn(name = "codDepartment", referencedColumnName = "codDepartment")
     val department: Department? = null,
     @Id
-    val id: String? = null
-){
-
-}
+    val id: String? = null,
+)

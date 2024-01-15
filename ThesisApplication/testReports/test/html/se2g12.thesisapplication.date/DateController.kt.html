@@ -12,13 +12,13 @@ import java.time.LocalDate
     @ResponseStatus(HttpStatus.CREATED)
     fun virtualDateAdd( @PathVariable dateString: String){
 
-<span class="pc bpc" id="L15" title="1 of 2 branches missed.">        if(date.setDate(dateString))</span>
-<span class="pc bpc" id="L16" title="1 of 2 branches missed.">        date.getDate()?.let { proposalDateCheck.checkForMyDateChanges(it) }</span>
+<span class="nc bnc" id="L15" title="All 2 branches missed.">        if(date.setDate(dateString))</span>
+<span class="nc bnc" id="L16" title="All 2 branches missed.">        date.getDate()?.let { proposalDateCheck.checkForMyDateChanges(it) }</span>
 
-<span class="fc" id="L18">    }</span>
+<span class="nc" id="L18">    }</span>
     @GetMapping(&quot;/API/thesis/date/get/&quot;)
     fun virtualDateGet():LocalDate?{
-<span class="fc" id="L21">        return date.getDate()</span>
+<span class="nc" id="L21">        return date.getDate()</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

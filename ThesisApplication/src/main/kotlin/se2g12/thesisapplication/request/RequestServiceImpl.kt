@@ -3,12 +3,15 @@ package se2g12.thesisapplication.request
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Service
 import se2g12.thesisapplication.date.Date
+import se2g12.thesisapplication.proposal.NotFound
+import se2g12.thesisapplication.student.StudentRepository
+import se2g12.thesisapplication.teacher.TeacherRepository
 import java.time.LocalDate
 import java.util.*
 
 @Service
 @Transactional
-class RequestServiceImpl(private val requestRepository: RequestRepository, private val virtualDate: Date): RequestService {
+class RequestServiceImpl(private val requestRepository: RequestRepository, private val studentRepository: StudentRepository, private val teacherRepository: TeacherRepository, private val virtualDate: Date): RequestService {
 
     override fun getAllPendingRequestsForSecretary(): List<RequestDTO> {
         return requestRepository.findBySecretaryStatusLike("pending")
@@ -61,5 +64,27 @@ class RequestServiceImpl(private val requestRepository: RequestRepository, priva
         request.supervisorStatus = newStatus
         requestRepository.save(request)
     }
+    // Updated RequestServiceImpl function
+    override fun addNewRequest(newRequest: NewRequestDTO, studentId: String) {
+            val student = studentRepository.findById(studentId)
+                .orElseThrow { NotFound("Student $studentId not found") }
 
-}
+
+            // Convert coSupervisors list to a string
+            val coSupervisorsString = newRequest.coSupervisors.joinToString(", ")
+            // TODO: check coSupervisors are actual teachers
+        val supervisor = teacherRepository.findById(newRequest.supervisorId)
+            .orElseThrow { NotFound("professor ${newRequest.supervisorId} not found") }
+
+            val request = Request(
+                student = student,
+                title = newRequest.title,
+                description = newRequest.description,
+                supervisor = supervisor,
+                coSupervisors = coSupervisorsString
+            )
+
+            requestRepository.save(request)
+        }
+
+    }

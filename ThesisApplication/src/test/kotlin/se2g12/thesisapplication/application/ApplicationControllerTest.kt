@@ -47,7 +47,7 @@ import java.time.format.DateTimeFormatter
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureMockMvc(addFilters = false)
 class ApplicationControllerTest {
-/*private val proposalRepository: ProposalRepository*/
+
     @Autowired
     private lateinit var objectMapper: ObjectMapper
     @Autowired
@@ -124,55 +124,15 @@ class ApplicationControllerTest {
         // applicationRepository.save(application)
     }
 
-    @WithMockUser(username = "s654140@example.com", roles = ["Student"])
-//    @Test
-    fun `test addNewApplication`() {
-        // unable to serialize the file
-        val newApplicationDTO = NewApplicationDTO( savedStudent.id!!, savedProposals.first().id!!)
-        mockMvc.perform(
-            MockMvcRequestBuilders.post("/API/thesis/proposals/apply")
-                .content("""${objectMapper.writeValueAsString(newApplicationDTO)}""")
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-            .andExpect(MockMvcResultMatchers.status().isCreated)
-    }
 
-    @WithMockUser(username = "s654140@example.com", roles = ["Student"])
-//    @Test
-    fun `test addNewApplication with file`() {
-        val fileName = "example.txt"
-        val originalFileName = "example.txt"
-        val contentType = "text/plain"
-        val content = "This is the content of the file."
 
-        val file = MockMultipartFile(
-            fileName,
-            originalFileName,
-            contentType,
-            content.toByteArray()
-        )
-        // unable to serialize the file
-        val newApplicationDTO = NewApplicationDTO(savedStudent.id!!, savedProposals.first().id!!, file)
-
-// Convert the NewApplicationDTO to JSON
-        val jsonRequest = objectMapper.writeValueAsString(newApplicationDTO)
-
-// Perform the request with the JSON payload
-        mockMvc.perform(
-            MockMvcRequestBuilders.multipart("/API/thesis/proposals/apply")
-                .file(file)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonRequest)
-        )
-            .andExpect(MockMvcResultMatchers.status().isCreated)
-    }
 
     @WithMockUser(username = "p101@example.com", roles = ["Professor"])
     @Test
     fun `test decline application`() {
         /* --save an application-- */
-        val application=Application(savedStudent,savedProposals.first(),"pending")
-        applicationRepository.save(application)
+        var application=Application(savedStudent,savedProposals.first(),"pending")
+        application = applicationRepository.save(application)
 
         val applicationStatus=ApplicationStatus(savedStudent.id!!, savedProposals.first().id!!, "declined")
         val professorId = savedTeacher.id!!
@@ -183,8 +143,30 @@ class ApplicationControllerTest {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
 
+        val dbApplication = applicationRepository.findById(application.id!!).get()
+        assertEquals("declined", dbApplication.status)
+
     }
-    // TODO: test accept application
+
+    @WithMockUser(username = "p101@example.com", roles = ["Professor"])
+    @Test
+    fun `test accept application`() {
+        /* --save an application-- */
+        var application=Application(savedStudent,savedProposals.first(),"pending")
+        application = applicationRepository.save(application)
+
+        val applicationStatus=ApplicationStatus(savedStudent.id!!, savedProposals.first().id!!, "accepted")
+        val professorId = savedTeacher.id!!
+        mockMvc.perform(
+            MockMvcRequestBuilders.patch("/API/thesis/applications/$professorId")
+                .content("""${objectMapper.writeValueAsString(applicationStatus)}""")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+        val dbApplication = applicationRepository.findById(application.id!!).get()
+        assertEquals("accepted", dbApplication.status)
+
+    }
 
     @WithMockUser(username = "p101@example.com", roles = ["Professor"])
     @Test
@@ -199,7 +181,6 @@ class ApplicationControllerTest {
             MockMvcRequestBuilders.get("/API/thesis/applications/students?proposalId=$proposalId")
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-        // TODO: add more checks on the body
     }
 
     @WithMockUser(username = "p101@example.com", roles = ["Professor"])

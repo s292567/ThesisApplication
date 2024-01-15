@@ -8,16 +8,16 @@ import java.util.*
 <span class="fc" id="L8">class FileServiceImpl(private val fileRepository: FileRepository) : FileService {</span>
 
     override fun addFile( file: MultipartFile):UUID {
-<span class="nc" id="L11">        var toAdd=File(file.bytes,file.contentType!!,file.originalFilename!!)</span>
-<span class="nc" id="L12">        return fileRepository.save(toAdd).fileId!!</span>
+<span class="fc" id="L11">        var toAdd=File(file.bytes,file.contentType!!,file.originalFilename!!)</span>
+<span class="fc" id="L12">        return fileRepository.save(toAdd).fileId!!</span>
     }
 
     override fun getName(fileID: UUID): String {
-<span class="nc" id="L16">        return fileRepository.getReferenceById(fileID).fileName</span>
+<span class="fc" id="L16">        return fileRepository.getReferenceById(fileID).fileName</span>
     }
 
     override fun getFileByID(fileID: UUID): File {
-<span class="fc" id="L20">        return fileRepository.getReferenceById(fileID)</span>
+<span class="nc" id="L20">        return fileRepository.getReferenceById(fileID)</span>
     }
 
 

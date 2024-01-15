@@ -15,4 +15,5 @@ interface ApplicationService {
 
     fun getAllApplicationsForProposalById(proposalId: UUID) : List<ApplicationDTO>
     fun getApplicationsForStudent(studentId: String): List<ApplicationDTO>
+    fun deleteApplicationsByProposalId(proposalId: UUID)
 }

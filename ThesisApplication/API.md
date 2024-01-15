@@ -831,3 +831,61 @@ The thesis request has to already been accepted by the secreatry.
   - `404 Not Found`: The thesis request was not found
   - `422 Unprocessable Entity`: The status is incorrect, wasn't accepted by the secretary or not pending for the professor
   - `500 Internal Server Error`: Generic server error
+
+# Archive Proposal [Professor]
+
+**POST `/API/thesis/archive/{proposalId}`**
+
+Archives a proposal and deletes all related applications.
+
+    - Path Parameters:
+        proposalId (UUID): The ID of the proposal to be archived.
+
+## Example Request URL:
+
+`POST /API/thesis/archive/000003e8-8169-21ee-8000-325096b39f47`
+
+## Example Response:
+(No response body)
+
+## Response Status:
+
+- `204 No Content`: The proposal has been archived successfully.
+- `404 Not Found`: The proposal with the specified ID was not found.
+- `401 Unauthorized`: The user is not logged in or does not have the required role.
+- `500 Internal Server Error`: Generic server error.
+
+# Add New Thesis Request [Student]
+
+**`POST /API/thesis/request/{studentId}`**
+
+Creates a new thesis request for a student.
+
+    - Path Parameters:
+        studentId (String): The ID of the student making the request.
+
+    - Request Body:
+        obj (NewRequestDTO): The request body containing information about the new thesis request.
+
+## Example Request URL:
+
+POST /API/thesis/request/s654140
+
+## Example Request Body:
+
+```json
+
+{
+"title": "Proposed title",
+"description": "Some description",
+"supervisorId": "p101",
+"coSupervisors": ["Luca Ferrari", "Paolo Ricci"]
+}
+```
+
+## Response Status:
+
+- `204 No Content`: The proposal has been archived successfully.
+- `404 Not Found`: The proposal with the specified ID was not found.
+- `401 Unauthorized`: The user is not logged in or does not have the required role.
+- `500 Internal Server Error`: Generic server error.

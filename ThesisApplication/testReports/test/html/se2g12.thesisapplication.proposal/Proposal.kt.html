@@ -7,24 +7,24 @@ import java.util.*
 
 <span class="fc" id="L8">@Entity</span>
 <span class="pc" id="L9">data class Proposal(</span>
-<span class="fc" id="L10">    var title: String,</span>
+<span class="pc" id="L10">    var title: String,</span>
 <span class="fc" id="L11">    @ManyToOne</span>
     @JoinColumn(name = &quot;supervisor_id&quot;, referencedColumnName = &quot;id&quot;)
-<span class="fc" id="L13">    var supervisor: Teacher,  // Reference to the associated teacher</span>
+<span class="pc" id="L13">    var supervisor: Teacher,  // Reference to the associated teacher</span>
     // For simplicity, co-supervisors are stored as a comma-separated string of teacher IDs
 <span class="pc" id="L15">    var coSupervisors: String? = null,</span>
     // For simplicity, keywords are stored as a comma-separated string
-<span class="fc" id="L17">    var keywords: String,</span>
-<span class="fc" id="L18">    var type: String,</span>
+<span class="pc" id="L17">    var keywords: String,</span>
+<span class="pc" id="L18">    var type: String,</span>
     // For simplicity, groups are stored as a comma-separated string
-<span class="fc" id="L20">    var groups: String,</span>
-<span class="fc" id="L21">    var description: String,</span>
+<span class="pc" id="L20">    var groups: String,</span>
+<span class="pc" id="L21">    var description: String,</span>
 <span class="pc" id="L22">    var requiredKnowledge: String?=null,</span>
 <span class="pc" id="L23">    var notes: String?=null,</span>
 <span class="fc" id="L24">    @Temporal(TemporalType.DATE)</span>
-<span class="fc" id="L25">    var expiration: LocalDate,</span>
-<span class="fc" id="L26">    var level: String,</span>
-<span class="fc" id="L27">    var cds: String</span>
+<span class="nc" id="L25">    var expiration: LocalDate,</span>
+<span class="pc" id="L26">    var level: String,</span>
+<span class="pc" id="L27">    var cds: String</span>
 ){
     @Id
     @GeneratedValue(generator = &quot;uuid2&quot;)

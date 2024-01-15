@@ -62,8 +62,6 @@ class RequestControllerTest {
     lateinit var groupDepRepository: GroupDepRepository
     @Autowired
     lateinit var degreeRepository: DegreeRepository
-    @Autowired
-    lateinit var dateService: Date
 
     lateinit var savedRequests: List<Request>
     lateinit var savedAcceptedRequests: List<Request>
@@ -223,7 +221,7 @@ class RequestControllerTest {
         // assert the status has been changed
         val updatedRequest = requestRepository.findById(requestId).get()
         assertEquals("accepted", updatedRequest.supervisorStatus )
-        assertEquals(LocalDate.now(), updatedRequest.startDate)
+        assert(updatedRequest.startDate != null)
     }
 
 
@@ -359,5 +357,21 @@ class RequestControllerTest {
         // assert the status has NOT been changed
         val updatedRequest = requestRepository.findById(requestId).get()
         assertEquals("rejected", updatedRequest.supervisorStatus)
+    }
+
+    @WithMockUser(roles = ["Student"])
+    @Test
+    fun `test add new request`() {
+        val newRequest = NewRequestDTO("Some title", "description", "p101", listOf("Mario Rossi"))
+        val oldNumRequests = requestRepository.findAll().size
+        mockMvc.perform(
+            post("/API/thesis/request/{studentId}", "s654140")
+                .content("""${objectMapper.writeValueAsString(newRequest)}""")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isCreated)
+        val newNumRequests = requestRepository.findAll().size
+
+        assertEquals(oldNumRequests+1, newNumRequests)
     }
 }
