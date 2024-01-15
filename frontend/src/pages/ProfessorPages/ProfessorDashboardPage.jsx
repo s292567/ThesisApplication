@@ -67,7 +67,6 @@ export default function ProfessorDashboardPage() {
             <Box>
               <ThesesList
                 thesesData={proposals.slice(0, 2)}
-                view={"displayApply"}
               />
               <Grid container item justifyContent="center">
                 <MyOutlinedButton

@@ -5,8 +5,6 @@ import org.springframework.transaction.annotation.Transactional
 import se2g12.thesisapplication.Mail.EmailService
 import se2g12.thesisapplication.archive.Archive
 import se2g12.thesisapplication.archive.ArchiveRepository
-import se2g12.thesisapplication.file.File
-import se2g12.thesisapplication.file.FileDTO
 import se2g12.thesisapplication.file.FileService
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.student.StudentDTO
@@ -131,6 +129,11 @@ class ApplicationServiceImpl (
     override fun getAllApplicationsForProposalById(proposalId: UUID) : List<ApplicationDTO> {
         return applicationRepository.getAllApplicationsByProposalId(proposalId).filter { it.status=="pending" }
             .map { it.toDTO() }
+    }
+
+    override fun deleteApplicationsByProposalId(proposalId: UUID) {
+        val applications = applicationRepository.findByProposalId(proposalId)
+        applicationRepository.deleteAll(applications)
     }
 
 }

@@ -11,7 +11,9 @@ import {
     updateProposal,
     getProposalsByStudentId,
     getThesisStatusById,
-    getArchived
+    getArchived,
+    archiveProposal,
+    addThesisRequest,
 } from './API_proposals.js';
 
 import {
@@ -34,6 +36,7 @@ import {
     getDistinctKeywords,
     getDistinctTypes,
     getDistinctLevels,
+    searchProposalsArchive,
     searchProposals,
 } from './API_search.js';
 
@@ -46,7 +49,8 @@ import {
 export {
     getAllProposals, 
     GetProposalsByCds, 
-    getProposalsByCds, 
+    getProposalsByCds,
+    searchProposalsArchive,
     searchProposals, 
     insertProposal, 
     applyToProposal,
@@ -56,6 +60,8 @@ export {
     copyProposalById,
     getThesisStatusById,
     getArchived,
+    archiveProposal,
+    addThesisRequest,
 
     axiosInstance,
     getProposalsByProfessorId,

@@ -75,7 +75,7 @@ export default function ProfessorApplicants({
     }
   };
   
-  const handleDownload = async (fileId) => {
+  const handleDownload = async (fileId, fileName) => {
     try {
       const apiUrl = 'http://localhost:8081/API/downloadFile/' + fileId;
 
@@ -94,7 +94,6 @@ export default function ProfessorApplicants({
         throw new Error(`Failed to download file. Status code: ${response.status}`);
       }
 
-      let fileName = fileId;
       // Convert response to blob
       const blob = await response.blob();
 
@@ -132,7 +131,7 @@ export default function ProfessorApplicants({
     }));
   };
 
-  const renderStudentCv = (fileId) => (
+  const renderStudentCv = (cv) => (
     <>
       <PastelComponent
         bgColor="#94a6f3"
@@ -149,7 +148,7 @@ export default function ProfessorApplicants({
         onClick={(event) => {
           event.stopPropagation();
           /// DOWNLOAD CV HERE
-          handleDownload(fileId);
+          handleDownload(cv.fileId, cv.fileName);
         }}
       />
     </>
@@ -227,7 +226,7 @@ export default function ProfessorApplicants({
                   <Typography>
                     {item.email} - {item.codDegree}
                     <br />
-                    {item.cv ? renderStudentCv() : null}
+                    {item.cv.fileId ? renderStudentCv(item.cv) : null}
                   </Typography>
                 ) : null}
               </>
@@ -238,9 +237,9 @@ export default function ProfessorApplicants({
             <>
               <TableCell>{item.email}</TableCell>
               <TableCell>{item.codDegree}</TableCell>
-
-              <TableCell><button onClick={handleDownload}>Download</button></TableCell>
-
+              <TableCell>
+                {item.cv.fileId ? renderStudentCv(item.cv) : "No CV uploaded"}
+              </TableCell>
             </>
           )}
 
@@ -346,7 +345,7 @@ export default function ProfessorApplicants({
                           >{`${item.student.email} - ${item.student.codDegree}`}</Typography>
 
                           {/* Display the cv only if present */}
-                          {item.student.cv ? renderStudentCv() : null}
+                          {item.student.cv.fileId ? renderStudentCv(item.cv) : null}
                         </Box>
                       ) : (
                         <>

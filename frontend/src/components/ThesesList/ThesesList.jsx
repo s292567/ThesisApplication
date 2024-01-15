@@ -3,7 +3,7 @@ import { Box, Grid } from "@mui/material";
 import { ThesisRow } from "../index.js";
 import { useLocation } from "react-router-dom";
 import { useUserContext } from "../../contexts";
-
+import { frontendRoutes } from "../../routes/index.js";
 
 export default function ThesesList({
   thesesData,
@@ -35,7 +35,7 @@ export default function ThesesList({
                 <ThesisRow
                   key={thesis.id}
                   thesis={thesis}
-                  actions={location.pathname !== homeRoute}
+                  actions={location.pathname !== homeRoute || location.pathname !== frontendRoutes.archivedTheses}
                   onDelete={handleDelete}
                   onCopy={handleCopy}
                   onEdit={handleEdit}

@@ -4,6 +4,7 @@
     "getAllProposals": "proposals/all",
     "getProposalsByCds": "proposals/cds",
     "searchProposals": "proposals/search/",
+    "searchProposalsArchive":"proposals/searchArchive/",
     "insertProposal": "proposals/",
     "getaAllApplicationsForLoggedInStudent": "applications/student/",
     "applyToProposal": "proposals/apply",
@@ -31,6 +32,8 @@
 
     "getArchivedForLoggedProfessor": "/archive/getAllArchivedForLoggedInProf/",
 
-    "allRequests": "requests"
+    "allRequests": "requests",
+    "archiveProposal": "archive/",
+    "addThesisRequest": "requests/"
 
 }

@@ -7,6 +7,7 @@ import ProfessorDashboardPage from "./professorPages/ProfessorDashboardPage";
 
 import ProfessorProposalCreationPage from "./professorPages/ProfessorProposalCreation";
 import ProfessorApplicantsPage from "./ProfessorPages/ProfessorApplicantsPage.jsx";
+import ArchivedThesesPage from "./ProfessorPages/ArchivedThesesPage.jsx";
 
 import DefaultLayoutPage from "./DefaultLayoutPage/DefaultLayoutPage";
 import RefreshComponentPage from "./DefaultLayoutPage/RefreshComponentPage.jsx";
@@ -29,6 +30,7 @@ export {
     ProfessorDashboardPage,
     ProfessorProposalCreationPage,
     ProfessorApplicantsPage,
+    ArchivedThesesPage,
 
     ThesesPage,
     StudentApplicationsPage,

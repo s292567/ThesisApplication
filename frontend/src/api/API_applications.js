@@ -144,7 +144,10 @@ export const getAllApplicationsDataForProfessor = async (professorId) => {
         for (const stud of studs) {
           // From the apps array, get the application object for the current student
           // and add to the stud object inside the studs vector the updated student object with the .cv field added that contain the application field named fileId
-          stud.cv = apps.find((app) => app.studentId === stud.id).fileId;
+          stud.cv = {
+            fileId: apps.find((app) => app.studentId === stud.id).fileId,
+            fileName: apps.find((app) => app.studentId === stud.id).fileName,
+          };
 
           // Assume 'stud' has a unique identifier property, e.g., 'id'
           if (studentsMap.has(stud.id)) {

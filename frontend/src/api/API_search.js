@@ -28,6 +28,29 @@ export const searchProposals = async (filterCriteria) => {
     return [];
   }
 };
+export const searchProposalsArchive = async (filterCriteria) => {
+    try {
+        let jwt = localStorage.getItem("ROCP_token");
+        jwt = jwt.substring(1, jwt.length - 1);
+        const response = await axiosInstance.post(routes.searchProposalsArchive, filterCriteria, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + jwt,
+            },
+        });
+
+        if (response.status === 200) {
+            console.log("searchProposals: ", response.data);
+            return response.data;
+        } else {
+            console.error("Request failed with status: ", response.status);
+            return [];
+        }
+    } catch (error) {
+        console.error("Error while searching for proposals: ", error);
+        return [];
+    }
+};
 
 // getDistinctSupervisors
 export const getDistinctSupervisors = async () => {
