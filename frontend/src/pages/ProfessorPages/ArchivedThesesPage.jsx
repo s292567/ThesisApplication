@@ -12,9 +12,10 @@ import {
 } from "../../components";
 import { useUserContext } from "../../contexts/index.js";
 import {
-  searchProposals,
+
   getArchived,
 } from "../../api";
+import {searchProposalsArchive} from "../../api/API_search.js";
 
 
 export default function ArchivedThesesPage() {
@@ -67,7 +68,7 @@ export default function ArchivedThesesPage() {
   const handleResearch = useCallback(async (filters, searchQuery) => {
     try {
       // Call the API with filters and search query
-      const thesisData = await searchProposals({
+      const thesisData = await searchProposalsArchive({
         ...filters,
         queryString: searchQuery,
       });

@@ -34,6 +34,7 @@ import {
     getDistinctKeywords,
     getDistinctTypes,
     getDistinctLevels,
+    searchProposalsArchive,
     searchProposals,
 } from './API_search.js';
 
@@ -46,7 +47,8 @@ import {
 export {
     getAllProposals, 
     GetProposalsByCds, 
-    getProposalsByCds, 
+    getProposalsByCds,
+    searchProposalsArchive,
     searchProposals, 
     insertProposal, 
     applyToProposal,
