@@ -145,6 +145,11 @@ export default function LoggedInNavbar() {
                               onClick={() => setMobileOpen(false)}/>
                     <LinkStyled linkTo={frontendRoutes.NewProposals} linkText={"New Requests"}
                                 onClick={() => setMobileOpen(false)}/>
+                    <LinkStyled
+                        linkTo={frontendRoutes.professorArchivedTheses}
+                        linkText={"Archived Theses"}
+                        onClick={() => setMobileOpen(false)}
+                    />
                   {/* Here NEW LINKS ON THE NAVBAR */}
                 </>
               )}
