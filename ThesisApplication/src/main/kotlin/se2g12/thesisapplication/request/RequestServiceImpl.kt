@@ -77,9 +77,13 @@ class RequestServiceImpl(private val requestRepository: RequestRepository,
             // Convert coSupervisors list to a string
             val coSupervisorsString = newRequest.coSupervisors.joinToString(", ")
             // TODO: check coSupervisors are actual teachers
-        val supervisor = teacherRepository.findById(newRequest.supervisorId)
-            .orElseThrow { NotFound("professor ${newRequest.supervisorId} not found") }
-
+        val supervisorName=newRequest.supervisor.split(" ")
+        val supervisor = try {
+            teacherRepository.findByNameSurname(supervisorName[0], supervisorName[1])
+                .first()
+        }catch (e: NoSuchElementException){
+            throw NotFound("Teacher ${newRequest.supervisor} not found.")
+        }
             val request = Request(
                 student = student,
                 title = newRequest.title,

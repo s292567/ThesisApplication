@@ -5,7 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = ["http://localhost:5173"])
 class RequestController(private val requestService: RequestService) {
 
     @GetMapping("/API/thesis/requests")
@@ -30,7 +30,7 @@ class RequestController(private val requestService: RequestService) {
     fun setProfessorStatus(@PathVariable professorId:String, @RequestBody request: RequestStatusDTO){
         requestService.setRequestSupervisorStatus(request.requestId, request.status, professorId)
     }
-    @PostMapping("/API/thesis/request/{studentId}")
+    @PostMapping("/API/thesis/requests/{studentId}")
     @PreAuthorize("hasRole('Student')")
     @ResponseStatus(HttpStatus.CREATED)
     fun addNewRequest(@RequestBody obj: NewRequestDTO, @PathVariable studentId:String){

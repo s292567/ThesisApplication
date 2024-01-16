@@ -24,7 +24,7 @@ export default function RequestThesisForm({ open, onClose, onSubmit }) {
     title: "",
     description: "",
     supervisor: null,
-    cosupervisors: [],
+    coSupervisors: [],
   });
 
   const [loading, setLoading] = useState(true);
@@ -63,7 +63,6 @@ export default function RequestThesisForm({ open, onClose, onSubmit }) {
     const requiredFields = [
       { name: "title", label: "Thesis Title" },
       { name: "description", label: "Description" },
-      { name: "approvalDate", label: "Approval Date" },
       { name: "supervisor", label: "Supervisor" },
     ];
     const missingFields = requiredFields.filter(
@@ -77,7 +76,6 @@ export default function RequestThesisForm({ open, onClose, onSubmit }) {
 
     const updatedFormData = {
       ...formData,
-      approvalDate: formData.approvalDate.format("YYYY-MM-DD"),
     };
 
     onSubmit(updatedFormData);

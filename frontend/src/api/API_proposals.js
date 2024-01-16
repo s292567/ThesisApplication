@@ -312,11 +312,11 @@ export const archiveProposal = async (proposalId) => {
       });
 };
 
-export const addThesisRequest = async (proposalId, studentId) => {
+export const addThesisRequest = async (studentId, data) => {
   const jwt = getJwt(); // Fetch JWT here
-
+  console.log(data);
   return axiosInstance
-      .post(routes.addThesisRequest + proposalId + "/" + studentId,{},{
+      .post(routes.addThesisRequest + studentId, data,{
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + jwt,
