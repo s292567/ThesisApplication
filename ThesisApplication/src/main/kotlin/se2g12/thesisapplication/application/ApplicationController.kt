@@ -22,7 +22,7 @@ class ApplicationController( private val applicationService: ApplicationService,
     ) {
         val newApplicationDTO=NewApplicationDTO(studentId,proposalId, file)
 
-        if (newApplicationDTO.file != null && !newApplicationDTO.file!!.contentType.equals("application/pdf")) {
+        if (newApplicationDTO.file != null && newApplicationDTO.file!!.contentType != "application/pdf") {
             throw Exception("File must be in .pdf format")
         }
 

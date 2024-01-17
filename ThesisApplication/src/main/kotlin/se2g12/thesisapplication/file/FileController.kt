@@ -37,7 +37,7 @@ class FileController(private val fileService: FileService,private val applicatio
         }
 
         var elem = fileService.getFileByID(id)
-        if (elem?.file != null) {
+        if (elem.file != null) {
             val resource = ByteArrayResource(elem.file!!)
 
             val headers = HttpHeaders()

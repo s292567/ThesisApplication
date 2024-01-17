@@ -32,18 +32,18 @@ class ProposalServiceImpl(
         println(proposalRepository.findAll().filter{it.title==oldName})
         val message=checkProposal(newProposal)
         if(message=="") {
-            old.title=newProposal.title!!
+            old.title= newProposal.title
             old.supervisor=teacherRepository.findById(professorId).get()
             old.coSupervisors=newProposal.coSupervisors!!.joinToString(separator = ",")
-            old.keywords=newProposal.keywords!!.joinToString(separator = ",")
-            old.type=newProposal.type!!.joinToString(separator = ",")
-            old.groups=newProposal.groups!!.joinToString(separator = ",")
-            old.description=newProposal.description!!
+            old.keywords= newProposal.keywords.joinToString(separator = ",")
+            old.type= newProposal.type.joinToString(separator = ",")
+            old.groups= newProposal.groups.joinToString(separator = ",")
+            old.description= newProposal.description
             old.requiredKnowledge=newProposal.requiredKnowledge
             old.notes=newProposal.notes
             old.expiration=newProposal.expiration
-            old.level=newProposal.level!!
-            old.cds= newProposal.cds!!.joinToString(separator = ",")
+            old.level= newProposal.level
+            old.cds= newProposal.cds.joinToString(separator = ",")
             return proposalRepository.save(old).toDTO()
         }
         else
@@ -62,10 +62,10 @@ class ProposalServiceImpl(
             message += " coSupervisors or keyword is empty"
         //check type and level and cds
         //if(newProposal.type)
-        newProposal.groups!!.forEach{if(groupDepRepository.findById(it).isEmpty)
+        newProposal.groups.forEach{if(groupDepRepository.findById(it).isEmpty)
             message += " Group $it not present"
         }
-        if(newProposal.description.isNullOrBlank())
+        if(newProposal.description.isBlank())
             message +=" description is empty"
         return message
 
