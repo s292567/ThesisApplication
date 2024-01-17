@@ -43,7 +43,7 @@ class ProposalServiceImplTest {
         groupDepRepository = mockk()
         applicationRepository = mockk()
         degreeRepository = mockk()
-        proposalService = ProposalServiceImpl(proposalRepository, teacherRepository, studentRepository, groupDepRepository, applicationRepository, degreeRepository)
+        proposalService = ProposalServiceImpl(proposalRepository, teacherRepository, studentRepository, groupDepRepository, applicationRepository)
         mockTeacher = mockk<Teacher>()
         date = LocalDate.parse("2024-04-23", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         mockProposal = Proposal("Advanced algorithms for image processing",
