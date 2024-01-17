@@ -4,14 +4,11 @@ import jakarta.mail.MessagingException
 import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import se2g12.thesisapplication.application.ApplicationDTO
-import se2g12.thesisapplication.application.NewApplicationDTO
 import se2g12.thesisapplication.proposal.ProposalRepository
-import se2g12.thesisapplication.proposal.ProposalService
 
 @Service
 class EmailService (private val proposalRepository: ProposalRepository){
@@ -54,6 +51,5 @@ class EmailService (private val proposalRepository: ProposalRepository){
 
 
         message.setContent(htmlContent, "text/html; charset=utf-8")
-//        mailSender.send(message)
     }
 }

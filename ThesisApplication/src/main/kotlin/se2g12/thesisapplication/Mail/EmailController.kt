@@ -2,11 +2,9 @@ package se2g12.thesisapplication.Mail
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
-import se2g12.thesisapplication.application.Application
-import se2g12.thesisapplication.application.ApplicationDTO
 import se2g12.thesisapplication.application.ApplicationRepository
 import se2g12.thesisapplication.application.toDTO
-import se2g12.thesisapplication.student.StudentRepository
+
 
 @RestController
 @CrossOrigin

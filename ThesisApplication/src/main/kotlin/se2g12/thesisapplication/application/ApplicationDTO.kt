@@ -1,8 +1,5 @@
 package se2g12.thesisapplication.application
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.multipart.MultipartFile
-import se2g12.thesisapplication.file.FileService
 import java.util.UUID
 
 data class ApplicationDTO (

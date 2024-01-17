@@ -5,7 +5,6 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import se2g12.thesisapplication.file.FileService
 import se2g12.thesisapplication.proposal.ProposalRepository
 import se2g12.thesisapplication.proposal.toDTO
 import se2g12.thesisapplication.student.StudentDTO

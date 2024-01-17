@@ -260,7 +260,7 @@ export default function RequestList({requests, refreshList}) {
                     warningOpen={warningOpen}
                     setWarningOpen={setWarningOpen}
                     warningMessage={msgWarning}
-
+                    handleApplied={handleChangeRequestStatus}
                 />
                 <ChangePopup
                     changeOpen={changeOpen}

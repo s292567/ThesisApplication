@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
-import se2g12.thesisapplication.archive.Archive
 import se2g12.thesisapplication.archive.ArchiveService
 import se2g12.thesisapplication.application.ApplicationRepository
 import se2g12.thesisapplication.student.StudentRepository

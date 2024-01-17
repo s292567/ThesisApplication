@@ -1,8 +1,6 @@
 package se2g12.thesisapplication.file
 
 import jakarta.persistence.*
-import org.springframework.web.multipart.MultipartFile
-import se2g12.thesisapplication.student.Student
 import java.util.*
 
 @Entity

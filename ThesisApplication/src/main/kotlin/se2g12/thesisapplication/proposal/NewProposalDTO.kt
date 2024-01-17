@@ -2,9 +2,6 @@ package se2g12.thesisapplication.proposal
 
 import jakarta.persistence.Temporal
 import jakarta.persistence.TemporalType
-import jakarta.validation.ConstraintViolation
-import jakarta.validation.Validation
-import jakarta.validation.Validator
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import org.hibernate.validator.constraints.Length

@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
 import se2g12.thesisapplication.application.ApplicationRepository
 import se2g12.thesisapplication.application.ApplicationService
 import se2g12.thesisapplication.proposal.ProposalService
