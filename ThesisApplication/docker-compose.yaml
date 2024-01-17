@@ -2,7 +2,7 @@ version: '2'
 
 services:
   app:
-    image: 's292567/g12-2024-final'
+    image: 's292567/g12-2024-final-1'
     ports:
       - "8081:8081"
     expose:

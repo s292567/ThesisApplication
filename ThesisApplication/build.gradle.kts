@@ -73,7 +73,7 @@ jib{
 	container{
 		ports= mutableListOf("8081")
 	}
-	to{image="s292567/g12-2024-final"}
+	to{image="s292567/g12-2024-final-1"}
 }
 jacoco {
 	toolVersion="0.8.7"
