@@ -57,14 +57,15 @@ class RequestServiceImpl(private val requestRepository: RequestRepository,
         if(request.supervisorStatus != "pending")
             throw UnmodifiableRequestStatus("Request $requestId has already status ${request.supervisorStatus}")
 
-        val newStatus:String = if (status.lowercase().contains("acc")){
-            request.startDate = virtualDate.getDate()?:LocalDate.now()
-            "accepted"
-        } else if (status.lowercase().contains("rej")){
-            "rejected"
-        } else{
-            throw InvalidRequestStatus("Request status should be `accepted` or `declined`")
+        val newStatus: String = when {
+            status.lowercase().contains("acc") -> {
+                request.startDate = virtualDate.getDate() ?: LocalDate.now()
+                "accepted"
+            }
+            status.lowercase().contains("rej") -> "rejected"
+            else -> throw InvalidRequestStatus("Request status should be `accepted` or `declined`")
         }
+
         request.supervisorStatus = newStatus
         requestRepository.save(request)
     }
@@ -76,7 +77,7 @@ class RequestServiceImpl(private val requestRepository: RequestRepository,
 
             // Convert coSupervisors list to a string
             val coSupervisorsString = newRequest.coSupervisors.joinToString(", ")
-            // TODO: check coSupervisors are actual teachers
+
         val supervisorName=newRequest.supervisor.split(" ")
         val supervisor = try {
             teacherRepository.findByNameSurname(supervisorName[0], supervisorName[1])

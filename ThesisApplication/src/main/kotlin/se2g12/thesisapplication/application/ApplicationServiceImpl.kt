@@ -65,13 +65,11 @@ class ApplicationServiceImpl (
         // decline all student applications and notify them
         val app2=applicationRepository.getAllApplicationsByProposalId(app.proposal.id!!)
         app2.forEach {
-            if(it.status?.compareTo("pending")==0)
+            if(it.status?.compareTo("pending")==0 && it.id!!.compareTo(applicationId)!=0)
             {
-                if(it.id!!.compareTo(applicationId)!=0) {
-                    it.status="declined"
-                    emailService.sendHtmlEmail(app.student.email, it.toDTO())
-                }}
-
+                it.status="declined"
+                emailService.sendHtmlEmail(app.student.email, it.toDTO())
+            }
         }
         applicationRepository.updateStatusByStudentId(app.student.id!!, "declined")
         // decline all proposal applications
