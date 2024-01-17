@@ -5,39 +5,44 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 <span class="fc" id="L7">@RestController</span>
-@CrossOrigin
+@CrossOrigin(origins = [&quot;http://localhost:5173&quot;])
 <span class="fc" id="L9">class RequestController(private val requestService: RequestService) {</span>
 
     @GetMapping(&quot;/API/thesis/requests&quot;)
     @PreAuthorize(&quot;hasRole('Secretary')&quot;)
     fun getAllPendingRequests():List&lt;RequestDTO&gt;{
-<span class="nc" id="L14">        return requestService.getAllPendingRequestsForSecretary()</span>
+<span class="fc" id="L14">        return requestService.getAllPendingRequestsForSecretary()</span>
     }
 
     @PatchMapping(&quot;/API/thesis/requests&quot;)
     @PreAuthorize(&quot;hasRole('Secretary')&quot;)
     fun setSecretaryStatus(@RequestBody request: RequestStatusDTO){
-<span class="nc" id="L20">        requestService.setRequestSecretaryStatus(request.requestId, request.status)</span>
-<span class="nc" id="L21">    }</span>
+<span class="fc" id="L20">        requestService.setRequestSecretaryStatus(request.requestId, request.status)</span>
+<span class="fc" id="L21">    }</span>
     @GetMapping(&quot;/API/thesis/requests/{professorId}&quot;)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun getAllPendingRequestsByProfessor(@PathVariable professorId:String):List&lt;RequestDTO&gt;{
-<span class="nc" id="L25">        return requestService.getAllPendingRequestsForProfessor(professorId)</span>
+<span class="fc" id="L25">        return requestService.getAllPendingRequestsForProfessor(professorId)</span>
     }
 
     @PatchMapping(&quot;/API/thesis/requests/{professorId}&quot;)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun setProfessorStatus(@PathVariable professorId:String, @RequestBody request: RequestStatusDTO){
-<span class="nc" id="L31">        requestService.setRequestSupervisorStatus(request.requestId, request.status, professorId)</span>
-<span class="nc" id="L32">    }</span>
-    @PostMapping(&quot;/API/thesis/request/{studentId}&quot;)
+<span class="fc" id="L31">        requestService.setRequestSupervisorStatus(request.requestId, request.status, professorId)</span>
+<span class="fc" id="L32">    }</span>
+    @PostMapping(&quot;/API/thesis/requests/{studentId}&quot;)
     @PreAuthorize(&quot;hasRole('Student')&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     fun addNewRequest(@RequestBody obj: NewRequestDTO, @PathVariable studentId:String){
-<span class="nc" id="L37">        println(obj)</span>
-<span class="nc" id="L38">        requestService.addNewRequest(obj, studentId)</span>
+<span class="fc" id="L37">        println(obj)</span>
+<span class="fc" id="L38">        requestService.addNewRequest(obj, studentId)</span>
 
-<span class="nc" id="L40">    }</span>
+<span class="fc" id="L40">    }</span>
+    @PostMapping(&quot;/API/thesis/requests/{professorId}/change&quot;)
+    @PreAuthorize(&quot;hasRole('Professor')&quot;)
+    fun setRequestChange(@PathVariable professorId:String, @RequestBody info: ChangeInfoDTO){
+<span class="fc" id="L44">        requestService.addRequestChangeInfo(info, professorId)</span>
+<span class="fc" id="L45">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

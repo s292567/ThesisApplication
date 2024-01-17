@@ -2,33 +2,47 @@
 
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import se2g12.thesisapplication.application.ApplicationService
 import se2g12.thesisapplication.proposal.ProposalDTO
 import se2g12.thesisapplication.proposal.ProposalService
 import se2g12.thesisapplication.proposal.toDTO
 import java.util.*
 
-<span class="fc" id="L14">@RestController</span>
+<span class="fc" id="L12">@RestController</span>
 @CrossOrigin
-<span class="fc" id="L16">class ArchiveController(private val archiveService: ArchiveService,private val proposalService: ProposalService) {</span>
+<span class="fc" id="L14">class ArchiveController(private val archiveService: ArchiveService,private val proposalService: ProposalService, private val applicationService: ApplicationService) {</span>
     //getArchivedPropId Test Endpoint
     @GetMapping(&quot;/API/thesis/archive/getAllArchivedForLoggedInProf/&quot;)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun getArchived(): List&lt;ProposalDTO&gt; {
-<span class="nc" id="L21">        val archive=archiveService.getAll().map{it.proposal.toDTO()}</span>
-
-<span class="nc" id="L23">        val securityContext = SecurityContextHolder.getContext()</span>
+<span class="fc" id="L19">        val archive=archiveService.getAll().map{it.proposal.toDTO()}</span>
+<span class="fc" id="L20">            val securityContext = SecurityContextHolder.getContext()</span>
 // Get the authentication object from the security context
-<span class="nc" id="L25">        val authentication = securityContext.authentication</span>
+<span class="fc" id="L22">            val authentication = securityContext.authentication</span>
+
+<span class="fc" id="L24">            val profThesis =proposalService.getProposalByProfessorId(authentication.name.split(&quot;@&quot;)[0])</span>
+
+
 
 // Check if the user is authenticated
-<span class="nc bnc" id="L28" title="All 4 branches missed.">        return if (authentication != null &amp;&amp; authentication.isAuthenticated) {</span>
-<span class="nc" id="L29">            proposalService.getProposalByProfessorId(authentication.name.split(&quot;@&quot;)[0]).filter{archive.contains(it)}</span>
-        } else
-<span class="nc" id="L31">            emptyList()</span>
+<span class="pc bpc" id="L29" title="2 of 4 branches missed.">        return if (authentication != null &amp;&amp; authentication.isAuthenticated) {</span>
+<span class="fc" id="L30">            archive.filter { profThesis.contains(it) }</span>
+        }
+        else
+<span class="nc" id="L33">            emptyList()</span>
     }
+    @PostMapping(&quot;/API/thesis/archive/{proposalId}&quot;)
+    @PreAuthorize(&quot;hasRole('Professor')&quot;)
+    fun archiveProposal(@PathVariable proposalId: UUID) {
+        // Retrieve the proposal by ID
+<span class="nc" id="L39">        val proposal = proposalService.getProposalById(proposalId)</span>
+
+        // Archive the proposal
+<span class="nc" id="L42">        archiveService.archiveProposal(proposal)</span>
+
+        // Delete all related applications
+<span class="nc" id="L45">        applicationService.deleteApplicationsByProposalId(proposalId)</span>
+<span class="nc" id="L46">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

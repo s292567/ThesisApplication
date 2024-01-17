@@ -11,6 +11,6 @@ interface StudentRepository : JpaRepository&lt;Student, String&gt; {
     fun findByEmail(email: String): List&lt;Student&gt;
 
     @Query(&quot;SELECT student.* FROM student LEFT JOIN application on student.id = application.student_id WHERE application.proposal_id = :proposalId AND application.status = :status&quot;, nativeQuery = true)
-<span class="nc" id="L14">    fun getApplyingStudentsByProposalId(proposalId: UUID, status:String?=&quot;pending&quot;): List&lt;Student&gt;</span>
+<span class="fc" id="L14">    fun getApplyingStudentsByProposalId(proposalId: UUID, status:String?=&quot;pending&quot;): List&lt;Student&gt;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

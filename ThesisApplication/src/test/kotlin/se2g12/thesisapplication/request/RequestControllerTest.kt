@@ -426,10 +426,10 @@ class RequestControllerTest {
     @WithMockUser(roles = ["Student"])
     @Test
     fun `test add new request`() {
-        val newRequest = NewRequestDTO("Some title", "description", "p101", listOf("Mario Rossi"))
+        val newRequest = NewRequestDTO("Some title", "description", "Luca Ferrari", listOf("Mario Rossi"))
         val oldNumRequests = requestRepository.findAll().size
         mockMvc.perform(
-            post("/API/thesis/request/{studentId}", "s654140")
+            post("/API/thesis/requests/{studentId}", "s654140")
                 .content("""${objectMapper.writeValueAsString(newRequest)}""")
                 .contentType(MediaType.APPLICATION_JSON)
         )

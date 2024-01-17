@@ -26,15 +26,15 @@ import java.util.*
     //@PreAuthorize(&quot;hasRole('Professor')&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     fun updateProposal(@PathVariable path: String, @RequestBody proposal: NewProposalDTO?) {
-<span class="nc" id="L29">        val old=proposalRepository.findById(UUID.fromString(path)).get()</span>
-<span class="nc" id="L30">        val oldName:String=old.title</span>
-<span class="nc" id="L31">        val professorId:String = old.supervisor.id!!</span>
+<span class="fc" id="L29">        val old=proposalRepository.findById(UUID.fromString(path)).get()</span>
+<span class="fc" id="L30">        val oldName:String=old.title</span>
+<span class="fc" id="L31">        val professorId:String = old.supervisor.id!!</span>
 
-<span class="nc" id="L33">        proposalService.updateProposal(proposal!!,professorId,oldName,old)</span>
-<span class="nc" id="L34">    }</span>
+<span class="fc" id="L33">        proposalService.updateProposal(proposal!!,professorId,oldName,old)</span>
+<span class="fc" id="L34">    }</span>
     @GetMapping(&quot;/API/thesis/proposals/getProfessorProposals/{professorId}&quot;)
     fun getProposalByProfessorId(@PathVariable professorId:String):List&lt;ProposalDTO&gt; {
-<span class="nc" id="L37">        return proposalService.getProposalByProfessorId( professorId ).filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
+<span class="fc" id="L37">        return proposalService.getProposalByProfessorId( professorId ).filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
     }
     @GetMapping(&quot;/API/thesis/archive/getProfessorArchivedProposals/{professorId}&quot;)
     fun getArchivedProposalByProfessorId(@PathVariable professorId:String):List&lt;ProposalDTO&gt; {
