@@ -32,18 +32,18 @@ import java.util.*
 <span class="fc" id="L32">        println(proposalRepository.findAll().filter{it.title==oldName})</span>
 <span class="fc" id="L33">        val message=checkProposal(newProposal)</span>
 <span class="fc bfc" id="L34" title="All 2 branches covered.">        if(message==&quot;&quot;) {</span>
-<span class="fc" id="L35">            old.title=newProposal.title!!</span>
+<span class="fc" id="L35">            old.title= newProposal.title</span>
 <span class="fc" id="L36">            old.supervisor=teacherRepository.findById(professorId).get()</span>
 <span class="fc" id="L37">            old.coSupervisors=newProposal.coSupervisors!!.joinToString(separator = &quot;,&quot;)</span>
-<span class="fc" id="L38">            old.keywords=newProposal.keywords!!.joinToString(separator = &quot;,&quot;)</span>
-<span class="fc" id="L39">            old.type=newProposal.type!!.joinToString(separator = &quot;,&quot;)</span>
-<span class="fc" id="L40">            old.groups=newProposal.groups!!.joinToString(separator = &quot;,&quot;)</span>
-<span class="fc" id="L41">            old.description=newProposal.description!!</span>
+<span class="fc" id="L38">            old.keywords= newProposal.keywords.joinToString(separator = &quot;,&quot;)</span>
+<span class="fc" id="L39">            old.type= newProposal.type.joinToString(separator = &quot;,&quot;)</span>
+<span class="fc" id="L40">            old.groups= newProposal.groups.joinToString(separator = &quot;,&quot;)</span>
+<span class="fc" id="L41">            old.description= newProposal.description</span>
 <span class="fc" id="L42">            old.requiredKnowledge=newProposal.requiredKnowledge</span>
 <span class="fc" id="L43">            old.notes=newProposal.notes</span>
 <span class="fc" id="L44">            old.expiration=newProposal.expiration</span>
-<span class="fc" id="L45">            old.level=newProposal.level!!</span>
-<span class="fc" id="L46">            old.cds= newProposal.cds!!.joinToString(separator = &quot;,&quot;)</span>
+<span class="fc" id="L45">            old.level= newProposal.level</span>
+<span class="fc" id="L46">            old.cds= newProposal.cds.joinToString(separator = &quot;,&quot;)</span>
 <span class="fc" id="L47">            return proposalRepository.save(old).toDTO()</span>
         }
         else
@@ -62,10 +62,10 @@ import java.util.*
 <span class="fc" id="L62">            message += &quot; coSupervisors or keyword is empty&quot;</span>
         //check type and level and cds
         //if(newProposal.type)
-<span class="fc bfc" id="L65" title="All 2 branches covered.">        newProposal.groups!!.forEach{if(groupDepRepository.findById(it).isEmpty)</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        newProposal.groups.forEach{if(groupDepRepository.findById(it).isEmpty)</span>
 <span class="fc" id="L66">            message += &quot; Group $it not present&quot;</span>
 <span class="fc" id="L67">        }</span>
-<span class="pc bpc" id="L68" title="1 of 6 branches missed.">        if(newProposal.description.isNullOrBlank())</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if(newProposal.description.isBlank())</span>
 <span class="fc" id="L69">            message +=&quot; description is empty&quot;</span>
 <span class="fc" id="L70">        return message</span>
 
@@ -156,8 +156,8 @@ import java.util.*
 <span class="fc" id="L156">        return proposalRepository.findAll().map { it.toDTO() }</span>
     }
     override fun getProposalById(proposalId: UUID): Proposal {
-<span class="nc" id="L159">        return proposalRepository.findById(proposalId)</span>
-<span class="nc" id="L160">            .orElseThrow { ProposalNotFoundException(&quot;Proposal with ID $proposalId not found&quot;) }</span>
+<span class="fc" id="L159">        return proposalRepository.findById(proposalId)</span>
+<span class="pc" id="L160">            .orElseThrow { ProposalNotFoundException(&quot;Proposal with ID $proposalId not found&quot;) }</span>
     }
 <span class="nc" id="L162">    class ProposalNotFoundException(message: String) : RuntimeException(message)</span>
 

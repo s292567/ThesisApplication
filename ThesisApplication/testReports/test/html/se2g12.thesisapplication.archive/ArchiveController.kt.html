@@ -36,13 +36,13 @@ import java.util.*
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun archiveProposal(@PathVariable proposalId: UUID) {
         // Retrieve the proposal by ID
-<span class="nc" id="L39">        val proposal = proposalService.getProposalById(proposalId)</span>
+<span class="fc" id="L39">        val proposal = proposalService.getProposalById(proposalId)</span>
 
         // Archive the proposal
-<span class="nc" id="L42">        archiveService.archiveProposal(proposal)</span>
+<span class="fc" id="L42">        archiveService.archiveProposal(proposal)</span>
 
         // Delete all related applications
-<span class="nc" id="L45">        applicationService.deleteApplicationsByProposalId(proposalId)</span>
-<span class="nc" id="L46">    }</span>
+<span class="fc" id="L45">        applicationService.deleteApplicationsByProposalId(proposalId)</span>
+<span class="fc" id="L46">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

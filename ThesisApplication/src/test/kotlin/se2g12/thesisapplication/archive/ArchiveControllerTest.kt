@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
@@ -129,6 +130,25 @@ class ArchiveControllerTest {
         assert(archivedProposals.all { it.title == savedProposals[0].title || it.title == savedProposals[2].title})
         assert(!archivedProposals.any { it.title == savedProposals[1].title})
 
+    }
+    @Test
+    @WithMockUser(username = "testProfessor", roles = ["Professor"])
+    fun testArchiveProposal() {
+
+
+        val proposalId = savedProposals.first().id
+
+        // Mocking behavior of thesisService
+        // Here, you can mock the behavior according to your needs
+        // For example: given(thesisService.archiveProposal(proposalId)).willReturn(/* Whatever you want to return */)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/API/thesis/archive/{proposalId}", proposalId)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+
+        // You can add more assertions based on your requirements
     }
 
 }

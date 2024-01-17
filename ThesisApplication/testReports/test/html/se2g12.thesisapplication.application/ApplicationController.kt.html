@@ -22,7 +22,7 @@ import java.util.UUID
     ) {
 <span class="fc" id="L23">        val newApplicationDTO=NewApplicationDTO(studentId,proposalId, file)</span>
 
-<span class="pc bpc" id="L25" title="2 of 4 branches missed.">        if (newApplicationDTO.file != null &amp;&amp; !newApplicationDTO.file!!.contentType.equals(&quot;application/pdf&quot;)) {</span>
+<span class="pc bpc" id="L25" title="2 of 4 branches missed.">        if (newApplicationDTO.file != null &amp;&amp; newApplicationDTO.file!!.contentType != &quot;application/pdf&quot;) {</span>
 <span class="nc" id="L26">            throw Exception(&quot;File must be in .pdf format&quot;)</span>
         }
 

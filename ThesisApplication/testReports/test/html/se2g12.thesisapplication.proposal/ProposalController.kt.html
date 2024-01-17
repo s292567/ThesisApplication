@@ -89,270 +89,170 @@ import java.util.*
         @RequestBody filterCriteria: ProposalFilterCriteria
     ): List&lt;ProposalDTO&gt; {
 
-<span class="fc" id="L92">        val list = proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
-<span class="fc" id="L93">        println(&quot;Received filter criteria: $filterCriteria&quot;)</span>
-<span class="fc" id="L94">        println(&quot;Original List Size: ${list.size}&quot;)</span>
+<span class="pc" id="L92">        return search(filterCriteria).filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
 
-<span class="fc" id="L96">        val filteredList = list</span>
-<span class="fc" id="L97">            .filter { proposal -&gt;</span>
-<span class="fc" id="L98">                println(&quot;Filtering by Supervisor: ${filterCriteria.supervisor}&quot;)</span>
-<span class="fc" id="L99">                println(&quot;Proposal supervisor: ${proposal.supervisor}&quot;)</span>
-<span class="pc bpc" id="L100" title="3 of 6 branches missed.">                val matches = filterCriteria.supervisor.isNullOrBlank() ||</span>
-<span class="fc" id="L101">                        (proposal.supervisor.name + &quot; &quot; + proposal.supervisor.surname)</span>
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">                            .equals(filterCriteria.supervisor, ignoreCase = true)</span>
-<span class="fc" id="L103">                println(&quot;Matches criteria? $matches&quot;)</span>
-<span class="fc" id="L104">                matches</span>
-            }
-<span class="fc" id="L106">            .filter { proposal -&gt;</span>
-<span class="fc" id="L107">                println(&quot;Filter criteria co-supervisors: ${filterCriteria.coSupervisors}&quot;)</span>
+    }
+    fun search(filterCriteria: ProposalFilterCriteria):List&lt;ProposalDTO&gt;{
+<span class="fc" id="L96">        val list = proposalService.getAllProposals()</span>
+<span class="fc" id="L97">        println(&quot;Received filter criteria: $filterCriteria&quot;)</span>
+<span class="fc" id="L98">        println(&quot;Original List Size: ${list.size}&quot;)</span>
 
-<span class="pc bpc" id="L109" title="3 of 6 branches missed.">                val matches = filterCriteria.coSupervisors.isNullOrEmpty() ||</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">                        proposal.coSupervisors?.any {</span>
-<span class="fc" id="L111">                            filterCriteria.coSupervisors.contains(it)</span>
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">                        } ?: false</span>
+<span class="fc" id="L100">        val filteredList = list</span>
+<span class="fc" id="L101">            .filter { proposal -&gt;</span>
+<span class="fc" id="L102">                println(&quot;Filtering by Supervisor: ${filterCriteria.supervisor}&quot;)</span>
+<span class="fc" id="L103">                println(&quot;Proposal supervisor: ${proposal.supervisor}&quot;)</span>
+<span class="pc bpc" id="L104" title="3 of 6 branches missed.">                val matches = filterCriteria.supervisor.isNullOrBlank() ||</span>
+<span class="fc" id="L105">                        (proposal.supervisor.name + &quot; &quot; + proposal.supervisor.surname)</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">                            .equals(filterCriteria.supervisor, ignoreCase = true)</span>
+<span class="fc" id="L107">                println(&quot;Matches criteria? $matches&quot;)</span>
+<span class="fc" id="L108">                matches</span>
+            }
+<span class="fc" id="L110">            .filter { proposal -&gt;</span>
+<span class="fc" id="L111">                println(&quot;Filter criteria co-supervisors: ${filterCriteria.coSupervisors}&quot;)</span>
 
-<span class="fc" id="L114">                println(&quot;Matches criteria? $matches&quot;)</span>
+<span class="pc bpc" id="L113" title="3 of 6 branches missed.">                val matches = filterCriteria.coSupervisors.isNullOrEmpty() ||</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">                        proposal.coSupervisors?.any {</span>
+<span class="fc" id="L115">                            filterCriteria.coSupervisors.contains(it)</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">                        } ?: false</span>
 
-<span class="fc" id="L116">                matches</span>
-            }
-<span class="fc" id="L118">            .filter { proposal -&gt;</span>
-<span class="fc" id="L119">                println(&quot;Filtering by Keywords: ${filterCriteria.keywords}&quot;)</span>
-<span class="fc" id="L120">                println(&quot;Proposal keywords: ${proposal.keywords}&quot;)</span>
-<span class="pc bpc" id="L121" title="3 of 6 branches missed.">                val matches = filterCriteria.keywords.isNullOrEmpty() ||</span>
-<span class="pc bpc" id="L122" title="2 of 4 branches missed.">                        proposal.keywords?.any { filterCriteria.keywords.contains(it) } ?: false</span>
-<span class="fc" id="L123">                println(&quot;Matches criteria? $matches&quot;)</span>
-<span class="fc" id="L124">                matches</span>
-            }
-<span class="fc" id="L126">            .filter { proposal -&gt;</span>
-<span class="fc" id="L127">                println(&quot;Filtering by Types: ${filterCriteria.types}&quot;)</span>
-<span class="fc" id="L128">                println(&quot;Proposal types: ${proposal.type}&quot;)</span>
-<span class="pc bpc" id="L129" title="3 of 6 branches missed.">                val matches = filterCriteria.types.isNullOrEmpty() ||</span>
-<span class="pc bpc" id="L130" title="2 of 4 branches missed.">                        proposal.type?.any { filterCriteria.types.contains(it) } ?: false</span>
-<span class="fc" id="L131">                println(&quot;Matches criteria? $matches&quot;)</span>
-<span class="fc" id="L132">                matches</span>
-            }
-<span class="fc" id="L134">            .filter { proposal -&gt;</span>
-<span class="fc" id="L135">                println(&quot;Filtering by Groups: ${filterCriteria.groups}&quot;)</span>
-<span class="fc" id="L136">                println(&quot;Proposal groups: ${proposal.groups}&quot;)</span>
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">                val matches = filterCriteria.groups == null ||</span>
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">                        filterCriteria.groups.isEmpty() ||</span>
-<span class="pc bpc" id="L139" title="2 of 4 branches missed.">                        proposal.groups?.any { filterCriteria.groups.contains(it) } ?: false</span>
-<span class="fc" id="L140">                println(&quot;Matches criteria? $matches&quot;)</span>
-<span class="fc" id="L141">                matches</span>
-            }
-<span class="fc" id="L143">            .filter { proposal -&gt;</span>
-<span class="fc" id="L144">                println(&quot;Filtering by CDS: ${filterCriteria.cds}&quot;)</span>
-<span class="fc" id="L145">                println(&quot;Proposal cds: ${proposal.cds}&quot;)</span>
-<span class="pc bpc" id="L146" title="3 of 6 branches missed.">                val matches = filterCriteria.cds.isNullOrEmpty() ||</span>
-<span class="pc bpc" id="L147" title="2 of 4 branches missed.">                        proposal.cds?.any { filterCriteria.cds.contains(it) } ?: false</span>
-<span class="fc" id="L148">                println(&quot;Matches criteria? $matches&quot;)</span>
-<span class="fc" id="L149">                matches</span>
-            }
-<span class="fc" id="L151">            .filter { proposal -&gt;</span>
-<span class="fc" id="L152">                println(&quot;Filtering by Query String: ${filterCriteria.queryString}&quot;)</span>
-<span class="pc bpc" id="L153" title="4 of 6 branches missed.">                filterCriteria.queryString.isNullOrBlank() ||</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">                        proposal.title.contains(filterCriteria.queryString, ignoreCase = true) ||</span>
-<span class="nc bnc" id="L155" title="All 2 branches missed.">                        proposal.description.contains(filterCriteria.queryString, ignoreCase = true) ||</span>
-<span class="nc bnc" id="L156" title="All 4 branches missed.">                        proposal.notes?.contains(filterCriteria.queryString, ignoreCase = true) ?: false ||</span>
-<span class="pc bnc" id="L157" title="All 4 branches missed.">                        proposal.requiredKnowledge?.contains(filterCriteria.queryString, ignoreCase = true) ?: false</span>
-            }
-<span class="fc" id="L159">            .filter { proposal -&gt;</span>
-<span class="fc" id="L160">                println(&quot;Filtering by Date Range: startDate=${filterCriteria.startDate}, endDate=${filterCriteria.endDate}&quot;)</span>
-<span class="fc" id="L161">                val proposalExpiration = proposal.expiration</span>
-<span class="fc" id="L162">                val currentDate = LocalDate.now()</span>
-<span class="fc" id="L163">                val endDateValue = filterCriteria.endDate</span>
-<span class="fc" id="L164">                println(&quot;Proposal Expiration: $proposalExpiration, Current Date: $currentDate, End Date Value: $endDateValue&quot;)</span>
+<span class="fc" id="L118">                println(&quot;Matches criteria? $matches&quot;)</span>
 
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">                if (endDateValue != null) {</span>
-<span class="pc bpc" id="L167" title="1 of 4 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate &amp;&amp; proposalExpiration &lt;= endDateValue</span>
+<span class="fc" id="L120">                matches</span>
+            }
+<span class="fc" id="L122">            .filter { proposal -&gt;</span>
+<span class="fc" id="L123">                println(&quot;Filtering by Keywords: ${filterCriteria.keywords}&quot;)</span>
+<span class="fc" id="L124">                println(&quot;Proposal keywords: ${proposal.keywords}&quot;)</span>
+<span class="pc bpc" id="L125" title="3 of 6 branches missed.">                val matches = filterCriteria.keywords.isNullOrEmpty() ||</span>
+<span class="pc bpc" id="L126" title="2 of 4 branches missed.">                        proposal.keywords?.any { filterCriteria.keywords.contains(it) } ?: false</span>
+<span class="fc" id="L127">                println(&quot;Matches criteria? $matches&quot;)</span>
+<span class="fc" id="L128">                matches</span>
+            }
+<span class="fc" id="L130">            .filter { proposal -&gt;</span>
+<span class="fc" id="L131">                println(&quot;Filtering by Types: ${filterCriteria.types}&quot;)</span>
+<span class="fc" id="L132">                println(&quot;Proposal types: ${proposal.type}&quot;)</span>
+<span class="pc bpc" id="L133" title="3 of 6 branches missed.">                val matches = filterCriteria.types.isNullOrEmpty() ||</span>
+<span class="pc bpc" id="L134" title="2 of 4 branches missed.">                        proposal.type?.any { filterCriteria.types.contains(it) } ?: false</span>
+<span class="fc" id="L135">                println(&quot;Matches criteria? $matches&quot;)</span>
+<span class="fc" id="L136">                matches</span>
+            }
+<span class="fc" id="L138">            .filter { proposal -&gt;</span>
+<span class="fc" id="L139">                println(&quot;Filtering by Groups: ${filterCriteria.groups}&quot;)</span>
+<span class="fc" id="L140">                println(&quot;Proposal groups: ${proposal.groups}&quot;)</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">                val matches = filterCriteria.groups == null ||</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">                        filterCriteria.groups.isEmpty() ||</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">                        proposal.groups?.any { filterCriteria.groups.contains(it) } ?: false</span>
+<span class="fc" id="L144">                println(&quot;Matches criteria? $matches&quot;)</span>
+<span class="fc" id="L145">                matches</span>
+            }
+<span class="fc" id="L147">            .filter { proposal -&gt;</span>
+<span class="fc" id="L148">                println(&quot;Filtering by CDS: ${filterCriteria.cds}&quot;)</span>
+<span class="fc" id="L149">                println(&quot;Proposal cds: ${proposal.cds}&quot;)</span>
+<span class="pc bpc" id="L150" title="3 of 6 branches missed.">                val matches = filterCriteria.cds.isNullOrEmpty() ||</span>
+<span class="pc bpc" id="L151" title="2 of 4 branches missed.">                        proposal.cds?.any { filterCriteria.cds.contains(it) } ?: false</span>
+<span class="fc" id="L152">                println(&quot;Matches criteria? $matches&quot;)</span>
+<span class="fc" id="L153">                matches</span>
+            }
+<span class="fc" id="L155">            .filter { proposal -&gt;</span>
+<span class="fc" id="L156">                println(&quot;Filtering by Query String: ${filterCriteria.queryString}&quot;)</span>
+<span class="pc bpc" id="L157" title="4 of 6 branches missed.">                filterCriteria.queryString.isNullOrBlank() ||</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                        proposal.title.contains(filterCriteria.queryString, ignoreCase = true) ||</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                        proposal.description.contains(filterCriteria.queryString, ignoreCase = true) ||</span>
+<span class="nc bnc" id="L160" title="All 4 branches missed.">                        proposal.notes?.contains(filterCriteria.queryString, ignoreCase = true) ?: false ||</span>
+<span class="pc bnc" id="L161" title="All 4 branches missed.">                        proposal.requiredKnowledge?.contains(filterCriteria.queryString, ignoreCase = true) ?: false</span>
+            }
+<span class="fc" id="L163">            .filter { proposal -&gt;</span>
+<span class="fc" id="L164">                println(&quot;Filtering by Date Range: startDate=${filterCriteria.startDate}, endDate=${filterCriteria.endDate}&quot;)</span>
+<span class="fc" id="L165">                val proposalExpiration = proposal.expiration</span>
+<span class="fc" id="L166">                val currentDate = LocalDate.now()</span>
+<span class="fc" id="L167">                val endDateValue = filterCriteria.endDate</span>
+<span class="fc" id="L168">                println(&quot;Proposal Expiration: $proposalExpiration, Current Date: $currentDate, End Date Value: $endDateValue&quot;)</span>
+
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">                if (endDateValue != null) {</span>
+<span class="pc bpc" id="L171" title="1 of 4 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate &amp;&amp; proposalExpiration &lt;= endDateValue</span>
                 } else {
                     // If endDate is null, there's no upper limit for the expiration date
-<span class="nc bnc" id="L170" title="All 2 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate</span>
                 }
             }
-<span class="fc" id="L173">            .toList()</span>
+<span class="fc" id="L177">            .toList()</span>
 
-<span class="fc" id="L175">        println(&quot;Final List Size: ${filteredList.size}&quot;)</span>
-<span class="fc" id="L176">        val securityContext = SecurityContextHolder.getContext()</span>
+<span class="fc" id="L179">        println(&quot;Final List Size: ${filteredList.size}&quot;)</span>
+<span class="fc" id="L180">        val securityContext = SecurityContextHolder.getContext()</span>
 // Get the authentication object from the security context
-<span class="fc" id="L178">        val authentication = securityContext.authentication</span>
-<span class="pc bpc" id="L179" title="2 of 4 branches missed.">        if (authentication != null &amp;&amp; authentication.isAuthenticated) {</span>
+<span class="fc" id="L182">        val authentication = securityContext.authentication</span>
+<span class="pc bpc" id="L183" title="2 of 4 branches missed.">        if (authentication != null &amp;&amp; authentication.isAuthenticated) {</span>
             // Get the username
-<span class="fc" id="L181">            val roles = authentication.authorities.map { it.authority }</span>
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">            if (roles.contains(&quot;ROLE_Student&quot;)) {</span>
-<span class="fc" id="L183">                val student = studentRepository.findById(authentication.name.split(&quot;@&quot;)[0]).get()</span>
-<span class="fc" id="L184">                println(&quot;Student: ${student}&quot;)</span>
-<span class="pc" id="L185">                return filteredList.filter { it.cds.contains(student.degree!!.titleDegree) }.filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
+<span class="fc" id="L185">            val roles = authentication.authorities.map { it.authority }</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">            if (roles.contains(&quot;ROLE_Student&quot;)) {</span>
+<span class="fc" id="L187">                val student = studentRepository.findById(authentication.name.split(&quot;@&quot;)[0]).get()</span>
+<span class="fc" id="L188">                println(&quot;Student: ${student}&quot;)</span>
+<span class="pc" id="L189">                return filteredList.filter { it.cds.contains(student.degree!!.titleDegree) }</span>
             }
             else
             {
-<span class="nc" id="L189">                println(&quot;Roles: ${roles}&quot;)</span>
-<span class="nc" id="L190">                val professor=teacherRepository.findById(authentication.name.split(&quot;@&quot;)[0]).get()</span>
-<span class="nc bnc" id="L191" title="All 2 branches missed.">                return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }.filter{archiveService.findByPropId(it.id!!).isEmpty()}</span>
+<span class="nc" id="L193">                println(&quot;Roles: ${roles}&quot;)</span>
+<span class="nc" id="L194">                val professor=teacherRepository.findById(authentication.name.split(&quot;@&quot;)[0]).get()</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }</span>
             }
         }
-<span class="nc" id="L194">        else throw error(&quot;no student id found&quot;)</span>
-
+<span class="nc" id="L198">        else throw error(&quot;no student id found&quot;)</span>
     }
     @PostMapping(&quot;/API/thesis/proposals/searchArchive/&quot;)
     @PreAuthorize(&quot;hasRole('Student') or hasRole('Professor')&quot;)
     fun searchProposalsArchive(
         @RequestBody filterCriteria: ProposalFilterCriteria
     ): List&lt;ProposalDTO&gt; {
-
-<span class="nc bnc" id="L203" title="All 2 branches missed.">        val list = proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isNotEmpty()}</span>
-<span class="nc" id="L204">        println(&quot;Received filter criteria: $filterCriteria&quot;)</span>
-<span class="nc" id="L205">        println(&quot;Original List Size: ${list.size}&quot;)</span>
-
-<span class="nc" id="L207">        val filteredList = list</span>
-<span class="nc" id="L208">            .filter { proposal -&gt;</span>
-<span class="nc" id="L209">                println(&quot;Filtering by Supervisor: ${filterCriteria.supervisor}&quot;)</span>
-<span class="nc" id="L210">                println(&quot;Proposal supervisor: ${proposal.supervisor}&quot;)</span>
-<span class="nc bnc" id="L211" title="All 6 branches missed.">                val matches = filterCriteria.supervisor.isNullOrBlank() ||</span>
-<span class="nc" id="L212">                        (proposal.supervisor.name + &quot; &quot; + proposal.supervisor.surname)</span>
-<span class="nc bnc" id="L213" title="All 2 branches missed.">                            .equals(filterCriteria.supervisor, ignoreCase = true)</span>
-<span class="nc" id="L214">                println(&quot;Matches criteria? $matches&quot;)</span>
-<span class="nc" id="L215">                matches</span>
-            }
-<span class="nc" id="L217">            .filter { proposal -&gt;</span>
-<span class="nc" id="L218">                println(&quot;Filter criteria co-supervisors: ${filterCriteria.coSupervisors}&quot;)</span>
-
-<span class="nc bnc" id="L220" title="All 6 branches missed.">                val matches = filterCriteria.coSupervisors.isNullOrEmpty() ||</span>
-<span class="nc bnc" id="L221" title="All 2 branches missed.">                        proposal.coSupervisors?.any {</span>
-<span class="nc" id="L222">                            filterCriteria.coSupervisors.contains(it)</span>
-<span class="nc bnc" id="L223" title="All 2 branches missed.">                        } ?: false</span>
-
-<span class="nc" id="L225">                println(&quot;Matches criteria? $matches&quot;)</span>
-
-<span class="nc" id="L227">                matches</span>
-            }
-<span class="nc" id="L229">            .filter { proposal -&gt;</span>
-<span class="nc" id="L230">                println(&quot;Filtering by Keywords: ${filterCriteria.keywords}&quot;)</span>
-<span class="nc" id="L231">                println(&quot;Proposal keywords: ${proposal.keywords}&quot;)</span>
-<span class="nc bnc" id="L232" title="All 6 branches missed.">                val matches = filterCriteria.keywords.isNullOrEmpty() ||</span>
-<span class="nc bnc" id="L233" title="All 4 branches missed.">                        proposal.keywords?.any { filterCriteria.keywords.contains(it) } ?: false</span>
-<span class="nc" id="L234">                println(&quot;Matches criteria? $matches&quot;)</span>
-<span class="nc" id="L235">                matches</span>
-            }
-<span class="nc" id="L237">            .filter { proposal -&gt;</span>
-<span class="nc" id="L238">                println(&quot;Filtering by Types: ${filterCriteria.types}&quot;)</span>
-<span class="nc" id="L239">                println(&quot;Proposal types: ${proposal.type}&quot;)</span>
-<span class="nc bnc" id="L240" title="All 6 branches missed.">                val matches = filterCriteria.types.isNullOrEmpty() ||</span>
-<span class="nc bnc" id="L241" title="All 4 branches missed.">                        proposal.type?.any { filterCriteria.types.contains(it) } ?: false</span>
-<span class="nc" id="L242">                println(&quot;Matches criteria? $matches&quot;)</span>
-<span class="nc" id="L243">                matches</span>
-            }
-<span class="nc" id="L245">            .filter { proposal -&gt;</span>
-<span class="nc" id="L246">                println(&quot;Filtering by Groups: ${filterCriteria.groups}&quot;)</span>
-<span class="nc" id="L247">                println(&quot;Proposal groups: ${proposal.groups}&quot;)</span>
-<span class="nc bnc" id="L248" title="All 2 branches missed.">                val matches = filterCriteria.groups == null ||</span>
-<span class="nc bnc" id="L249" title="All 2 branches missed.">                        filterCriteria.groups.isEmpty() ||</span>
-<span class="nc bnc" id="L250" title="All 4 branches missed.">                        proposal.groups?.any { filterCriteria.groups.contains(it) } ?: false</span>
-<span class="nc" id="L251">                println(&quot;Matches criteria? $matches&quot;)</span>
-<span class="nc" id="L252">                matches</span>
-            }
-<span class="nc" id="L254">            .filter { proposal -&gt;</span>
-<span class="nc" id="L255">                println(&quot;Filtering by CDS: ${filterCriteria.cds}&quot;)</span>
-<span class="nc" id="L256">                println(&quot;Proposal cds: ${proposal.cds}&quot;)</span>
-<span class="nc bnc" id="L257" title="All 6 branches missed.">                val matches = filterCriteria.cds.isNullOrEmpty() ||</span>
-<span class="nc bnc" id="L258" title="All 4 branches missed.">                        proposal.cds?.any { filterCriteria.cds.contains(it) } ?: false</span>
-<span class="nc" id="L259">                println(&quot;Matches criteria? $matches&quot;)</span>
-<span class="nc" id="L260">                matches</span>
-            }
-<span class="nc" id="L262">            .filter { proposal -&gt;</span>
-<span class="nc" id="L263">                println(&quot;Filtering by Query String: ${filterCriteria.queryString}&quot;)</span>
-<span class="nc bnc" id="L264" title="All 6 branches missed.">                filterCriteria.queryString.isNullOrBlank() ||</span>
-<span class="nc bnc" id="L265" title="All 2 branches missed.">                        proposal.title.contains(filterCriteria.queryString, ignoreCase = true) ||</span>
-<span class="nc bnc" id="L266" title="All 2 branches missed.">                        proposal.description.contains(filterCriteria.queryString, ignoreCase = true) ||</span>
-<span class="nc bnc" id="L267" title="All 4 branches missed.">                        proposal.notes?.contains(filterCriteria.queryString, ignoreCase = true) ?: false ||</span>
-<span class="nc bnc" id="L268" title="All 4 branches missed.">                        proposal.requiredKnowledge?.contains(filterCriteria.queryString, ignoreCase = true) ?: false</span>
-            }
-<span class="nc" id="L270">            .filter { proposal -&gt;</span>
-<span class="nc" id="L271">                println(&quot;Filtering by Date Range: startDate=${filterCriteria.startDate}, endDate=${filterCriteria.endDate}&quot;)</span>
-<span class="nc" id="L272">                val proposalExpiration = proposal.expiration</span>
-<span class="nc" id="L273">                val currentDate = LocalDate.now()</span>
-<span class="nc" id="L274">                val endDateValue = filterCriteria.endDate</span>
-<span class="nc" id="L275">                println(&quot;Proposal Expiration: $proposalExpiration, Current Date: $currentDate, End Date Value: $endDateValue&quot;)</span>
-
-<span class="nc bnc" id="L277" title="All 2 branches missed.">                if (endDateValue != null) {</span>
-<span class="nc bnc" id="L278" title="All 4 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate &amp;&amp; proposalExpiration &lt;= endDateValue</span>
-                } else {
-                    // If endDate is null, there's no upper limit for the expiration date
-<span class="nc bnc" id="L281" title="All 2 branches missed.">                    proposalExpiration &gt;= filterCriteria.startDate</span>
-                }
-            }
-<span class="nc" id="L284">            .toList()</span>
-
-<span class="nc" id="L286">        println(&quot;Final List Size: ${filteredList.size}&quot;)</span>
-<span class="nc" id="L287">        val securityContext = SecurityContextHolder.getContext()</span>
-// Get the authentication object from the security context
-<span class="nc" id="L289">        val authentication = securityContext.authentication</span>
-<span class="nc bnc" id="L290" title="All 4 branches missed.">        if (authentication != null &amp;&amp; authentication.isAuthenticated) {</span>
-            // Get the username
-<span class="nc" id="L292">            val roles = authentication.authorities.map { it.authority }</span>
-<span class="nc bnc" id="L293" title="All 2 branches missed.">            if (roles.contains(&quot;ROLE_Student&quot;)) {</span>
-<span class="nc" id="L294">                val student = studentRepository.findById(authentication.name.split(&quot;@&quot;)[0]).get()</span>
-<span class="nc" id="L295">                println(&quot;Student: ${student}&quot;)</span>
-<span class="nc bnc" id="L296" title="All 2 branches missed.">                return filteredList.filter { it.cds.contains(student.degree!!.titleDegree) }.filter{archiveService.findByPropId(it.id!!).isNotEmpty()}</span>
-            }
-            else
-            {
-<span class="nc" id="L300">                println(&quot;Roles: ${roles}&quot;)</span>
-<span class="nc" id="L301">                val professor=teacherRepository.findById(authentication.name.split(&quot;@&quot;)[0]).get()</span>
-<span class="nc bnc" id="L302" title="All 4 branches missed.">                return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }.filter{archiveService.findByPropId(it.id!!).isNotEmpty()}</span>
-            }
-        }
-<span class="nc" id="L305">        else throw error(&quot;no student id found&quot;)</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">        return search(filterCriteria).filter{archiveService.findByPropId(it.id!!).isNotEmpty()}</span>
 
     }
     @PostMapping(&quot;/API/thesis/proposals/copy/{proposalId}&quot;)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun copyProposal(@PathVariable proposalId: UUID): ProposalDTO {
-<span class="fc" id="L312">        val copiedProposal = proposalService.copyProposal(proposalId)</span>
-<span class="fc" id="L313">        return copiedProposal.toDTO()</span>
+<span class="fc" id="L212">        val copiedProposal = proposalService.copyProposal(proposalId)</span>
+<span class="fc" id="L213">        return copiedProposal.toDTO()</span>
     }
 
     @DeleteMapping(&quot;/API/thesis/proposals/delete/{proposalId}&quot;)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize(&quot;hasRole('Professor')&quot;)
     fun deleteProposal(@PathVariable proposalId: UUID) {
-<span class="fc" id="L320">        proposalService.deleteProposalById(proposalId)</span>
-<span class="fc" id="L321">    }</span>
+<span class="fc" id="L220">        proposalService.deleteProposalById(proposalId)</span>
+<span class="fc" id="L221">    }</span>
 
     @GetMapping(&quot;/API/thesis/proposals/supervisors&quot;)
     fun getDistinctSupervisorNames(): List&lt;String&gt; {
-<span class="fc" id="L325">        return proposalService.findDistinctSupervisors()</span>
+<span class="fc" id="L225">        return proposalService.findDistinctSupervisors()</span>
     }
 
     @GetMapping(&quot;/API/thesis/proposals/coSupervisors&quot;)
     fun getDistinctCoSupervisors(): List&lt;String&gt; {
-<span class="fc" id="L330">        return proposalService.findDistinctCoSupervisors()</span>
+<span class="fc" id="L230">        return proposalService.findDistinctCoSupervisors()</span>
     }
 
     @GetMapping(&quot;/API/thesis/proposals/types&quot;)
     fun getDistinctProposalTypes(): List&lt;String&gt; {
-<span class="fc" id="L335">        return proposalService.findDistinctProposalTypes()</span>
+<span class="fc" id="L235">        return proposalService.findDistinctProposalTypes()</span>
     }
 
     @GetMapping(&quot;/API/thesis/proposals/levels&quot;)
     fun getDistinctProposalLevels(): List&lt;String&gt; {
-<span class="fc" id="L340">        return proposalService.findDistinctProposalLevels()</span>
+<span class="fc" id="L240">        return proposalService.findDistinctProposalLevels()</span>
     }
 
     @GetMapping(&quot;/API/thesis/proposals/keywords&quot;)
     fun getDistinctProposalKeywords(): List&lt;String&gt; {
-<span class="fc" id="L345">        return proposalService.findDistinctProposalKeywords()</span>
+<span class="fc" id="L245">        return proposalService.findDistinctProposalKeywords()</span>
     }
 
     @GetMapping(&quot;/API/thesis/proposals/groups&quot;)
     fun getDistinctProposalGroups(): List&lt;String&gt; {
-<span class="fc" id="L350">        return proposalService.findDistinctProposalGroups()</span>
+<span class="fc" id="L250">        return proposalService.findDistinctProposalGroups()</span>
     }
 
     @GetMapping(&quot;/API/thesis/proposals/degrees&quot;)
     fun getDistinctProposalCds(): List&lt;String&gt; {
-<span class="fc" id="L355">        return proposalService.findDistinctProposalCds()</span>
+<span class="fc" id="L255">        return proposalService.findDistinctProposalCds()</span>
     }
 
 
