@@ -8,50 +8,49 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
 import se2g12.thesisapplication.application.ApplicationRepository
 import se2g12.thesisapplication.application.ApplicationService
 import se2g12.thesisapplication.proposal.ProposalService
 import java.util.*
 
-<span class="fc" id="L17">@RestController</span>
+<span class="fc" id="L16">@RestController</span>
 @CrossOrigin
-<span class="pc" id="L19">class FileController(private val fileService: FileService,private val applicationRepository: ApplicationRepository,val applicationService: ApplicationService,val proposalService: ProposalService) {</span>
+<span class="pc" id="L18">class FileController(private val fileService: FileService,private val applicationRepository: ApplicationRepository,val applicationService: ApplicationService,val proposalService: ProposalService) {</span>
 
 
     @GetMapping(&quot;/API/downloadFile/{id}&quot;)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize(&quot;hasRole('Student')||hasRole('Professor')&quot;)
     fun getFile(@PathVariable id: UUID): ResponseEntity&lt;ByteArrayResource&gt; {
-<span class="nc" id="L26">        val roles = SecurityContextHolder.getContext().authentication.authorities.map { it.authority }</span>
-<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (roles.contains(&quot;ROLE_Student&quot;))</span>
+<span class="fc" id="L25">        val roles = SecurityContextHolder.getContext().authentication.authorities.map { it.authority }</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (roles.contains(&quot;ROLE_Student&quot;))</span>
         {
-<span class="nc" id="L29">            val application=applicationRepository.findByStudentId(SecurityContextHolder.getContext().authentication.name.split(&quot;@&quot;)[0])</span>
-<span class="nc bnc" id="L30" title="All 4 branches missed.">            if(application.filter { it.fileID != null }.none { it.fileID == id })</span>
-<span class="nc" id="L31">                throw Exception(&quot;not your application&quot;)</span>
+<span class="fc" id="L28">            val application=applicationRepository.findByStudentId(SecurityContextHolder.getContext().authentication.name.split(&quot;@&quot;)[0])</span>
+<span class="fc bfc" id="L29" title="All 4 branches covered.">            if(application.filter { it.fileID != null }.none { it.fileID == id })</span>
+<span class="fc" id="L30">                throw Exception(&quot;not your application&quot;)</span>
         }
         else{
-<span class="nc" id="L34">            val proposals=proposalService.getProposalByProfessorId(SecurityContextHolder.getContext().authentication.name.split(&quot;@&quot;)[0])</span>
-<span class="nc bnc" id="L35" title="All 4 branches missed.">            if(proposals.filter{applicationRepository.getAllApplicationsByProposalId(it.id!!).filter { it.fileID==id }.isNotEmpty()}.isEmpty())</span>
-<span class="nc" id="L36">                throw Exception(&quot;not your proposal&quot;)</span>
+<span class="fc" id="L33">            val proposals=proposalService.getProposalByProfessorId(SecurityContextHolder.getContext().authentication.name.split(&quot;@&quot;)[0])</span>
+<span class="fc bfc" id="L34" title="All 4 branches covered.">            if(proposals.filter{applicationRepository.getAllApplicationsByProposalId(it.id!!).filter { it.fileID==id }.isNotEmpty()}.isEmpty())</span>
+<span class="fc" id="L35">                throw Exception(&quot;not your proposal&quot;)</span>
            
         }
 
-<span class="nc" id="L40">        var elem = fileService.getFileByID(id)</span>
-<span class="nc bnc" id="L41" title="All 4 branches missed.">        if (elem?.file != null) {</span>
-<span class="nc" id="L42">            val resource = ByteArrayResource(elem.file!!)</span>
+<span class="fc" id="L39">        var elem = fileService.getFileByID(id)</span>
+<span class="pc bpc" id="L40" title="2 of 4 branches missed.">        if (elem?.file != null) {</span>
+<span class="fc" id="L41">            val resource = ByteArrayResource(elem.file!!)</span>
 
-<span class="nc" id="L44">            val headers = HttpHeaders()</span>
-<span class="nc" id="L45">            headers.add(HttpHeaders.CONTENT_DISPOSITION, &quot;attachment; filename=${elem.fileName}&quot;)</span>
-<span class="nc" id="L46">            headers.contentType = MediaType.APPLICATION_OCTET_STREAM</span>
+<span class="fc" id="L43">            val headers = HttpHeaders()</span>
+<span class="fc" id="L44">            headers.add(HttpHeaders.CONTENT_DISPOSITION, &quot;attachment; filename=${elem.fileName}&quot;)</span>
+<span class="fc" id="L45">            headers.contentType = MediaType.APPLICATION_OCTET_STREAM</span>
 
-<span class="nc" id="L48">            return ResponseEntity.ok()</span>
-<span class="nc" id="L49">                    .headers(headers)</span>
-<span class="nc" id="L50">                    .contentLength(elem.file!!.size.toLong())</span>
-<span class="nc" id="L51">                    .contentType(MediaType.APPLICATION_OCTET_STREAM)</span>
-<span class="nc" id="L52">                    .body(resource)</span>
+<span class="fc" id="L47">            return ResponseEntity.ok()</span>
+<span class="fc" id="L48">                    .headers(headers)</span>
+<span class="fc" id="L49">                    .contentLength(elem.file!!.size.toLong())</span>
+<span class="fc" id="L50">                    .contentType(MediaType.APPLICATION_OCTET_STREAM)</span>
+<span class="fc" id="L51">                    .body(resource)</span>
         } else {
-<span class="nc" id="L54">            return ResponseEntity.notFound().build()</span>
+<span class="nc" id="L53">            return ResponseEntity.notFound().build()</span>
         }
     }
 }

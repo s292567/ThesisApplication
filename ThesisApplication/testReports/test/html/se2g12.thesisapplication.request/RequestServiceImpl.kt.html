@@ -4,88 +4,116 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Service
 import se2g12.thesisapplication.date.Date
 import se2g12.thesisapplication.proposal.NotFound
+import se2g12.thesisapplication.requestChange.RequestChangeService
 import se2g12.thesisapplication.student.StudentRepository
 import se2g12.thesisapplication.teacher.TeacherRepository
 import java.time.LocalDate
 import java.util.*
 
-<span class="fc" id="L12">@Service</span>
+<span class="fc" id="L13">@Service</span>
 @Transactional
-<span class="fc" id="L14">class RequestServiceImpl(private val requestRepository: RequestRepository, private val studentRepository: StudentRepository, private val teacherRepository: TeacherRepository, private val virtualDate: Date): RequestService {</span>
+<span class="fc" id="L15">class RequestServiceImpl(private val requestRepository: RequestRepository,</span>
+<span class="fc" id="L16">                         private val studentRepository: StudentRepository,</span>
+<span class="fc" id="L17">                         private val teacherRepository: TeacherRepository,</span>
+<span class="fc" id="L18">                         private val virtualDate: Date,</span>
+<span class="fc" id="L19">                         private val requestChangeService: RequestChangeService</span>
+    ): RequestService {
 
     override fun getAllPendingRequestsForSecretary(): List&lt;RequestDTO&gt; {
-<span class="nc" id="L17">        return requestRepository.findBySecretaryStatusLike(&quot;pending&quot;)</span>
-<span class="nc" id="L18">            .map { it.toDTO() }</span>
+<span class="fc" id="L23">        return requestRepository.findBySecretaryStatusLike(&quot;pending&quot;)</span>
+<span class="fc" id="L24">            .map { it.toDTO() }</span>
     }
 
     override fun setRequestSecretaryStatus(requestId: UUID, status: String) {
-<span class="nc" id="L22">        val request = requestRepository.findById(requestId).orElseThrow { RequestNotFound(&quot;Request $requestId was not found&quot;) }</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">        if(request.secretaryStatus != &quot;pending&quot;)</span>
-<span class="nc" id="L24">            throw UnmodifiableRequestStatus(&quot;Request $requestId has already status ${request.secretaryStatus}&quot;)</span>
+<span class="fc" id="L28">        val request = requestRepository.findById(requestId).orElseThrow { RequestNotFound(&quot;Request $requestId was not found&quot;) }</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if(request.secretaryStatus != &quot;pending&quot;)</span>
+<span class="fc" id="L30">            throw UnmodifiableRequestStatus(&quot;Request $requestId has already status ${request.secretaryStatus}&quot;)</span>
         // handle some possible errors, but at least first 3 letters have to be correct
         // this way it's ok both &quot;accept&quot; and &quot;accepted&quot;
-<span class="nc bnc" id="L27" title="All 2 branches missed.">        val newStatus:String = if (status.lowercase().contains(&quot;acc&quot;)){</span>
-<span class="nc" id="L28">            &quot;accepted&quot;</span>
-<span class="nc bnc" id="L29" title="All 2 branches missed.">        } else if (status.lowercase().contains(&quot;rej&quot;)){</span>
-<span class="nc" id="L30">            &quot;rejected&quot;</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        val newStatus:String = if (status.lowercase().contains(&quot;acc&quot;)){</span>
+<span class="fc" id="L34">            &quot;accepted&quot;</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        } else if (status.lowercase().contains(&quot;rej&quot;)){</span>
+<span class="fc" id="L36">            &quot;rejected&quot;</span>
         } else{
-<span class="nc" id="L32">            throw InvalidRequestStatus(&quot;Request status should be `accepted` or `declined`&quot;)</span>
+<span class="fc" id="L38">            throw InvalidRequestStatus(&quot;Request status should be `accepted` or `declined`&quot;)</span>
         }
-<span class="nc" id="L34">        request.secretaryStatus = newStatus</span>
-<span class="nc" id="L35">        requestRepository.save(request)</span>
-<span class="nc" id="L36">    }</span>
+<span class="fc" id="L40">        request.secretaryStatus = newStatus</span>
+<span class="fc" id="L41">        requestRepository.save(request)</span>
+<span class="fc" id="L42">    }</span>
 
     override fun getAllPendingRequestsForProfessor(professorId: String): List&lt;RequestDTO&gt; {
 //        returns only requests that have been accepted by the secreatry but pending by the supervisor
-<span class="nc" id="L40">        return requestRepository.findBySupervisorIdAndSecretaryStatusLikeAndSupervisorStatusLike(</span>
-<span class="nc" id="L41">            professorId, &quot;accepted&quot;, &quot;pending&quot;</span>
-<span class="nc" id="L42">            ).map { it.toDTO() }</span>
+<span class="fc" id="L46">        return requestRepository.findBySupervisorIdAndSecretaryStatusLikeAndSupervisorStatusLike(</span>
+<span class="fc" id="L47">            professorId, &quot;accepted&quot;, &quot;pending&quot;</span>
+<span class="fc" id="L48">            ).map { it.toDTO() }</span>
     }
 
     override fun setRequestSupervisorStatus(requestId: UUID, status: String, professorId: String) {
-<span class="nc" id="L46">        val request = requestRepository.findById(requestId).orElseThrow { RequestNotFound(&quot;Request $requestId was not found&quot;) }</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (request.supervisor.id != professorId)</span>
-<span class="nc" id="L48">            throw UnauthorizedProfessor(&quot;You ($professorId) are not the supervisor for this thesis request (${request.supervisor.id})&quot;)</span>
-<span class="nc bnc" id="L49" title="All 2 branches missed.">        if(request.secretaryStatus != &quot;accepted&quot;)</span>
-<span class="nc" id="L50">            throw UnmodifiableRequestStatus(&quot;Request $requestId has to be accepted by the secreatry before&quot;)</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        if(request.supervisorStatus != &quot;pending&quot;)</span>
-<span class="nc" id="L52">            throw UnmodifiableRequestStatus(&quot;Request $requestId has already status ${request.supervisorStatus}&quot;)</span>
+<span class="fc" id="L52">        val request = requestRepository.findById(requestId).orElseThrow { RequestNotFound(&quot;Request $requestId was not found&quot;) }</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (request.supervisor.id != professorId)</span>
+<span class="fc" id="L54">            throw UnauthorizedProfessor(&quot;You ($professorId) are not the supervisor for this thesis request (${request.supervisor.id})&quot;)</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if(request.secretaryStatus != &quot;accepted&quot;)</span>
+<span class="fc" id="L56">            throw UnmodifiableRequestStatus(&quot;Request $requestId has to be accepted by the secreatry before&quot;)</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if(request.supervisorStatus != &quot;pending&quot;)</span>
+<span class="fc" id="L58">            throw UnmodifiableRequestStatus(&quot;Request $requestId has already status ${request.supervisorStatus}&quot;)</span>
 
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        val newStatus:String = if (status.lowercase().contains(&quot;acc&quot;)){</span>
-<span class="nc bnc" id="L55" title="All 2 branches missed.">            request.startDate = virtualDate.getDate()?:LocalDate.now()</span>
-<span class="nc" id="L56">            &quot;accepted&quot;</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">        } else if (status.lowercase().contains(&quot;rej&quot;)){</span>
-<span class="nc" id="L58">            &quot;rejected&quot;</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        } else if (status.lowercase().contains(&quot;change&quot;)){</span>
-<span class="nc" id="L60">            &quot;change requested&quot;</span>
-        }else{
-<span class="nc" id="L62">            throw InvalidRequestStatus(&quot;Request status should be `accepted`, `declined` or `change`&quot;)</span>
+<span class="fc" id="L60">        val newStatus: String = when {</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            status.lowercase().contains(&quot;acc&quot;) -&gt; {</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">                request.startDate = virtualDate.getDate() ?: LocalDate.now()</span>
+<span class="fc" id="L63">                &quot;accepted&quot;</span>
+            }
+<span class="fc bfc" id="L65" title="All 2 branches covered.">            status.lowercase().contains(&quot;rej&quot;) -&gt; &quot;rejected&quot;</span>
+<span class="fc" id="L66">            else -&gt; throw InvalidRequestStatus(&quot;Request status should be `accepted` or `declined`&quot;)</span>
         }
-<span class="nc" id="L64">        request.supervisorStatus = newStatus</span>
-<span class="nc" id="L65">        requestRepository.save(request)</span>
-<span class="nc" id="L66">    }</span>
+
+<span class="fc" id="L69">        request.supervisorStatus = newStatus</span>
+<span class="fc" id="L70">        requestRepository.save(request)</span>
+<span class="fc" id="L71">    }</span>
     // Updated RequestServiceImpl function
     override fun addNewRequest(newRequest: NewRequestDTO, studentId: String) {
-<span class="nc" id="L69">            val student = studentRepository.findById(studentId)</span>
-<span class="nc" id="L70">                .orElseThrow { NotFound(&quot;Student $studentId not found&quot;) }</span>
+<span class="fc" id="L74">            val student = studentRepository.findById(studentId)</span>
+<span class="pc" id="L75">                .orElseThrow { NotFound(&quot;Student $studentId not found&quot;) }</span>
 
 
             // Convert coSupervisors list to a string
-<span class="nc" id="L74">            val coSupervisorsString = newRequest.coSupervisors.joinToString(&quot;, &quot;)</span>
-            // TODO: check coSupervisors are actual teachers
-<span class="nc" id="L76">        val supervisor = teacherRepository.findById(newRequest.supervisorId)</span>
-<span class="nc" id="L77">            .orElseThrow { NotFound(&quot;professor ${newRequest.supervisorId} not found&quot;) }</span>
+<span class="fc" id="L79">            val coSupervisorsString = newRequest.coSupervisors.joinToString(&quot;, &quot;)</span>
 
-<span class="nc" id="L79">            val request = Request(</span>
-<span class="nc" id="L80">                student = student,</span>
-<span class="nc" id="L81">                title = newRequest.title,</span>
-<span class="nc" id="L82">                description = newRequest.description,</span>
-<span class="nc" id="L83">                supervisor = supervisor,</span>
-<span class="nc" id="L84">                coSupervisors = coSupervisorsString</span>
+<span class="fc" id="L81">        val supervisorName=newRequest.supervisor.split(&quot; &quot;)</span>
+<span class="fc" id="L82">        val supervisor = try {</span>
+<span class="fc" id="L83">            teacherRepository.findByNameSurname(supervisorName[0], supervisorName[1])</span>
+<span class="fc" id="L84">                .first()</span>
+<span class="nc" id="L85">        }catch (e: NoSuchElementException){</span>
+<span class="nc" id="L86">            throw NotFound(&quot;Teacher ${newRequest.supervisor} not found.&quot;)</span>
+        }
+<span class="fc" id="L88">            val request = Request(</span>
+<span class="fc" id="L89">                student = student,</span>
+<span class="fc" id="L90">                title = newRequest.title,</span>
+<span class="fc" id="L91">                description = newRequest.description,</span>
+<span class="fc" id="L92">                supervisor = supervisor,</span>
+<span class="fc" id="L93">                coSupervisors = coSupervisorsString</span>
             )
 
-<span class="nc" id="L87">            requestRepository.save(request)</span>
-<span class="nc" id="L88">        }</span>
+<span class="fc" id="L96">            requestRepository.save(request)</span>
+<span class="fc" id="L97">        }</span>
 
-    }
+    override fun addRequestChangeInfo(info: ChangeInfoDTO, professorId: String) {
+        //1. Retrieve request
+<span class="fc" id="L101">        val request= requestRepository.findById(info.requestId)</span>
+<span class="fc" id="L102">            .orElseThrow { NotFound(&quot;Request ${info.requestId} not found&quot;) }</span>
+        //2. check you are the supervisor
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (request.supervisor.id != professorId)</span>
+<span class="fc" id="L105">            throw UnauthorizedProfessor(&quot;You ($professorId) are not the supervisor for this thesis request (${request.supervisor.id})&quot;)</span>
+        //3. check it's accepted by secretary and still pending
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if(request.secretaryStatus != &quot;accepted&quot;)</span>
+<span class="fc" id="L108">            throw UnmodifiableRequestStatus(&quot;Request ${info.requestId} has to be accepted by the secreatry before&quot;)</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if(request.supervisorStatus != &quot;pending&quot;)</span>
+<span class="fc" id="L110">            throw UnmodifiableRequestStatus(&quot;Request ${info.requestId} has already status ${request.supervisorStatus}&quot;)</span>
+
+        //4. save info
+<span class="fc" id="L113">        request.supervisorStatus = &quot;change requested&quot;</span>
+<span class="fc" id="L114">        requestRepository.save(request)</span>
+<span class="fc" id="L115">        requestChangeService.addRequestChange(request, info.info)</span>
+<span class="fc" id="L116">    }</span>
+
+}
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

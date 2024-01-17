@@ -19,193 +19,197 @@ import java.util.*
 <span class="fc" id="L19">    private val studentRepository: StudentRepository,</span>
 <span class="fc" id="L20">    private val groupDepRepository: GroupDepRepository,</span>
 <span class="fc" id="L21">    private val applicationRepository: ApplicationRepository,</span>
-<span class="fc" id="L22">    private val degreeRepository: DegreeRepository</span>
 )
     :ProposalService {
     override fun getProposalByProfessorId(supervisorId: String): List&lt;ProposalDTO&gt; {
-<span class="nc" id="L26">        val prop = proposalRepository.findAllBySupervisorId(supervisorId)</span>
-<span class="nc" id="L27">        return prop.map{it.toDTO()}</span>
+<span class="fc" id="L25">        val prop = proposalRepository.findAllBySupervisorId(supervisorId)</span>
+<span class="fc" id="L26">        return prop.map{it.toDTO()}</span>
     }
 
     override fun updateProposal(newProposal: NewProposalDTO, professorId: String,oldName:String,old: Proposal):ProposalDTO {
-<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (professorId != old.supervisor.id)</span>
-<span class="nc" id="L32">            throw ForbiddenError(&quot;You ($professorId) cannot update a proposal of which you are not the supervisor (${old.supervisor.id})&quot;)</span>
-<span class="nc" id="L33">        println(proposalRepository.findAll().filter{it.title==oldName})</span>
-<span class="nc" id="L34">        val message=checkProposal(newProposal)</span>
-<span class="nc bnc" id="L35" title="All 2 branches missed.">        if(message==&quot;&quot;) {</span>
-<span class="nc" id="L36">            old.title=newProposal.title!!</span>
-<span class="nc" id="L37">            old.supervisor=teacherRepository.findById(professorId).get()</span>
-<span class="nc" id="L38">            old.coSupervisors=newProposal.coSupervisors!!.joinToString(separator = &quot;,&quot;)</span>
-<span class="nc" id="L39">            old.keywords=newProposal.keywords!!.joinToString(separator = &quot;,&quot;)</span>
-<span class="nc" id="L40">            old.type=newProposal.type!!.joinToString(separator = &quot;,&quot;)</span>
-<span class="nc" id="L41">            old.groups=newProposal.groups!!.joinToString(separator = &quot;,&quot;)</span>
-<span class="nc" id="L42">            old.description=newProposal.description!!</span>
-<span class="nc" id="L43">            old.requiredKnowledge=newProposal.requiredKnowledge</span>
-<span class="nc" id="L44">            old.notes=newProposal.notes</span>
-<span class="nc" id="L45">            old.expiration=newProposal.expiration</span>
-<span class="nc" id="L46">            old.level=newProposal.level!!</span>
-<span class="nc" id="L47">            old.cds= newProposal.cds!!.joinToString(separator = &quot;,&quot;)</span>
-<span class="nc" id="L48">            return proposalRepository.save(old).toDTO()</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (professorId != old.supervisor.id)</span>
+<span class="fc" id="L31">            throw ForbiddenError(&quot;You ($professorId) cannot update a proposal of which you are not the supervisor (${old.supervisor.id})&quot;)</span>
+<span class="fc" id="L32">        println(proposalRepository.findAll().filter{it.title==oldName})</span>
+<span class="fc" id="L33">        val message=checkProposal(newProposal)</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if(message==&quot;&quot;) {</span>
+<span class="fc" id="L35">            old.title=newProposal.title!!</span>
+<span class="fc" id="L36">            old.supervisor=teacherRepository.findById(professorId).get()</span>
+<span class="fc" id="L37">            old.coSupervisors=newProposal.coSupervisors!!.joinToString(separator = &quot;,&quot;)</span>
+<span class="fc" id="L38">            old.keywords=newProposal.keywords!!.joinToString(separator = &quot;,&quot;)</span>
+<span class="fc" id="L39">            old.type=newProposal.type!!.joinToString(separator = &quot;,&quot;)</span>
+<span class="fc" id="L40">            old.groups=newProposal.groups!!.joinToString(separator = &quot;,&quot;)</span>
+<span class="fc" id="L41">            old.description=newProposal.description!!</span>
+<span class="fc" id="L42">            old.requiredKnowledge=newProposal.requiredKnowledge</span>
+<span class="fc" id="L43">            old.notes=newProposal.notes</span>
+<span class="fc" id="L44">            old.expiration=newProposal.expiration</span>
+<span class="fc" id="L45">            old.level=newProposal.level!!</span>
+<span class="fc" id="L46">            old.cds= newProposal.cds!!.joinToString(separator = &quot;,&quot;)</span>
+<span class="fc" id="L47">            return proposalRepository.save(old).toDTO()</span>
         }
         else
-<span class="nc" id="L51">            throw ProposalBodyError(message)</span>
+<span class="fc" id="L50">            throw ProposalBodyError(message)</span>
         //add custom exception
         return old.toDTO()
     }
     private fun checkProposal(newProposal: NewProposalDTO):String{
-<span class="nc" id="L56">        var message=&quot;&quot;</span>
+<span class="fc" id="L55">        var message=&quot;&quot;</span>
         //date check
-<span class="nc" id="L58">        val currentDate=LocalDate.now()</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if(currentDate.isAfter(newProposal.expiration))</span>
-<span class="nc" id="L60">            message= &quot;$message expire date is before now&quot;</span>
+<span class="fc" id="L57">        val currentDate=LocalDate.now()</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if(currentDate.isAfter(newProposal.expiration))</span>
+<span class="fc" id="L59">            message= &quot;$message expire date is before now&quot;</span>
         //check list of string
-<span class="nc bnc" id="L62" title="All 12 branches missed.">        if(newProposal.coSupervisors.isNullOrEmpty()||newProposal.keywords.isNullOrEmpty())</span>
-<span class="nc" id="L63">            message += &quot; coSupervisors or keyword is empty&quot;</span>
+<span class="pc bpc" id="L61" title="2 of 12 branches missed.">        if(newProposal.coSupervisors.isNullOrEmpty()||newProposal.keywords.isNullOrEmpty())</span>
+<span class="fc" id="L62">            message += &quot; coSupervisors or keyword is empty&quot;</span>
         //check type and level and cds
         //if(newProposal.type)
-<span class="nc bnc" id="L66" title="All 2 branches missed.">        newProposal.groups!!.forEach{if(groupDepRepository.findById(it).isEmpty)</span>
-<span class="nc" id="L67">            message += &quot; Group $it not present&quot;</span>
-<span class="nc" id="L68">        }</span>
-<span class="nc bnc" id="L69" title="All 6 branches missed.">        if(newProposal.description.isNullOrBlank())</span>
-<span class="nc" id="L70">            message +=&quot; description is empty&quot;</span>
-<span class="nc" id="L71">        return message</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        newProposal.groups!!.forEach{if(groupDepRepository.findById(it).isEmpty)</span>
+<span class="fc" id="L66">            message += &quot; Group $it not present&quot;</span>
+<span class="fc" id="L67">        }</span>
+<span class="pc bpc" id="L68" title="1 of 6 branches missed.">        if(newProposal.description.isNullOrBlank())</span>
+<span class="fc" id="L69">            message +=&quot; description is empty&quot;</span>
+<span class="fc" id="L70">        return message</span>
 
     }
     @Transactional
     override fun addNewProposal(newProposal: NewProposalDTO, professorId: String) {
-<span class="nc" id="L76">        val supervisor = teacherRepository.findById(professorId).orElseThrow { NotFound(&quot;Professor $professorId not found&quot;) }</span>
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        val possibleGroups: MutableList&lt;String?&gt; = mutableListOf(supervisor.group?.id)</span>
-<span class="nc bnc" id="L78" title="All 6 branches missed.">        if(! newProposal.coSupervisors.isNullOrEmpty()){</span>
-<span class="nc bnc" id="L79" title="All 2 branches missed.">            for (coSup in newProposal.coSupervisors!!){</span>
-<span class="nc" id="L80">                try {</span>
+<span class="fc" id="L75">        val supervisor = teacherRepository.findById(professorId).orElseThrow { NotFound(&quot;Professor $professorId not found&quot;) }</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        val possibleGroups: MutableList&lt;String?&gt; = mutableListOf(supervisor.group?.id)</span>
+<span class="pc bpc" id="L77" title="3 of 6 branches missed.">        if(! newProposal.coSupervisors.isNullOrEmpty()){</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            for (coSup in newProposal.coSupervisors!!){</span>
+<span class="fc" id="L79">                try {</span>
 //                string as: &quot;name surname&quot;
-<span class="nc" id="L82">                    val (name, surname) = coSup.split(&quot; &quot;)</span>
-<span class="nc" id="L83">                    val t = teacherRepository.findByNameSurname(name, surname)</span>
-<span class="nc bnc" id="L84" title="All 4 branches missed.">                    if (t.isNotEmpty()) {</span>
+<span class="fc" id="L81">                    val (name, surname) = coSup.split(&quot; &quot;)</span>
+<span class="fc" id="L82">                    val t = teacherRepository.findByNameSurname(name, surname)</span>
+<span class="fc bfc" id="L83" title="All 4 branches covered.">                    if (t.isNotEmpty()) {</span>
                         // internal co-supervisor
-<span class="nc bnc" id="L86" title="All 2 branches missed.">                        possibleGroups.add(t.first().group?.id)</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">                        possibleGroups.add(t.first().group?.id)</span>
                     }
                     // else external co-sup
-<span class="nc" id="L89">                }catch (_: IndexOutOfBoundsException){</span>
+<span class="nc" id="L88">                }catch (_: IndexOutOfBoundsException){</span>
                     // the name was not in the form &quot;name surname&quot;
                 }
             }
 
         }
         // checking the validity of groups
-<span class="nc" id="L96">        newProposal.groups.forEach {</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (!possibleGroups.contains(it)){</span>
-<span class="nc" id="L98">                throw ProposalBodyError(&quot;Invalid group $it: no supervisor belongs to it&quot;)</span>
+<span class="fc" id="L95">        newProposal.groups.forEach {</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            if (!possibleGroups.contains(it)){</span>
+<span class="fc" id="L97">                throw ProposalBodyError(&quot;Invalid group $it: no supervisor belongs to it&quot;)</span>
             }
-<span class="nc" id="L100">        }</span>
+<span class="fc" id="L99">        }</span>
 
-<span class="nc" id="L102">        val expirationDate = newProposal.expiration</span>
-<span class="nc" id="L103">        val proposal = Proposal(newProposal.title, supervisor,</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">            newProposal.coSupervisors?.joinToString(&quot;, &quot;) { it },</span>
-<span class="nc" id="L105">            newProposal.keywords.joinToString(&quot;, &quot;) { it },</span>
-<span class="nc" id="L106">            newProposal.type.joinToString(&quot;, &quot;) { it },</span>
-<span class="nc" id="L107">            newProposal.groups.joinToString(&quot;, &quot;) { it },</span>
-<span class="nc" id="L108">            newProposal.description,</span>
-<span class="nc" id="L109">            newProposal.requiredKnowledge, newProposal.notes,</span>
-<span class="nc" id="L110">            expirationDate, newProposal.level,</span>
-<span class="nc" id="L111">            newProposal.cds.joinToString(&quot;, &quot;) { it })</span>
-<span class="nc" id="L112">        proposalRepository.save(proposal)</span>
+<span class="fc" id="L101">        val expirationDate = newProposal.expiration</span>
+<span class="fc" id="L102">        val proposal = Proposal(newProposal.title, supervisor,</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">            newProposal.coSupervisors?.joinToString(&quot;, &quot;) { it },</span>
+<span class="fc" id="L104">            newProposal.keywords.joinToString(&quot;, &quot;) { it },</span>
+<span class="fc" id="L105">            newProposal.type.joinToString(&quot;, &quot;) { it },</span>
+<span class="fc" id="L106">            newProposal.groups.joinToString(&quot;, &quot;) { it },</span>
+<span class="fc" id="L107">            newProposal.description,</span>
+<span class="fc" id="L108">            newProposal.requiredKnowledge, newProposal.notes,</span>
+<span class="fc" id="L109">            expirationDate, newProposal.level,</span>
+<span class="fc" id="L110">            newProposal.cds.joinToString(&quot;, &quot;) { it })</span>
+<span class="fc" id="L111">        proposalRepository.save(proposal)</span>
 
-<span class="nc" id="L114">    }</span>
+<span class="fc" id="L113">    }</span>
 
     override fun deleteProposalById(proposalId: UUID) {
         // Proposal is deletable only if active (not archived)
         // associated applications not deleted but with status 'cancelled'
         // Delete associated applications
-<span class="nc" id="L120">        val applications = applicationRepository.findByProposalId(proposalId)</span>
-<span class="nc" id="L121">        applications.forEach { applicationRepository.delete(it) }</span>
+<span class="fc" id="L119">        val applications = applicationRepository.findByProposalId(proposalId)</span>
+<span class="fc" id="L120">        applications.forEach { applicationRepository.delete(it) }</span>
 
         // Delete the proposal itself
-<span class="nc" id="L124">        proposalRepository.deleteById(proposalId)</span>
-<span class="nc" id="L125">    }</span>
+<span class="fc" id="L123">        proposalRepository.deleteById(proposalId)</span>
+<span class="fc" id="L124">    }</span>
 
     override fun copyProposal(proposalId: UUID): Proposal {
-<span class="nc" id="L128">        val originalProposal = proposalRepository.findById(proposalId).orElseThrow {</span>
-<span class="nc" id="L129">            throw ProposalNotFoundError(&quot;Proposal not found!&quot;)</span>
+<span class="fc" id="L127">        val originalProposal = proposalRepository.findById(proposalId).orElseThrow {</span>
+<span class="nc" id="L128">            throw ProposalNotFoundError(&quot;Proposal not found!&quot;)</span>
         }
 
         // Create a new proposal with the same attributes, excluding the ID
-<span class="nc" id="L133">        val copiedProposal = Proposal(</span>
-<span class="nc" id="L134">            title = originalProposal.title,</span>
-<span class="nc" id="L135">            supervisor = originalProposal.supervisor,</span>
-<span class="nc" id="L136">            coSupervisors = originalProposal.coSupervisors,</span>
-<span class="nc" id="L137">            keywords = originalProposal.keywords,</span>
-<span class="nc" id="L138">            type = originalProposal.type,</span>
-<span class="nc" id="L139">            groups = originalProposal.groups,</span>
-<span class="nc" id="L140">            description = originalProposal.description,</span>
-<span class="nc" id="L141">            requiredKnowledge = originalProposal.requiredKnowledge,</span>
-<span class="nc" id="L142">            notes = originalProposal.notes,</span>
-<span class="nc" id="L143">            expiration = originalProposal.expiration,</span>
-<span class="nc" id="L144">            level = originalProposal.level,</span>
-<span class="nc" id="L145">            cds = originalProposal.cds</span>
+<span class="fc" id="L132">        val copiedProposal = Proposal(</span>
+<span class="fc" id="L133">            title = originalProposal.title,</span>
+<span class="fc" id="L134">            supervisor = originalProposal.supervisor,</span>
+<span class="fc" id="L135">            coSupervisors = originalProposal.coSupervisors,</span>
+<span class="fc" id="L136">            keywords = originalProposal.keywords,</span>
+<span class="fc" id="L137">            type = originalProposal.type,</span>
+<span class="fc" id="L138">            groups = originalProposal.groups,</span>
+<span class="fc" id="L139">            description = originalProposal.description,</span>
+<span class="fc" id="L140">            requiredKnowledge = originalProposal.requiredKnowledge,</span>
+<span class="fc" id="L141">            notes = originalProposal.notes,</span>
+<span class="fc" id="L142">            expiration = originalProposal.expiration,</span>
+<span class="fc" id="L143">            level = originalProposal.level,</span>
+<span class="fc" id="L144">            cds = originalProposal.cds</span>
         )
 
         // Save the copied proposal
-<span class="nc" id="L149">        val savedCopiedProposal = proposalRepository.save(copiedProposal)</span>
+<span class="fc" id="L148">        val savedCopiedProposal = proposalRepository.save(copiedProposal)</span>
 
-<span class="nc" id="L151">        return savedCopiedProposal</span>
+<span class="fc" id="L150">        return savedCopiedProposal</span>
     }
 
     //getAll
 
     override fun getAllProposals(): List&lt;ProposalDTO&gt; {
-<span class="nc" id="L157">        return proposalRepository.findAll().map { it.toDTO() }</span>
+<span class="fc" id="L156">        return proposalRepository.findAll().map { it.toDTO() }</span>
     }
+    override fun getProposalById(proposalId: UUID): Proposal {
+<span class="nc" id="L159">        return proposalRepository.findById(proposalId)</span>
+<span class="nc" id="L160">            .orElseThrow { ProposalNotFoundException(&quot;Proposal with ID $proposalId not found&quot;) }</span>
+    }
+<span class="nc" id="L162">    class ProposalNotFoundException(message: String) : RuntimeException(message)</span>
 
     //getByCds
     override fun getProposalsByCds(cds: String): List&lt;ProposalDTO&gt; {
-<span class="nc" id="L162">        return proposalRepository.findByCdsContaining(cds)</span>
-<span class="nc" id="L163">            .map { it.toDTO() }</span>
+<span class="fc" id="L166">        return proposalRepository.findByCdsContaining(cds)</span>
+<span class="fc" id="L167">            .map { it.toDTO() }</span>
     }
 
     override fun searchProposals(query: String): List&lt;ProposalDTO&gt; {
-<span class="nc" id="L167">        return proposalRepository.searchProposals(query).map { it.toDTO() }</span>
+<span class="fc" id="L171">        return proposalRepository.searchProposals(query).map { it.toDTO() }</span>
     }
     override fun searchProposalByStudentCds(studentId: String, query: String? ): List&lt;ProposalDTO&gt; {
-<span class="nc" id="L170">        val cdsName = studentRepository.findById(studentId).orElseThrow { NotFound(&quot;Student $studentId not found&quot;) }</span>
-<span class="nc" id="L171">            .degree!!.titleDegree!!</span>
-<span class="nc bnc" id="L172" title="All 6 branches missed.">        if (query.isNullOrBlank())</span>
-<span class="nc" id="L173">            return getProposalsByCds(cdsName)</span>
-<span class="nc" id="L174">        return proposalRepository.searchProposals(query)</span>
+<span class="fc" id="L174">        val cdsName = studentRepository.findById(studentId).orElseThrow { NotFound(&quot;Student $studentId not found&quot;) }</span>
+<span class="fc" id="L175">            .degree!!.titleDegree!!</span>
+<span class="fc bfc" id="L176" title="All 6 branches covered.">        if (query.isNullOrBlank())</span>
+<span class="fc" id="L177">            return getProposalsByCds(cdsName)</span>
+<span class="fc" id="L178">        return proposalRepository.searchProposals(query)</span>
         // filtering if the proposal contains the cdsCode in the field cds (a list of cds codes)
-<span class="nc" id="L176">            .filter { it.cds.split(&quot;, &quot;, &quot;,&quot;).contains(cdsName) }</span>
-<span class="nc" id="L177">            .map { it.toDTO() }</span>
+<span class="fc" id="L180">            .filter { it.cds.split(&quot;, &quot;, &quot;,&quot;).contains(cdsName) }</span>
+<span class="fc" id="L181">            .map { it.toDTO() }</span>
     }
     override fun getDistinctSupervisors(): List&lt;String&gt; {
-<span class="nc" id="L180">        return proposalRepository.findDistinctSupervisors()</span>
+<span class="fc" id="L184">        return proposalRepository.findDistinctSupervisors()</span>
     }
 
     override fun findDistinctSupervisors(): List&lt;String&gt; {
-<span class="nc" id="L184">        return proposalRepository.findDistinctSupervisors()</span>
+<span class="fc" id="L188">        return proposalRepository.findDistinctSupervisors()</span>
     }
 
     override fun findDistinctCoSupervisors(): List&lt;String&gt; {
-<span class="nc bnc" id="L188" title="All 2 branches missed.">        return getAllProposals().flatMap { it.coSupervisors.orEmpty() }.distinct()</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">        return getAllProposals().flatMap { it.coSupervisors.orEmpty() }.distinct()</span>
     }
 
     override fun findDistinctProposalTypes(): List&lt;String&gt; {
-<span class="nc bnc" id="L192" title="All 2 branches missed.">        return getAllProposals().flatMap { it.type.orEmpty() }.distinct()</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        return getAllProposals().flatMap { it.type.orEmpty() }.distinct()</span>
     }
 
     override fun findDistinctProposalLevels(): List&lt;String&gt; {
-<span class="nc" id="L196">        return getAllProposals().mapNotNull { it.level }.distinct()</span>
+<span class="fc" id="L200">        return getAllProposals().mapNotNull { it.level }.distinct()</span>
     }
 
     override fun findDistinctProposalKeywords(): List&lt;String&gt; {
-<span class="nc bnc" id="L200" title="All 2 branches missed.">        return getAllProposals().flatMap { it.keywords.orEmpty() }.distinct()</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">        return getAllProposals().flatMap { it.keywords.orEmpty() }.distinct()</span>
     }
 
     override fun findDistinctProposalGroups(): List&lt;String&gt; {
-<span class="nc bnc" id="L204" title="All 2 branches missed.">        return getAllProposals().flatMap { it.groups.orEmpty() }.distinct()</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">        return getAllProposals().flatMap { it.groups.orEmpty() }.distinct()</span>
     }
 
     override fun findDistinctProposalCds(): List&lt;String&gt; {
-<span class="nc bnc" id="L208" title="All 2 branches missed.">        return getAllProposals().flatMap { it.cds.orEmpty() }.distinct()</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">        return getAllProposals().flatMap { it.cds.orEmpty() }.distinct()</span>
     }
 
 }
