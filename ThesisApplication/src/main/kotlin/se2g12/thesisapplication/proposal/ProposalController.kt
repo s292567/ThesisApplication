@@ -89,7 +89,11 @@ class ProposalController(private val proposalService:ProposalService,private val
         @RequestBody filterCriteria: ProposalFilterCriteria
     ): List<ProposalDTO> {
 
-        val list = proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isEmpty()}
+        return search(filterCriteria).filter{archiveService.findByPropId(it.id!!).isEmpty()}
+
+    }
+    fun search(filterCriteria: ProposalFilterCriteria):List<ProposalDTO>{
+        val list = proposalService.getAllProposals()
         println("Received filter criteria: $filterCriteria")
         println("Original List Size: ${list.size}")
 
@@ -182,127 +186,23 @@ class ProposalController(private val proposalService:ProposalService,private val
             if (roles.contains("ROLE_Student")) {
                 val student = studentRepository.findById(authentication.name.split("@")[0]).get()
                 println("Student: ${student}")
-                return filteredList.filter { it.cds.contains(student.degree!!.titleDegree) }.filter{archiveService.findByPropId(it.id!!).isEmpty()}
+                return filteredList.filter { it.cds.contains(student.degree!!.titleDegree) }
             }
             else
             {
                 println("Roles: ${roles}")
                 val professor=teacherRepository.findById(authentication.name.split("@")[0]).get()
-                return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }.filter{archiveService.findByPropId(it.id!!).isEmpty()}
+                return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }
             }
         }
         else throw error("no student id found")
-
     }
     @PostMapping("/API/thesis/proposals/searchArchive/")
     @PreAuthorize("hasRole('Student') or hasRole('Professor')")
     fun searchProposalsArchive(
         @RequestBody filterCriteria: ProposalFilterCriteria
     ): List<ProposalDTO> {
-
-        val list = proposalService.getAllProposals().filter{archiveService.findByPropId(it.id!!).isNotEmpty()}
-        println("Received filter criteria: $filterCriteria")
-        println("Original List Size: ${list.size}")
-
-        val filteredList = list
-            .filter { proposal ->
-                println("Filtering by Supervisor: ${filterCriteria.supervisor}")
-                println("Proposal supervisor: ${proposal.supervisor}")
-                val matches = filterCriteria.supervisor.isNullOrBlank() ||
-                        (proposal.supervisor.name + " " + proposal.supervisor.surname)
-                            .equals(filterCriteria.supervisor, ignoreCase = true)
-                println("Matches criteria? $matches")
-                matches
-            }
-            .filter { proposal ->
-                println("Filter criteria co-supervisors: ${filterCriteria.coSupervisors}")
-
-                val matches = filterCriteria.coSupervisors.isNullOrEmpty() ||
-                        proposal.coSupervisors?.any {
-                            filterCriteria.coSupervisors.contains(it)
-                        } ?: false
-
-                println("Matches criteria? $matches")
-
-                matches
-            }
-            .filter { proposal ->
-                println("Filtering by Keywords: ${filterCriteria.keywords}")
-                println("Proposal keywords: ${proposal.keywords}")
-                val matches = filterCriteria.keywords.isNullOrEmpty() ||
-                        proposal.keywords?.any { filterCriteria.keywords.contains(it) } ?: false
-                println("Matches criteria? $matches")
-                matches
-            }
-            .filter { proposal ->
-                println("Filtering by Types: ${filterCriteria.types}")
-                println("Proposal types: ${proposal.type}")
-                val matches = filterCriteria.types.isNullOrEmpty() ||
-                        proposal.type?.any { filterCriteria.types.contains(it) } ?: false
-                println("Matches criteria? $matches")
-                matches
-            }
-            .filter { proposal ->
-                println("Filtering by Groups: ${filterCriteria.groups}")
-                println("Proposal groups: ${proposal.groups}")
-                val matches = filterCriteria.groups == null ||
-                        filterCriteria.groups.isEmpty() ||
-                        proposal.groups?.any { filterCriteria.groups.contains(it) } ?: false
-                println("Matches criteria? $matches")
-                matches
-            }
-            .filter { proposal ->
-                println("Filtering by CDS: ${filterCriteria.cds}")
-                println("Proposal cds: ${proposal.cds}")
-                val matches = filterCriteria.cds.isNullOrEmpty() ||
-                        proposal.cds?.any { filterCriteria.cds.contains(it) } ?: false
-                println("Matches criteria? $matches")
-                matches
-            }
-            .filter { proposal ->
-                println("Filtering by Query String: ${filterCriteria.queryString}")
-                filterCriteria.queryString.isNullOrBlank() ||
-                        proposal.title.contains(filterCriteria.queryString, ignoreCase = true) ||
-                        proposal.description.contains(filterCriteria.queryString, ignoreCase = true) ||
-                        proposal.notes?.contains(filterCriteria.queryString, ignoreCase = true) ?: false ||
-                        proposal.requiredKnowledge?.contains(filterCriteria.queryString, ignoreCase = true) ?: false
-            }
-            .filter { proposal ->
-                println("Filtering by Date Range: startDate=${filterCriteria.startDate}, endDate=${filterCriteria.endDate}")
-                val proposalExpiration = proposal.expiration
-                val currentDate = LocalDate.now()
-                val endDateValue = filterCriteria.endDate
-                println("Proposal Expiration: $proposalExpiration, Current Date: $currentDate, End Date Value: $endDateValue")
-
-                if (endDateValue != null) {
-                    proposalExpiration >= filterCriteria.startDate && proposalExpiration <= endDateValue
-                } else {
-                    // If endDate is null, there's no upper limit for the expiration date
-                    proposalExpiration >= filterCriteria.startDate
-                }
-            }
-            .toList()
-
-        println("Final List Size: ${filteredList.size}")
-        val securityContext = SecurityContextHolder.getContext()
-// Get the authentication object from the security context
-        val authentication = securityContext.authentication
-        if (authentication != null && authentication.isAuthenticated) {
-            // Get the username
-            val roles = authentication.authorities.map { it.authority }
-            if (roles.contains("ROLE_Student")) {
-                val student = studentRepository.findById(authentication.name.split("@")[0]).get()
-                println("Student: ${student}")
-                return filteredList.filter { it.cds.contains(student.degree!!.titleDegree) }.filter{archiveService.findByPropId(it.id!!).isNotEmpty()}
-            }
-            else
-            {
-                println("Roles: ${roles}")
-                val professor=teacherRepository.findById(authentication.name.split("@")[0]).get()
-                return filteredList.filter { it.supervisor.id!!.compareTo(professor.id.toString())==0 }.filter{archiveService.findByPropId(it.id!!).isNotEmpty()}
-            }
-        }
-        else throw error("no student id found")
+        return search(filterCriteria).filter{archiveService.findByPropId(it.id!!).isNotEmpty()}
 
     }
     @PostMapping("/API/thesis/proposals/copy/{proposalId}")
