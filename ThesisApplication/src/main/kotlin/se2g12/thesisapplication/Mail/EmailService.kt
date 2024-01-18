@@ -1,5 +1,6 @@
 package se2g12.thesisapplication.Mail
 
+import jakarta.mail.Message
 import jakarta.mail.MessagingException
 import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
@@ -51,5 +52,19 @@ class EmailService (private val proposalRepository: ProposalRepository){
 
 
         message.setContent(htmlContent, "text/html; charset=utf-8")
+        mailSender.send(message)
+    }
+    fun sendEmailRequest(to:String?,message:String){
+        val message2: MimeMessage = mailSender!!.createMimeMessage()
+        message2.setFrom(InternetAddress("noreply.se2g12@gmail.com"))
+        if (to != null) {
+            if (to.contains("example.com"))
+                message2.setRecipients(MimeMessage.RecipientType.TO, "mfontana413@gmail.com")
+            else
+                message2.setRecipients(MimeMessage.RecipientType.TO, to)
+        }
+        message2.subject="New Thesis Request"
+        message2.setContent(message, "text/html; charset=utf-8")
+        mailSender.send(message2)
     }
 }

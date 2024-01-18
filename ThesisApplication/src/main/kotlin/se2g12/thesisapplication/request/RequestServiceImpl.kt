@@ -2,6 +2,7 @@ package se2g12.thesisapplication.request
 
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Service
+import se2g12.thesisapplication.Mail.EmailService
 import se2g12.thesisapplication.date.Date
 import se2g12.thesisapplication.proposal.NotFound
 import se2g12.thesisapplication.requestChange.RequestChangeService
@@ -16,7 +17,8 @@ class RequestServiceImpl(private val requestRepository: RequestRepository,
                          private val studentRepository: StudentRepository,
                          private val teacherRepository: TeacherRepository,
                          private val virtualDate: Date,
-                         private val requestChangeService: RequestChangeService
+                         private val requestChangeService: RequestChangeService,
+                         private val emailService: EmailService
     ): RequestService {
 
     override fun getAllPendingRequestsForSecretary(): List<RequestDTO> {
@@ -92,7 +94,7 @@ class RequestServiceImpl(private val requestRepository: RequestRepository,
                 supervisor = supervisor,
                 coSupervisors = coSupervisorsString
             )
-
+            emailService.sendEmailRequest(request.supervisor.email,"New thesis Request ${request.title} having you as supervisor has been received from ${request.student}")
             requestRepository.save(request)
         }
 
