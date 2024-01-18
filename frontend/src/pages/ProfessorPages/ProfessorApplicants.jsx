@@ -345,7 +345,7 @@ export default function ProfessorApplicants({
                           >{`${item.student.email} - ${item.student.codDegree}`}</Typography>
 
                           {/* Display the cv only if present */}
-                          {item.student.cv.fileId ? renderStudentCv(item.cv) : null}
+                          {item.student.cv.fileId ? renderStudentCv(item.student.cv) : null}
                         </Box>
                       ) : (
                         <>
