@@ -94,7 +94,7 @@ class RequestServiceImpl(private val requestRepository: RequestRepository,
                 supervisor = supervisor,
                 coSupervisors = coSupervisorsString
             )
-            emailService.sendEmailRequest(request.supervisor.email,"New thesis Request ${request.title} having you as supervisor has been received from ${request.student}")
+            emailService.sendEmailRequest(request.supervisor.email,"New thesis Request ${request.title} having you as supervisor has been received from ${request.student.name}")
             requestRepository.save(request)
         }
 
