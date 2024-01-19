@@ -59,63 +59,60 @@ sections:
 
 - Unit Testing:
     - Total hours estimated
-      16 hours
+      8 hours
 
     - Total hours spent
-      12 hours 45 minutes
+      4 hours 30 minutes
 
     - Nr of automated unit test cases
-      85
+      117
 
     - Coverage (if available)
-      80%
+      83.5%
 
 - E2E testing:
     - Total hours estimated
-      28 hours
+      XXX hours
 
     - Total hours spent
-      27 hours
+      XXX hours
 
 - Code review
     - Total hours estimated 1 hr
     - Total hours spent 1 hr
 - Technical Debt management:
-  - Total hours estimated 3 hr
-  - Total hours spent 3 hr
-  - Hours estimated for remediation by SonarQube 2hr
-  - Hours estimated for remediation by SonarQube only for the selected and planned issues 1hr
-  - Hours spent on remediation 2 hr
-  - debt ratio (as reported by SonarQube under "Measures-Maintainability") 0.6%
-  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability ) 0 bugs, 0 Vulnerabilities, 38 code smells
+  - Total hours estimated 8 hr
+  - Total hours spent 16 hr
+  - Hours estimated for remediation by SonarQube 18hr
+  - Hours estimated for remediation by SonarQube only for the selected and planned issues 16h 18m
+  - Hours spent on remediation 16h
+  - debt ratio (as reported by SonarQube under "Measures-Maintainability") 0.2%
+  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability ) 0 bugs, 0 Vulnerabilities, 30 code smells
   
 
 
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)? 
-  - tasks about frontend testing needed more time so we lost most of out time implementing testing ⇒ Errors due to the okta authentication
+  - Underestimated the time needed for recovering the Technical Debt
 
 - What lessons did you learn (both positive and negative) in this sprint? 
   - Positive:
-    - Learning about cypress suite for frontend testing 
-    - We (almost) got to 80 percent test coverage (from 10 percent last sprint)
-    - We completed six stories (improvement from last sprint)
+    - Learning how to handle file upload and their storage
     
   - Negative:
-    - Assigning too much time to tasks that don’t improve the impact of committed stories
+    - 
 
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
-  - Improved test coverage at nearly 80 percent (huge increase)
-  - Prioritizing the importance of stories and committing the most valuable ones 
-  - Code review sessions
+  - We fixed the Code Smells, going from 186 to 30
+  - We completed the first 20 user stories
 
 - Which ones were you not able to achieve? Why?
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-  - Keep the code smells at a minimum 
-  - Achieve story completion until user story 20
+  - 
 
 - One thing you are proud of as a Team!!
   - Distribution of work and communication in the team was great
+  - We passed the SonarCloud Quality Gate
