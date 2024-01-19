@@ -72,10 +72,10 @@ sections:
 
 - E2E testing:
     - Total hours estimated
-      XXX hours
+      6 hours
 
     - Total hours spent
-      XXX hours
+      5 hours
 
 - Code review
     - Total hours estimated 1 hr
@@ -94,25 +94,28 @@ sections:
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)? 
-  - Underestimated the time needed for recovering the Technical Debt
+  - some of the work for some stories were already done because they were similar to already done ones
 
 - What lessons did you learn (both positive and negative) in this sprint? 
   - Positive:
-    - Learning how to handle file upload and their storage
+    - we can commit all the stories we set our mind to, thanks to a consolidate pipeline work
     
   - Negative:
-    - 
+    - due to christams cavation we lost contact with each other, resulting in some of the work finished the last two weeks
+    - we underextimated code smells that were extimated correctly by sonar cloud
 
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
-  - We fixed the Code Smells, going from 186 to 30
+  - we keep code smells at minimum
   - We completed the first 20 user stories
+  - better time tracking of task in you track
+  
 
 - Which ones were you not able to achieve? Why?
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-  - 
+  - keep code smell low
+  - improve frontend test coverage
 
 - One thing you are proud of as a Team!!
-  - Distribution of work and communication in the team was great
-  - We passed the SonarCloud Quality Gate
+  - we are a good team, able to work in subtemas very well
