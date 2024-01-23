@@ -33,6 +33,7 @@ class RequestServiceImpl(private val requestRepository: RequestRepository,
         // handle some possible errors, but at least first 3 letters have to be correct
         // this way it's ok both "accept" and "accepted"
         val newStatus:String = if (status.lowercase().contains("acc")){
+            emailService.sendEmailRequest(request.supervisor.email,"New thesis Request ${request.title} having you as supervisor has been received from ${request.student.name}")
             "accepted"
         } else if (status.lowercase().contains("rej")){
             "rejected"
@@ -94,7 +95,6 @@ class RequestServiceImpl(private val requestRepository: RequestRepository,
                 supervisor = supervisor,
                 coSupervisors = coSupervisorsString
             )
-            emailService.sendEmailRequest(request.supervisor.email,"New thesis Request ${request.title} having you as supervisor has been received from ${request.student.name}")
             requestRepository.save(request)
         }
 
